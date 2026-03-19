@@ -12,7 +12,8 @@ import playIcon from "@/assets/play-icon.png";
 import breatheIcon from "@/assets/breathe-icon.png";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
-import { Home, Search, FlaskConical } from "lucide-react";
+import scienceIcon from "@/assets/science-icon.png";
+import { Home, Search } from "lucide-react";
 
 /**
  * AudioWaveform — decorative animated waveform bars
@@ -58,7 +59,7 @@ const BottomNavBar = () => {
       active: true,
     },
     { label: "Search", icon: <Search className="w-5 h-5" />, active: false },
-    { label: "Science", icon: <FlaskConical className="w-5 h-5" />, active: false },
+    { label: "Science", icon: <img src={scienceIcon} alt="Science" className="w-5 h-5" />, active: false },
   ];
 
   return (
