@@ -27,7 +27,7 @@ const AudioWaveform = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center gap-[2px] w-full px-4">
+    <div className="flex items-center justify-center gap-[2px] w-full">
       {barHeights.map((height, i) => (
         <div
           key={i}
@@ -98,7 +98,7 @@ const BreathworkSession = () => {
       {/* Content overlay */}
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Top section — badge, title, subtitle */}
-        <div className="pt-16 px-6 flex flex-col items-center text-center">
+        <div className="pt-16 px-6 flex flex-col items-start text-left">
           {/* "Activate" pill badge with breathe icon */}
           <div
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 mb-6"
@@ -111,7 +111,7 @@ const BreathworkSession = () => {
           </div>
 
           {/* Session title */}
-          <h1 className="text-white text-2xl font-bold mb-2">
+          <h1 className="text-white text-3xl font-bold mb-2">
             Mid-Day Energy Boost
           </h1>
 
@@ -121,8 +121,8 @@ const BreathworkSession = () => {
           </p>
         </div>
 
-        {/* Center — audio waveform visualization */}
-        <div className="flex-1 flex items-center justify-center">
+        {/* Center — audio waveform visualization (full width, no padding) */}
+        <div className="flex-1 flex items-center justify-center overflow-hidden">
           <AudioWaveform />
         </div>
 
