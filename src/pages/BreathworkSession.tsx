@@ -27,7 +27,7 @@ const AudioWaveform = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center gap-[2px] w-full px-4">
+    <div className="flex items-center justify-center gap-[2px] w-full">
       {barHeights.map((height, i) => (
         <div
           key={i}
