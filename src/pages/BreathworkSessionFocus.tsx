@@ -7,7 +7,7 @@
  * Reuses the same layout structure as Activate and Recover screens.
  */
 
-import focusGradient from "@/assets/focus-gradient.png";
+import focusGradientBg from "@/assets/focus-gradient-v2.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
@@ -24,7 +24,7 @@ const BreathworkSessionFocus = () => {
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed warm muted gradient image */}
       <img
-        src={focusGradient}
+        src={focusGradientBg}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"

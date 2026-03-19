@@ -6,7 +6,7 @@
  * Dark muted gradient background. Session: "Context Switch".
  */
 
-import resetGradient from "@/assets/reset-gradient.png";
+import resetGradientBg from "@/assets/reset-gradient-v2.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
@@ -22,7 +22,7 @@ const BreathworkSessionReset = () => {
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed dark muted gradient */}
       <img
-        src={resetGradient}
+        src={resetGradientBg}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"

@@ -7,7 +7,7 @@
  * Reuses the same layout structure as the Activate screen.
  */
 
-import recoverGradient from "@/assets/recover-gradient.png";
+import recoverGradientBg from "@/assets/recover-gradient-v2.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
@@ -24,7 +24,7 @@ const BreathworkSessionRecover = () => {
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed cool gradient image */}
       <img
-        src={recoverGradient}
+        src={recoverGradientBg}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"
