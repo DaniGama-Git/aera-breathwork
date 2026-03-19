@@ -10,7 +10,7 @@ import scienceIcon from "@/assets/science-nav-icon.svg";
 import homeIcon from "@/assets/home-nav-icon.svg";
 import searchIcon from "@/assets/search-nav-icon.svg";
 
-const BottomNavBar = () => {
+const BottomNavBar = ({ activeTab = "Breathe" }: { activeTab?: string }) => {
   const tabs = [
     { label: "Home", icon: <img src={homeIcon} alt="Home" className="w-[18px] h-[18px]" />, active: false },
     {
