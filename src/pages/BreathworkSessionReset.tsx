@@ -6,7 +6,7 @@
  * Dark muted gradient background. Session: "Context Switch".
  */
 
-import resetGradient from "@/assets/reset-gradient.png";
+import resetGradientBg from "@/assets/reset-gradient-v2.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";

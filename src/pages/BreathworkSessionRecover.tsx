@@ -7,7 +7,7 @@
  * Reuses the same layout structure as the Activate screen.
  */
 
-import recoverGradient from "@/assets/recover-gradient.png";
+import recoverGradientBg from "@/assets/recover-gradient-v2.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";

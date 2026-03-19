@@ -7,7 +7,7 @@
  * Reuses the same layout structure as Activate and Recover screens.
  */
 
-import focusGradient from "@/assets/focus-gradient.png";
+import focusGradientBg from "@/assets/focus-gradient-v2.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";

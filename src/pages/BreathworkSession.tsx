@@ -7,7 +7,7 @@
  * speaker info with timer, play controls, and a bottom navigation bar.
  */
 
-import activateGradient from "@/assets/activate-gradient.png";
+import activateGradientBg from "@/assets/activate-gradient-v2.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
