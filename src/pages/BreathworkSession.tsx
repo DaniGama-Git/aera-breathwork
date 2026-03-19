@@ -49,7 +49,7 @@ const BreathworkSession = () => {
           </h1>
 
           {/* Session subtitle */}
-          <p className="text-white/60 text-[15px] leading-snug font-body font-normal">
+          <p className="text-white text-[15px] leading-snug font-body font-normal">
             Rapid physiological up-regulation.
           </p>
         </div>
