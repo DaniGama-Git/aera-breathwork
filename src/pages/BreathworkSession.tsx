@@ -127,9 +127,9 @@ const BreathworkSession = () => {
           </p>
         </div>
 
-        {/* Center — audio waveform visualization (full width, no padding) */}
+        {/* Center — audio waveform image asset (full width) */}
         <div className="flex-1 flex items-center justify-center overflow-hidden">
-          <AudioWaveform />
+          <img src={waveform} alt="Audio waveform" className="w-full h-auto object-cover" />
         </div>
 
         {/* Bottom section — speaker info, play button */}
