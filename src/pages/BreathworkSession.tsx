@@ -59,7 +59,7 @@ const BottomNavBar = () => {
       active: true,
     },
     { label: "Search", icon: <Search className="w-5 h-5" />, active: false },
-    { label: "Science", icon: <FlaskConical className="w-5 h-5" />, active: false },
+    { label: "Science", icon: <img src={scienceIcon} alt="Science" className="w-5 h-5" />, active: false },
   ];
 
   return (
