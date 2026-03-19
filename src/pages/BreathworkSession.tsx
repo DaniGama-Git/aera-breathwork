@@ -16,39 +16,10 @@ import scienceIcon from "@/assets/science-icon.png";
 import { Home, Search } from "lucide-react";
 
 /**
- * AudioWaveform — decorative animated waveform bars
- * Represents audio visualization in the center of the screen.
- */
-const AudioWaveform = () => {
-  // Heights for each bar in the waveform (px values to create a natural wave shape)
-  const barHeights = [
-    12, 20, 32, 24, 40, 56, 44, 60, 48, 72, 56, 80, 64, 88, 72, 96,
-    80, 72, 88, 64, 80, 56, 72, 48, 60, 44, 56, 40, 24, 32, 20, 12,
-    16, 28, 20, 36, 48, 40, 52, 44, 64, 52, 76, 60, 84, 68, 92, 76,
-    68, 84, 60, 76, 52, 64, 44, 52, 40, 48, 36, 20, 28, 16,
-  ];
-
-  return (
-    <div className="flex items-center justify-center gap-[2px] w-full">
-      {barHeights.map((height, i) => (
-        <div
-          key={i}
-          className="w-[3px] rounded-full opacity-60"
-          style={{
-            height: `${height}px`,
-            background: "linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 100%)",
-            animationDelay: `${i * 0.05}s`,
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-/**
  * BottomNavBar — dark pill-shaped navigation bar
  * Matches the navbar design from the Āera app.
  * "Breathe" tab is highlighted as the active tab for this screen.
+ * Active tab has a small colored dot indicator beneath the icon.
  */
 const BottomNavBar = () => {
   const tabs = [
@@ -63,17 +34,27 @@ const BottomNavBar = () => {
   ];
 
   return (
-    <div className="mx-4 mb-2 rounded-[32px] px-6 py-3 flex items-center justify-around"
-      style={{ backgroundColor: "rgba(26, 26, 26, 0.9)" }}
+    <div
+      className="mx-4 mb-2 rounded-[32px] px-4 py-3 flex items-center justify-around"
+      style={{ backgroundColor: "rgba(26, 26, 26, 0.92)" }}
     >
       {tabs.map((tab) => (
         <button
           key={tab.label}
-          className={`flex flex-col items-center gap-1 transition-colors ${
-            tab.active ? "text-white" : "text-white/50"
+          className={`flex flex-col items-center gap-1.5 transition-colors ${
+            tab.active ? "text-white" : "text-white/40"
           }`}
         >
-          {tab.icon}
+          <div className="relative">
+            {tab.icon}
+            {/* Active indicator dot */}
+            {tab.active && (
+              <span
+                className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
+                style={{ backgroundColor: "#E8734A" }}
+              />
+            )}
+          </div>
           <span className="text-[10px] font-medium">{tab.label}</span>
         </button>
       ))}
@@ -100,66 +81,69 @@ const BreathworkSession = () => {
       {/* Content overlay */}
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Top section — badge, title, subtitle */}
-        <div className="pt-16 px-6 flex flex-col items-start text-left">
+        {/* Generous top padding to clear status bar area */}
+        <div className="pt-20 px-6 flex flex-col items-start text-left">
           {/* "Activate" pill badge with breathe icon */}
           <div
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 mb-6"
-            style={{ backgroundColor: "rgba(255,255,255,0.1)" }}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/20 mb-5"
+            style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
           >
             <img src={breatheIcon} alt="" className="w-4 h-4" />
-            <span className="text-white text-xs font-semibold tracking-wider uppercase">
+            <span className="text-white text-[11px] font-semibold tracking-wider uppercase">
               Activate
             </span>
           </div>
 
-          {/* Session title */}
           {/* Session title — Neue Haas Grotesk Display Pro 65 Medium, 36px, -1% tracking, 100% line-height */}
           {/* TODO: Swap font-family to 'Neue Haas Grotesk Display Pro' once font files are uploaded */}
           <h1
-            className="text-white font-semibold mb-4"
-            style={{ fontSize: "36px", lineHeight: "100%", letterSpacing: "-0.01em" }}
+            className="text-white font-semibold mb-3"
+            style={{ fontSize: "34px", lineHeight: "100%", letterSpacing: "-0.01em" }}
           >
             Mid-Day Energy Boost
           </h1>
 
           {/* Session subtitle */}
-          <p className="text-white/70 text-base leading-relaxed">
+          <p className="text-white/60 text-[15px] leading-snug">
             Rapid physiological up-regulation.
           </p>
         </div>
 
-        {/* Center — audio waveform image asset (full width) */}
-        <div className="flex-1 flex items-center justify-center overflow-hidden">
+        {/* Center — audio waveform image asset (full width, vertically centered) */}
+        <div className="flex-1 flex items-center justify-center overflow-hidden px-0">
           <img src={waveform} alt="Audio waveform" className="w-full h-auto object-cover" />
         </div>
 
         {/* Bottom section — speaker info + play button */}
-        <div className="px-6 pb-4 flex items-end justify-between">
-          {/* Speaker info: name on top, speaking/timer below */}
-          <div className="flex flex-col gap-1">
-            <span className="text-white font-semibold text-lg">Jamie</span>
-            <div className="flex items-center gap-6 text-white/50 text-sm">
+        {/* Play button floats right, speaker info bottom-left, timer far right on second row */}
+        <div className="px-6 pb-3">
+          {/* Play button row */}
+          <div className="flex justify-end mb-4">
+            <button
+              className="w-[72px] h-[72px] rounded-full flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+              style={{ backgroundColor: "rgba(255,255,255,0.2)" }}
+              aria-label="Play breathwork session"
+            >
+              <img src={playIcon} alt="Play" className="w-8 h-8 ml-0.5" />
+            </button>
+          </div>
+
+          {/* Speaker info row */}
+          <div className="mb-5">
+            <span className="text-white font-semibold text-xl block mb-1">Jamie</span>
+            <div className="flex items-center justify-between text-white/50 text-sm">
               <span>Speaking...</span>
               <span className="tabular-nums">00:03:00</span>
             </div>
           </div>
-
-          {/* Large circular play button — positioned right */}
-          <button
-            className="w-16 h-16 rounded-full flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
-            style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
-            aria-label="Play breathwork session"
-          >
-            <img src={playIcon} alt="Play" className="w-7 h-7 ml-0.5" />
-          </button>
         </div>
 
         {/* Bottom navigation bar */}
         <BottomNavBar />
 
         {/* iOS Home Indicator */}
-        <div className="flex justify-center pb-2">
-          <img src={homeIndicator} alt="" className="h-1 w-32 opacity-60" aria-hidden="true" />
+        <div className="flex justify-center pb-2 pt-1">
+          <img src={homeIndicator} alt="" className="h-[5px] w-36 opacity-70" aria-hidden="true" />
         </div>
       </div>
     </div>
