@@ -45,7 +45,7 @@ const BreathworkSessionReset = () => {
 
           {/* Session title — TODO: Swap font-family to 'Neue Haas Grotesk Display Pro' */}
           <h1
-            className="text-white font-medium font-display mb-3"
+            className="text-white font-body font-medium mb-3"
             style={{ fontSize: "34px", lineHeight: "100%", letterSpacing: "-0.01em" }}
           >
             Context Switch
