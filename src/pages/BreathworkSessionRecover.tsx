@@ -1,29 +1,30 @@
 /**
- * Screen 1 of 3: Breathwork Session — Activate
- * Route: /breathwork-session-activate
+ * Screen 2 of 3: Breathwork Session — Recover
+ * Route: /breathwork-session-recover
  *
- * This is the "Activate" breathwork session screen from the Āera app.
- * It displays the session title, audio waveform visualization,
- * speaker info with timer, play controls, and a bottom navigation bar.
+ * This is the "Recover" breathwork session screen from the Āera app.
+ * Cool blue/purple gradient background. Session: "Evening Decompression".
+ * Reuses the same layout structure as the Activate screen.
  */
 
-import rectangleBg from "@/assets/rectangle-bg.png";
+import recoverBg from "@/assets/recover-bg.png";
 import playButton from "@/assets/play-button.png";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
-import activateIcon from "@/assets/activate-icon.png";
+import recoverIcon from "@/assets/recover-icon.png";
 import BottomNavBar from "@/components/BottomNavBar";
+
 /**
- * BreathworkSession — Main screen component
- * Route: /breathwork-session-activate
- * Screen 1 of 3 in the breathwork session flow.
+ * BreathworkSessionRecover — Main screen component
+ * Route: /breathwork-session-recover
+ * Screen 2 of 3 in the breathwork session flow.
  */
-const BreathworkSession = () => {
+const BreathworkSessionRecover = () => {
   return (
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
-      {/* Background — full-bleed gradient image from Rectangle.png */}
+      {/* Background — full-bleed cool gradient image */}
       <img
-        src={rectangleBg}
+        src={recoverBg}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"
@@ -32,31 +33,30 @@ const BreathworkSession = () => {
       {/* Content overlay */}
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Top section — badge, title, subtitle */}
-        {/* Generous top padding to clear status bar area */}
         <div className="pt-20 px-6 flex flex-col items-start text-left">
-          {/* "Activate" pill badge with breathe icon */}
+          {/* "Recover" pill badge with recover icon */}
           <div
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/20 mb-5"
             style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
           >
-            <img src={activateIcon} alt="" className="w-4 h-4" />
+            <img src={recoverIcon} alt="" className="w-4 h-4" />
             <span className="text-white text-[11px] font-semibold tracking-wider uppercase">
-              Activate
+              Recover
             </span>
           </div>
 
-          {/* Session title — Neue Haas Grotesk Display Pro 65 Medium, 36px, -1% tracking, 100% line-height */}
+          {/* Session title — Neue Haas Grotesk Display Pro 65 Medium, 34px, -1% tracking, 100% line-height */}
           {/* TODO: Swap font-family to 'Neue Haas Grotesk Display Pro' once font files are uploaded */}
           <h1
             className="text-white font-semibold mb-3"
             style={{ fontSize: "34px", lineHeight: "100%", letterSpacing: "-0.01em" }}
           >
-            Mid-Day Energy Boost
+            Evening Decompression
           </h1>
 
           {/* Session subtitle */}
           <p className="text-white/60 text-[15px] leading-snug">
-            Rapid physiological up-regulation.
+            Forced shutdown for deep restoration.
           </p>
         </div>
 
@@ -66,7 +66,6 @@ const BreathworkSession = () => {
         </div>
 
         {/* Bottom section — speaker info + play button */}
-        {/* Play button floats right, speaker info bottom-left, timer far right on second row */}
         <div className="px-6 pb-3">
           {/* Play button row */}
           <div className="flex justify-end mb-4">
@@ -83,7 +82,7 @@ const BreathworkSession = () => {
             <span className="text-white font-semibold text-xl block mb-1">Jamie</span>
             <div className="flex items-center justify-between text-white/50 text-sm">
               <span>Speaking...</span>
-              <span className="tabular-nums">00:03:00</span>
+              <span className="tabular-nums">00:07:00</span>
             </div>
           </div>
         </div>
@@ -100,4 +99,4 @@ const BreathworkSession = () => {
   );
 };
 
-export default BreathworkSession;
+export default BreathworkSessionRecover;
