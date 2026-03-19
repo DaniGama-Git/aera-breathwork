@@ -12,6 +12,7 @@ import playIcon from "@/assets/play-icon.png";
 import breatheIcon from "@/assets/breathe-icon.png";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
+import activateIcon from "@/assets/activate-icon.png";
 import scienceIcon from "@/assets/science-icon.png";
 import { Home, Search } from "lucide-react";
 
@@ -88,7 +89,7 @@ const BreathworkSession = () => {
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/20 mb-5"
             style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
           >
-            <img src={breatheIcon} alt="" className="w-4 h-4" />
+            <img src={activateIcon} alt="" className="w-4 h-4" />
             <span className="text-white text-[11px] font-semibold tracking-wider uppercase">
               Activate
             </span>
