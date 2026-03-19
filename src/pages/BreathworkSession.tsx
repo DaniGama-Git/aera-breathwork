@@ -23,7 +23,7 @@ const BreathworkSession = () => {
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed gradient image from Rectangle.png */}
       <img
-        src={rectangleBg}
+        src={activateGradient}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"
