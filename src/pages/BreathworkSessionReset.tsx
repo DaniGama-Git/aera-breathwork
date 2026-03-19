@@ -10,7 +10,7 @@ import resetBg from "@/assets/reset-bg.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
-import resetIcon from "@/assets/reset-icon.png";
+import resetIcon from "@/assets/reset-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 
 /**

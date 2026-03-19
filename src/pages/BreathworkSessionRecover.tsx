@@ -11,7 +11,7 @@ import recoverBg from "@/assets/recover-bg.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
-import recoverIcon from "@/assets/recover-icon.png";
+import recoverIcon from "@/assets/recover-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 
 /**

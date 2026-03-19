@@ -11,7 +11,7 @@ import rectangleBg from "@/assets/rectangle-bg.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
-import activateIcon from "@/assets/activate-icon.png";
+import activateIcon from "@/assets/activate-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 /**
  * BreathworkSession — Main screen component
