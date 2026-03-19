@@ -11,6 +11,7 @@ import rectangleBg from "@/assets/rectangle-bg.png";
 import playIcon from "@/assets/play-icon.png";
 import breatheIcon from "@/assets/breathe-icon.png";
 import homeIndicator from "@/assets/home-indicator.png";
+import waveform from "@/assets/waveform.png";
 import { Home, Search, FlaskConical } from "lucide-react";
 
 /**
