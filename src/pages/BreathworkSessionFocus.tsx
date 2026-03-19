@@ -24,7 +24,7 @@ const BreathworkSessionFocus = () => {
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed warm muted gradient image */}
       <img
-        src={focusBg}
+        src={focusGradient}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"
