@@ -133,18 +133,18 @@ const BreathworkSession = () => {
           <img src={waveform} alt="Audio waveform" className="w-full h-auto object-cover" />
         </div>
 
-        {/* Bottom section — speaker info, play button */}
-        <div className="px-6 pb-4 flex flex-col items-center gap-6">
-          {/* Speaker row: name · status · timer */}
-          <div className="flex items-center gap-3 text-white/70 text-sm">
-            <span className="text-white font-medium">Jamie</span>
-            <span>·</span>
-            <span>Speaking...</span>
-            <span>·</span>
-            <span className="tabular-nums">00:03:00</span>
+        {/* Bottom section — speaker info + play button */}
+        <div className="px-6 pb-4 flex items-end justify-between">
+          {/* Speaker info: name on top, speaking/timer below */}
+          <div className="flex flex-col gap-1">
+            <span className="text-white font-semibold text-lg">Jamie</span>
+            <div className="flex items-center gap-6 text-white/50 text-sm">
+              <span>Speaking...</span>
+              <span className="tabular-nums">00:03:00</span>
+            </div>
           </div>
 
-          {/* Large circular play button */}
+          {/* Large circular play button — positioned right */}
           <button
             className="w-16 h-16 rounded-full flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
             style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
