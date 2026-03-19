@@ -10,6 +10,7 @@ import BreathworkSessionRecover from "./pages/BreathworkSessionRecover.tsx";
 import BreathworkSessionFocus from "./pages/BreathworkSessionFocus.tsx";
 import BreathworkSessionReset from "./pages/BreathworkSessionReset.tsx";
 import HrvDemo from "./pages/HrvDemo.tsx";
+import BreathworkMenu from "./pages/BreathworkMenu.tsx";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
           {/* Screen 4: Breathwork Session Reset */}
           <Route path="/breathwork-session-reset" element={<BreathworkSessionReset />} />
           <Route path="/hrv" element={<HrvDemo />} />
+          <Route path="/menu" element={<BreathworkMenu />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
