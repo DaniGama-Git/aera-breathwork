@@ -19,7 +19,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<HomeScreen />} />
           {/* Screen 1: Breathwork Session Activate */}
           <Route path="/breathwork-session-activate" element={<BreathworkSession />} />
           {/* Screen 2: Breathwork Session Recover */}
