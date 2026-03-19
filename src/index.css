@@ -3,24 +3,24 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Neue Haas Grotesk Display Round';
-  src: url('/fonts/neuehaasgrotdispround-45light.otf') format('opentype');
+  font-family: 'Neue Haas Grotesk Display Pro';
+  src: url('/fonts/neuehaasgrotdisp-45light-trial.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Neue Haas Grotesk Display Round';
-  src: url('/fonts/neuehaasgrotdispround-55roman.otf') format('opentype');
+  font-family: 'Neue Haas Grotesk Display Pro';
+  src: url('/fonts/neuehaasgrotdisp-55roman-trial.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Neue Haas Grotesk Display Round';
-  src: url('/fonts/neuehaasgrotdispround-65medium.otf') format('opentype');
+  font-family: 'Neue Haas Grotesk Display Pro';
+  src: url('/fonts/neuehaasgrotdisp-65medium-trial.otf') format('opentype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;

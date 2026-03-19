@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        'display': ['"Neue Haas Grotesk Display Round"', 'sans-serif'],
-        'body': ['"Neue Haas Grotesk Display Round"', 'sans-serif'],
+        'display': ['"Neue Haas Grotesk Display Pro"', 'sans-serif'],
+        'body': ['"Neue Haas Grotesk Display Pro"', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
