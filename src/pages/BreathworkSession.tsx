@@ -89,7 +89,7 @@ const BreathworkSession = () => {
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/20 mb-5"
             style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
           >
-            <img src={breatheIcon} alt="" className="w-4 h-4" />
+            <img src={activateIcon} alt="" className="w-4 h-4" />
             <span className="text-white text-[11px] font-semibold tracking-wider uppercase">
               Activate
             </span>
