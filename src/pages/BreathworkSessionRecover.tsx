@@ -48,7 +48,7 @@ const BreathworkSessionRecover = () => {
           {/* Session title — Neue Haas Grotesk Display Pro 65 Medium, 34px, -1% tracking, 100% line-height */}
           {/* TODO: Swap font-family to 'Neue Haas Grotesk Display Pro' once font files are uploaded */}
           <h1
-            className="text-white font-medium font-display mb-3"
+            className="text-white font-body font-medium mb-3"
             style={{ fontSize: "34px", lineHeight: "100%", letterSpacing: "-0.01em" }}
           >
             Evening Decompression
