@@ -12,6 +12,7 @@ import playIcon from "@/assets/play-icon.png";
 import breatheIcon from "@/assets/breathe-icon.png";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
+import activateIcon from "@/assets/activate-icon.png";
 import scienceIcon from "@/assets/science-icon.png";
 import { Home, Search } from "lucide-react";
 
