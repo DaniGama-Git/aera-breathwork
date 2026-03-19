@@ -79,10 +79,10 @@ const BreathworkSessionFocus = () => {
 
           {/* Speaker info row */}
           <div className="mb-5">
-            <span className="text-white font-semibold text-xl block mb-1">Jamie</span>
+            <span className="text-white font-body font-medium text-xl block mb-1">Jamie</span>
             <div className="flex items-center justify-between text-white/50 text-sm">
-              <span>Speaking...</span>
-              <span className="tabular-nums">00:03:00</span>
+              <span className="font-body font-normal">Speaking...</span>
+              <span className="font-display font-light tabular-nums">00:03:00</span>
             </div>
           </div>
         </div>
