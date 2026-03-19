@@ -70,7 +70,7 @@ const BottomNavBar = () => {
         <button
           key={tab.label}
           className={`flex flex-col items-center gap-1 transition-colors ${
-            tab.active ? "text-amber-400" : "text-white/50"
+            tab.active ? "text-white" : "text-white/50"
           }`}
         >
           {tab.icon}
