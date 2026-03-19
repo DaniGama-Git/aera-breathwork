@@ -116,14 +116,14 @@ const BreathworkSession = () => {
           {/* Session title — Neue Haas Grotesk Display Pro 65 Medium, 36px, -1% tracking, 100% line-height */}
           {/* TODO: Swap font-family to 'Neue Haas Grotesk Display Pro' once font files are uploaded */}
           <h1
-            className="text-white font-semibold"
+            className="text-white font-semibold mb-4"
             style={{ fontSize: "36px", lineHeight: "100%", letterSpacing: "-0.01em" }}
           >
             Mid-Day Energy Boost
           </h1>
 
           {/* Session subtitle */}
-          <p className="text-white/70 text-sm">
+          <p className="text-white/70 text-base leading-relaxed">
             Rapid physiological up-regulation.
           </p>
         </div>
