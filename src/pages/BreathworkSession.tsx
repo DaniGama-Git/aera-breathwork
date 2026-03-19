@@ -8,7 +8,7 @@
  */
 
 import rectangleBg from "@/assets/rectangle-bg.png";
-import playIcon from "@/assets/play-icon.png";
+import playButton from "@/assets/play-button.png";
 import breatheIcon from "@/assets/breathe-icon.png";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
