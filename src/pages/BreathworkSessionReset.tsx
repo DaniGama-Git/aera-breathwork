@@ -38,9 +38,9 @@ const BreathworkSessionReset = () => {
             <span className="font-display font-normal text-white text-[16px]">Reset</span>
           </div>
 
-          {/* Session title — TODO: Swap font-family to 'Neue Haas Grotesk Display Pro' */}
+          {/* Session title — Neue Haas Grotesk Display Round 65 Medium */}
           <h1
-            className="text-white font-body font-medium mb-3"
+            className="text-white font-body font-semibold mb-3"
             style={{ fontSize: "34px", lineHeight: "100%", letterSpacing: "-0.01em" }}
           >
             Context Switch
@@ -69,7 +69,7 @@ const BreathworkSessionReset = () => {
           </div>
 
           <div className="mb-5">
-            <span className="text-white font-body font-medium text-xl block mb-1">Jamie</span>
+            <span className="text-white font-body font-semibold text-xl block mb-1">Jamie</span>
             <div className="flex items-center justify-between text-white/50 text-sm">
               <span className="font-body font-normal">Speaking...</span>
               <span className="font-display font-light tabular-nums">00:03:00</span>
