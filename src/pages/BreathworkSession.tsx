@@ -120,8 +120,7 @@ const BreathworkSession = () => {
           {/* Play button row */}
           <div className="flex justify-end mb-4">
             <button
-              className="w-[72px] h-[72px] rounded-full flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
-              style={{ backgroundColor: "rgba(255,255,255,0.2)" }}
+              className="w-[72px] h-[72px] rounded-full flex items-center justify-center transition-transform hover:scale-105 active:scale-95 bg-white/90 shadow-lg"
               aria-label="Play breathwork session"
             >
               <img src={playIcon} alt="Play" className="w-8 h-8 ml-0.5" />
