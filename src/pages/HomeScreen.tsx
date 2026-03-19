@@ -80,7 +80,7 @@ const HomeScreen = () => {
 
         {/* Pills section */}
         <div className="flex flex-col items-center gap-2 mb-[clamp(8px,2vh,20px)]">
-          <div className="flex gap-2 pl-[clamp(24px,14vw,56px)]">
+          <div className="flex gap-2 pl-[clamp(40px,18vw,72px)]">
             {pills.slice(0, 2).map((p) => (
               <Pill key={p.label} {...p} />
             ))}

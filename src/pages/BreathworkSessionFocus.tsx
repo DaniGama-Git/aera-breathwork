@@ -11,7 +11,7 @@ import focusBg from "@/assets/focus-bg.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
-import focusIcon from "@/assets/focus-icon.png";
+import focusIcon from "@/assets/focus-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 
 /**
