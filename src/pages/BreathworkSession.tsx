@@ -7,7 +7,7 @@
  * speaker info with timer, play controls, and a bottom navigation bar.
  */
 
-import rectangleBg from "@/assets/rectangle-bg.png";
+import activateGradient from "@/assets/activate-gradient.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
@@ -23,7 +23,7 @@ const BreathworkSession = () => {
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed gradient image from Rectangle.png */}
       <img
-        src={rectangleBg}
+        src={activateGradient}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"
@@ -35,14 +35,9 @@ const BreathworkSession = () => {
         {/* Generous top padding to clear status bar area */}
         <div className="pt-20 px-6 flex flex-col items-start text-left">
           {/* "Activate" pill badge with breathe icon */}
-          <div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/20 mb-5"
-            style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
-          >
-            <img src={activateIcon} alt="" className="w-4 h-4" />
-            <span className="text-white text-[11px] font-body font-normal tracking-wider uppercase">
-              Activate
-            </span>
+          <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full mb-5">
+            <img src={activateIcon} alt="" className="h-4 shrink-0" />
+            <span className="font-body font-normal text-white text-[16px]">Activate</span>
           </div>
 
           {/* Session title — Neue Haas Grotesk Display Pro 65 Medium, 36px, -1% tracking, 100% line-height */}

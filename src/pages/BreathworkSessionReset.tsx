@@ -6,7 +6,7 @@
  * Dark muted gradient background. Session: "Context Switch".
  */
 
-import resetBg from "@/assets/reset-bg.png";
+import resetGradient from "@/assets/reset-gradient.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
@@ -22,7 +22,7 @@ const BreathworkSessionReset = () => {
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed dark muted gradient */}
       <img
-        src={resetBg}
+        src={resetGradient}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"
@@ -33,14 +33,9 @@ const BreathworkSessionReset = () => {
         {/* Top section — badge, title, subtitle */}
         <div className="pt-20 px-6 flex flex-col items-start text-left">
           {/* "Reset" pill badge */}
-          <div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/20 mb-5"
-            style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
-          >
-            <img src={resetIcon} alt="" className="w-4 h-4" />
-            <span className="text-white text-[11px] font-body font-normal tracking-wider uppercase">
-              Reset
-            </span>
+          <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full mb-5">
+            <img src={resetIcon} alt="" className="h-4 shrink-0" />
+            <span className="font-body font-normal text-white text-[16px]">Reset</span>
           </div>
 
           {/* Session title — TODO: Swap font-family to 'Neue Haas Grotesk Display Pro' */}

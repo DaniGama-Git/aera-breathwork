@@ -32,12 +32,6 @@ const BottomNavBar = ({ activeTab = "Breathe" }: { activeTab?: string }) => {
         >
           <div className="relative">
             {tab.icon}
-            {tab.active && (
-              <span
-                className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
-                style={{ backgroundColor: "#E8734A" }}
-              />
-            )}
           </div>
           <span className="text-[10px] font-body font-normal">{tab.label}</span>
         </button>
