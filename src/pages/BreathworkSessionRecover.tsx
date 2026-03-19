@@ -37,7 +37,7 @@ const BreathworkSessionRecover = () => {
           {/* "Recover" pill badge with recover icon */}
           <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full mb-5">
             <img src={recoverIcon} alt="" className="h-4 shrink-0" />
-            <span className="font-body font-normal text-white text-[16px]">Recover</span>
+            <span className="font-display font-normal text-white text-[16px]">Recover</span>
           </div>
 
           {/* Session title — Neue Haas Grotesk Display Pro 65 Medium, 34px, -1% tracking, 100% line-height */}
