@@ -11,6 +11,7 @@ import rectangleBg from "@/assets/rectangle-bg.png";
 import playIcon from "@/assets/play-icon.png";
 import breatheIcon from "@/assets/breathe-icon.png";
 import homeIndicator from "@/assets/home-indicator.png";
+import waveform from "@/assets/waveform.png";
 import { Home, Search, FlaskConical } from "lucide-react";
 
 /**
@@ -126,9 +127,9 @@ const BreathworkSession = () => {
           </p>
         </div>
 
-        {/* Center — audio waveform visualization (full width, no padding) */}
+        {/* Center — audio waveform image asset (full width) */}
         <div className="flex-1 flex items-center justify-center overflow-hidden">
-          <AudioWaveform />
+          <img src={waveform} alt="Audio waveform" className="w-full h-auto object-cover" />
         </div>
 
         {/* Bottom section — speaker info, play button */}
