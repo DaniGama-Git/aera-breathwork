@@ -63,12 +63,7 @@ const HomeScreen = () => {
       <div className="relative z-10 flex flex-col min-h-screen px-6 pt-[clamp(40px,19vh,100px)] pb-6">
         {/* Logo */}
         <div className="pl-[clamp(0px,14vw,56px)]">
-          <span
-            className="font-display font-light text-white tracking-wide"
-            style={{ fontSize: "clamp(32px, 8vw, 40px)" }}
-          >
-            āera
-          </span>
+          <img src={aeraLogo} alt="āera" style={{ width: "clamp(88px, 27.5vw, 130px)", height: "auto" }} />
         </div>
 
         {/* Tagline */}
