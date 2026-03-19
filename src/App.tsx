@@ -10,6 +10,7 @@ import BreathworkSessionRecover from "./pages/BreathworkSessionRecover.tsx";
 import BreathworkSessionFocus from "./pages/BreathworkSessionFocus.tsx";
 import BreathworkSessionReset from "./pages/BreathworkSessionReset.tsx";
 import HrvDemo from "./pages/HrvDemo.tsx";
+import BreathworkMenu from "./pages/BreathworkMenu.tsx";
 
 const queryClient = new QueryClient();
 
