@@ -29,6 +29,7 @@ const App = () => (
           <Route path="/breathwork-session-focus" element={<BreathworkSessionFocus />} />
           {/* Screen 4: Breathwork Session Reset */}
           <Route path="/breathwork-session-reset" element={<BreathworkSessionReset />} />
+          <Route path="/hrv" element={<HrvDemo />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
