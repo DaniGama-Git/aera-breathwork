@@ -7,10 +7,11 @@
 
 import { Link } from "react-router-dom";
 import homeBg from "@/assets/home-bg.png";
-import activateIcon from "@/assets/activate-icon.png";
-import resetIcon from "@/assets/reset-icon.png";
-import focusIcon from "@/assets/focus-icon.png";
-import recoverIcon from "@/assets/recover-icon.png";
+import activateIcon from "@/assets/activate-icon.svg";
+import resetIcon from "@/assets/reset-icon.svg";
+import focusIcon from "@/assets/focus-icon.svg";
+import recoverIcon from "@/assets/recover-icon.svg";
+import aeraLogo from "@/assets/aera-logo.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 
 const recommendedCategory = (() => {
