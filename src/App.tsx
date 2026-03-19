@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound.tsx";
 import BreathworkSession from "./pages/BreathworkSession.tsx";
 import BreathworkSessionRecover from "./pages/BreathworkSessionRecover.tsx";
 import BreathworkSessionFocus from "./pages/BreathworkSessionFocus.tsx";
+import BreathworkSessionReset from "./pages/BreathworkSessionReset.tsx";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,8 @@ const App = () => (
           <Route path="/breathwork-session-recover" element={<BreathworkSessionRecover />} />
           {/* Screen 3: Breathwork Session Focus */}
           <Route path="/breathwork-session-focus" element={<BreathworkSessionFocus />} />
+          {/* Screen 4: Breathwork Session Reset */}
+          <Route path="/breathwork-session-reset" element={<BreathworkSessionReset />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
