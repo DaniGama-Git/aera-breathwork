@@ -10,16 +10,12 @@ import scienceIcon from "@/assets/science-nav-icon.svg";
 import homeIcon from "@/assets/home-nav-icon.svg";
 import searchIcon from "@/assets/search-nav-icon.svg";
 
-const BottomNavBar = () => {
+const BottomNavBar = ({ activeTab = "Breathe" }: { activeTab?: string }) => {
   const tabs = [
-    { label: "Home", icon: <img src={homeIcon} alt="Home" className="w-[18px] h-[18px]" />, active: false },
-    {
-      label: "Breathe",
-      icon: <img src={breatheIcon} alt="Breathe" className="w-[18px] h-[18px]" />,
-      active: true,
-    },
-    { label: "Search", icon: <img src={searchIcon} alt="Search" className="w-[18px] h-[18px]" />, active: false },
-    { label: "Science", icon: <img src={scienceIcon} alt="Science" className="w-[18px] h-[18px]" />, active: false },
+    { label: "Home", icon: <img src={homeIcon} alt="Home" className="w-[18px] h-[18px]" />, active: activeTab === "Home" },
+    { label: "Breathe", icon: <img src={breatheIcon} alt="Breathe" className="w-[18px] h-[18px]" />, active: activeTab === "Breathe" },
+    { label: "Search", icon: <img src={searchIcon} alt="Search" className="w-[18px] h-[18px]" />, active: activeTab === "Search" },
+    { label: "Science", icon: <img src={scienceIcon} alt="Science" className="w-[18px] h-[18px]" />, active: activeTab === "Science" },
   ];
 
   return (
