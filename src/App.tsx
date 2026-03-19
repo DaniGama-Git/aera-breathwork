@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import BreathworkSession from "./pages/BreathworkSession.tsx";
+import BreathworkSessionRecover from "./pages/BreathworkSessionRecover.tsx";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           {/* Screen 1: Breathwork Session Activate */}
           <Route path="/breathwork-session-activate" element={<BreathworkSession />} />
+          {/* Screen 2: Breathwork Session Recover */}
+          <Route path="/breathwork-session-recover" element={<BreathworkSessionRecover />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
