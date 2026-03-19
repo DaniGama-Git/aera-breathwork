@@ -7,7 +7,8 @@
 
 import breatheIcon from "@/assets/breathe-icon.png";
 import scienceIcon from "@/assets/science-icon.png";
-import { Home, Search } from "lucide-react";
+import homeIcon from "@/assets/home-icon.png";
+import { Search } from "lucide-react";
 
 const BottomNavBar = () => {
   const tabs = [
