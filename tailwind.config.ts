@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        'display': ['"Neue Haas Grotesk Display Round"', 'sans-serif'],
+        'body': ['"Neue Haas Grotesk Text Round"', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
