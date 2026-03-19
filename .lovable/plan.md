@@ -1,16 +1,33 @@
 
 
-## Plan: Update HomeScreen icons, logo, and pill alignment
+## Plan: Create HRV Demo Page
 
-### Changes
+Build a static demo page matching the uploaded HRV Tracking screenshot. All data is hardcoded for demo purposes.
 
-1. **Replace blurry PNG icons with crisp SVGs** — Copy the 4 uploaded SVG icons (`activate.svg`, `reset.svg`, `focus.svg`, `recover.svg`) to `src/assets/` and update imports in `HomeScreen.tsx` from `.png` to `.svg`.
+### New file: `src/pages/HrvDemo.tsx`
 
-2. **Add the āera logo SVG** — Copy `logo-1.svg` to `src/assets/aera-logo.svg` and replace the text-based logo (`<span>āera</span>`) with an `<img>` tag using the SVG.
+A light-themed page (white background) with the 430px max-width container, containing:
 
-3. **Shift top pill row to the right** — Increase the `pl-[clamp(0px,8vw,32px)]` on the Activate/Reset row so that the right edge of the "Reset" pill aligns with the center of the "Recover" pill below. Will increase the left padding (approximately `pl-[clamp(24px,14vw,56px)]`) and test visually.
+1. **Header** — Back arrow + "Your HRV" title centered
+2. **Stress Score card** — Icon, "Stress Score" / "Pay Attention" labels, circular arc gauge showing score of 32 (built with SVG arc, orange/brown gradient)
+3. **HRV Trend card** — Heart icon + "HRV" label, green "+5.6%" badge, "Post Session HRV" with "+12 ms" and large "74 ms" value. Below: an SVG chart with a smooth line curve over vertical bar visualization (stylized, not real data). Time range pills: Days (active), Month, 6 Months, Year
+4. **Bottom metrics row** — 3 small cards: Resting Heart Rate (74 ms, +12 ms), Heart Rate Variability (36 ms), Respiratory Rate (17.4 ms, +2.6% green badge)
+5. **BottomNavBar** — Reuse existing component but with "Science" tab active instead of "Breathe"
 
-### Files modified
-- `src/pages/HomeScreen.tsx` — update imports, logo, and pill row padding
-- `src/assets/` — 5 new SVG files copied in
+### HRV Chart visualization
+Use a simple inline SVG with a hand-drawn polyline for the smooth curve and rectangles for the vertical bars — no charting library needed for static demo data.
+
+### Circular gauge (Stress Score)
+SVG arc using `stroke-dasharray` / `stroke-dashoffset` on a circle element with a gradient from brown to orange.
+
+### Route update: `src/App.tsx`
+Add `/hrv` route pointing to the new `HrvDemo` page.
+
+### BottomNavBar update
+Add an optional `activeTab` prop so the HRV page can set "Science" as active. Default remains "Breathe" for existing screens.
+
+### Files
+- **Create** `src/pages/HrvDemo.tsx`
+- **Edit** `src/App.tsx` — add route
+- **Edit** `src/components/BottomNavBar.tsx` — add `activeTab` prop
 
