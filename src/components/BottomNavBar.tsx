@@ -43,7 +43,7 @@ const BottomNavBar = () => {
               />
             )}
           </div>
-          <span className="text-[10px] font-medium">{tab.label}</span>
+          <span className="text-[10px] font-body font-normal">{tab.label}</span>
         </button>
       ))}
     </div>

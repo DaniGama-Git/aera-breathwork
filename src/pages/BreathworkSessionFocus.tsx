@@ -40,7 +40,7 @@ const BreathworkSessionFocus = () => {
             style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
           >
             <img src={focusIcon} alt="" className="w-4 h-4" />
-            <span className="text-white text-[11px] font-semibold tracking-wider uppercase">
+            <span className="text-white text-[11px] font-body font-normal tracking-wider uppercase">
               Focus
             </span>
           </div>
@@ -48,14 +48,14 @@ const BreathworkSessionFocus = () => {
           {/* Session title — Neue Haas Grotesk Display Pro 65 Medium, 34px, -1% tracking, 100% line-height */}
           {/* TODO: Swap font-family to 'Neue Haas Grotesk Display Pro' once font files are uploaded */}
           <h1
-            className="text-white font-medium font-display mb-3"
+            className="text-white font-body font-medium mb-3"
             style={{ fontSize: "34px", lineHeight: "100%", letterSpacing: "-0.01em" }}
           >
             Pre Pitch
           </h1>
 
           {/* Session subtitle */}
-          <p className="text-white/60 text-[15px] leading-snug">
+          <p className="text-white/60 text-[15px] leading-snug font-body font-normal">
             Zeroing for high-stakes delivery.
           </p>
         </div>
@@ -79,10 +79,10 @@ const BreathworkSessionFocus = () => {
 
           {/* Speaker info row */}
           <div className="mb-5">
-            <span className="text-white font-semibold text-xl block mb-1">Jamie</span>
+            <span className="text-white font-body font-medium text-xl block mb-1">Jamie</span>
             <div className="flex items-center justify-between text-white/50 text-sm">
-              <span>Speaking...</span>
-              <span className="tabular-nums">00:03:00</span>
+              <span className="font-body font-normal">Speaking...</span>
+              <span className="font-display font-light tabular-nums">00:03:00</span>
             </div>
           </div>
         </div>
