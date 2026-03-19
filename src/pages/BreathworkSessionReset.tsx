@@ -38,7 +38,7 @@ const BreathworkSessionReset = () => {
             style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
           >
             <img src={resetIcon} alt="" className="w-4 h-4" />
-            <span className="text-white text-[11px] font-semibold tracking-wider uppercase">
+            <span className="text-white text-[11px] font-body font-normal tracking-wider uppercase">
               Reset
             </span>
           </div>
