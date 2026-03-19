@@ -33,14 +33,9 @@ const BreathworkSessionReset = () => {
         {/* Top section — badge, title, subtitle */}
         <div className="pt-20 px-6 flex flex-col items-start text-left">
           {/* "Reset" pill badge */}
-          <div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/20 mb-5"
-            style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
-          >
-            <img src={resetIcon} alt="" className="w-4 h-4" />
-            <span className="text-white text-[11px] font-body font-normal tracking-wider uppercase">
-              Reset
-            </span>
+          <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full mb-5">
+            <img src={resetIcon} alt="" className="h-4 shrink-0" />
+            <span className="font-body font-normal text-white text-[16px]">Reset</span>
           </div>
 
           {/* Session title — TODO: Swap font-family to 'Neue Haas Grotesk Display Pro' */}
