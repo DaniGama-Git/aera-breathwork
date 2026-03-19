@@ -12,7 +12,8 @@ import playIcon from "@/assets/play-icon.png";
 import breatheIcon from "@/assets/breathe-icon.png";
 import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
-import { Home, Search, FlaskConical } from "lucide-react";
+import scienceIcon from "@/assets/science-icon.png";
+import { Home, Search } from "lucide-react";
 
 /**
  * AudioWaveform — decorative animated waveform bars
