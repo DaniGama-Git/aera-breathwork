@@ -56,7 +56,7 @@ const BreathworkSessionReset = () => {
           </h1>
 
           {/* Session subtitle */}
-          <p className="text-white text-[15px] leading-snug font-body font-normal">
+          <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
             Clear mental residue between tasks.
           </p>
         </div>
