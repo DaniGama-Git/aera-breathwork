@@ -55,7 +55,7 @@ const BreathworkSessionFocus = () => {
           </h1>
 
           {/* Session subtitle */}
-          <p className="text-white/60 text-[15px] leading-snug">
+          <p className="text-white/60 text-[15px] leading-snug font-body font-normal">
             Zeroing for high-stakes delivery.
           </p>
         </div>
