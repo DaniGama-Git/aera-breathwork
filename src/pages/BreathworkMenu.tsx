@@ -20,8 +20,8 @@ const categories = [
 ];
 
 const favorites = [
-  { title: "Performance Reset", duration: "5 mins", to: "/breathwork-session-reset", color: "bg-[#D4C4B0]" },
-  { title: "Focus Activation", duration: "5 mins", to: "/breathwork-session-focus", color: "bg-[#C8A882]" },
+  { title: "Performance Reset", duration: "5 mins", to: "/breathwork-session-reset", image: categoryReset },
+  { title: "Focus Activation", duration: "5 mins", to: "/breathwork-session-focus", image: categoryFocus },
 ];
 
 const recommendations = [
