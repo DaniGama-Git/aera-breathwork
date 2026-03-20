@@ -56,21 +56,21 @@ const BreathworkMenu = () => {
         {/* Categories */}
         <div className="px-5 mt-2">
           <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Categories</h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 justify-items-center">
             {categories.map((cat) => (
               <Link
                 key={cat.label}
                 to={cat.to}
-                className="relative aspect-square rounded-2xl overflow-hidden no-underline group"
+                className="relative overflow-hidden no-underline group"
+                style={{ width: 166, height: 136, borderRadius: 18.11 }}
               >
                 <img
                   src={cat.image}
                   alt={cat.label}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-                {/* Subtle overlay for text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                <span className="absolute bottom-4 left-4 font-body font-medium text-[18px] text-white">
+                <span className="absolute inset-0 flex items-center justify-center font-body font-medium text-[18px] text-white">
                   {cat.label}
                 </span>
               </Link>
