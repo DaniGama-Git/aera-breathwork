@@ -11,6 +11,8 @@ import categoryFocus from "@/assets/category-focus.png";
 import categoryRecover from "@/assets/category-recover.jpg";
 import BottomNavBar from "@/components/BottomNavBar";
 import homeIndicator from "@/assets/home-indicator.png";
+import playIconSmall from "@/assets/play-icon-small.svg";
+import playIconLarge from "@/assets/play-icon-large.svg";
 
 const categories = [
   { label: "Activate", image: categoryActivate, to: "/breathwork-session-activate" },
@@ -56,7 +58,7 @@ const BreathworkMenu = () => {
         {/* Categories */}
         <div className="px-5 mt-2">
           <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Categories</h2>
-          <div className="grid grid-cols-2 gap-3 justify-items-center">
+          <div className="grid grid-cols-2 gap-3">
             {categories.map((cat) => (
               <Link
                 key={cat.label}
@@ -97,12 +99,9 @@ const BreathworkMenu = () => {
                     style={{ filter: "blur(29px)" }}
                   />
                   <div className="absolute inset-0 bg-[#111111]/[0.01]" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="10" stroke="#1D1D1C" strokeWidth="1.5" opacity="0.4" />
-                      <polygon points="10,8 16,12 10,16" fill="#1D1D1C" opacity="0.5" />
-                    </svg>
-                  </div>
+                   <div className="absolute inset-0 flex items-center justify-center">
+                     <img src={playIconSmall} alt="Play" width="16" height="17" />
+                   </div>
                 </div>
                 <div className="min-w-0">
                   <p className="font-body font-medium text-[14px] text-[#1D1D1C] leading-tight truncate">{fav.title}</p>
@@ -116,7 +115,7 @@ const BreathworkMenu = () => {
         {/* Recommendations */}
         <div className="px-5 mt-8">
           <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Recommendations</h2>
-          <div className="grid grid-cols-2 gap-3 justify-items-center">
+          <div className="grid grid-cols-2 gap-3">
             {recommendations.map((rec) => (
               <Link
                 key={rec.title}
@@ -132,11 +131,9 @@ const BreathworkMenu = () => {
                 <div className="absolute inset-0 bg-[#111111]/[0.01] backdrop-blur-[29px]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
                 {/* Play icon */}
-                <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-                    <polygon points="8,5 20,12 8,19" />
-                  </svg>
-                </div>
+                 <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                   <img src={playIconLarge} alt="Play" width="21" height="21" />
+                 </div>
                 <div className="absolute bottom-3 left-3">
                   <p className="font-body font-semibold text-[14px] text-white leading-tight">{rec.title}</p>
                   <p className="font-body font-normal text-[12px] text-white/70 mt-0.5">{rec.duration}</p>
