@@ -36,15 +36,14 @@ const categoryRoutes: Record<string, string> = {
   reset: "/breathwork-session-reset",
 };
 
-function Pill({ to, label, icon }: { to: string; label: string; icon: string }) {
+function Pill({ label, icon }: { label: string; icon: string }) {
   return (
-    <Link
-      to={to}
-      className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full no-underline whitespace-nowrap"
+    <div
+      className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full whitespace-nowrap"
     >
       <img src={icon} alt="" className="h-4 shrink-0" />
       <span className="font-body font-normal text-white text-[16px]">{label}</span>
-    </Link>
+    </div>
   );
 }
 
