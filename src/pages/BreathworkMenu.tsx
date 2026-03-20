@@ -116,18 +116,20 @@ const BreathworkMenu = () => {
         {/* Recommendations */}
         <div className="px-5 mt-8">
           <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Recommendations</h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 justify-items-center">
             {recommendations.map((rec) => (
               <Link
                 key={rec.title}
                 to={rec.to}
-                className="relative rounded-2xl overflow-hidden no-underline group aspect-[4/3]"
+                className="relative overflow-hidden no-underline group"
+                style={{ width: 168, height: 102, borderRadius: 12 }}
               >
                 <img
                   src={rec.image}
                   alt={rec.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
+                <div className="absolute inset-0 bg-[#111111]/[0.01] backdrop-blur-[29px]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
                 {/* Play icon */}
                 <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
