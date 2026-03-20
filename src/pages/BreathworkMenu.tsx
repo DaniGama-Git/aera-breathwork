@@ -88,12 +88,21 @@ const BreathworkMenu = () => {
                 to={fav.to}
                 className="flex items-center gap-3 no-underline"
               >
-                {/* Icon square */}
-                <div className={`w-14 h-14 rounded-xl ${fav.color} flex items-center justify-center flex-shrink-0`}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="#1D1D1C" strokeWidth="1.5" opacity="0.4" />
-                    <polygon points="10,8 16,12 10,16" fill="#1D1D1C" opacity="0.5" />
-                  </svg>
+                {/* Blurred image thumbnail */}
+                <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 relative">
+                  <img
+                    src={fav.image}
+                    alt={fav.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ filter: "blur(29px)" }}
+                  />
+                  <div className="absolute inset-0 bg-[#111111]/[0.01]" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" stroke="#1D1D1C" strokeWidth="1.5" opacity="0.4" />
+                      <polygon points="10,8 16,12 10,16" fill="#1D1D1C" opacity="0.5" />
+                    </svg>
+                  </div>
                 </div>
                 <div className="min-w-0">
                   <p className="font-body font-medium text-[14px] text-[#1D1D1C] leading-tight truncate">{fav.title}</p>
