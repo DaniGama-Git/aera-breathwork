@@ -11,6 +11,8 @@ import categoryFocus from "@/assets/category-focus.png";
 import categoryRecover from "@/assets/category-recover.jpg";
 import BottomNavBar from "@/components/BottomNavBar";
 import homeIndicator from "@/assets/home-indicator.png";
+import playIconSmall from "@/assets/play-icon-small.svg";
+import playIconLarge from "@/assets/play-icon-large.svg";
 
 const categories = [
   { label: "Activate", image: categoryActivate, to: "/breathwork-session-activate" },
