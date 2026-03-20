@@ -20,8 +20,8 @@ const categories = [
 ];
 
 const favorites = [
-  { title: "Performance Reset", duration: "5 mins", to: "/breathwork-session-reset", color: "bg-[#D4C4B0]" },
-  { title: "Focus Activation", duration: "5 mins", to: "/breathwork-session-focus", color: "bg-[#C8A882]" },
+  { title: "Performance Reset", duration: "5 mins", to: "/breathwork-session-reset", image: categoryReset },
+  { title: "Focus Activation", duration: "5 mins", to: "/breathwork-session-focus", image: categoryFocus },
 ];
 
 const recommendations = [
@@ -88,12 +88,21 @@ const BreathworkMenu = () => {
                 to={fav.to}
                 className="flex items-center gap-3 no-underline"
               >
-                {/* Icon square */}
-                <div className={`w-14 h-14 rounded-xl ${fav.color} flex items-center justify-center flex-shrink-0`}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="#1D1D1C" strokeWidth="1.5" opacity="0.4" />
-                    <polygon points="10,8 16,12 10,16" fill="#1D1D1C" opacity="0.5" />
-                  </svg>
+                {/* Blurred image thumbnail */}
+                <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 relative">
+                  <img
+                    src={fav.image}
+                    alt={fav.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ filter: "blur(29px)" }}
+                  />
+                  <div className="absolute inset-0 bg-[#111111]/[0.01]" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" stroke="#1D1D1C" strokeWidth="1.5" opacity="0.4" />
+                      <polygon points="10,8 16,12 10,16" fill="#1D1D1C" opacity="0.5" />
+                    </svg>
+                  </div>
                 </div>
                 <div className="min-w-0">
                   <p className="font-body font-medium text-[14px] text-[#1D1D1C] leading-tight truncate">{fav.title}</p>
@@ -107,18 +116,20 @@ const BreathworkMenu = () => {
         {/* Recommendations */}
         <div className="px-5 mt-8">
           <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Recommendations</h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 justify-items-center">
             {recommendations.map((rec) => (
               <Link
                 key={rec.title}
                 to={rec.to}
-                className="relative rounded-2xl overflow-hidden no-underline group aspect-[4/3]"
+                className="relative overflow-hidden no-underline group"
+                style={{ width: 168, height: 102, borderRadius: 12 }}
               >
                 <img
                   src={rec.image}
                   alt={rec.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
+                <div className="absolute inset-0 bg-[#111111]/[0.01] backdrop-blur-[29px]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
                 {/* Play icon */}
                 <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
