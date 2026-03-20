@@ -131,11 +131,9 @@ const BreathworkMenu = () => {
                 <div className="absolute inset-0 bg-[#111111]/[0.01] backdrop-blur-[29px]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
                 {/* Play icon */}
-                <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-                    <polygon points="8,5 20,12 8,19" />
-                  </svg>
-                </div>
+                 <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                   <img src={playIconLarge} alt="Play" width="21" height="21" />
+                 </div>
                 <div className="absolute bottom-3 left-3">
                   <p className="font-body font-semibold text-[14px] text-white leading-tight">{rec.title}</p>
                   <p className="font-body font-normal text-[12px] text-white/70 mt-0.5">{rec.duration}</p>
