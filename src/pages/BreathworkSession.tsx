@@ -72,6 +72,7 @@ const BreathworkSession = () => {
           <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
             Counter the afternoon energy dip.
           </p>
+          </p>
         </div>
 
         {/* Center — audio waveform image asset (full width, vertically centered) */}

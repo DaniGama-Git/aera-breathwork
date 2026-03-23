@@ -68,6 +68,7 @@ const BreathworkSessionReset = () => {
           <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
             Clear your head between tasks.
           </p>
+          </p>
         </div>
 
         {/* Center — audio waveform */}

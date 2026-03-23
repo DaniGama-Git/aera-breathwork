@@ -70,6 +70,7 @@ const BreathworkSessionRecover = () => {
           <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
             Wind down after an intense day.
           </p>
+          </p>
         </div>
 
         {/* Center — audio waveform image asset (full width, vertically centered) */}
