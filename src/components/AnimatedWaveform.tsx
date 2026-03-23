@@ -6,10 +6,11 @@ interface AnimatedWaveformProps {
   barCount?: number;
 }
 
-const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 80 }: AnimatedWaveformProps) => {
+const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 120 }: AnimatedWaveformProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
   const barsRef = useRef<number[]>(new Array(barCount).fill(0));
+  const timeRef = useRef<number>(0);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -25,29 +26,38 @@ const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 80 }: Animat
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, w, h);
 
+    timeRef.current += 0.02;
+
     const freqData = getFrequencyData();
     const bars = barsRef.current;
-    const gap = 1.5;
-    const barWidth = Math.max(1.5, (w - gap * (barCount - 1)) / barCount);
-    const minH = 4;
+    const gap = 0.8;
+    const barWidth = Math.max(1.2, (w - gap * (barCount - 1)) / barCount);
+    const minH = 3;
 
     for (let i = 0; i < barCount; i++) {
       let target = minH;
       if (freqData && isPlaying) {
-        // Map bar index to frequency bin
         const binIndex = Math.floor((i / barCount) * freqData.length);
-        target = minH + (freqData[binIndex] / 255) * (h * 0.85 - minH);
+        target = minH + (freqData[binIndex] / 255) * (h * 0.82 - minH);
       }
-      // Smooth interpolation
-      bars[i] += (target - bars[i]) * 0.25;
+      bars[i] += (target - bars[i]) * 0.22;
 
       const barH = bars[i];
       const x = i * (barWidth + gap);
       const y = (h - barH) / 2;
 
+      // Glossy shimmer gradient per bar
+      const grad = ctx.createLinearGradient(x, y, x, y + barH);
+      const shimmer = 0.35 + 0.15 * Math.sin(timeRef.current * 3 + i * 0.12);
+      const highlightPos = 0.15 + 0.1 * Math.sin(timeRef.current * 2 + i * 0.08);
+      grad.addColorStop(0, `rgba(255, 255, 255, ${shimmer * 0.6})`);
+      grad.addColorStop(Math.max(0, Math.min(1, highlightPos)), `rgba(255, 255, 255, ${shimmer + 0.2})`);
+      grad.addColorStop(0.5, `rgba(255, 255, 255, ${shimmer * 0.75})`);
+      grad.addColorStop(1, `rgba(255, 255, 255, ${shimmer * 0.4})`);
+
       ctx.beginPath();
       ctx.roundRect(x, y, barWidth, barH, barWidth / 2);
-      ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
+      ctx.fillStyle = grad;
       ctx.fill();
     }
 
