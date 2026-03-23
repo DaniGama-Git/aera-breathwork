@@ -1,33 +1,20 @@
 
 
-## Plan: Create HRV Demo Page
+## Update Breathwork Session Subtitles
 
-Build a static demo page matching the uploaded HRV Tracking screenshot. All data is hardcoded for demo purposes.
+Replace the current subtitles across all four session screens (both the visible `<p>` text and the `AddToCalendar` `sessionSubtitle` prop) with the new copy:
 
-### New file: `src/pages/HrvDemo.tsx`
+| Screen | Current Subtitle | New Subtitle |
+|--------|-----------------|--------------|
+| Focus | "Zeroing for high-stakes delivery." | "Calm down before you walk in." |
+| Reset | "Clear mental residue between tasks." | "Clear your head between tasks." |
+| Activate | "Rapid physiological up-regulation." | "Counter the afternoon energy dip." |
+| Recover | "Forced shutdown for deep restoration." | "Wind down after an intense day." |
 
-A light-themed page (white background) with the 430px max-width container, containing:
+### Files to edit (4 files, 2 lines each)
 
-1. **Header** — Back arrow + "Your HRV" title centered
-2. **Stress Score card** — Icon, "Stress Score" / "Pay Attention" labels, circular arc gauge showing score of 32 (built with SVG arc, orange/brown gradient)
-3. **HRV Trend card** — Heart icon + "HRV" label, green "+5.6%" badge, "Post Session HRV" with "+12 ms" and large "74 ms" value. Below: an SVG chart with a smooth line curve over vertical bar visualization (stylized, not real data). Time range pills: Days (active), Month, 6 Months, Year
-4. **Bottom metrics row** — 3 small cards: Resting Heart Rate (74 ms, +12 ms), Heart Rate Variability (36 ms), Respiratory Rate (17.4 ms, +2.6% green badge)
-5. **BottomNavBar** — Reuse existing component but with "Science" tab active instead of "Breathe"
-
-### HRV Chart visualization
-Use a simple inline SVG with a hand-drawn polyline for the smooth curve and rectangles for the vertical bars — no charting library needed for static demo data.
-
-### Circular gauge (Stress Score)
-SVG arc using `stroke-dasharray` / `stroke-dashoffset` on a circle element with a gradient from brown to orange.
-
-### Route update: `src/App.tsx`
-Add `/hrv` route pointing to the new `HrvDemo` page.
-
-### BottomNavBar update
-Add an optional `activeTab` prop so the HRV page can set "Science" as active. Default remains "Breathe" for existing screens.
-
-### Files
-- **Create** `src/pages/HrvDemo.tsx`
-- **Edit** `src/App.tsx` — add route
-- **Edit** `src/components/BottomNavBar.tsx` — add `activeTab` prop
+1. **`src/pages/BreathworkSessionFocus.tsx`** — lines 54 and 70
+2. **`src/pages/BreathworkSessionReset.tsx`** — lines 52 and 68
+3. **`src/pages/BreathworkSession.tsx`** (Activate) — lines 56 and 72
+4. **`src/pages/BreathworkSessionRecover.tsx`** — lines 54 and 70
 
