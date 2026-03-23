@@ -75,7 +75,7 @@ const BreathworkSession = () => {
 
         {/* Center — audio waveform image asset (full width, vertically centered) */}
         <div className="flex-1 flex items-center justify-center overflow-hidden px-0">
-          <AnimatedWaveform isPlaying={isPlaying} />
+          <AnimatedWaveform isPlaying={isPlaying} getFrequencyData={getFrequencyData} />
         </div>
 
         {/* Bottom section — speaker info + play button */}
