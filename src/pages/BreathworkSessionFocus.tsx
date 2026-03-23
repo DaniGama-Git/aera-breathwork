@@ -20,7 +20,7 @@ import { Pause } from "lucide-react";
 const BreathworkSessionFocus = () => {
   const { isPlaying, toggle, timeDisplay, getFrequencyData } = useAudioPlayer("/audio/pre-pitch-grounding.mp3");
   return (
-    <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
+    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed warm muted gradient image */}
       <img
         src={focusGradientBg}
