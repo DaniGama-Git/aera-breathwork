@@ -175,6 +175,7 @@ const Onboarding = () => {
           </button>
         )}
       </div>
+      </div>
     </div>
   );
 };
