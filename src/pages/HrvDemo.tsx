@@ -71,21 +71,34 @@ const HrvTrendCard = () => {
   const timePills = ["Days", "Month", "6 Months", "Year"];
   const activePill = "Days";
 
-  // Stylized bar + line chart data
-  const barHeights = [28, 42, 35, 55, 48, 62, 40, 70, 55, 45, 60, 50, 72, 58, 44, 65, 52, 38, 68, 74];
-  const chartW = 320;
-  const chartH = 100;
-  const barW = 6;
-  const gap = (chartW - barW * barHeights.length) / (barHeights.length - 1);
+  // Data points for the smooth wave
+  const dataPoints = [30, 45, 38, 65, 55, 72, 48, 78, 60, 50, 68, 55, 80, 65, 48, 70, 58, 42, 75, 82, 60, 50, 70, 62, 45, 58, 72, 68, 55, 78];
+  const chartW = 340;
+  const chartH = 110;
+  const barCount = dataPoints.length;
+  const barW = 3;
+  const totalGap = chartW - barW * barCount;
+  const gap = totalGap / (barCount - 1);
 
-  // Smooth curve points
-  const curvePoints = barHeights
-    .map((h, i) => {
-      const x = i * (barW + gap) + barW / 2;
-      const y = chartH - (h / 80) * chartH + 4;
-      return `${x},${y}`;
-    })
-    .join(" ");
+  // Generate smooth curve using catmull-rom to bezier
+  const points = dataPoints.map((h, i) => {
+    const x = i * (barW + gap) + barW / 2;
+    const y = chartH - (h / 90) * chartH + 6;
+    return { x, y };
+  });
+
+  let curvePath = `M ${points[0].x},${points[0].y}`;
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[Math.max(0, i - 1)];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = points[Math.min(points.length - 1, i + 2)];
+    const cp1x = p1.x + (p2.x - p0.x) / 6;
+    const cp1y = p1.y + (p2.y - p0.y) / 6;
+    const cp2x = p2.x - (p3.x - p1.x) / 6;
+    const cp2y = p2.y - (p3.y - p1.y) / 6;
+    curvePath += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2.x},${p2.y}`;
+  }
 
   return (
     <div className="bg-card rounded-2xl p-5 flex flex-col gap-4">
@@ -124,34 +137,34 @@ const HrvTrendCard = () => {
 
       {/* Chart */}
       <div className="overflow-hidden">
-        <svg viewBox={`0 0 ${chartW} ${chartH + 8}`} className="w-full" preserveAspectRatio="none">
+        <svg viewBox={`0 0 ${chartW} ${chartH + 10}`} className="w-full" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(18, 78%, 55%)" stopOpacity="0.7" />
-              <stop offset="100%" stopColor="hsl(18, 78%, 55%)" stopOpacity="0.2" />
+            <linearGradient id="barFade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="hsl(225, 45%, 60%)" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="hsl(225, 45%, 60%)" stopOpacity="0.05" />
             </linearGradient>
           </defs>
-          {/* Bars */}
-          {barHeights.map((h, i) => {
+          {/* Bars with fade */}
+          {dataPoints.map((h, i) => {
             const x = i * (barW + gap);
-            const barH = (h / 80) * chartH;
+            const barH = (h / 90) * chartH;
             return (
               <rect
                 key={i}
                 x={x}
-                y={chartH - barH + 4}
+                y={chartH - barH + 6}
                 width={barW}
-                height={barH}
-                rx={3}
-                fill="url(#barGrad)"
+                height={barH + 4}
+                rx={1.5}
+                fill="url(#barFade)"
               />
             );
           })}
-          {/* Smooth line */}
-          <polyline
-            points={curvePoints}
+          {/* Smooth curve line */}
+          <path
+            d={curvePath}
             fill="none"
-            stroke="hsl(18, 78%, 55%)"
+            stroke="hsl(225, 45%, 45%)"
             strokeWidth="2"
             strokeLinejoin="round"
             strokeLinecap="round"
