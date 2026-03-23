@@ -22,7 +22,12 @@ const Auth = () => {
 
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-8 max-w-[480px] mx-auto w-full">
         <img src={areaLogo} alt="Aera" className="h-8 mb-3" />
-        <p className="text-white/60 font-display text-sm mb-16">Breathwork for performance</p>
+        <p
+          className="font-body font-normal text-[#F7F6F5] mb-16"
+          style={{ fontSize: "clamp(16px, 4.3vw, 18px)", lineHeight: 1.35 }}
+        >
+          Emotional Performance Infrastructure
+        </p>
 
         <button
           onClick={handleGoogleSignIn}
