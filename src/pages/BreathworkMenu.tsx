@@ -4,7 +4,8 @@
  * Shows greeting, category cards, favorites, and recommendations.
  */
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import categoryActivate from "@/assets/category-activate.png";
 import categoryReset from "@/assets/category-reset.png";
 import categoryFocus from "@/assets/category-focus.png";
