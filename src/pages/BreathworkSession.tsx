@@ -39,7 +39,7 @@ const BreathworkSession = () => {
       />
 
       {/* Content overlay */}
-      <div className="relative z-10 flex flex-col min-h-screen">
+      <div className="relative z-10 flex flex-col min-h-screen max-w-[800px] mx-auto w-full">
         {/* Top section — badge, title, subtitle */}
         {/* Generous top padding to clear status bar area */}
         <div className="pt-20 px-6 flex flex-col items-start text-left">

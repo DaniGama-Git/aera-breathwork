@@ -119,7 +119,7 @@ const Onboarding = () => {
       <img src={homeBg} alt="" className="absolute inset-0 w-full h-full object-cover" aria-hidden="true" />
       <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
 
-      <div className="relative z-10 flex flex-col min-h-screen">
+      <div className="relative z-10 flex flex-col min-h-screen max-w-[560px] mx-auto w-full">
         {/* Header */}
         <div className="px-6 pt-14 pb-4 flex items-center justify-between">
           <img src={areaLogo} alt="Aera" className="h-6" />

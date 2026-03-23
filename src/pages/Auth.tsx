@@ -20,7 +20,7 @@ const Auth = () => {
       <img src={homeBg} alt="" className="absolute inset-0 w-full h-full object-cover" aria-hidden="true" />
       <div className="absolute inset-0 bg-black/30" aria-hidden="true" />
 
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-8">
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-8 max-w-[480px] mx-auto w-full">
         <img src={areaLogo} alt="Aera" className="h-8 mb-3" />
         <p className="text-white/60 font-display text-sm mb-16">Breathwork for performance</p>
 

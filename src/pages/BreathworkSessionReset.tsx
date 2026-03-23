@@ -38,7 +38,7 @@ const BreathworkSessionReset = () => {
       />
 
       {/* Content overlay */}
-      <div className="relative z-10 flex flex-col min-h-screen">
+      <div className="relative z-10 flex flex-col min-h-screen max-w-[800px] mx-auto w-full">
         {/* Top section — badge, title, subtitle */}
         <div className="pt-20 px-6 flex flex-col items-start text-left">
           <div className="flex items-center gap-3 mb-5">
