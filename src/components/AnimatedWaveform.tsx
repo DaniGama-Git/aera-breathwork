@@ -27,8 +27,8 @@ const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 80 }: Animat
 
     const freqData = getFrequencyData();
     const bars = barsRef.current;
-    const gap = 2;
-    const barWidth = (w - gap * (barCount - 1)) / barCount;
+    const gap = 1.5;
+    const barWidth = Math.max(1.5, (w - gap * (barCount - 1)) / barCount);
     const minH = 4;
 
     for (let i = 0; i < barCount; i++) {
