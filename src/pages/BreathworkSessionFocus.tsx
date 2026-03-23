@@ -13,6 +13,7 @@ import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
 import focusIcon from "@/assets/focus-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
+import AddToCalendar from "@/components/AddToCalendar";
 
 /**
  * BreathworkSessionFocus — Main screen component
@@ -43,10 +44,17 @@ const BreathworkSessionFocus = () => {
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Top section — badge, title, subtitle */}
         <div className="pt-20 px-6 flex flex-col items-start text-left">
-          {/* "Focus" pill badge with focus icon */}
-          <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full mb-5">
-            <img src={focusIcon} alt="" className="h-4 shrink-0" />
-            <span className="font-display font-normal text-white text-[16px]">Focus</span>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full">
+              <img src={focusIcon} alt="" className="h-4 shrink-0" />
+              <span className="font-display font-normal text-white text-[16px]">Focus</span>
+            </div>
+            <AddToCalendar
+              sessionTitle="Pre Pitch"
+              sessionSubtitle="Zeroing for high-stakes delivery."
+              sessionCategory="Focus"
+              durationMinutes={3}
+            />
           </div>
 
           {/* Session title — Neue Haas Grotesk Display Round 65 Medium */}

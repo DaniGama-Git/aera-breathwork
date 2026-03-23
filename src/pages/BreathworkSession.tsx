@@ -13,6 +13,7 @@ import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
 import activateIcon from "@/assets/activate-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
+import AddToCalendar from "@/components/AddToCalendar";
 /**
  * BreathworkSession — Main screen component
  * Route: /breathwork-session-activate
@@ -44,10 +45,18 @@ const BreathworkSession = () => {
         {/* Top section — badge, title, subtitle */}
         {/* Generous top padding to clear status bar area */}
         <div className="pt-20 px-6 flex flex-col items-start text-left">
-          {/* "Activate" pill badge with breathe icon */}
-          <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full mb-5">
-            <img src={activateIcon} alt="" className="h-4 shrink-0" />
-            <span className="font-display font-normal text-white text-[16px]">Activate</span>
+          {/* Badge row with calendar button */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full">
+              <img src={activateIcon} alt="" className="h-4 shrink-0" />
+              <span className="font-display font-normal text-white text-[16px]">Activate</span>
+            </div>
+            <AddToCalendar
+              sessionTitle="Mid-Day Energy Boost"
+              sessionSubtitle="Rapid physiological up-regulation."
+              sessionCategory="Activate"
+              durationMinutes={3}
+            />
           </div>
 
           {/* Session title — Neue Haas Grotesk Display Round 65 Medium */}

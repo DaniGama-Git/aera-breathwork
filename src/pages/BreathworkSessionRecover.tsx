@@ -13,6 +13,7 @@ import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
 import recoverIcon from "@/assets/recover-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
+import AddToCalendar from "@/components/AddToCalendar";
 
 /**
  * BreathworkSessionRecover — Main screen component
@@ -43,10 +44,17 @@ const BreathworkSessionRecover = () => {
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Top section — badge, title, subtitle */}
         <div className="pt-20 px-6 flex flex-col items-start text-left">
-          {/* "Recover" pill badge with recover icon */}
-          <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full mb-5">
-            <img src={recoverIcon} alt="" className="h-4 shrink-0" />
-            <span className="font-display font-normal text-white text-[16px]">Recover</span>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full">
+              <img src={recoverIcon} alt="" className="h-4 shrink-0" />
+              <span className="font-display font-normal text-white text-[16px]">Recover</span>
+            </div>
+            <AddToCalendar
+              sessionTitle="Evening Decompression"
+              sessionSubtitle="Forced shutdown for deep restoration."
+              sessionCategory="Recover"
+              durationMinutes={7}
+            />
           </div>
 
           {/* Session title — Neue Haas Grotesk Display Round 65 Medium */}
