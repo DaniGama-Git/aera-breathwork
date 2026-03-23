@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import areaLogo from "@/assets/aera-logo.svg";
+import homeBg from "@/assets/home-bg.png";
 
 const steps = [
   {
@@ -113,33 +114,35 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col bg-black">
-      {/* Header */}
-      <div className="px-6 pt-14 pb-4 flex items-center justify-between">
-        <img src={areaLogo} alt="Aera" className="h-6" />
-        <span className="text-white/30 font-display text-xs">
-          {currentStep + 1} / {steps.length}
-        </span>
-      </div>
+    <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
+      {/* Background from home screen */}
+      <img src={homeBg} alt="" className="absolute inset-0 w-full h-full object-cover" aria-hidden="true" />
+      <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
 
-      {/* Progress bar */}
-      <div className="px-6 mb-10">
-        <div className="h-[2px] bg-white/10 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-white rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
-          />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        {/* Header */}
+        <div className="px-6 pt-14 pb-4 flex items-center justify-between">
+          <img src={areaLogo} alt="Aera" className="h-6" />
+          <span className="text-white/30 font-display text-xs">
+            {currentStep + 1} / {steps.length}
+          </span>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="flex-1 px-6 flex flex-col">
-        <span className="text-white/40 font-display text-xs uppercase tracking-widest mb-3">
-          {step.subtitle}
-        </span>
-        <h1 className="text-white font-body font-semibold text-[28px] leading-tight mb-10">
-          {step.title}
-        </h1>
+        {/* Progress bar */}
+        <div className="px-6 mb-10">
+          <div className="h-[2px] bg-white/10 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-white rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 px-6 flex flex-col">
+          <h1 className="text-white font-body font-semibold text-[28px] leading-tight mb-10">
+            {step.title}
+          </h1>
 
         {/* Options */}
         <div className="flex flex-col gap-3">
@@ -171,6 +174,7 @@ const Onboarding = () => {
             Go back
           </button>
         )}
+      </div>
       </div>
     </div>
   );
