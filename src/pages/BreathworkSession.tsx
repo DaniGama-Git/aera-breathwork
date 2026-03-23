@@ -13,6 +13,7 @@ import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
 import activateIcon from "@/assets/activate-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
+import AddToCalendar from "@/components/AddToCalendar";
 /**
  * BreathworkSession — Main screen component
  * Route: /breathwork-session-activate

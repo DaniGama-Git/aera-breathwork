@@ -13,6 +13,7 @@ import homeIndicator from "@/assets/home-indicator.png";
 import waveform from "@/assets/waveform.png";
 import recoverIcon from "@/assets/recover-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
+import AddToCalendar from "@/components/AddToCalendar";
 
 /**
  * BreathworkSessionRecover — Main screen component
