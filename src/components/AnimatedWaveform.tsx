@@ -77,7 +77,7 @@ const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 120 }: Anima
   return (
     <canvas
       ref={canvasRef}
-      className="w-full h-32"
+      className="w-full h-48"
       style={{ display: "block" }}
     />
   );
