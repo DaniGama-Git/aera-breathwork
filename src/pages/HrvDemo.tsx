@@ -7,6 +7,7 @@
 
 import { useNavigate } from "react-router-dom";
 import BottomNavBar from "@/components/BottomNavBar";
+import homeIndicator from "@/assets/home-indicator.png";
 import hrvChart from "@/assets/hrv-chart.png";
 
 /* ─── Stress Score Gauge ─── */
