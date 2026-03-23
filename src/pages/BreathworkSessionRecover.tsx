@@ -82,9 +82,16 @@ const BreathworkSessionRecover = () => {
           <div className="flex justify-end mb-4">
             <button
               className="transition-transform hover:scale-105 active:scale-95"
-              aria-label="Play breathwork session"
+              aria-label={isPlaying ? "Pause" : "Play breathwork session"}
+              onClick={toggle}
             >
-              <img src={playButton} alt="Play" className="w-[72px] h-[72px]" />
+              {isPlaying ? (
+                <div className="w-[72px] h-[72px] rounded-full bg-white flex items-center justify-center">
+                  <Pause className="w-8 h-8 text-black fill-black" />
+                </div>
+              ) : (
+                <img src={playButton} alt="Play" className="w-[72px] h-[72px]" />
+              )}
             </button>
           </div>
 
