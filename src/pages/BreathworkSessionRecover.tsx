@@ -1,10 +1,5 @@
 /**
- * Screen 2 of 3: Breathwork Session — Recover
- * Route: /breathwork-session-recover
- *
- * This is the "Recover" breathwork session screen from the Āera app.
- * Cool blue/purple gradient background. Session: "Evening Decompression".
- * Reuses the same layout structure as the Activate screen.
+ * Breathwork Session — Recover
  */
 
 import recoverGradientBg from "@/assets/recover-gradient-v2.png";
@@ -14,6 +9,8 @@ import waveform from "@/assets/waveform.png";
 import recoverIcon from "@/assets/recover-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
+import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { Pause } from "lucide-react";
 
 /**
  * BreathworkSessionRecover — Main screen component
