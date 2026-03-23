@@ -30,7 +30,8 @@ const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 120 }: Anima
 
     const freqData = getFrequencyData();
     const bars = barsRef.current;
-    const totalWidth = w;
+    const overflow = 20;
+    const totalWidth = w + overflow * 2;
     const gap = 0.6;
     const barWidth = Math.max(1, (totalWidth - gap * (barCount - 1)) / barCount);
     const minH = 3;
@@ -44,7 +45,7 @@ const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 120 }: Anima
       bars[i] += (target - bars[i]) * 0.22;
 
       const barH = bars[i];
-      const x = i * (barWidth + gap);
+      const x = -overflow + i * (barWidth + gap);
       const y = (h - barH) / 2;
 
       // Glossy shimmer gradient with faded tips
