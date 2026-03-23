@@ -51,7 +51,7 @@ const BreathworkSessionFocus = () => {
             </div>
             <AddToCalendar
               sessionTitle="Pre Pitch"
-              sessionSubtitle="Zeroing for high-stakes delivery."
+              sessionSubtitle="Calm down before you walk in."
               sessionCategory="Focus"
               durationMinutes={3}
             />
