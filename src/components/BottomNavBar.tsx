@@ -29,7 +29,7 @@ const BottomNavBar = ({ activeTab }: { activeTab?: string }) => {
   return (
     <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-[430px] px-4 pb-2 pointer-events-none">
       <div
-        className="max-w-[430px] w-full mx-4 rounded-[32px] px-4 py-3 flex items-center justify-around pointer-events-auto"
+        className="w-full rounded-[32px] px-4 py-3 flex items-center justify-around pointer-events-auto"
         style={{ backgroundColor: "rgba(26, 26, 26, 0.92)" }}
       >
         {tabConfig.map((tab) => {
