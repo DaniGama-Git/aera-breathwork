@@ -1,9 +1,5 @@
 /**
- * Screen 4: Breathwork Session — Reset
- * Route: /breathwork-session-reset
- *
- * This is the "Reset" breathwork session screen from the Āera app.
- * Dark muted gradient background. Session: "Context Switch".
+ * Breathwork Session — Reset
  */
 
 import resetGradientBg from "@/assets/reset-gradient-v2.png";
@@ -13,6 +9,8 @@ import waveform from "@/assets/waveform.png";
 import resetIcon from "@/assets/reset-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
+import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { Pause } from "lucide-react";
 
 /**
  * BreathworkSessionReset — Main screen component
