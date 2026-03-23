@@ -121,9 +121,9 @@ const BreathworkMenu = () => {
         </div>
 
         {/* Recommendations */}
-        <div className="px-5 mt-8">
+        <div className="px-5 md:px-8 mt-8">
           <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Recommendations</h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {recommendations.map((rec) => (
               <Link
                 key={rec.title}
