@@ -53,7 +53,7 @@ const BreathworkSession = () => {
             </div>
             <AddToCalendar
               sessionTitle="Mid-Day Energy Boost"
-              sessionSubtitle="Rapid physiological up-regulation."
+              sessionSubtitle="Counter the afternoon energy dip."
               sessionCategory="Activate"
               durationMinutes={3}
             />
