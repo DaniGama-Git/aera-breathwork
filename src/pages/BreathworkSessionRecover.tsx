@@ -18,7 +18,7 @@ import { Pause } from "lucide-react";
  * Screen 2 of 3 in the breathwork session flow.
  */
 const BreathworkSessionRecover = () => {
-  const { isPlaying, toggle, timeDisplay } = useAudioPlayer("/audio/post-work-unwind-ritual.mp3");
+  const { isPlaying, toggle, timeDisplay, getFrequencyData } = useAudioPlayer("/audio/post-work-unwind-ritual.mp3");
   return (
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed cool gradient image */}
