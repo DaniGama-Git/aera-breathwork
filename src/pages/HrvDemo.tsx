@@ -8,6 +8,7 @@
 import { useNavigate } from "react-router-dom";
 import BottomNavBar from "@/components/BottomNavBar";
 import homeIndicator from "@/assets/home-indicator.png";
+import hrvChart from "@/assets/hrv-chart.png";
 
 /* ─── Stress Score Gauge ─── */
 const StressScoreGauge = () => {
@@ -137,39 +138,7 @@ const HrvTrendCard = () => {
 
       {/* Chart */}
       <div className="overflow-hidden">
-        <svg viewBox={`0 0 ${chartW} ${chartH + 10}`} className="w-full" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="barFade" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(225, 45%, 60%)" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="hsl(225, 45%, 60%)" stopOpacity="0.05" />
-            </linearGradient>
-          </defs>
-          {/* Bars with fade */}
-          {dataPoints.map((h, i) => {
-            const x = i * (barW + gap);
-            const barH = (h / 90) * chartH;
-            return (
-              <rect
-                key={i}
-                x={x}
-                y={chartH - barH + 6}
-                width={barW}
-                height={barH + 4}
-                rx={1.5}
-                fill="url(#barFade)"
-              />
-            );
-          })}
-          {/* Smooth curve line */}
-          <path
-            d={curvePath}
-            fill="none"
-            stroke="hsl(225, 45%, 45%)"
-            strokeWidth="2"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-          />
-        </svg>
+        <img src={hrvChart} alt="HRV trend chart" className="w-full" />
       </div>
 
       {/* Time pills */}
