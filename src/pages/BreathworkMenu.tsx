@@ -48,7 +48,7 @@ const BreathworkMenu = () => {
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto pb-28">
         {/* Header */}
-        <div className="px-5 pt-16 pb-4 flex items-start justify-between">
+        <div className="px-5 pt-10 pb-4 flex items-start justify-between">
           <div>
             <p className="font-body font-normal text-[16px] text-[#BDBDBD]">{getGreeting()}</p>
             <h1 className="font-body font-semibold text-[32px] leading-[100%] text-[#1D1D1C] mt-1">Chrissy</h1>
