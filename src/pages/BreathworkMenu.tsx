@@ -44,7 +44,7 @@ const BreathworkMenu = () => {
   const { signOut } = useAuth();
 
   return (
-    <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col bg-[#F7F6F5]">
+    <div className="relative w-full mx-auto min-h-screen flex flex-col bg-[#F7F6F5]">
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto pb-28">
         {/* Header */}
