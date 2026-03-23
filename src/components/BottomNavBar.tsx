@@ -12,7 +12,7 @@ import searchIcon from "@/assets/search-nav-icon.svg";
 const tabConfig = [
   { label: "Home", icon: homeIcon, path: "/" },
   { label: "Breathe", icon: breatheIcon, path: "/menu" },
-  { label: "Search", icon: searchIcon, path: "/search" },
+  { label: "Search", icon: searchIcon, path: "/" },
   { label: "Science", icon: scienceIcon, path: "/hrv" },
 ];
 
