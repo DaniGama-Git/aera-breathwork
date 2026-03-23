@@ -30,15 +30,16 @@ const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 120 }: Anima
 
     const freqData = getFrequencyData();
     const bars = barsRef.current;
-    const gap = 0.8;
-    const barWidth = Math.max(1.2, (w - gap * (barCount - 1)) / barCount);
+    const totalWidth = w;
+    const gap = 0.6;
+    const barWidth = Math.max(1, (totalWidth - gap * (barCount - 1)) / barCount);
     const minH = 3;
 
     for (let i = 0; i < barCount; i++) {
       let target = minH;
       if (freqData && isPlaying) {
         const binIndex = Math.floor((i / barCount) * freqData.length);
-        target = minH + (freqData[binIndex] / 255) * (h * 0.82 - minH);
+        target = minH + (freqData[binIndex] / 255) * (h * 0.95 - minH);
       }
       bars[i] += (target - bars[i]) * 0.22;
 
@@ -46,17 +47,21 @@ const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 120 }: Anima
       const x = i * (barWidth + gap);
       const y = (h - barH) / 2;
 
-      // Glossy shimmer gradient per bar
+      // Glossy shimmer gradient with faded tips
       const grad = ctx.createLinearGradient(x, y, x, y + barH);
       const shimmer = 0.35 + 0.15 * Math.sin(timeRef.current * 3 + i * 0.12);
       const highlightPos = 0.15 + 0.1 * Math.sin(timeRef.current * 2 + i * 0.08);
-      grad.addColorStop(0, `rgba(255, 255, 255, ${shimmer * 0.6})`);
-      grad.addColorStop(Math.max(0, Math.min(1, highlightPos)), `rgba(255, 255, 255, ${shimmer + 0.2})`);
+      grad.addColorStop(0, `rgba(255, 255, 255, ${shimmer * 0.15})`);
+      grad.addColorStop(0.08, `rgba(255, 255, 255, ${shimmer * 0.6})`);
+      grad.addColorStop(Math.max(0.1, Math.min(0.9, highlightPos)), `rgba(255, 255, 255, ${shimmer + 0.2})`);
       grad.addColorStop(0.5, `rgba(255, 255, 255, ${shimmer * 0.75})`);
-      grad.addColorStop(1, `rgba(255, 255, 255, ${shimmer * 0.4})`);
+      grad.addColorStop(0.92, `rgba(255, 255, 255, ${shimmer * 0.6})`);
+      grad.addColorStop(1, `rgba(255, 255, 255, ${shimmer * 0.15})`);
 
+      // Sharp pointed tips (minimal rounding)
+      const radius = barWidth * 0.15;
       ctx.beginPath();
-      ctx.roundRect(x, y, barWidth, barH, barWidth / 2);
+      ctx.roundRect(x, y, barWidth, barH, radius);
       ctx.fillStyle = grad;
       ctx.fill();
     }
