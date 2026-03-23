@@ -17,7 +17,7 @@ import { Pause } from "lucide-react";
  * Route: /breathwork-session-reset
  */
 const BreathworkSessionReset = () => {
-  const { isPlaying, toggle, timeDisplay } = useAudioPlayer("/audio/back-to-back-recharge.mp3");
+  const { isPlaying, toggle, timeDisplay, getFrequencyData } = useAudioPlayer("/audio/back-to-back-recharge.mp3");
   return (
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed dark muted gradient */}
@@ -72,7 +72,7 @@ const BreathworkSessionReset = () => {
 
         {/* Center — audio waveform */}
         <div className="flex-1 flex items-center justify-center overflow-hidden px-0">
-          <AnimatedWaveform isPlaying={isPlaying} />
+          <AnimatedWaveform isPlaying={isPlaying} getFrequencyData={getFrequencyData} />
         </div>
 
         {/* Bottom section — speaker info + play button */}
