@@ -14,7 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      onboarding_answers: {
+        Row: {
+          created_at: string
+          id: string
+          outcome_anchor: string
+          performance_timing: string
+          pressure_pattern: string
+          role_context: string
+          stress_response: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          outcome_anchor: string
+          performance_timing: string
+          pressure_pattern: string
+          role_context: string
+          stress_response: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          outcome_anchor?: string
+          performance_timing?: string
+          pressure_pattern?: string
+          role_context?: string
+          stress_response?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          onboarding_completed: boolean
+          recommended_session: string | null
+          recommended_time: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          onboarding_completed?: boolean
+          recommended_session?: string | null
+          recommended_time?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          onboarding_completed?: boolean
+          recommended_session?: string | null
+          recommended_time?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
