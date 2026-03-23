@@ -40,6 +40,8 @@ function getGreeting() {
 }
 
 const BreathworkMenu = () => {
+  const { signOut } = useAuth();
+
   return (
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col bg-[#F7F6F5]">
       {/* Scrollable content */}
@@ -50,10 +52,14 @@ const BreathworkMenu = () => {
             <p className="font-body font-normal text-[16px] text-[#BDBDBD]">{getGreeting()}</p>
             <h1 className="font-body font-semibold text-[32px] leading-[100%] text-[#1D1D1C] mt-1">Chrissy</h1>
           </div>
-          {/* Avatar */}
-          <div className="w-12 h-12 rounded-full bg-[#C8B8A8] overflow-hidden mt-1 flex-shrink-0">
+          {/* Avatar - click to logout */}
+          <button
+            onClick={signOut}
+            className="w-12 h-12 rounded-full bg-[#C8B8A8] overflow-hidden mt-1 flex-shrink-0 border-0 cursor-pointer"
+            title="Sign out"
+          >
             <div className="w-full h-full bg-gradient-to-br from-[#C8B8A8] to-[#A89888]" />
-          </div>
+          </button>
         </div>
 
         {/* Categories */}
