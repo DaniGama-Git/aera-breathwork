@@ -200,7 +200,7 @@ const HrvDemo = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col gap-3 px-4 pb-4 overflow-y-auto">
+      <div className="flex-1 flex flex-col gap-3 px-4 md:px-8 pb-4 overflow-y-auto max-w-[960px] mx-auto w-full">
         <StressScoreGauge />
         <HrvTrendCard />
 

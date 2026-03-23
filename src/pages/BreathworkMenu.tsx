@@ -153,7 +153,7 @@ const BreathworkMenu = () => {
       </div>
 
       {/* Fixed bottom nav */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-20">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] md:max-w-[600px] z-20">
         <BottomNavBar activeTab="Breathe" />
         <div className="flex justify-center pb-2 pt-1 bg-[#F7F6F5]">
           <img src={homeIndicator} alt="" className="h-[5px] w-36 opacity-40" aria-hidden="true" />
