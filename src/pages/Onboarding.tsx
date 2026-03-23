@@ -114,7 +114,7 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
+    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background from home screen */}
       <img src={homeBg} alt="" className="absolute inset-0 w-full h-full object-cover" aria-hidden="true" />
       <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
