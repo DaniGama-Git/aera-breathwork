@@ -6,7 +6,7 @@ interface AnimatedWaveformProps {
   barCount?: number;
 }
 
-const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 48 }: AnimatedWaveformProps) => {
+const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 80 }: AnimatedWaveformProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
   const barsRef = useRef<number[]>(new Array(barCount).fill(0));
@@ -27,8 +27,8 @@ const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 48 }: Animat
 
     const freqData = getFrequencyData();
     const bars = barsRef.current;
-    const gap = 2;
-    const barWidth = (w - gap * (barCount - 1)) / barCount;
+    const gap = 1.5;
+    const barWidth = Math.max(1.5, (w - gap * (barCount - 1)) / barCount);
     const minH = 4;
 
     for (let i = 0; i < barCount; i++) {
