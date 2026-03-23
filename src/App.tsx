@@ -32,17 +32,36 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
 
   useEffect(() => {
-    if (!user) { setOnboardingChecked(true); return; }
+    let isActive = true;
+
+    if (!user) {
+      setNeedsOnboarding(false);
+      setOnboardingChecked(true);
+      return;
+    }
+
+    setOnboardingChecked(false);
 
     supabase
       .from("profiles")
       .select("onboarding_completed")
       .eq("user_id", user.id)
       .maybeSingle()
-      .then(({ data }) => {
-        setNeedsOnboarding(!data?.onboarding_completed);
+      .then(({ data, error }) => {
+        if (!isActive) return;
+
+        if (error) {
+          setNeedsOnboarding(false);
+        } else {
+          setNeedsOnboarding(!data?.onboarding_completed);
+        }
+
         setOnboardingChecked(true);
       });
+
+    return () => {
+      isActive = false;
+    };
   }, [user, location.pathname]);
 
   if (loading || !onboardingChecked) return <LoadingSpinner />;
