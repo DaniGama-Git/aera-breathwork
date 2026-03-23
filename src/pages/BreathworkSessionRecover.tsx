@@ -5,7 +5,7 @@
 import recoverGradientBg from "@/assets/recover-gradient-v2.png";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
-import waveform from "@/assets/waveform.png";
+import AnimatedWaveform from "@/components/AnimatedWaveform";
 import recoverIcon from "@/assets/recover-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
@@ -73,7 +73,7 @@ const BreathworkSessionRecover = () => {
 
         {/* Center — audio waveform image asset (full width, vertically centered) */}
         <div className="flex-1 flex items-center justify-center overflow-hidden px-0">
-          <img src={waveform} alt="Audio waveform" className="w-full h-auto object-cover" />
+          <AnimatedWaveform isPlaying={isPlaying} />
         </div>
 
         {/* Bottom section — speaker info + play button */}
