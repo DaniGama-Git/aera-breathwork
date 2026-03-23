@@ -20,7 +20,7 @@ import { Pause } from "lucide-react";
 const BreathworkSessionRecover = () => {
   const { isPlaying, toggle, timeDisplay, getFrequencyData } = useAudioPlayer("/audio/post-work-unwind-ritual.mp3");
   return (
-    <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
+    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed cool gradient image */}
       <img
         src={recoverGradientBg}
