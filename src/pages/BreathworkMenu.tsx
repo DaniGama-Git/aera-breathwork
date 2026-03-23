@@ -6,6 +6,7 @@
 
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import avatarChrissy from "@/assets/avatar-chrissy.png";
 import categoryActivate from "@/assets/category-activate.png";
 import categoryReset from "@/assets/category-reset.png";
 import categoryFocus from "@/assets/category-focus.png";
@@ -55,10 +56,10 @@ const BreathworkMenu = () => {
           {/* Avatar - click to logout */}
           <button
             onClick={signOut}
-            className="w-12 h-12 rounded-full bg-[#C8B8A8] overflow-hidden mt-1 flex-shrink-0 border-0 cursor-pointer"
+            className="w-12 h-12 rounded-full overflow-hidden mt-1 flex-shrink-0 border-0 cursor-pointer p-0"
             title="Sign out"
           >
-            <div className="w-full h-full bg-gradient-to-br from-[#C8B8A8] to-[#A89888]" />
+            <img src={avatarChrissy} alt="Avatar" className="w-full h-full object-cover" />
           </button>
         </div>
 
