@@ -1,10 +1,5 @@
 /**
- * Screen 3 of 3: Breathwork Session — Focus
- * Route: /breathwork-session-focus
- *
- * This is the "Focus" breathwork session screen from the Āera app.
- * Warm muted gradient background. Session: "Pre Pitch".
- * Reuses the same layout structure as Activate and Recover screens.
+ * Breathwork Session — Focus
  */
 
 import focusGradientBg from "@/assets/focus-gradient-v2.png";
@@ -14,6 +9,8 @@ import waveform from "@/assets/waveform.png";
 import focusIcon from "@/assets/focus-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
+import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { Pause } from "lucide-react";
 
 /**
  * BreathworkSessionFocus — Main screen component
