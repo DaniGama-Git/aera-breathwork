@@ -99,8 +99,8 @@ const BreathworkSessionRecover = () => {
           <div className="mb-5">
             <span className="text-white font-body font-semibold text-xl block mb-1">Jamie</span>
             <div className="flex items-center justify-between text-white/50 text-sm">
-              <span className="font-body font-normal">Speaking...</span>
-              <span className="font-display font-light tabular-nums">00:07:00</span>
+              <span className="font-body font-normal">{isPlaying ? "Speaking..." : "Tap play to begin"}</span>
+              <span className="font-display font-light tabular-nums">{timeDisplay}</span>
             </div>
           </div>
         </div>
