@@ -46,7 +46,7 @@ const BreathworkMenu = () => {
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col bg-[#F7F6F5]">
       {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto pb-28">
+      <div className="flex-1 overflow-y-auto pb-28 max-w-[960px] mx-auto w-full">
         {/* Header */}
         <div className="px-5 pt-10 pb-4 flex items-start justify-between">
           <div>
