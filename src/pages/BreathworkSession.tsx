@@ -53,7 +53,7 @@ const BreathworkSession = () => {
             </div>
             <AddToCalendar
               sessionTitle="Mid-Day Energy Boost"
-              sessionSubtitle="Rapid physiological up-regulation."
+              sessionSubtitle="Counter the afternoon energy dip."
               sessionCategory="Activate"
               durationMinutes={3}
             />
@@ -69,7 +69,9 @@ const BreathworkSession = () => {
 
           {/* Session subtitle */}
           <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
-            Rapid physiological up-regulation.
+          <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
+            Counter the afternoon energy dip.
+          </p>
           </p>
         </div>
 

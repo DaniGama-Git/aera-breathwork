@@ -49,7 +49,7 @@ const BreathworkSessionReset = () => {
             </div>
             <AddToCalendar
               sessionTitle="Context Switch"
-              sessionSubtitle="Clear mental residue between tasks."
+              sessionSubtitle="Clear your head between tasks."
               sessionCategory="Reset"
               durationMinutes={3}
             />
@@ -65,7 +65,9 @@ const BreathworkSessionReset = () => {
 
           {/* Session subtitle */}
           <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
-            Clear mental residue between tasks.
+          <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
+            Clear your head between tasks.
+          </p>
           </p>
         </div>
 

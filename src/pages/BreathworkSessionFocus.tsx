@@ -51,7 +51,7 @@ const BreathworkSessionFocus = () => {
             </div>
             <AddToCalendar
               sessionTitle="Pre Pitch"
-              sessionSubtitle="Zeroing for high-stakes delivery."
+              sessionSubtitle="Calm down before you walk in."
               sessionCategory="Focus"
               durationMinutes={3}
             />
@@ -67,7 +67,9 @@ const BreathworkSessionFocus = () => {
 
           {/* Session subtitle */}
           <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
-            Zeroing for high-stakes delivery.
+          <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
+            Calm down before you walk in.
+          </p>
           </p>
         </div>
 
