@@ -98,7 +98,7 @@ const HomeScreen = () => {
 
         {/* CTA Button */}
         <Link
-          to={categoryRoutes[recommendedCategory]}
+          to="/menu"
           className="flex items-center justify-center h-[clamp(48px,6.5vh,58px)] bg-[#F7F6F5] rounded-full font-body font-normal text-[#1D1D1C] no-underline"
           style={{ fontSize: "clamp(15px, 4vw, 17px)", letterSpacing: "0.02em" }}
         >
