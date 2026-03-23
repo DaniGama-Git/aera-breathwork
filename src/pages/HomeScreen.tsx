@@ -49,7 +49,7 @@ function Pill({ label, icon }: { label: string; icon: string }) {
 
 const HomeScreen = () => {
   return (
-    <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
+    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background */}
       <img
         src={homeBg}
@@ -59,7 +59,7 @@ const HomeScreen = () => {
       />
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col min-h-screen px-6 pt-[clamp(40px,19vh,100px)] pb-6">
+      <div className="relative z-10 flex flex-col min-h-screen px-6 md:px-12 lg:px-20 pt-[clamp(40px,19vh,100px)] pb-6 max-w-[800px] mx-auto w-full">
         {/* Logo */}
         <div className="pl-[clamp(0px,14vw,56px)]">
           <img src={aeraLogo} alt="āera" style={{ width: "clamp(88px, 27.5vw, 130px)", height: "auto" }} />

@@ -188,7 +188,7 @@ const HrvDemo = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col" style={{ backgroundColor: "hsl(30, 15%, 95%)" }}>
+    <div className="relative w-full mx-auto min-h-screen flex flex-col" style={{ backgroundColor: "hsl(30, 15%, 95%)" }}>
       {/* Header */}
       <div className="flex items-center px-5 pt-14 pb-4">
         <button onClick={() => navigate(-1)} className="p-1 -ml-1">
@@ -200,7 +200,7 @@ const HrvDemo = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col gap-3 px-4 pb-4 overflow-y-auto">
+      <div className="flex-1 flex flex-col gap-3 px-4 md:px-8 pb-4 overflow-y-auto max-w-[960px] mx-auto w-full">
         <StressScoreGauge />
         <HrvTrendCard />
 

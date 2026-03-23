@@ -19,7 +19,7 @@ import { Pause } from "lucide-react";
 const BreathworkSessionReset = () => {
   const { isPlaying, toggle, timeDisplay, getFrequencyData } = useAudioPlayer("/audio/back-to-back-recharge.mp3");
   return (
-    <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
+    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed dark muted gradient */}
       <img
         src={resetGradientBg}
@@ -38,7 +38,7 @@ const BreathworkSessionReset = () => {
       />
 
       {/* Content overlay */}
-      <div className="relative z-10 flex flex-col min-h-screen">
+      <div className="relative z-10 flex flex-col min-h-screen max-w-[800px] mx-auto w-full">
         {/* Top section — badge, title, subtitle */}
         <div className="pt-20 px-6 flex flex-col items-start text-left">
           <div className="flex items-center gap-3 mb-5">
