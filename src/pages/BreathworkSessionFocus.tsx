@@ -18,6 +18,7 @@ import { Pause } from "lucide-react";
  * Screen 3 of 3 in the breathwork session flow.
  */
 const BreathworkSessionFocus = () => {
+  const { isPlaying, toggle, timeDisplay } = useAudioPlayer("/audio/pre-pitch-grounding.mp3");
   return (
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed warm muted gradient image */}
