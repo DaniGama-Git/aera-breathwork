@@ -9,10 +9,18 @@ import scienceIcon from "@/assets/science-nav-icon.svg";
 import homeIcon from "@/assets/home-nav-icon.svg";
 import searchIcon from "@/assets/search-nav-icon.svg";
 
+const getRecommendedRoute = () => {
+  const h = new Date().getHours();
+  if (h >= 5 && h < 11) return "/breathwork-session-activate";
+  if (h >= 11 && h < 17) return "/breathwork-session-focus";
+  if (h >= 17 && h < 21) return "/breathwork-session-recover";
+  return "/breathwork-session-reset";
+};
+
 const tabConfig = [
   { label: "Home", icon: homeIcon, paths: ["/"] },
-  { label: "Breathe", icon: breatheIcon, paths: ["/menu", "/breathwork-session"] },
-  { label: "Search", icon: searchIcon, paths: [] },
+  { label: "Breathe", icon: breatheIcon, paths: ["/breathwork-session"] },
+  { label: "Search", icon: searchIcon, paths: ["/menu"] },
   { label: "Science", icon: scienceIcon, paths: ["/hrv"] },
 ];
 
@@ -21,8 +29,9 @@ const BottomNavBar = ({ activeTab }: { activeTab?: string }) => {
   const location = useLocation();
 
   const navigateTo = (label: string) => {
-    if (label === "Home" || label === "Search") navigate("/");
-    else if (label === "Breathe") navigate("/menu");
+    if (label === "Home") navigate("/");
+    else if (label === "Breathe") navigate(getRecommendedRoute());
+    else if (label === "Search") navigate("/menu");
     else if (label === "Science") navigate("/hrv");
   };
 
