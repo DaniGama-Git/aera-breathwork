@@ -51,7 +51,7 @@ const BreathworkSessionRecover = () => {
             </div>
             <AddToCalendar
               sessionTitle="Evening Decompression"
-              sessionSubtitle="Forced shutdown for deep restoration."
+              sessionSubtitle="Wind down after an intense day."
               sessionCategory="Recover"
               durationMinutes={7}
             />
