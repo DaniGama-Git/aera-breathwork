@@ -19,7 +19,7 @@ import { Pause } from "lucide-react";
 const BreathworkSession = () => {
   const { isPlaying, toggle, timeDisplay, getFrequencyData } = useAudioPlayer("/audio/morning-reset-micro-practice.mp3");
   return (
-    <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
+    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed category gradient image */}
       <img
         src={activateGradientBg}
