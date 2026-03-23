@@ -1,10 +1,5 @@
 /**
- * Screen 1 of 3: Breathwork Session — Activate
- * Route: /breathwork-session-activate
- *
- * This is the "Activate" breathwork session screen from the Āera app.
- * It displays the session title, audio waveform visualization,
- * speaker info with timer, play controls, and a bottom navigation bar.
+ * Breathwork Session — Activate
  */
 
 import activateGradientBg from "@/assets/activate-gradient-v2.png";
@@ -14,6 +9,8 @@ import waveform from "@/assets/waveform.png";
 import activateIcon from "@/assets/activate-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
+import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { Pause } from "lucide-react";
 /**
  * BreathworkSession — Main screen component
  * Route: /breathwork-session-activate
