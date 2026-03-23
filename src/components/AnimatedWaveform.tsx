@@ -30,7 +30,8 @@ const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 120 }: Anima
 
     const freqData = getFrequencyData();
     const bars = barsRef.current;
-    const totalWidth = w;
+    const overflow = 20;
+    const totalWidth = w + overflow * 2;
     const gap = 0.6;
     const barWidth = Math.max(1, (totalWidth - gap * (barCount - 1)) / barCount);
     const minH = 3;
