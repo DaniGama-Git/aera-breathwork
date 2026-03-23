@@ -1,8 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useAuth } from "@/hooks/useAuth";
 import HomeScreen from "./pages/HomeScreen.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import BreathworkSession from "./pages/BreathworkSession.tsx";
@@ -11,8 +12,40 @@ import BreathworkSessionFocus from "./pages/BreathworkSessionFocus.tsx";
 import BreathworkSessionReset from "./pages/BreathworkSessionReset.tsx";
 import HrvDemo from "./pages/HrvDemo.tsx";
 import BreathworkMenu from "./pages/BreathworkMenu.tsx";
+import Auth from "./pages/Auth.tsx";
+import Onboarding from "./pages/Onboarding.tsx";
 
 const queryClient = new QueryClient();
+
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) return <Navigate to="/auth" replace />;
+  return <>{children}</>;
+};
+
+const AuthRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (user) return <Navigate to="/" replace />;
+  return <>{children}</>;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -21,18 +54,15 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomeScreen />} />
-          {/* Screen 1: Breathwork Session Activate */}
-          <Route path="/breathwork-session-activate" element={<BreathworkSession />} />
-          {/* Screen 2: Breathwork Session Recover */}
-          <Route path="/breathwork-session-recover" element={<BreathworkSessionRecover />} />
-          {/* Screen 3: Breathwork Session Focus */}
-          <Route path="/breathwork-session-focus" element={<BreathworkSessionFocus />} />
-          {/* Screen 4: Breathwork Session Reset */}
-          <Route path="/breathwork-session-reset" element={<BreathworkSessionReset />} />
-          <Route path="/hrv" element={<HrvDemo />} />
-          <Route path="/menu" element={<BreathworkMenu />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
+          <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+          <Route path="/" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
+          <Route path="/breathwork-session-activate" element={<ProtectedRoute><BreathworkSession /></ProtectedRoute>} />
+          <Route path="/breathwork-session-recover" element={<ProtectedRoute><BreathworkSessionRecover /></ProtectedRoute>} />
+          <Route path="/breathwork-session-focus" element={<ProtectedRoute><BreathworkSessionFocus /></ProtectedRoute>} />
+          <Route path="/breathwork-session-reset" element={<ProtectedRoute><BreathworkSessionReset /></ProtectedRoute>} />
+          <Route path="/hrv" element={<ProtectedRoute><HrvDemo /></ProtectedRoute>} />
+          <Route path="/menu" element={<ProtectedRoute><BreathworkMenu /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
