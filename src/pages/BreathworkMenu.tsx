@@ -129,7 +129,7 @@ const BreathworkMenu = () => {
                 key={rec.title}
                 to={rec.to}
                 className="relative overflow-hidden no-underline group"
-                style={{ width: 168, height: 102, borderRadius: 12 }}
+                style={{ height: 102, borderRadius: 12 }}
               >
                 <img
                   src={rec.image}
