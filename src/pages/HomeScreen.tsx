@@ -49,7 +49,7 @@ function Pill({ label, icon }: { label: string; icon: string }) {
 
 const HomeScreen = () => {
   return (
-    <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
+    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background */}
       <img
         src={homeBg}
