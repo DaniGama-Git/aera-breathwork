@@ -67,7 +67,8 @@ const BreathworkSessionRecover = () => {
 
           {/* Session subtitle */}
           <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
-            Forced shutdown for deep restoration.
+          <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
+            Wind down after an intense day.
           </p>
         </div>
 
