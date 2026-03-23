@@ -43,7 +43,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         setNeedsOnboarding(!data?.onboarding_completed);
         setOnboardingChecked(true);
       });
-  }, [user]);
+  }, [user, location.pathname]);
 
   if (loading || !onboardingChecked) return <LoadingSpinner />;
   if (!user) return <Navigate to="/auth" replace />;
