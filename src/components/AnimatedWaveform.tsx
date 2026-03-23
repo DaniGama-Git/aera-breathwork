@@ -6,7 +6,7 @@ interface AnimatedWaveformProps {
   barCount?: number;
 }
 
-const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 120 }: AnimatedWaveformProps) => {
+const AnimatedWaveform = ({ isPlaying, getFrequencyData, barCount = 90 }: AnimatedWaveformProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
   const barsRef = useRef<number[]>(new Array(barCount).fill(0));
