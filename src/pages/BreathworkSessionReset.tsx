@@ -1,9 +1,5 @@
 /**
- * Screen 4: Breathwork Session — Reset
- * Route: /breathwork-session-reset
- *
- * This is the "Reset" breathwork session screen from the Āera app.
- * Dark muted gradient background. Session: "Context Switch".
+ * Breathwork Session — Reset
  */
 
 import resetGradientBg from "@/assets/reset-gradient-v2.png";
@@ -13,12 +9,15 @@ import waveform from "@/assets/waveform.png";
 import resetIcon from "@/assets/reset-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
+import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { Pause } from "lucide-react";
 
 /**
  * BreathworkSessionReset — Main screen component
  * Route: /breathwork-session-reset
  */
 const BreathworkSessionReset = () => {
+  const { isPlaying, toggle, timeDisplay } = useAudioPlayer("/audio/back-to-back-recharge.mp3");
   return (
     <div className="relative max-w-[430px] mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background — full-bleed dark muted gradient */}
@@ -81,17 +80,24 @@ const BreathworkSessionReset = () => {
           <div className="flex justify-end mb-4">
             <button
               className="transition-transform hover:scale-105 active:scale-95"
-              aria-label="Play breathwork session"
+              aria-label={isPlaying ? "Pause" : "Play breathwork session"}
+              onClick={toggle}
             >
-              <img src={playButton} alt="Play" className="w-[72px] h-[72px]" />
+              {isPlaying ? (
+                <div className="w-[72px] h-[72px] rounded-full bg-white flex items-center justify-center">
+                  <Pause className="w-8 h-8 text-black fill-black" />
+                </div>
+              ) : (
+                <img src={playButton} alt="Play" className="w-[72px] h-[72px]" />
+              )}
             </button>
           </div>
 
           <div className="mb-5">
             <span className="text-white font-body font-semibold text-xl block mb-1">Jamie</span>
             <div className="flex items-center justify-between text-white/50 text-sm">
-              <span className="font-body font-normal">Speaking...</span>
-              <span className="font-display font-light tabular-nums">00:03:00</span>
+              <span className="font-body font-normal">{isPlaying ? "Speaking..." : "Tap play to begin"}</span>
+              <span className="font-display font-light tabular-nums">{timeDisplay}</span>
             </div>
           </div>
         </div>
