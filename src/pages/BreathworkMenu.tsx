@@ -104,7 +104,7 @@ const BreathworkMenu = () => {
                     src={fav.image}
                     alt={fav.title}
                     className="absolute inset-0 w-full h-full object-cover"
-                    style={{ filter: "blur(29px)" }}
+                    style={{ filter: "blur(6px)", transform: "scale(1.15)" }}
                   />
                   <div className="absolute inset-0 bg-[#111111]/[0.01]" />
                    <div className="absolute inset-0 flex items-center justify-center">
