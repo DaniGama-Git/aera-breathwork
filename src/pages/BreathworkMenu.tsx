@@ -72,7 +72,7 @@ const BreathworkMenu = () => {
                 key={cat.label}
                 to={cat.to}
                 className="relative overflow-hidden no-underline group"
-                style={{ width: 166, height: 136, borderRadius: 18.11 }}
+                style={{ height: 136, borderRadius: 18.11 }}
               >
                 <img
                   src={cat.image}
