@@ -127,3 +127,8 @@ All colors MUST be HSL.
     @apply bg-background text-foreground font-body font-medium;
   }
 }
+
+@keyframes waveformPulse {
+  0% { transform: scaleY(0.4); }
+  100% { transform: scaleY(1); }
+}
