@@ -48,7 +48,7 @@ const BreathworkMenu = () => {
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto pb-28">
         {/* Header */}
-        <div className="px-5 pt-16 pb-4 flex items-start justify-between">
+        <div className="px-5 pt-10 pb-4 flex items-start justify-between">
           <div>
             <p className="font-body font-normal text-[16px] text-[#BDBDBD]">{getGreeting()}</p>
             <h1 className="font-body font-semibold text-[32px] leading-[100%] text-[#1D1D1C] mt-1">Chrissy</h1>
@@ -154,7 +154,7 @@ const BreathworkMenu = () => {
 
       {/* Fixed bottom nav */}
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-20">
-        <BottomNavBar activeTab="Home" />
+        <BottomNavBar activeTab="Breathe" />
         <div className="flex justify-center pb-2 pt-1 bg-[#F7F6F5]">
           <img src={homeIndicator} alt="" className="h-[5px] w-36 opacity-40" aria-hidden="true" />
         </div>
