@@ -222,6 +222,8 @@ const AddToCalendar = ({
               onClick={() => {
                 if (!date) return;
                 window.open(buildGoogleCalendarUrl(eventTitle, description, date, time, durationMinutes), "_blank");
+                setOpen(false);
+                toast({ title: "Session scheduled", description: "Event added to Google Calendar." });
               }}
               className="w-full h-11 rounded-xl bg-white text-[#1D1D1C] font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/90 transition-colors"
             >
