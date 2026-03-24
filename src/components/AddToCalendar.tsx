@@ -151,7 +151,8 @@ const AddToCalendar = ({
   const [time, setTime] = useState("09:00");
   const [open, setOpen] = useState(false);
 
-  const description = `${sessionCategory} Breathwork: ${sessionSubtitle} (${durationMinutes} min)`;
+  const sessionLink = window.location.href;
+  const description = `${sessionCategory} Breathwork: ${sessionSubtitle} (${durationMinutes} min)\n\nOpen session: ${sessionLink}`;
   const eventTitle = `Āera — ${sessionTitle}`;
 
   const isReady = !!date;
