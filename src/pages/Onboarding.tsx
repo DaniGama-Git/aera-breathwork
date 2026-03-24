@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import areaLogo from "@/assets/aera-logo.svg";
-import homeBg from "@/assets/home-bg.png";
+import homeBg from "@/assets/home-bg.webp";
 
 const steps = [
   {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { lovable } from "@/integrations/lovable/index";
 import areaLogo from "@/assets/aera-logo.svg";
-import homeBg from "@/assets/home-bg.png";
+import homeBg from "@/assets/home-bg.webp";
 
 const Auth = () => {
   const [error, setError] = useState("");

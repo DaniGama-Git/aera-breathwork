@@ -2,7 +2,7 @@
  * Breathwork Session — Activate
  */
 
-import activateGradientBg from "@/assets/activate-gradient-v2.png";
+import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import AnimatedWaveform from "@/components/AnimatedWaveform";

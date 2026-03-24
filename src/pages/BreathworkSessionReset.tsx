@@ -2,7 +2,7 @@
  * Breathwork Session — Reset
  */
 
-import resetGradientBg from "@/assets/reset-gradient-v2.png";
+import resetGradientBg from "@/assets/reset-gradient-v2.webp";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import AnimatedWaveform from "@/components/AnimatedWaveform";

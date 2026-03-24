@@ -2,7 +2,7 @@
  * Breathwork Session — Focus
  */
 
-import focusGradientBg from "@/assets/focus-gradient-v2.png";
+import focusGradientBg from "@/assets/focus-gradient-v2.webp";
 import playButton from "@/assets/play-button.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 import AnimatedWaveform from "@/components/AnimatedWaveform";
