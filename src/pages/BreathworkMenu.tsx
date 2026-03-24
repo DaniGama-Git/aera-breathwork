@@ -6,7 +6,6 @@
 
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import avatarChrissy from "@/assets/avatar-chrissy.webp";
 import categoryActivate from "@/assets/category-activate.webp";
 import categoryReset from "@/assets/category-reset.webp";
 import categoryFocus from "@/assets/category-focus.webp";
@@ -42,6 +41,10 @@ function getGreeting() {
 
 const BreathworkMenu = () => {
   const { signOut } = useAuth();
+  const { user } = useAuth();
+
+  const displayName = user?.user_metadata?.full_name?.split(" ")[0] || user?.user_metadata?.name?.split(" ")[0] || "there";
+  const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
 
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col bg-[#F7F6F5]">
@@ -51,7 +54,7 @@ const BreathworkMenu = () => {
         <div className="px-5 md:px-8 pt-10 pb-4 flex items-start justify-between">
           <div>
             <p className="font-body font-normal text-[16px] text-[#BDBDBD]">{getGreeting()}</p>
-            <h1 className="font-body font-semibold text-[32px] leading-[100%] text-[#1D1D1C] mt-1">Chrissy</h1>
+            <h1 className="font-body font-semibold text-[32px] leading-[100%] text-[#1D1D1C] mt-1">{displayName}</h1>
           </div>
           {/* Avatar - click to logout */}
           <button
@@ -59,7 +62,13 @@ const BreathworkMenu = () => {
             className="w-12 h-12 rounded-full overflow-hidden mt-1 flex-shrink-0 border-0 cursor-pointer p-0"
             title="Sign out"
           >
-            <img src={avatarChrissy} alt="Avatar" className="w-full h-full object-cover" />
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            ) : (
+              <div className="w-full h-full bg-[#BDBDBD] flex items-center justify-center text-white font-body font-semibold text-lg">
+                {displayName.charAt(0).toUpperCase()}
+              </div>
+            )}
           </button>
         </div>
 
