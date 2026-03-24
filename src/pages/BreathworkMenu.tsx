@@ -6,11 +6,11 @@
 
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import avatarChrissy from "@/assets/avatar-chrissy.png";
+import avatarChrissy from "@/assets/avatar-chrissy.webp";
 import categoryActivate from "@/assets/category-activate.webp";
-import categoryReset from "@/assets/category-reset.png";
-import categoryFocus from "@/assets/category-focus.png";
-import categoryRecover from "@/assets/category-recover.jpg";
+import categoryReset from "@/assets/category-reset.webp";
+import categoryFocus from "@/assets/category-focus.webp";
+import categoryRecover from "@/assets/category-recover.webp";
 import BottomNavBar from "@/components/BottomNavBar";
 import homeIndicator from "@/assets/home-indicator.png";
 import playIconSmall from "@/assets/play-icon-small.svg";
@@ -77,6 +77,7 @@ const BreathworkMenu = () => {
                 <img
                   src={cat.image}
                   alt={cat.label}
+                  decoding="async"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
@@ -103,6 +104,8 @@ const BreathworkMenu = () => {
                   <img
                     src={fav.image}
                     alt={fav.title}
+                    loading="lazy"
+                    decoding="async"
                     className="absolute inset-0 w-full h-full object-cover"
                     style={{ filter: "blur(6px)", transform: "scale(1.15)" }}
                   />
@@ -134,6 +137,8 @@ const BreathworkMenu = () => {
                 <img
                   src={rec.image}
                   alt={rec.title}
+                  loading="lazy"
+                  decoding="async"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-[#111111]/[0.01] backdrop-blur-[29px]" />
