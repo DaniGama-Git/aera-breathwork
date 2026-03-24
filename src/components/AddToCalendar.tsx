@@ -263,7 +263,9 @@ const AddToCalendar = ({
                   return;
                 }
 
+                setOpen(false);
                 setStatusMessage("Google Calendar opened in a new tab.");
+                toast.success("Google Calendar opened.");
               }}
               className="w-full h-11 rounded-xl bg-white text-[#1D1D1C] font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/90 transition-colors"
             >
@@ -281,9 +283,20 @@ const AddToCalendar = ({
               onClick={() => {
                 if (!date) return;
 
-                setStatusMessage("Redirecting to Outlook…");
+                const opened = openExternalCalendarLink(
+                  buildOutlookUrl(eventTitle, description, date, time, durationMinutes),
+                );
+
+                if (!opened) {
+                  const msg = "Popup blocked. Please allow popups and try again.";
+                  setStatusMessage(msg);
+                  toast.error(msg);
+                  return;
+                }
+
                 setOpen(false);
-                window.location.assign(buildOutlookUrl(eventTitle, description, date, time, durationMinutes));
+                setStatusMessage("Outlook Calendar opened in a new tab.");
+                toast.success("Outlook Calendar opened.");
               }}
               className="w-full h-11 rounded-xl bg-[#0078D4] text-white font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#0078D4]/90 transition-colors"
             >
