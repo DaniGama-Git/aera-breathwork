@@ -107,6 +107,11 @@ function generateICS(
     `DTEND:${end}`,
     `SUMMARY:${title}`,
     `DESCRIPTION:${description}`,
+    "BEGIN:VALARM",
+    "TRIGGER:-PT5M",
+    "ACTION:DISPLAY",
+    "DESCRIPTION:Session starting in 5 minutes",
+    "END:VALARM",
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
