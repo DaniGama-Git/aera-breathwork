@@ -248,7 +248,7 @@ const AddToCalendar = ({
                 if (!date) return;
                 window.open(buildOutlookUrl(eventTitle, description, date, time, durationMinutes), "_blank");
                 setOpen(false);
-                toast({ title: "Session scheduled", description: "Event added to Outlook Calendar." });
+                toast.success("Session added to Outlook Calendar");
               }}
               className="w-full h-11 rounded-xl bg-[#0078D4] text-white font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#0078D4]/90 transition-colors"
             >
