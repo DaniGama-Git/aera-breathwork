@@ -207,18 +207,12 @@ const AddToCalendar = ({
           {/* Time picker */}
           <div className="space-y-1.5">
             <label className="text-xs text-white/50 font-display">Time</label>
-            <Select value={time} onValueChange={setTime}>
-              <SelectTrigger className="w-full bg-white/5 border-white/10 text-white hover:bg-white/10">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-[#1D1D1C] border-white/10 text-white max-h-[200px]">
-                {TIME_OPTIONS.map((t) => (
-                  <SelectItem key={t.value} value={t.value} className="text-white focus:bg-white/10 focus:text-white">
-                    {t.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <input
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="w-full h-10 px-3 rounded-md bg-white/5 border border-white/10 text-white font-body text-sm focus:outline-none focus:ring-1 focus:ring-white/30"
+            />
           </div>
 
           {/* Duration display */}
