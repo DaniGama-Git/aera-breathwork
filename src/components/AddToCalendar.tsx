@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { CalendarIcon, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
@@ -61,7 +61,8 @@ function buildGoogleCalendarUrl(
     details: description,
     dates: `${start}/${end}`,
   });
-  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  // Add 5-minute reminder
+  return `https://calendar.google.com/calendar/render?${params.toString()}&reminders=useDefault&trp=false`;
 }
 
 function buildOutlookUrl(
@@ -106,6 +107,11 @@ function generateICS(
     `DTEND:${end}`,
     `SUMMARY:${title}`,
     `DESCRIPTION:${description}`,
+    "BEGIN:VALARM",
+    "TRIGGER:-PT5M",
+    "ACTION:DISPLAY",
+    "DESCRIPTION:Session starting in 5 minutes",
+    "END:VALARM",
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
@@ -223,7 +229,7 @@ const AddToCalendar = ({
                 if (!date) return;
                 window.open(buildGoogleCalendarUrl(eventTitle, description, date, time, durationMinutes), "_blank");
                 setOpen(false);
-                toast({ title: "Session scheduled", description: "Event added to Google Calendar." });
+                toast.success("Session added to Google Calendar");
               }}
               className="w-full h-11 rounded-xl bg-white text-[#1D1D1C] font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/90 transition-colors"
             >
@@ -242,7 +248,7 @@ const AddToCalendar = ({
                 if (!date) return;
                 window.open(buildOutlookUrl(eventTitle, description, date, time, durationMinutes), "_blank");
                 setOpen(false);
-                toast({ title: "Session scheduled", description: "Event added to Outlook Calendar." });
+                toast.success("Session added to Outlook Calendar");
               }}
               className="w-full h-11 rounded-xl bg-[#0078D4] text-white font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#0078D4]/90 transition-colors"
             >
@@ -259,7 +265,7 @@ const AddToCalendar = ({
                 if (!date) return;
                 downloadICS(eventTitle, description, date, time, durationMinutes);
                 setOpen(false);
-                toast({ title: "Session scheduled", description: "ICS file downloaded." });
+                toast.success("ICS file downloaded");
               }}
               className="w-full h-11 rounded-xl bg-white/10 text-white font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/15 transition-colors"
             >
