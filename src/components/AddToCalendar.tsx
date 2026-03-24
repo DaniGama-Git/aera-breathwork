@@ -263,7 +263,9 @@ const AddToCalendar = ({
                   return;
                 }
 
+                setOpen(false);
                 setStatusMessage("Google Calendar opened in a new tab.");
+                toast.success("Google Calendar opened.");
               }}
               className="w-full h-11 rounded-xl bg-white text-[#1D1D1C] font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/90 transition-colors"
             >
