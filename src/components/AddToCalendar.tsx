@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { CalendarIcon, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/sonner";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
@@ -30,7 +30,6 @@ interface AddToCalendarProps {
   durationMinutes: number;
 }
 
-
 /** Format a Date + time string to a Google Calendar datetime string (YYYYMMDDTHHmmss) */
 function toCalendarDatetime(date: Date, time: string): string {
   const [h, m] = time.split(":").map(Number);
@@ -44,6 +43,24 @@ function getEndDatetime(date: Date, time: string, durationMinutes: number): stri
   const d = new Date(date);
   d.setHours(h, m + durationMinutes, 0, 0);
   return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+}
+
+function escapeIcsText(value: string): string {
+  return value
+    .replace(/\\/g, "\\\\")
+    .replace(/\n/g, "\\n")
+    .replace(/,/g, "\\,")
+    .replace(/;/g, "\\;");
+}
+
+function openExternalCalendarLink(url: string) {
+  const link = document.createElement("a");
+  link.href = url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 }
 
 function buildGoogleCalendarUrl(
@@ -61,8 +78,7 @@ function buildGoogleCalendarUrl(
     details: description,
     dates: `${start}/${end}`,
   });
-  // Add 5-minute reminder
-  return `https://calendar.google.com/calendar/render?${params.toString()}&reminders=useDefault&trp=false`;
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
 function buildOutlookUrl(
@@ -85,19 +101,22 @@ function buildOutlookUrl(
     body: description,
     startdt: start.toISOString(),
     enddt: end.toISOString(),
+    reminderminutesbeforestart: "5",
   });
-  return `https://outlook.live.com/calendar/0/action/compose?${params.toString()}`;
+  return `https://outlook.live.com/calendar/deeplink/compose?${params.toString()}`;
 }
 
 function generateICS(
   title: string,
   description: string,
+  sessionLink: string,
   date: Date,
   time: string,
   durationMinutes: number,
 ): string {
   const start = toCalendarDatetime(date, time);
   const end = getEndDatetime(date, time, durationMinutes);
+
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -105,8 +124,9 @@ function generateICS(
     "BEGIN:VEVENT",
     `DTSTART:${start}`,
     `DTEND:${end}`,
-    `SUMMARY:${title}`,
-    `DESCRIPTION:${description}`,
+    `SUMMARY:${escapeIcsText(title)}`,
+    `DESCRIPTION:${escapeIcsText(description)}`,
+    `URL:${escapeIcsText(sessionLink)}`,
     "BEGIN:VALARM",
     "TRIGGER:-PT5M",
     "ACTION:DISPLAY",
@@ -120,11 +140,12 @@ function generateICS(
 function downloadICS(
   title: string,
   description: string,
+  sessionLink: string,
   date: Date,
   time: string,
   durationMinutes: number,
 ) {
-  const ics = generateICS(title, description, date, time, durationMinutes);
+  const ics = generateICS(title, description, sessionLink, date, time, durationMinutes);
   const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -143,6 +164,7 @@ const AddToCalendar = ({
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState("09:00");
   const [open, setOpen] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState<string>("");
 
   const sessionLink = window.location.href;
   const description = `${sessionCategory} Breathwork: ${sessionSubtitle} (${durationMinutes} min)\n\nOpen session: ${sessionLink}`;
@@ -227,9 +249,10 @@ const AddToCalendar = ({
               disabled={!isReady}
               onClick={() => {
                 if (!date) return;
-                window.open(buildGoogleCalendarUrl(eventTitle, description, date, time, durationMinutes), "_blank");
-                setOpen(false);
-                toast.success("Session added to Google Calendar");
+                const message = "Opening Google Calendar (check the event details for the session link).";
+                setConfirmationMessage(message);
+                toast.success(message, { duration: 10000 });
+                openExternalCalendarLink(buildGoogleCalendarUrl(eventTitle, description, date, time, durationMinutes));
               }}
               className="w-full h-11 rounded-xl bg-white text-[#1D1D1C] font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/90 transition-colors"
             >
@@ -246,9 +269,10 @@ const AddToCalendar = ({
               disabled={!isReady}
               onClick={() => {
                 if (!date) return;
-                window.open(buildOutlookUrl(eventTitle, description, date, time, durationMinutes), "_blank");
-                setOpen(false);
-                toast.success("Session added to Outlook Calendar");
+                const message = "Opening Outlook Calendar with a 5-minute reminder.";
+                setConfirmationMessage(message);
+                toast.success(message, { duration: 10000 });
+                openExternalCalendarLink(buildOutlookUrl(eventTitle, description, date, time, durationMinutes));
               }}
               className="w-full h-11 rounded-xl bg-[#0078D4] text-white font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#0078D4]/90 transition-colors"
             >
@@ -263,9 +287,10 @@ const AddToCalendar = ({
               disabled={!isReady}
               onClick={() => {
                 if (!date) return;
-                downloadICS(eventTitle, description, date, time, durationMinutes);
-                setOpen(false);
-                toast.success("ICS file downloaded");
+                const message = "ICS downloaded with a 5-minute reminder and session link.";
+                setConfirmationMessage(message);
+                toast.success(message, { duration: 10000 });
+                downloadICS(eventTitle, description, sessionLink, date, time, durationMinutes);
               }}
               className="w-full h-11 rounded-xl bg-white/10 text-white font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/15 transition-colors"
             >
@@ -273,6 +298,12 @@ const AddToCalendar = ({
               Download .ics File
             </button>
           </div>
+
+          {confirmationMessage && (
+            <p className="text-xs text-white/60 font-display" role="status" aria-live="polite">
+              {confirmationMessage}
+            </p>
+          )}
         </div>
       </DialogContent>
     </Dialog>
