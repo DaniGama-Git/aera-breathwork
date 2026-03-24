@@ -265,7 +265,7 @@ const AddToCalendar = ({
                 if (!date) return;
                 downloadICS(eventTitle, description, date, time, durationMinutes);
                 setOpen(false);
-                toast({ title: "Session scheduled", description: "ICS file downloaded." });
+                toast.success("ICS file downloaded");
               }}
               className="w-full h-11 rounded-xl bg-white/10 text-white font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/15 transition-colors"
             >
