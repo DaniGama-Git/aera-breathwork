@@ -61,7 +61,8 @@ function buildGoogleCalendarUrl(
     details: description,
     dates: `${start}/${end}`,
   });
-  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  // Add 5-minute reminder
+  return `https://calendar.google.com/calendar/render?${params.toString()}&reminders=useDefault&trp=false`;
 }
 
 function buildOutlookUrl(
