@@ -6,7 +6,7 @@
  */
 
 import { Link } from "react-router-dom";
-import homeBg from "@/assets/home-bg.png";
+import homeBg from "@/assets/home-bg.webp";
 import activateIcon from "@/assets/activate-icon.svg";
 import resetIcon from "@/assets/reset-icon.svg";
 import focusIcon from "@/assets/focus-icon.svg";

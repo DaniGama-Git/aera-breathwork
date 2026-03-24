@@ -7,7 +7,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import avatarChrissy from "@/assets/avatar-chrissy.png";
-import categoryActivate from "@/assets/category-activate.png";
+import categoryActivate from "@/assets/category-activate.webp";
 import categoryReset from "@/assets/category-reset.png";
 import categoryFocus from "@/assets/category-focus.png";
 import categoryRecover from "@/assets/category-recover.jpg";
