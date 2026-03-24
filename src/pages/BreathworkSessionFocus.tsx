@@ -108,10 +108,8 @@ const BreathworkSessionFocus = () => {
         {/* Bottom navigation bar */}
         <BottomNavBar />
 
-        {/* iOS Home Indicator */}
-        <div className="flex justify-center pb-2 pt-1">
-          <img src={homeIndicator} alt="" className="h-[5px] w-36 opacity-70" aria-hidden="true" />
-        </div>
+        {/* Spacer for fixed nav bar */}
+        <div className="h-24" />
       </div>
     </div>
   );
