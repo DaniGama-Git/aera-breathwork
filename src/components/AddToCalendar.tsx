@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { CalendarIcon, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
@@ -221,6 +222,8 @@ const AddToCalendar = ({
               onClick={() => {
                 if (!date) return;
                 window.open(buildGoogleCalendarUrl(eventTitle, description, date, time, durationMinutes), "_blank");
+                setOpen(false);
+                toast({ title: "Session scheduled", description: "Event added to Google Calendar." });
               }}
               className="w-full h-11 rounded-xl bg-white text-[#1D1D1C] font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/90 transition-colors"
             >
@@ -238,6 +241,8 @@ const AddToCalendar = ({
               onClick={() => {
                 if (!date) return;
                 window.open(buildOutlookUrl(eventTitle, description, date, time, durationMinutes), "_blank");
+                setOpen(false);
+                toast({ title: "Session scheduled", description: "Event added to Outlook Calendar." });
               }}
               className="w-full h-11 rounded-xl bg-[#0078D4] text-white font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#0078D4]/90 transition-colors"
             >
@@ -253,6 +258,8 @@ const AddToCalendar = ({
               onClick={() => {
                 if (!date) return;
                 downloadICS(eventTitle, description, date, time, durationMinutes);
+                setOpen(false);
+                toast({ title: "Session scheduled", description: "ICS file downloaded." });
               }}
               className="w-full h-11 rounded-xl bg-white/10 text-white font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/15 transition-colors"
             >
