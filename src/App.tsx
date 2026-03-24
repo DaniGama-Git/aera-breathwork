@@ -40,8 +40,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       return;
     }
 
-    setOnboardingChecked(false);
-
     supabase
       .from("profiles")
       .select("onboarding_completed")
@@ -62,7 +60,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return () => {
       isActive = false;
     };
-  }, [user, location.pathname]);
+  }, [user]);
 
   if (loading || !onboardingChecked) return <LoadingSpinner />;
   if (!user) return <Navigate to="/auth" replace />;
