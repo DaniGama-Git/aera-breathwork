@@ -36,13 +36,6 @@ interface AddToCalendarProps {
   durationMinutes: number;
 }
 
-/** Generate time options in 30-min increments */
-const TIME_OPTIONS = Array.from({ length: 48 }, (_, i) => {
-  const h = Math.floor(i / 2);
-  const m = i % 2 === 0 ? "00" : "30";
-  const label = `${h.toString().padStart(2, "0")}:${m}`;
-  return { value: label, label };
-});
 
 /** Format a Date + time string to a Google Calendar datetime string (YYYYMMDDTHHmmss) */
 function toCalendarDatetime(date: Date, time: string): string {
