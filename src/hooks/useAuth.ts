@@ -13,6 +13,11 @@ export const useAuth = () => {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+
+        // Clean up auth tokens from the URL after sign-in
+        if (session && window.location.hash.includes("access_token")) {
+          window.history.replaceState(null, "", window.location.pathname + window.location.search);
+        }
       }
     );
 
