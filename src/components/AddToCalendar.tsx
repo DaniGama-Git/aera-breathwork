@@ -164,7 +164,7 @@ const AddToCalendar = ({
   const [open, setOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string>("");
 
-  const sessionLink = window.location.href;
+  const sessionLink = `https://aera-breathwork.lovable.app${window.location.pathname}`;
   const description = `${sessionCategory} Breathwork: ${sessionSubtitle} (${durationMinutes} min)\n\nOpen session: ${sessionLink}`;
   const eventTitle = `Āera — ${sessionTitle}`;
 
