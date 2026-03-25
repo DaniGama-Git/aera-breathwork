@@ -78,7 +78,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const AuthRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <LoadingSpinner />;
-  if (user) return <Navigate to="/" replace />;
+  if (user) return <Navigate to="/menu" replace />;
   return <>{children}</>;
 };
 
@@ -89,16 +89,17 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Public landing */}
+          <Route path="/" element={<HomeScreen />} />
           <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
           <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
-          <Route path="/" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
+          <Route path="/menu" element={<ProtectedRoute><BreathworkMenu /></ProtectedRoute>} />
           <Route path="/breathwork-session-activate" element={<ProtectedRoute><BreathworkSession /></ProtectedRoute>} />
           <Route path="/breathwork-session-recover" element={<ProtectedRoute><BreathworkSessionRecover /></ProtectedRoute>} />
           <Route path="/breathwork-session-focus" element={<ProtectedRoute><BreathworkSessionFocus /></ProtectedRoute>} />
           <Route path="/breathwork-session-reset" element={<ProtectedRoute><BreathworkSessionReset /></ProtectedRoute>} />
           <Route path="/hrv" element={<ProtectedRoute><HrvDemo /></ProtectedRoute>} />
           <Route path="/category/:slug" element={<ProtectedRoute><CategoryLibrary /></ProtectedRoute>} />
-          <Route path="/menu" element={<ProtectedRoute><BreathworkMenu /></ProtectedRoute>} />
           <Route path="/search" element={<ProtectedRoute><SearchScreen /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>

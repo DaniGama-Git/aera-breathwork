@@ -1,15 +1,18 @@
 /**
  * BottomNavBar — shared dark pill-shaped navigation bar
- * Fixed at the bottom of the viewport.
+ * Home → /menu, Breathe → user's recommended session from profile
  */
 
 import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import breatheIcon from "@/assets/breathe-nav-icon.svg";
 import scienceIcon from "@/assets/science-nav-icon.svg";
 import homeIcon from "@/assets/home-nav-icon.svg";
 import searchIcon from "@/assets/search-nav-icon.svg";
 
-const getRecommendedRoute = () => {
+const getTimeBasedRoute = () => {
   const h = new Date().getHours();
   if (h >= 5 && h < 11) return "/breathwork-session-activate";
   if (h >= 11 && h < 17) return "/breathwork-session-focus";
@@ -17,8 +20,15 @@ const getRecommendedRoute = () => {
   return "/breathwork-session-reset";
 };
 
+const sessionRouteMap: Record<string, string> = {
+  activate: "/breathwork-session-activate",
+  focus: "/breathwork-session-focus",
+  recover: "/breathwork-session-recover",
+  reset: "/breathwork-session-reset",
+};
+
 const tabConfig = [
-  { label: "Home", icon: homeIcon, paths: ["/"] },
+  { label: "Home", icon: homeIcon, paths: ["/menu"] },
   { label: "Breathe", icon: breatheIcon, paths: ["/breathwork-session"] },
   { label: "Search", icon: searchIcon, paths: ["/search"] },
   { label: "Science", icon: scienceIcon, paths: ["/hrv"] },
@@ -27,10 +37,26 @@ const tabConfig = [
 const BottomNavBar = ({ activeTab }: { activeTab?: string }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth();
+  const [recommendedRoute, setRecommendedRoute] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from("profiles")
+      .select("recommended_session")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.recommended_session && sessionRouteMap[data.recommended_session]) {
+          setRecommendedRoute(sessionRouteMap[data.recommended_session]);
+        }
+      });
+  }, [user]);
 
   const navigateTo = (label: string) => {
-    if (label === "Home") navigate("/");
-    else if (label === "Breathe") navigate(getRecommendedRoute());
+    if (label === "Home") navigate("/menu");
+    else if (label === "Breathe") navigate(recommendedRoute || getTimeBasedRoute());
     else if (label === "Search") navigate("/search");
     else if (label === "Science") navigate("/hrv");
   };
@@ -45,7 +71,7 @@ const BottomNavBar = ({ activeTab }: { activeTab?: string }) => {
           const isActive =
             activeTab === tab.label ||
             (!activeTab && tab.paths.some((p) =>
-              p === "/" ? location.pathname === "/" : location.pathname.startsWith(p)
+              p === "/menu" ? location.pathname === "/menu" : location.pathname.startsWith(p)
             ));
 
           return (
