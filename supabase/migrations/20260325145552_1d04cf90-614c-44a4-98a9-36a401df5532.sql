@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN stress_archetype text, ADD COLUMN recommended_frequency integer;

@@ -55,8 +55,10 @@ export type Database = {
           email: string | null
           id: string
           onboarding_completed: boolean
+          recommended_frequency: number | null
           recommended_session: string | null
           recommended_time: string | null
+          stress_archetype: string | null
           updated_at: string
           user_id: string
         }
@@ -67,8 +69,10 @@ export type Database = {
           email?: string | null
           id?: string
           onboarding_completed?: boolean
+          recommended_frequency?: number | null
           recommended_session?: string | null
           recommended_time?: string | null
+          stress_archetype?: string | null
           updated_at?: string
           user_id: string
         }
@@ -79,8 +83,10 @@ export type Database = {
           email?: string | null
           id?: string
           onboarding_completed?: boolean
+          recommended_frequency?: number | null
           recommended_session?: string | null
           recommended_time?: string | null
+          stress_archetype?: string | null
           updated_at?: string
           user_id?: string
         }
