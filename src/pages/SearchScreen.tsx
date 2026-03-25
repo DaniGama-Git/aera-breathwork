@@ -5,20 +5,53 @@
 
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Search } from "lucide-react";
-import categoryActivate from "@/assets/category-activate.webp";
-import categoryReset from "@/assets/category-reset.webp";
-import categoryFocus from "@/assets/category-focus.webp";
-import categoryRecover from "@/assets/category-recover.webp";
+import { Search, CalendarPlus } from "lucide-react";
+import { categoryConfig } from "@/data/sessionData";
 import BottomNavBar from "@/components/BottomNavBar";
+import AddToCalendar from "@/components/AddToCalendar";
 import playIconSmall from "@/assets/play-icon-small.svg";
 
-const allSessions = [
-  { title: "Activate", description: "Counter the afternoon energy dip.", duration: "5 mins", category: "Activate", to: "/breathwork-session-activate", image: categoryActivate },
-  { title: "Performance Reset", description: "Clear your head between tasks.", duration: "5 mins", category: "Reset", to: "/breathwork-session-reset", image: categoryReset },
-  { title: "Focus Activation", description: "Calm down before you walk in.", duration: "5 mins", category: "Focus", to: "/breathwork-session-focus", image: categoryFocus },
-  { title: "Deep Decompression", description: "Wind down after an intense day.", duration: "10 mins", category: "Recover", to: "/breathwork-session-recover", image: categoryRecover },
-];
+interface SearchSession {
+  title: string;
+  description: string;
+  duration: string;
+  category: string;
+  to: string;
+  image: string;
+}
+
+// Build a flat list of ALL sessions from every category, then shuffle with a stable seed
+function buildAllSessions(): SearchSession[] {
+  const sessions: SearchSession[] = [];
+
+  Object.values(categoryConfig).forEach((cat) => {
+    cat.sessions.forEach((s) => {
+      sessions.push({
+        title: s.title,
+        description: s.description,
+        duration: s.duration,
+        category: cat.label,
+        to: cat.sessionRoute,
+        image: cat.image,
+      });
+    });
+  });
+
+  // Deterministic shuffle (Fisher-Yates with simple seed)
+  let seed = 42;
+  const next = () => {
+    seed = (seed * 16807) % 2147483647;
+    return (seed - 1) / 2147483646;
+  };
+  for (let i = sessions.length - 1; i > 0; i--) {
+    const j = Math.floor(next() * (i + 1));
+    [sessions[i], sessions[j]] = [sessions[j], sessions[i]];
+  }
+
+  return sessions;
+}
+
+const allSessions = buildAllSessions();
 
 const RECENT_KEY = "aera_recent_searches";
 
@@ -127,26 +160,47 @@ const SearchScreen = () => {
             <p className="font-body text-[15px] text-[#BDBDBD] text-center py-12">No sessions found</p>
           ) : (
             <div className="flex flex-col gap-3">
-              {filteredSessions.map((session) => (
-                <Link
-                  key={session.title}
-                  to={session.to}
-                  onClick={() => handleSessionClick(session.title)}
-                  className="flex items-center gap-4 no-underline bg-white rounded-2xl p-3 transition-shadow hover:shadow-md"
-                >
-                  <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 relative">
-                    <img src={session.image} alt={session.title} className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <img src={playIconSmall} alt="Play" width="16" height="17" />
-                    </div>
+              {filteredSessions.map((session) => {
+                const durationNum = parseInt(session.duration) || 5;
+                return (
+                  <div
+                    key={session.title}
+                    className="flex items-center gap-4 bg-white rounded-2xl p-3 transition-shadow hover:shadow-md"
+                  >
+                    <Link
+                      to={session.to}
+                      onClick={() => handleSessionClick(session.title)}
+                      className="flex items-center gap-4 no-underline flex-1 min-w-0"
+                    >
+                      <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 relative">
+                        <img src={session.image} alt={session.title} className="absolute inset-0 w-full h-full object-cover" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <img src={playIconSmall} alt="Play" width="16" height="17" />
+                        </div>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-body font-medium text-[15px] text-[#1D1D1C] leading-tight truncate">{session.title}</p>
+                        <p className="font-body font-normal text-[12px] text-[#BDBDBD] mt-0.5">{session.description}</p>
+                        <p className="font-body font-normal text-[11px] text-[#BDBDBD] mt-1">{session.duration} · {session.category}</p>
+                      </div>
+                    </Link>
+                    <AddToCalendar
+                      sessionTitle={session.title}
+                      sessionSubtitle={session.description}
+                      sessionCategory={session.category}
+                      durationMinutes={durationNum}
+                      trigger={
+                        <button
+                          className="flex-shrink-0 w-9 h-9 rounded-xl bg-[#F0EFED] flex items-center justify-center text-[#BDBDBD] hover:text-[#1D1D1C] hover:bg-[#E5E4E2] transition-colors"
+                          aria-label={`Add ${session.title} to calendar`}
+                        >
+                          <CalendarPlus className="w-4 h-4" />
+                        </button>
+                      }
+                    />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-body font-medium text-[15px] text-[#1D1D1C] leading-tight truncate">{session.title}</p>
-                    <p className="font-body font-normal text-[12px] text-[#BDBDBD] mt-0.5">{session.description}</p>
-                    <p className="font-body font-normal text-[11px] text-[#BDBDBD] mt-1">{session.duration} · {session.category}</p>
-                  </div>
-                </Link>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

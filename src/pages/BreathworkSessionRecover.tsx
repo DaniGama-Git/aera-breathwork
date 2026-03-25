@@ -75,6 +75,7 @@ const BreathworkSessionRecover = () => {
         <SessionList
           sessions={config.sessions}
           categoryImage={config.image}
+          categoryLabel={config.label}
           sessionRoute={config.sessionRoute}
           currentTitle="Evening Decompression"
         />

@@ -75,6 +75,7 @@ const BreathworkSessionReset = () => {
         <SessionList
           sessions={config.sessions}
           categoryImage={config.image}
+          categoryLabel={config.label}
           sessionRoute={config.sessionRoute}
           currentTitle="Context Switch"
         />
