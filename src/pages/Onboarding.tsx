@@ -70,13 +70,7 @@ const steps = [
   },
 ];
 
-// Step 3 maps stress response → recommended session route
-const sessionMap: Record<string, string> = {
-  mind_races: "focus",
-  energy_drops: "activate",
-  carry_tension: "reset",
-  push_through: "recover",
-};
+// Scoring is now handled by deriveArchetype() in lib/archetypeScoring.ts
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -96,8 +90,8 @@ const Onboarding = () => {
     if (!hasAllAnswers) return;
 
     setSaving(true);
-    const recommendedSession = sessionMap[answers.stress_response] || "activate";
-    const recommendedTime = answers.performance_timing || "start_of_day";
+    const { archetype, recommendedSession, recommendedFrequency, recommendedTime } =
+      deriveArchetype(answers);
 
     try {
       if (user) {
@@ -119,6 +113,8 @@ const Onboarding = () => {
             onboarding_completed: true,
             recommended_session: recommendedSession,
             recommended_time: recommendedTime,
+            stress_archetype: archetype,
+            recommended_frequency: recommendedFrequency,
           })
           .eq("user_id", user.id)
           .select("user_id");
@@ -137,6 +133,8 @@ const Onboarding = () => {
             onboarding_completed: true,
             recommended_session: recommendedSession,
             recommended_time: recommendedTime,
+            stress_archetype: archetype,
+            recommended_frequency: recommendedFrequency,
           });
 
           if (profileInsertError) throw profileInsertError;
