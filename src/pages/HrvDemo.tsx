@@ -173,6 +173,8 @@ const MetricCard = ({
 /* ─── Main Page ─── */
 const HrvDemo = () => {
   const navigate = useNavigate();
+  const [activePill, setActivePill] = useState("Days");
+  const data = timeRangeData[activePill];
 
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col" style={{ backgroundColor: "hsl(30, 15%, 95%)" }}>
@@ -189,25 +191,25 @@ const HrvDemo = () => {
       {/* Content */}
       <div className="flex-1 flex flex-col gap-3 px-4 md:px-8 pb-4 overflow-y-auto max-w-[960px] mx-auto w-full">
         <StressScoreGauge />
-        <HrvTrendCard />
+        <HrvTrendCard activePill={activePill} setActivePill={setActivePill} />
 
         {/* Metrics row */}
         <div className="flex gap-3">
           <MetricCard
             label="Resting Heart Rate"
-            value="74 ms"
-            change="+12 ms"
+            value={data.rhr}
+            change={data.rhrChange}
             changeColor="hsl(18, 78%, 55%)"
           />
           <MetricCard
             label="Heart Rate Variability"
-            value="36 ms"
+            value={data.hrvVal}
           />
           <MetricCard
             label="Respiratory Rate"
-            value="17.4 ms"
-            change="+2.6%"
-            changeColor="hsl(145, 60%, 36%)"
+            value={data.resp}
+            change={data.respChange}
+            changeColor={data.respChange.startsWith("+") ? "hsl(145, 60%, 36%)" : "hsl(0, 60%, 45%)"}
           />
         </div>
       </div>
