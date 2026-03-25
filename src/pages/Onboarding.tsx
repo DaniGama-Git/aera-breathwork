@@ -238,7 +238,7 @@ const Onboarding = () => {
         {currentStep > 0 && (
           <button
             onClick={() => setCurrentStep(currentStep - 1)}
-            className="mt-auto mb-10 text-white/30 text-sm font-body hover:text-white/50 transition-colors self-center"
+            className="mb-10 text-white/30 text-sm font-body hover:text-white/50 transition-colors self-center"
           >
             Go back
           </button>
