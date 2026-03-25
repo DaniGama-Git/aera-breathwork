@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import areaLogo from "@/assets/aera-logo.svg";
 import homeBg from "@/assets/home-bg.webp";
 import loadingIcon from "@/assets/loading-icon.png";
+import { deriveArchetype } from "@/lib/archetypeScoring";
 
 const steps = [
   {
