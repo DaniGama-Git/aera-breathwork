@@ -18,12 +18,13 @@ import BreathworkMenu from "./pages/BreathworkMenu.tsx";
 import SearchScreen from "./pages/SearchScreen.tsx";
 import Auth from "./pages/Auth.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
+import loadingIcon from "@/assets/loading-icon.png";
 
 const queryClient = new QueryClient();
 
 const LoadingSpinner = () => (
   <div className="min-h-screen bg-black flex items-center justify-center">
-    <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+    <img src={loadingIcon} alt="" className="w-12 h-12 animate-spin" />
   </div>
 );
 
