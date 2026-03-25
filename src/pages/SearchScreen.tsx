@@ -18,7 +18,6 @@ const allSessions = [
   { title: "Performance Reset", description: "Clear your head between tasks.", duration: "5 mins", category: "Reset", to: "/breathwork-session-reset", image: categoryReset },
   { title: "Focus Activation", description: "Calm down before you walk in.", duration: "5 mins", category: "Focus", to: "/breathwork-session-focus", image: categoryFocus },
   { title: "Deep Decompression", description: "Wind down after an intense day.", duration: "10 mins", category: "Recover", to: "/breathwork-session-recover", image: categoryRecover },
-  { title: "Context Switching", description: "Clear your head between tasks.", duration: "5 mins", category: "Reset", to: "/breathwork-session-reset", image: categoryReset },
 ];
 
 const RECENT_KEY = "aera_recent_searches";
