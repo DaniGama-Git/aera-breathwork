@@ -1,55 +1,33 @@
 
 
-## Plan: Full-screen recommendation + persistent menu banner with calendar scheduling
+## Plan: Auto-prefill recurring sessions in calendar dialog
 
-### Overview
-After onboarding completes, the user sees a full-screen recommendation screen showing their archetype and suggested weekly plan. They can schedule sessions from there or skip to the menu, where a persistent banner repeats the recommendation with a "Schedule Sessions" CTA.
+### What changes
+When the `AddToCalendar` component is opened from the recommendation screen or menu banner, it should:
 
-### Step 1: Create the Recommendation Screen (`/recommendation`)
+1. **Accept optional recommendation props**: `recommendedFrequency` (e.g. 4), `recommendedTime` (e.g. `"before_key_moments"` mapped to a default clock time like `"09:00"`)
+2. **Auto-generate a week of sessions**: Instead of picking a single date, the dialog pre-selects the next N weekdays (based on `recommendedFrequency`) starting from tomorrow, each at the recommended time
+3. **Show the pre-filled schedule as a list**: Display something like "Mon 09:00, Wed 09:00, Fri 09:00, ..." that the user can review before adding
+4. **Batch-add to calendar**: Each calendar action (Google, Outlook, .ics) creates all N events at once — Google/Outlook open multiple tabs, .ics generates a single file with multiple VEVENTs
 
-New page: `src/pages/Recommendation.tsx`
-- Full-screen dark overlay (matching onboarding aesthetic)
-- Fetches `stress_archetype`, `recommended_session`, `recommended_frequency`, `recommended_time` from the `profiles` table
-- Displays:
-  - Archetype name in friendly format (e.g. "You're a Deep Worker")
-  - Recommended category with its image (e.g. Focus card image)
-  - Frequency (e.g. "We recommend 4 Focus sessions per week")
-  - Best time (e.g. "Best time: Before key moments")
-- Two CTAs:
-  - "Schedule Sessions" -- opens the existing `AddToCalendar` dialog pre-filled with the recommended session details
-  - "Go to Menu" -- navigates to `/menu`
+### UI flow in the dialog
+- Replace the single date/time picker with a **summary view** showing the auto-generated schedule (e.g. "5x Focus sessions this week")
+- List each session date + time
+- Allow toggling individual sessions on/off
+- Keep the three calendar buttons (Google, Outlook, .ics) at the bottom
 
-### Step 2: Update routing and onboarding flow
+### Files to modify
+- **`src/components/AddToCalendar.tsx`**: Add `recommendedFrequency?` and `recommendedTime?` props. When provided, auto-calculate the next N dates spread across the week. Update `generateICS` to support multiple VEVENTs. Google/Outlook buttons loop through each date.
+- **`src/pages/Recommendation.tsx`**: Pass `recommendedFrequency` and `recommendedTime` to `AddToCalendar`
+- **`src/pages/BreathworkMenu.tsx`**: Same — pass recommendation props to the banner's `AddToCalendar`
 
-- Add `/recommendation` route in `App.tsx` as a `ProtectedRoute`
-- Change `Onboarding.tsx` line 144: navigate to `/recommendation` instead of `/menu`
-- The recommendation page is a one-time post-onboarding screen (not gated -- user can always navigate away)
+### Time mapping
+Map `recommended_time` values to sensible default clock times:
+- `start_of_day` → `"07:00"`
+- `before_key_moments` → `"09:00"`  
+- `between_meetings` → `"12:00"`
+- `end_of_day` → `"17:00"`
 
-### Step 3: Add persistent banner to BreathworkMenu
-
-In `src/pages/BreathworkMenu.tsx`:
-- Fetch the user's profile (`stress_archetype`, `recommended_session`, `recommended_frequency`, `recommended_time`) from the database
-- Render a dismissible banner card between the header and categories section:
-  - Rounded card (`rounded-xl`) with light background
-  - Shows: "4x Focus sessions per week" + "Best time: Before key moments"
-  - "Schedule Sessions" button opens `AddToCalendar`
-  - Dismiss (X) button hides the banner and saves `recommendation_dismissed` flag (stored in `localStorage` to avoid a schema change)
-- Only shown when `stress_archetype` exists and not dismissed
-
-### Step 4: Add `recommendation_dismissed` to profiles table (database migration)
-
-Add a `recommendation_dismissed` boolean column (default `false`) to the `profiles` table so the dismiss state persists across devices.
-
-### Files to create/modify
-- **Create**: `src/pages/Recommendation.tsx`
-- **Modify**: `src/App.tsx` (add route)
-- **Modify**: `src/pages/Onboarding.tsx` (redirect to `/recommendation`)
-- **Modify**: `src/pages/BreathworkMenu.tsx` (add banner)
-- **Database migration**: Add `recommendation_dismissed` column to `profiles`
-
-### Technical details
-- Archetype display names map: `{ pack_animal: "Pack Animal", deep_worker: "Deep Worker", anticipator: "Anticipator", sprinter: "Sprinter" }`
-- Category display names map: `{ activate: "Activate", focus: "Focus", reset: "Reset", recover: "Recover" }`
-- Recommended time display: `{ start_of_day: "Start of day", before_key_moments: "Before key moments", between_meetings: "Between meetings", end_of_day: "End of day" }`
-- Reuses existing `AddToCalendar` component and category images from `sessionData.ts`
+### Date selection logic
+Starting from tomorrow, pick the next N weekdays (Mon–Fri), evenly spaced. For example, frequency=3 → Mon, Wed, Fri. Frequency=5 → Mon–Fri.
 
