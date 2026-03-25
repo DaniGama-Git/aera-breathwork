@@ -1,9 +1,9 @@
-import { useState } from "react";
+/**
  * HrvDemo — Static demo page for HRV data visualization
  * Route: /hrv
- * Shows stress score gauge, HRV trend chart, and health metrics.
- * All data is hardcoded for demo purposes.
  */
+
+import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import BottomNavBar from "@/components/BottomNavBar";
