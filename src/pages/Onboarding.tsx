@@ -141,7 +141,7 @@ const Onboarding = () => {
         }
       }
 
-      navigate("/menu", { replace: true });
+      navigate("/recommendation", { replace: true });
     } catch (error) {
       console.error("Failed to complete onboarding:", error);
       setSaving(false);

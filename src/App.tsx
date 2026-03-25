@@ -18,6 +18,7 @@ import BreathworkMenu from "./pages/BreathworkMenu.tsx";
 import SearchScreen from "./pages/SearchScreen.tsx";
 import Auth from "./pages/Auth.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
+import Recommendation from "./pages/Recommendation.tsx";
 import loadingIcon from "@/assets/loading-icon.png";
 
 const queryClient = new QueryClient();
@@ -105,6 +106,7 @@ const App = () => (
           <Route path="/" element={<HomeScreen />} />
           <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
           <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+          <Route path="/recommendation" element={<ProtectedRoute><Recommendation /></ProtectedRoute>} />
           <Route path="/menu" element={<ProtectedRoute><BreathworkMenu /></ProtectedRoute>} />
           <Route path="/breathwork-session-activate" element={<ProtectedRoute><BreathworkSession /></ProtectedRoute>} />
           <Route path="/breathwork-session-recover" element={<ProtectedRoute><BreathworkSessionRecover /></ProtectedRoute>} />
