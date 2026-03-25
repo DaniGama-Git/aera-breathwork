@@ -16,10 +16,10 @@ import playIconSmall from "@/assets/play-icon-small.svg";
 import playIconLarge from "@/assets/play-icon-large.svg";
 
 const categories = [
-  { label: "Activate", image: categoryActivate, to: "/breathwork-session-activate" },
-  { label: "Reset", image: categoryReset, to: "/breathwork-session-reset" },
-  { label: "Focus", image: categoryFocus, to: "/breathwork-session-focus" },
-  { label: "Recover", image: categoryRecover, to: "/breathwork-session-recover" },
+  { label: "Activate", image: categoryActivate, to: "/category/activate" },
+  { label: "Reset", image: categoryReset, to: "/category/reset" },
+  { label: "Focus", image: categoryFocus, to: "/category/focus" },
+  { label: "Recover", image: categoryRecover, to: "/category/recover" },
 ];
 
 const favorites = [
