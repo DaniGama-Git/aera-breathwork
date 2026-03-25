@@ -141,7 +141,7 @@ const Onboarding = () => {
         }
       }
 
-      navigate(`/breathwork-session-${recommendedSession}`, { replace: true });
+      navigate("/menu", { replace: true });
     } catch (error) {
       console.error("Failed to complete onboarding:", error);
       setSaving(false);
