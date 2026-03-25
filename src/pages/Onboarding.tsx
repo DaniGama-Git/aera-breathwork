@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import areaLogo from "@/assets/aera-logo.svg";
 import homeBg from "@/assets/home-bg.webp";
+import loadingIcon from "@/assets/loading-icon.png";
 
 const steps = [
   {
@@ -226,7 +227,7 @@ const Onboarding = () => {
               >
                 {saving ? (
                   <span className="flex items-center justify-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <img src={loadingIcon} alt="" className="w-4 h-4 animate-spin" />
                     Finishing…
                   </span>
                 ) : (
