@@ -33,7 +33,7 @@ const steps = [
   {
     title: "When stress hits, what happens?",
     subtitle: "Stress Response",
-    insight: "We'll match you with the right breathwork protocol — activate, focus, reset, or recover.",
+    insight: "We'll match you with the right breathwork protocol.",
     key: "stress_response",
     options: [
       { label: "Mind races, can't focus", value: "mind_races" },
