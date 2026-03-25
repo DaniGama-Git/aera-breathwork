@@ -1,14 +1,16 @@
 /**
- * AddToCalendar — Dialog component for scheduling a breathwork session
+ * AddToCalendar — Dialog component for scheduling breathwork sessions
  * to Google Calendar, Microsoft Outlook, or .ics download.
+ * Supports single-session and batch recurring scheduling.
  */
 
-import { useState } from "react";
-import { format } from "date-fns";
+import { useState, useMemo } from "react";
+import { format, addDays, getDay } from "date-fns";
 import { CalendarIcon, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "@/components/ui/sonner";
 import { Calendar } from "@/components/ui/calendar";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -29,9 +31,18 @@ interface AddToCalendarProps {
   sessionCategory: string;
   durationMinutes: number;
   trigger?: React.ReactNode;
+  recommendedFrequency?: number;
+  recommendedTime?: string;
 }
 
-/** Format a Date + time string to a Google Calendar datetime string (YYYYMMDDTHHmmss) */
+const TIME_MAP: Record<string, string> = {
+  start_of_day: "07:00",
+  before_key_moments: "09:00",
+  between_meetings: "12:00",
+  end_of_day: "17:00",
+};
+
+/** Format a Date + time string to a Google Calendar datetime string */
 function toCalendarDatetime(date: Date, time: string): string {
   const [h, m] = time.split(":").map(Number);
   const d = new Date(date);
@@ -47,11 +58,7 @@ function getEndDatetime(date: Date, time: string, durationMinutes: number): stri
 }
 
 function escapeIcsText(value: string): string {
-  return value
-    .replace(/\\/g, "\\\\")
-    .replace(/\n/g, "\\n")
-    .replace(/,/g, "\\,")
-    .replace(/;/g, "\\;");
+  return value.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
 }
 
 function openExternalCalendarLink(url: string): boolean {
@@ -61,116 +68,156 @@ function openExternalCalendarLink(url: string): boolean {
   return true;
 }
 
-function buildGoogleCalendarUrl(
-  title: string,
-  description: string,
-  date: Date,
-  time: string,
-  durationMinutes: number,
-): string {
+function buildGoogleCalendarUrl(title: string, description: string, date: Date, time: string, durationMinutes: number): string {
   const start = toCalendarDatetime(date, time);
   const end = getEndDatetime(date, time, durationMinutes);
-  const params = new URLSearchParams({
-    action: "TEMPLATE",
-    text: title,
-    details: description,
-    dates: `${start}/${end}`,
-  });
+  const params = new URLSearchParams({ action: "TEMPLATE", text: title, details: description, dates: `${start}/${end}` });
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
-function buildOutlookUrl(
-  title: string,
-  description: string,
-  date: Date,
-  time: string,
-  durationMinutes: number,
-): string {
+function buildOutlookUrl(title: string, description: string, date: Date, time: string, durationMinutes: number): string {
   const [h, m] = time.split(":").map(Number);
   const start = new Date(date);
   start.setHours(h, m, 0, 0);
   const end = new Date(start);
   end.setMinutes(end.getMinutes() + durationMinutes);
-
   const params = new URLSearchParams({
-    path: "/calendar/action/compose",
-    rru: "addevent",
-    subject: title,
-    body: description,
-    startdt: start.toISOString(),
-    enddt: end.toISOString(),
-    reminderminutesbeforestart: "5",
+    path: "/calendar/action/compose", rru: "addevent", subject: title, body: description,
+    startdt: start.toISOString(), enddt: end.toISOString(), reminderminutesbeforestart: "5",
   });
-
   return `https://outlook.office.com/calendar/0/deeplink/compose?${params.toString()}`;
 }
 
-function generateICS(
-  title: string,
-  description: string,
-  sessionLink: string,
-  date: Date,
-  time: string,
-  durationMinutes: number,
-): string {
-  const start = toCalendarDatetime(date, time);
-  const end = getEndDatetime(date, time, durationMinutes);
-
-  return [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Aera//Breathwork//EN",
-    "BEGIN:VEVENT",
-    `DTSTART:${start}`,
-    `DTEND:${end}`,
-    `SUMMARY:${escapeIcsText(title)}`,
-    `DESCRIPTION:${escapeIcsText(description)}`,
-    `URL:${escapeIcsText(sessionLink)}`,
-    "BEGIN:VALARM",
-    "TRIGGER:-PT5M",
-    "ACTION:DISPLAY",
-    "DESCRIPTION:Session starting in 5 minutes",
-    "END:VALARM",
-    "END:VEVENT",
-    "END:VCALENDAR",
-  ].join("\r\n");
+function generateMultiICS(events: { title: string; description: string; sessionLink: string; date: Date; time: string; durationMinutes: number }[]): string {
+  const vevents = events.map((e) => {
+    const start = toCalendarDatetime(e.date, e.time);
+    const end = getEndDatetime(e.date, e.time, e.durationMinutes);
+    return [
+      "BEGIN:VEVENT",
+      `DTSTART:${start}`,
+      `DTEND:${end}`,
+      `SUMMARY:${escapeIcsText(e.title)}`,
+      `DESCRIPTION:${escapeIcsText(e.description)}`,
+      `URL:${escapeIcsText(e.sessionLink)}`,
+      "BEGIN:VALARM", "TRIGGER:-PT5M", "ACTION:DISPLAY", "DESCRIPTION:Session starting in 5 minutes", "END:VALARM",
+      "END:VEVENT",
+    ].join("\r\n");
+  });
+  return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Aera//Breathwork//EN", ...vevents, "END:VCALENDAR"].join("\r\n");
 }
 
-function downloadICS(
-  title: string,
-  description: string,
-  sessionLink: string,
-  date: Date,
-  time: string,
-  durationMinutes: number,
-) {
-  const ics = generateICS(title, description, sessionLink, date, time, durationMinutes);
-  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+function downloadICSBlob(icsContent: string, filename: string) {
+  const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `${title.replace(/\s+/g, "-").toLowerCase()}.ics`;
+  a.download = filename;
   a.click();
   URL.revokeObjectURL(url);
 }
 
+/** Pick N weekdays evenly spread across Mon-Fri starting from tomorrow */
+function pickWeekdays(frequency: number): Date[] {
+  const tomorrow = addDays(new Date(), 1);
+  const weekdays: Date[] = [];
+  let cursor = tomorrow;
+  // Collect next 7 weekdays
+  while (weekdays.length < 7) {
+    const dow = getDay(cursor);
+    if (dow >= 1 && dow <= 5) weekdays.push(new Date(cursor));
+    cursor = addDays(cursor, 1);
+  }
+  if (frequency >= 5) return weekdays.slice(0, 5);
+  // Evenly space
+  const step = 5 / frequency;
+  const picked: Date[] = [];
+  for (let i = 0; i < frequency; i++) {
+    picked.push(weekdays[Math.min(Math.round(i * step), 4)]);
+  }
+  return picked;
+}
+
+const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 const AddToCalendar = ({
-  sessionTitle,
-  sessionSubtitle,
-  sessionCategory,
-  durationMinutes,
-  trigger,
+  sessionTitle, sessionSubtitle, sessionCategory, durationMinutes, trigger,
+  recommendedFrequency, recommendedTime,
 }: AddToCalendarProps) => {
+  const isRecurring = !!recommendedFrequency && recommendedFrequency > 0;
+  const defaultTime = (recommendedTime && TIME_MAP[recommendedTime]) || "09:00";
+
+  // Single-session state
   const [date, setDate] = useState<Date | undefined>(undefined);
-  const [time, setTime] = useState("09:00");
+  const [time, setTime] = useState(defaultTime);
+
+  // Recurring state
+  const generatedDates = useMemo(() => (isRecurring ? pickWeekdays(recommendedFrequency!) : []), [recommendedFrequency, isRecurring]);
+  const [enabledDates, setEnabledDates] = useState<boolean[]>(() => generatedDates.map(() => true));
+
   const [open, setOpen] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<string>("");
+  const [statusMessage, setStatusMessage] = useState("");
 
   const sessionLink = `https://aera-breathwork.lovable.app${window.location.pathname}`;
   const description = `${sessionCategory} Breathwork: ${sessionSubtitle} (${durationMinutes} min)\n\nOpen session: ${sessionLink}`;
   const eventTitle = `Āera — ${sessionTitle}`;
 
-  const isReady = !!date;
+  const toggleDate = (idx: number) => {
+    setEnabledDates((prev) => { const next = [...prev]; next[idx] = !next[idx]; return next; });
+  };
+
+  const activeDates = generatedDates.filter((_, i) => enabledDates[i]);
+  const isReady = isRecurring ? activeDates.length > 0 : !!date;
+
+  const handleGoogle = () => {
+    if (isRecurring) {
+      let blocked = false;
+      activeDates.forEach((d) => {
+        if (!openExternalCalendarLink(buildGoogleCalendarUrl(eventTitle, description, d, defaultTime, durationMinutes))) blocked = true;
+      });
+      if (blocked) { toast.error("Some popups were blocked. Please allow popups."); return; }
+      setOpen(false);
+      toast.success(`${activeDates.length} sessions added to Google Calendar.`);
+    } else {
+      if (!date) return;
+      if (!openExternalCalendarLink(buildGoogleCalendarUrl(eventTitle, description, date, time, durationMinutes))) {
+        toast.error("Popup blocked. Please allow popups and try again."); return;
+      }
+      setOpen(false);
+      toast.success("Google Calendar opened.");
+    }
+  };
+
+  const handleOutlook = () => {
+    if (isRecurring) {
+      let blocked = false;
+      activeDates.forEach((d) => {
+        if (!openExternalCalendarLink(buildOutlookUrl(eventTitle, description, d, defaultTime, durationMinutes))) blocked = true;
+      });
+      if (blocked) { toast.error("Some popups were blocked. Please allow popups."); return; }
+      setOpen(false);
+      toast.success(`${activeDates.length} sessions added to Outlook Calendar.`);
+    } else {
+      if (!date) return;
+      if (!openExternalCalendarLink(buildOutlookUrl(eventTitle, description, date, time, durationMinutes))) {
+        toast.error("Popup blocked. Please allow popups and try again."); return;
+      }
+      setOpen(false);
+      toast.success("Outlook Calendar opened.");
+    }
+  };
+
+  const handleICS = () => {
+    if (isRecurring) {
+      const events = activeDates.map((d) => ({ title: eventTitle, description, sessionLink, date: d, time: defaultTime, durationMinutes }));
+      downloadICSBlob(generateMultiICS(events), `${sessionTitle.replace(/\s+/g, "-").toLowerCase()}-schedule.ics`);
+      toast.success(`${activeDates.length} sessions downloaded as .ics`, { duration: 10000 });
+    } else {
+      if (!date) return;
+      const ics = generateMultiICS([{ title: eventTitle, description, sessionLink, date, time, durationMinutes }]);
+      downloadICSBlob(ics, `${sessionTitle.replace(/\s+/g, "-").toLowerCase()}.ics`);
+      toast.success("ICS downloaded with a 5-minute reminder and session link.", { duration: 10000 });
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -189,10 +236,10 @@ const AddToCalendar = ({
       <DialogContent className="max-w-[360px] bg-[#1D1D1C] border-white/10 text-white rounded-2xl p-0 gap-0">
         <DialogHeader className="px-5 pt-5 pb-3">
           <DialogTitle className="font-body text-lg font-semibold text-white">
-            Schedule Session
+            {isRecurring ? "Schedule Your Week" : "Schedule Session"}
           </DialogTitle>
           <DialogDescription className="sr-only">
-            Pick a date and time, then add this session to your calendar.
+            {isRecurring ? "Review and add your recommended sessions to your calendar." : "Pick a date and time, then add this session to your calendar."}
           </DialogDescription>
           <p className="text-white/50 text-sm font-display mt-1">
             {sessionCategory} · {sessionTitle}
@@ -200,77 +247,85 @@ const AddToCalendar = ({
         </DialogHeader>
 
         <div className="px-5 pb-5 space-y-4">
-          {/* Date picker */}
-          <div className="space-y-1.5">
-            <label className="text-xs text-white/50 font-display">Date</label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <button
-                  type="button"
-                  className={cn(
-                    "w-full h-10 px-3 rounded-md inline-flex items-center justify-start text-left font-normal bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:text-white",
-                    !date && "text-white/40",
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? format(date, "EEE, MMM d, yyyy") : "Pick a date"}
-                </button>
-              </PopoverTrigger>
-              <PopoverContent
-                className="w-auto p-0 bg-[#1D1D1C] border-white/10"
-                align="start"
-              >
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
-                  initialFocus
-                  className="p-3 pointer-events-auto text-white"
+          {isRecurring ? (
+            /* Recurring schedule view */
+            <>
+              <p className="text-white/60 text-xs font-display">
+                {activeDates.length} session{activeDates.length !== 1 ? "s" : ""} · {defaultTime} · {durationMinutes} min each
+              </p>
+              <div className="space-y-2">
+                {generatedDates.map((d, i) => (
+                  <label
+                    key={i}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-colors",
+                      enabledDates[i] ? "bg-white/10" : "bg-white/5 opacity-50",
+                    )}
+                  >
+                    <Checkbox
+                      checked={enabledDates[i]}
+                      onCheckedChange={() => toggleDate(i)}
+                      className="border-white/30 data-[state=checked]:bg-white data-[state=checked]:text-[#1D1D1C]"
+                    />
+                    <span className="font-body text-sm text-white">
+                      {DAY_NAMES[getDay(d)]}, {format(d, "MMM d")}
+                    </span>
+                    <span className="ml-auto text-white/40 font-body text-xs">{defaultTime}</span>
+                  </label>
+                ))}
+              </div>
+            </>
+          ) : (
+            /* Single session view */
+            <>
+              <div className="space-y-1.5">
+                <label className="text-xs text-white/50 font-display">Date</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button
+                      type="button"
+                      className={cn(
+                        "w-full h-10 px-3 rounded-md inline-flex items-center justify-start text-left font-normal bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:text-white",
+                        !date && "text-white/40",
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {date ? format(date, "EEE, MMM d, yyyy") : "Pick a date"}
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 bg-[#1D1D1C] border-white/10" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={setDate}
+                      disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                      initialFocus
+                      className="p-3 pointer-events-auto text-white"
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs text-white/50 font-display">Time</label>
+                <input
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  className="w-full h-10 px-3 rounded-md bg-white/5 border border-white/10 text-white font-body text-sm focus:outline-none focus:ring-1 focus:ring-white/30"
                 />
-              </PopoverContent>
-            </Popover>
-          </div>
-
-          {/* Time picker */}
-          <div className="space-y-1.5">
-            <label className="text-xs text-white/50 font-display">Time</label>
-            <input
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              className="w-full h-10 px-3 rounded-md bg-white/5 border border-white/10 text-white font-body text-sm focus:outline-none focus:ring-1 focus:ring-white/30"
-            />
-          </div>
-
-          {/* Duration display */}
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-white/50 font-display">Duration</span>
-            <span className="text-white font-display">{durationMinutes} min</span>
-          </div>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-white/50 font-display">Duration</span>
+                <span className="text-white font-display">{durationMinutes} min</span>
+              </div>
+            </>
+          )}
 
           {/* Calendar buttons */}
           <div className="space-y-2 pt-2">
             <button
               disabled={!isReady}
-              onClick={() => {
-                if (!date) return;
-
-                const opened = openExternalCalendarLink(
-                  buildGoogleCalendarUrl(eventTitle, description, date, time, durationMinutes),
-                );
-
-                if (!opened) {
-                  const msg = "Popup blocked. Please allow popups and try again.";
-                  setStatusMessage(msg);
-                  toast.error(msg);
-                  return;
-                }
-
-                setOpen(false);
-                setStatusMessage("Google Calendar opened in a new tab.");
-                toast.success("Google Calendar opened.");
-              }}
+              onClick={handleGoogle}
               className="w-full h-11 rounded-xl bg-white text-[#1D1D1C] font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/90 transition-colors"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -284,24 +339,7 @@ const AddToCalendar = ({
 
             <button
               disabled={!isReady}
-              onClick={() => {
-                if (!date) return;
-
-                const opened = openExternalCalendarLink(
-                  buildOutlookUrl(eventTitle, description, date, time, durationMinutes),
-                );
-
-                if (!opened) {
-                  const msg = "Popup blocked. Please allow popups and try again.";
-                  setStatusMessage(msg);
-                  toast.error(msg);
-                  return;
-                }
-
-                setOpen(false);
-                setStatusMessage("Outlook Calendar opened in a new tab.");
-                toast.success("Outlook Calendar opened.");
-              }}
+              onClick={handleOutlook}
               className="w-full h-11 rounded-xl bg-[#0078D4] text-white font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#0078D4]/90 transition-colors"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -313,13 +351,7 @@ const AddToCalendar = ({
 
             <button
               disabled={!isReady}
-              onClick={() => {
-                if (!date) return;
-                const msg = "ICS downloaded with a 5-minute reminder and session link.";
-                setStatusMessage(msg);
-                toast.success(msg, { duration: 10000 });
-                downloadICS(eventTitle, description, sessionLink, date, time, durationMinutes);
-              }}
+              onClick={handleICS}
               className="w-full h-11 rounded-xl bg-white/10 text-white font-body font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/15 transition-colors"
             >
               <CalendarIcon className="w-4 h-4" />
