@@ -1,33 +1,32 @@
 
 
-## Plan: Auto-prefill recurring sessions in calendar dialog
+## Problem
 
-### What changes
-When the `AddToCalendar` component is opened from the recommendation screen or menu banner, it should:
+When clicking "Google Calendar" for recurring sessions, the code tries to open multiple popups (one per date) via `window.open`. Browsers block all popups after the first one, so only one day gets through -- the session replay confirms "Some popups were blocked."
 
-1. **Accept optional recommendation props**: `recommendedFrequency` (e.g. 4), `recommendedTime` (e.g. `"before_key_moments"` mapped to a default clock time like `"09:00"`)
-2. **Auto-generate a week of sessions**: Instead of picking a single date, the dialog pre-selects the next N weekdays (based on `recommendedFrequency`) starting from tomorrow, each at the recommended time
-3. **Show the pre-filled schedule as a list**: Display something like "Mon 09:00, Wed 09:00, Fri 09:00, ..." that the user can review before adding
-4. **Batch-add to calendar**: Each calendar action (Google, Outlook, .ics) creates all N events at once — Google/Outlook open multiple tabs, .ics generates a single file with multiple VEVENTs
+Opening multiple tabs is not a viable approach for Google/Outlook Calendar links.
 
-### UI flow in the dialog
-- Replace the single date/time picker with a **summary view** showing the auto-generated schedule (e.g. "5x Focus sessions this week")
-- List each session date + time
-- Allow toggling individual sessions on/off
-- Keep the three calendar buttons (Google, Outlook, .ics) at the bottom
+## Solution
+
+For Google and Outlook recurring sessions, instead of opening N popups, **download a single .ics file containing all N events**. This is the same approach already used by the "Download .ics" button and works reliably without popup blockers.
+
+The Google and Outlook buttons will still be shown for **single-session** mode (no recurring props). For recurring mode, simplify to a single "Add All to Calendar" button that downloads one .ics file with all sessions, which works with Google Calendar, Outlook, Apple Calendar, etc.
+
+### Changes to `src/components/AddToCalendar.tsx`
+
+1. **Recurring mode**: Replace the three separate buttons (Google, Outlook, .ics) with a single "Download Schedule (.ics)" button that generates one multi-event .ics file
+2. Alternatively, keep all three buttons but change Google/Outlook handlers to also download the .ics file instead of trying to open multiple popups, with a toast explaining to import the file into their calendar
+3. Remove the `openExternalCalendarLink` loop logic for recurring mode
+
+### Recommended approach
+
+Keep the three buttons for visual consistency, but for recurring mode:
+- **Google**: Download the .ics file + show toast "Import this file into Google Calendar (Settings > Import)"
+- **Outlook**: Download the .ics file + show toast "Import this file into Outlook (File > Import)"  
+- **.ics**: Same as current behavior
+
+This avoids popup blocking entirely while giving users clear instructions.
 
 ### Files to modify
-- **`src/components/AddToCalendar.tsx`**: Add `recommendedFrequency?` and `recommendedTime?` props. When provided, auto-calculate the next N dates spread across the week. Update `generateICS` to support multiple VEVENTs. Google/Outlook buttons loop through each date.
-- **`src/pages/Recommendation.tsx`**: Pass `recommendedFrequency` and `recommendedTime` to `AddToCalendar`
-- **`src/pages/BreathworkMenu.tsx`**: Same — pass recommendation props to the banner's `AddToCalendar`
-
-### Time mapping
-Map `recommended_time` values to sensible default clock times:
-- `start_of_day` → `"07:00"`
-- `before_key_moments` → `"09:00"`  
-- `between_meetings` → `"12:00"`
-- `end_of_day` → `"17:00"`
-
-### Date selection logic
-Starting from tomorrow, pick the next N weekdays (Mon–Fri), evenly spaced. For example, frequency=3 → Mon, Wed, Fri. Frequency=5 → Mon–Fri.
+- `src/components/AddToCalendar.tsx` -- update `handleGoogle` and `handleOutlook` for recurring mode to use .ics download instead of multiple popups
 
