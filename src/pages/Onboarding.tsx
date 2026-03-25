@@ -221,7 +221,7 @@ const Onboarding = () => {
           <button
             onClick={completeOnboarding}
             disabled={saving}
-            className="mt-auto mb-2 self-center text-white/60 font-body text-[14px] underline underline-offset-4 decoration-white/30 transition-all duration-300 hover:text-white/90 hover:decoration-white/60 disabled:opacity-30 disabled:cursor-not-allowed"
+            className="mt-auto mb-4 self-center text-white/60 font-body text-[14px] underline underline-offset-4 decoration-white/30 transition-all duration-300 hover:text-white/90 hover:decoration-white/60 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             {saving ? (
               <span className="flex items-center justify-center gap-2">
