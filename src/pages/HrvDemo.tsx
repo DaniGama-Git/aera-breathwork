@@ -149,23 +149,27 @@ const HrvTrendCard = ({ activePill, setActivePill }: { activePill: string; setAc
 const MetricCard = ({
   label,
   value,
+  unit = "ms",
   change,
   changeColor,
 }: {
   label: string;
   value: string;
+  unit?: string;
   change?: string;
   changeColor?: string;
 }) => (
-  <div className="bg-card rounded-2xl p-4 flex flex-col flex-1 min-w-0 min-h-[100px]">
-    <span className="font-body text-[11px] text-muted-foreground leading-tight">{label}</span>
-    <div className="mt-auto">
-      <span className="font-display text-[20px] font-light text-foreground leading-none block">{value}</span>
-      {change && (
-        <span className="font-body text-[11px] font-medium mt-1 block" style={{ color: changeColor }}>
+  <div className="bg-card rounded-2xl p-4 flex flex-col flex-1 min-w-0">
+    <span className="font-body text-[11px] text-muted-foreground leading-tight min-h-[28px]">{label}</span>
+    <div className="mt-auto pt-2">
+      <span className="font-display text-[20px] font-light text-foreground leading-none block">{value} <span className="text-[13px]">{unit}</span></span>
+    </div>
+    <div className="h-[18px] mt-1">
+      {change ? (
+        <span className="font-body text-[11px] font-medium block" style={{ color: changeColor }}>
           {change}
         </span>
-      )}
+      ) : null}
     </div>
   </div>
 );
@@ -177,9 +181,9 @@ const HrvDemo = () => {
   const data = timeRangeData[activePill];
 
   return (
-    <div className="relative w-full mx-auto min-h-screen flex flex-col" style={{ backgroundColor: "hsl(30, 15%, 95%)" }}>
+    <div className="relative w-full mx-auto h-screen flex flex-col" style={{ backgroundColor: "hsl(30, 15%, 95%)" }}>
       {/* Header */}
-      <div className="flex items-center px-5 pt-14 pb-4">
+      <div className="shrink-0 flex items-center px-5 pt-14 pb-4">
         <button onClick={() => navigate(-1)} className="p-1 -ml-1">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M15 18l-6-6 6-6" stroke="hsl(var(--foreground))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -188,29 +192,34 @@ const HrvDemo = () => {
         <h1 className="flex-1 text-center font-body text-[17px] font-medium text-foreground -ml-6">Your HRV</h1>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 flex flex-col gap-3 px-4 md:px-8 pb-4 overflow-y-auto max-w-[960px] mx-auto w-full">
-        <StressScoreGauge />
-        <HrvTrendCard activePill={activePill} setActivePill={setActivePill} />
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto min-h-0">
+        <div className="flex flex-col gap-3 px-4 md:px-8 pb-28 max-w-[960px] mx-auto w-full">
+          <StressScoreGauge />
+          <HrvTrendCard activePill={activePill} setActivePill={setActivePill} />
 
-        {/* Metrics row */}
-        <div className="flex gap-3">
-          <MetricCard
-            label="Resting Heart Rate"
-            value={data.rhr}
-            change={data.rhrChange}
-            changeColor="hsl(18, 78%, 55%)"
-          />
-          <MetricCard
-            label="Heart Rate Variability"
-            value={data.hrvVal}
-          />
-          <MetricCard
-            label="Respiratory Rate"
-            value={data.resp}
-            change={data.respChange}
-            changeColor={data.respChange.startsWith("+") ? "hsl(145, 60%, 36%)" : "hsl(0, 60%, 45%)"}
-          />
+          {/* Metrics row */}
+          <div className="flex gap-3">
+            <MetricCard
+              label="Resting Heart Rate"
+              value={data.rhr.replace(" ms", "")}
+              unit="ms"
+              change={data.rhrChange}
+              changeColor="hsl(18, 78%, 55%)"
+            />
+            <MetricCard
+              label="Heart Rate Variability"
+              value={data.hrvVal.replace(" ms", "")}
+              unit="ms"
+            />
+            <MetricCard
+              label="Respiratory Rate"
+              value={data.resp}
+              unit="bpm"
+              change={data.respChange}
+              changeColor={data.respChange.startsWith("+") ? "hsl(145, 60%, 36%)" : "hsl(0, 60%, 45%)"}
+            />
+          </div>
         </div>
       </div>
 
@@ -218,7 +227,7 @@ const HrvDemo = () => {
       <BottomNavBar activeTab="Science" />
 
       {/* iOS indicator */}
-      <div className="flex justify-center pb-2">
+      <div className="shrink-0 flex justify-center pb-2">
         <img src={homeIndicator} alt="" className="h-[5px] w-36 opacity-70" aria-hidden="true" />
       </div>
     </div>
