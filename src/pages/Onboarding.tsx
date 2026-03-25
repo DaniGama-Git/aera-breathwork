@@ -84,37 +84,78 @@ const Onboarding = () => {
   const [saving, setSaving] = useState(false);
 
   const step = steps[currentStep];
+  const isLastStep = currentStep === steps.length - 1;
+
+  const completeOnboarding = async () => {
+    if (saving) return;
+
+    const requiredKeys = steps.map((s) => s.key);
+    const hasAllAnswers = requiredKeys.every((key) => Boolean(answers[key]));
+    if (!hasAllAnswers) return;
+
+    setSaving(true);
+    const recommendedSession = sessionMap[answers.stress_response] || "activate";
+    const recommendedTime = answers.performance_timing || "start_of_day";
+
+    try {
+      if (user) {
+        const onboardingPromise = supabase.from("onboarding_answers").upsert(
+          {
+            user_id: user.id,
+            role_context: answers.role_context,
+            pressure_pattern: answers.pressure_pattern,
+            stress_response: answers.stress_response,
+            performance_timing: answers.performance_timing,
+            outcome_anchor: answers.outcome_anchor,
+          },
+          { onConflict: "user_id" }
+        );
+
+        const profileUpdatePromise = supabase
+          .from("profiles")
+          .update({
+            onboarding_completed: true,
+            recommended_session: recommendedSession,
+            recommended_time: recommendedTime,
+          })
+          .eq("user_id", user.id)
+          .select("user_id");
+
+        const [onboardingResult, profileUpdateResult] = await Promise.all([
+          onboardingPromise,
+          profileUpdatePromise,
+        ]);
+
+        if (onboardingResult.error) throw onboardingResult.error;
+        if (profileUpdateResult.error) throw profileUpdateResult.error;
+
+        if (!profileUpdateResult.data?.length) {
+          const { error: profileInsertError } = await supabase.from("profiles").insert({
+            user_id: user.id,
+            onboarding_completed: true,
+            recommended_session: recommendedSession,
+            recommended_time: recommendedTime,
+          });
+
+          if (profileInsertError) throw profileInsertError;
+        }
+      }
+
+      navigate(`/breathwork-session-${recommendedSession}`, { replace: true });
+    } catch (error) {
+      console.error("Failed to complete onboarding:", error);
+      setSaving(false);
+    }
+  };
 
   const selectOption = async (value: string) => {
     const newAnswers = { ...answers, [step.key]: value };
     setAnswers(newAnswers);
 
     if (currentStep < steps.length - 1) {
-      setTimeout(() => setCurrentStep(currentStep + 1), 300);
-    } else {
-      // Final step — save and navigate
-      setSaving(true);
-      const recommendedSession = sessionMap[newAnswers.stress_response] || "activate";
-      const recommendedTime = newAnswers.performance_timing || "start_of_day";
-
-      if (user) {
-        await supabase.from("onboarding_answers").upsert({
-          user_id: user.id,
-          role_context: newAnswers.role_context,
-          pressure_pattern: newAnswers.pressure_pattern,
-          stress_response: newAnswers.stress_response,
-          performance_timing: newAnswers.performance_timing,
-          outcome_anchor: newAnswers.outcome_anchor,
-        }, { onConflict: "user_id" });
-
-        await supabase.from("profiles").update({
-          onboarding_completed: true,
-          recommended_session: recommendedSession,
-          recommended_time: recommendedTime,
-        }).eq("user_id", user.id);
-      }
-
-      navigate(`/breathwork-session-${recommendedSession}`);
+      setTimeout(() => {
+        setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+      }, 300);
     }
   };
 
@@ -175,6 +216,16 @@ const Onboarding = () => {
             );
           })}
         </div>
+
+        {isLastStep && (
+          <button
+            onClick={completeOnboarding}
+            disabled={saving || !answers[step.key]}
+            className="mt-6 w-full rounded-2xl px-5 py-4 bg-white text-black font-body text-[15px] font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {saving ? "Finishing..." : "Take me to my suggested session"}
+          </button>
+        )}
 
         {/* Back button */}
         {currentStep > 0 && (
