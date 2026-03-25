@@ -1,11 +1,12 @@
 /**
- * HomeScreen — Landing screen for the Āera app
+ * HomeScreen — Public landing screen for the Āera app
  * Route: /
  * Shows logo, tagline, category pills, and a CTA button.
- * Background uses the warm gradient home-bg image.
+ * No auth required. CTA routes to /auth or /menu based on auth state.
  */
 
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import homeBg from "@/assets/home-bg.webp";
 import activateIcon from "@/assets/activate-icon.svg";
 import resetIcon from "@/assets/reset-icon.svg";
@@ -14,33 +15,16 @@ import recoverIcon from "@/assets/recover-icon.svg";
 import aeraLogo from "@/assets/aera-logo.svg";
 import homeIndicator from "@/assets/home-indicator.png";
 
-const recommendedCategory = (() => {
-  const h = new Date().getHours();
-  if (h >= 5 && h < 11) return "activate";
-  if (h >= 11 && h < 17) return "focus";
-  if (h >= 17 && h < 21) return "recover";
-  return "reset";
-})();
-
 const pills = [
-  { to: "/breathwork-session-activate", label: "Activate", icon: activateIcon },
-  { to: "/breathwork-session-reset", label: "Reset", icon: resetIcon },
-  { to: "/breathwork-session-focus", label: "Focus", icon: focusIcon },
-  { to: "/breathwork-session-recover", label: "Recover", icon: recoverIcon },
+  { label: "Activate", icon: activateIcon },
+  { label: "Reset", icon: resetIcon },
+  { label: "Focus", icon: focusIcon },
+  { label: "Recover", icon: recoverIcon },
 ];
-
-const categoryRoutes: Record<string, string> = {
-  activate: "/breathwork-session-activate",
-  focus: "/breathwork-session-focus",
-  recover: "/breathwork-session-recover",
-  reset: "/breathwork-session-reset",
-};
 
 function Pill({ label, icon }: { label: string; icon: string }) {
   return (
-    <div
-      className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full whitespace-nowrap"
-    >
+    <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full whitespace-nowrap">
       <img src={icon} alt="" className="h-4 shrink-0" />
       <span className="font-body font-normal text-white text-[16px]">{label}</span>
     </div>
@@ -48,6 +32,17 @@ function Pill({ label, icon }: { label: string; icon: string }) {
 }
 
 const HomeScreen = () => {
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
+  const handleCta = () => {
+    if (user) {
+      navigate("/menu");
+    } else {
+      navigate("/auth");
+    }
+  };
+
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       {/* Background */}
@@ -97,13 +92,14 @@ const HomeScreen = () => {
         <div className="flex-1" />
 
         {/* CTA Button */}
-        <Link
-          to="/menu"
-          className="flex items-center justify-center h-[clamp(48px,6.5vh,58px)] bg-[#F7F6F5] rounded-full font-body font-normal text-[#1D1D1C] no-underline"
+        <button
+          onClick={handleCta}
+          disabled={loading}
+          className="flex items-center justify-center h-[clamp(48px,6.5vh,58px)] bg-[#F7F6F5] rounded-full font-body font-normal text-[#1D1D1C] border-0 cursor-pointer"
           style={{ fontSize: "clamp(15px, 4vw, 17px)", letterSpacing: "0.02em" }}
         >
           Take a breath
-        </Link>
+        </button>
 
         {/* iOS Home Indicator */}
         <div className="flex justify-center pt-3">

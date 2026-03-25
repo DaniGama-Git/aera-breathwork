@@ -4,30 +4,22 @@
 
 import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import playButton from "@/assets/play-button.svg";
-import homeIndicator from "@/assets/home-indicator.png";
 import AnimatedWaveform from "@/components/AnimatedWaveform";
 import activateIcon from "@/assets/activate-icon.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
+import SessionList from "@/components/SessionList";
+import { categoryConfig } from "@/data/sessionData";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { Pause } from "lucide-react";
-/**
- * BreathworkSession — Main screen component
- * Route: /breathwork-session-activate
- * Screen 1 of 3 in the breathwork session flow.
- */
+
 const BreathworkSession = () => {
   const { isPlaying, toggle, timeDisplay, getFrequencyData } = useAudioPlayer("/audio/morning-reset-micro-practice.mp3");
+  const config = categoryConfig.activate;
+
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
-      {/* Background — full-bleed category gradient image */}
-      <img
-        src={activateGradientBg}
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover"
-        aria-hidden="true"
-      />
-      {/* Noise texture overlay — multitone noise, 15% opacity */}
+      <img src={activateGradientBg} alt="" className="absolute inset-0 w-full h-full object-cover" aria-hidden="true" />
       <div
         className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
         aria-hidden="true"
@@ -38,56 +30,30 @@ const BreathworkSession = () => {
         }}
       />
 
-      {/* Content overlay */}
-      <div className="relative z-10 flex flex-col min-h-screen max-w-[800px] mx-auto w-full">
-        {/* Top section — badge, title, subtitle */}
-        {/* Generous top padding to clear status bar area */}
+      <div className="relative z-10 flex flex-col min-h-screen max-w-[800px] mx-auto w-full overflow-y-auto">
         <div className="pt-20 px-6 flex flex-col items-start text-left">
-          {/* Badge row with calendar button */}
           <div className="flex items-center gap-3 mb-5">
             <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full">
               <img src={activateIcon} alt="" className="h-4 shrink-0" />
               <span className="font-display font-normal text-white text-[16px]">Activate</span>
             </div>
-            <AddToCalendar
-              sessionTitle="Mid-Day Energy Boost"
-              sessionSubtitle="Counter the afternoon energy dip."
-              sessionCategory="Activate"
-              durationMinutes={3}
-            />
+            <AddToCalendar sessionTitle="Mid-Day Energy Boost" sessionSubtitle="Counter the afternoon energy dip." sessionCategory="Activate" durationMinutes={3} />
           </div>
-
-          {/* Session title — Neue Haas Grotesk Display Round 65 Medium */}
-          <h1
-            className="text-white font-body font-semibold mb-3"
-            style={{ fontSize: "34px", lineHeight: "100%", letterSpacing: "-0.01em" }}
-          >
+          <h1 className="text-white font-body font-semibold mb-3" style={{ fontSize: "34px", lineHeight: "100%", letterSpacing: "-0.01em" }}>
             Mid-Day Energy Boost
           </h1>
-
-          {/* Session subtitle */}
-          <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
           <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
             Counter the afternoon energy dip.
           </p>
-          </p>
         </div>
 
-        {/* Center — audio waveform image asset (full width, vertically centered) */}
-        <div className="flex-1 flex items-center justify-center overflow-hidden px-0">
+        <div className="flex-1 flex items-center justify-center overflow-hidden px-0 min-h-[200px]">
           <AnimatedWaveform isPlaying={isPlaying} getFrequencyData={getFrequencyData} />
         </div>
 
-        {/* Bottom section — speaker info + play button */}
-        {/* Play button floats right, speaker info bottom-left, timer far right on second row */}
         <div className="px-6 pb-3">
-          {/* Play button row */}
           <div className="flex justify-end mb-4">
-            <button
-              className="transition-transform hover:scale-105 active:scale-95"
-              aria-label={isPlaying ? "Pause" : "Play breathwork session"}
-              onClick={toggle}
-            >
+            <button className="transition-transform hover:scale-105 active:scale-95" aria-label={isPlaying ? "Pause" : "Play breathwork session"} onClick={toggle}>
               {isPlaying ? (
                 <div className="w-[72px] h-[72px] rounded-full bg-white flex items-center justify-center">
                   <Pause className="w-8 h-8 text-black fill-black" />
@@ -97,8 +63,6 @@ const BreathworkSession = () => {
               )}
             </button>
           </div>
-
-          {/* Speaker info row */}
           <div className="mb-5">
             <span className="text-white font-body font-semibold text-xl block mb-1">Jamie</span>
             <div className="flex items-center justify-between text-white/50 text-sm">
@@ -108,10 +72,15 @@ const BreathworkSession = () => {
           </div>
         </div>
 
-        {/* Bottom navigation bar */}
-        <BottomNavBar />
+        {/* More sessions */}
+        <SessionList
+          sessions={config.sessions}
+          categoryImage={config.image}
+          sessionRoute={config.sessionRoute}
+          currentTitle="Mid-Day Energy Boost"
+        />
 
-        {/* Spacer for fixed nav bar */}
+        <BottomNavBar />
         <div className="h-24" />
       </div>
     </div>
