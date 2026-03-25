@@ -25,11 +25,15 @@ const categories = [
 const favorites = [
   { title: "Performance Reset", duration: "5 mins", to: "/breathwork-session-reset", image: categoryReset },
   { title: "Focus Activation", duration: "5 mins", to: "/breathwork-session-focus", image: categoryFocus },
+  { title: "Morning Ignition", duration: "5 mins", to: "/breathwork-session-activate", image: categoryActivate },
+  { title: "Evening Unwind", duration: "8 mins", to: "/breathwork-session-recover", image: categoryRecover },
 ];
 
 const recommendations = [
   { title: "Deep Decompression", duration: "10 mins", to: "/breathwork-session-recover", image: categoryActivate },
   { title: "Context Switching", duration: "5 mins", to: "/breathwork-session-reset", image: categoryReset },
+  { title: "Pre-Call Clarity", duration: "3 mins", to: "/breathwork-session-focus", image: categoryFocus },
+  { title: "Afternoon Boost", duration: "5 mins", to: "/breathwork-session-activate", image: categoryRecover },
 ];
 
 function getGreeting() {
