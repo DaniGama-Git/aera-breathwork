@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import HomeScreen from "./pages/HomeScreen.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -33,31 +33,39 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [onboardingChecked, setOnboardingChecked] = useState(false);
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
 
-  const checkOnboarding = useCallback(async (userId: string) => {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("onboarding_completed")
-      .eq("user_id", userId)
-      .maybeSingle();
-
-    if (error) {
-      setNeedsOnboarding(false);
-    } else {
-      setNeedsOnboarding(!data?.onboarding_completed);
-    }
-    setOnboardingChecked(true);
-  }, []);
-
   useEffect(() => {
     if (!user) {
       setNeedsOnboarding(false);
       setOnboardingChecked(true);
       return;
     }
-    // Re-check onboarding status every time the route changes
-    // This ensures that after completing onboarding, navigating to a new page won't loop back
-    checkOnboarding(user.id);
-  }, [user, location.pathname, checkOnboarding]);
+
+    let isActive = true;
+    setOnboardingChecked(false);
+
+    const checkOnboarding = async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("onboarding_completed")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (!isActive) return;
+
+      if (error) {
+        setNeedsOnboarding(false);
+      } else {
+        setNeedsOnboarding(!data?.onboarding_completed);
+      }
+      setOnboardingChecked(true);
+    };
+
+    void checkOnboarding();
+
+    return () => {
+      isActive = false;
+    };
+  }, [user, location.pathname]);
 
   if (loading || !onboardingChecked) return <LoadingSpinner />;
   if (!user) return <Navigate to="/auth" replace />;
