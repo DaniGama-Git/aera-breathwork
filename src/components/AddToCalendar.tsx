@@ -62,11 +62,11 @@ function escapeIcsText(value: string): string {
 }
 
 function openExternalCalendarLink(url: string): boolean {
-  const popup = window.open(url, "_blank", "noopener,noreferrer");
-  if (!popup) return false;
-  popup.opener = null;
-  // Bring focus back to Aera
-  window.focus();
+  const link = document.createElement("a");
+  link.href = url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.click();
   return true;
 }
 
