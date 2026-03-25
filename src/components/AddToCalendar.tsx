@@ -28,6 +28,7 @@ interface AddToCalendarProps {
   sessionSubtitle: string;
   sessionCategory: string;
   durationMinutes: number;
+  trigger?: React.ReactNode;
 }
 
 /** Format a Date + time string to a Google Calendar datetime string (YYYYMMDDTHHmmss) */
@@ -158,6 +159,7 @@ const AddToCalendar = ({
   sessionSubtitle,
   sessionCategory,
   durationMinutes,
+  trigger,
 }: AddToCalendarProps) => {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState("09:00");
@@ -173,13 +175,15 @@ const AddToCalendar = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button
-          className="inline-flex items-center gap-1.5 px-2.5 h-[25px] border border-white/40 rounded-full text-white/70 font-body font-normal text-[16px] transition-colors hover:bg-white/10 hover:text-white"
-          aria-label="Add to calendar"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          Add to Calendar
-        </button>
+        {trigger || (
+          <button
+            className="inline-flex items-center gap-1.5 px-2.5 h-[25px] border border-white/40 rounded-full text-white/70 font-body font-normal text-[16px] transition-colors hover:bg-white/10 hover:text-white"
+            aria-label="Add to calendar"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            Add to Calendar
+          </button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="max-w-[360px] bg-[#1D1D1C] border-white/10 text-white rounded-2xl p-0 gap-0">
