@@ -1,13 +1,11 @@
 /**
  * BreathworkMenu — Main browsing/home screen
  * Route: /menu
- * Shows greeting, search, category cards, favorites, and recommendations.
+ * Shows greeting, category cards, favorites, and recommendations.
  */
 
-import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Search } from "lucide-react";
 import categoryActivate from "@/assets/category-activate.webp";
 import categoryReset from "@/assets/category-reset.webp";
 import categoryFocus from "@/assets/category-focus.webp";
