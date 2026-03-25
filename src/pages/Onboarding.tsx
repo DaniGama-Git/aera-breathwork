@@ -217,32 +217,35 @@ const Onboarding = () => {
           })}
         </div>
 
-        {isLastStep && answers[step.key] && (
-          <button
-            onClick={completeOnboarding}
-            disabled={saving}
-            className="mt-auto mb-4 self-center text-white/60 font-body text-[14px] underline underline-offset-4 decoration-white/30 transition-all duration-300 hover:text-white/90 hover:decoration-white/60 disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            {saving ? (
-              <span className="flex items-center justify-center gap-2">
-                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Finishing…
-              </span>
-            ) : (
-              "Take me to my first session →"
+          <div className="mt-auto pt-6 pb-10 flex flex-col items-center gap-4">
+            {isLastStep && answers[step.key] && (
+              <button
+                onClick={completeOnboarding}
+                disabled={saving}
+                className="self-center text-white/60 font-body text-[14px] underline underline-offset-4 decoration-white/30 transition-all duration-300 hover:text-white/90 hover:decoration-white/60 disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                {saving ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Finishing…
+                  </span>
+                ) : (
+                  "Take me to my first session →"
+                )}
+              </button>
             )}
-          </button>
-        )}
 
-        {/* Back button */}
-        {currentStep > 0 && (
-          <button
-            onClick={() => setCurrentStep(currentStep - 1)}
-            className="mb-10 text-white/30 text-sm font-body hover:text-white/50 transition-colors self-center"
-          >
-            Go back
-          </button>
-        )}
+            {/* Back button */}
+            {currentStep > 0 && (
+              <button
+                onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 0))}
+                disabled={saving}
+                className="min-h-10 px-4 text-white/50 text-sm font-body hover:text-white/70 transition-colors self-center disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                Go back
+              </button>
+            )}
+          </div>
       </div>
       </div>
     </div>
