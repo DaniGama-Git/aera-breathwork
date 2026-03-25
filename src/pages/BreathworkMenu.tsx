@@ -15,14 +15,6 @@ import homeIndicator from "@/assets/home-indicator.png";
 import playIconSmall from "@/assets/play-icon-small.svg";
 import playIconLarge from "@/assets/play-icon-large.svg";
 
-const allSessions = [
-  { title: "Activate", description: "Counter the afternoon energy dip.", duration: "5 mins", category: "Activate", to: "/breathwork-session-activate", image: categoryActivate },
-  { title: "Performance Reset", description: "Clear your head between tasks.", duration: "5 mins", category: "Reset", to: "/breathwork-session-reset", image: categoryReset },
-  { title: "Focus Activation", description: "Calm down before you walk in.", duration: "5 mins", category: "Focus", to: "/breathwork-session-focus", image: categoryFocus },
-  { title: "Deep Decompression", description: "Wind down after an intense day.", duration: "10 mins", category: "Recover", to: "/breathwork-session-recover", image: categoryRecover },
-  { title: "Context Switching", description: "Clear your head between tasks.", duration: "5 mins", category: "Reset", to: "/breathwork-session-reset", image: categoryReset },
-];
-
 const categories = [
   { label: "Activate", image: categoryActivate, to: "/breathwork-session-activate" },
   { label: "Reset", image: categoryReset, to: "/breathwork-session-reset" },
@@ -49,23 +41,9 @@ function getGreeting() {
 
 const BreathworkMenu = () => {
   const { signOut, user } = useAuth();
-  const [query, setQuery] = useState("");
 
   const displayName = user?.user_metadata?.full_name?.split(" ")[0] || user?.user_metadata?.name?.split(" ")[0] || "there";
   const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
-
-  const isSearching = query.trim().length > 0;
-
-  const filteredSessions = useMemo(() => {
-    if (!isSearching) return [];
-    const q = query.toLowerCase();
-    return allSessions.filter(
-      (s) =>
-        s.title.toLowerCase().includes(q) ||
-        s.category.toLowerCase().includes(q) ||
-        s.description.toLowerCase().includes(q)
-    );
-  }, [query, isSearching]);
 
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col bg-[#F7F6F5]">
@@ -90,19 +68,6 @@ const BreathworkMenu = () => {
             )}
           </button>
         </div>
-
-        {/* Search bar */}
-        <div className="px-5 md:px-8 mb-4">
-          <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#BDBDBD] pointer-events-none" />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search sessions..."
-              className="w-full h-11 rounded-2xl bg-white pl-10 pr-4 text-[14px] font-body text-[#1D1D1C] placeholder:text-[#BDBDBD] border-0 outline-none focus:ring-2 focus:ring-[#1D1D1C]/10 transition-shadow"
-            />
-          </div>
         </div>
 
         {isSearching ? (
