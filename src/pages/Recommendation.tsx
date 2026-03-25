@@ -102,6 +102,8 @@ const Recommendation = () => {
             sessionSubtitle={`Recommended: ${frequency}x per week`}
             sessionCategory={session}
             durationMinutes={5}
+            recommendedFrequency={frequency}
+            recommendedTime={time}
             trigger={
               <button className="w-full max-w-[320px] py-4 rounded-2xl bg-white text-[#1D1D1C] font-body font-semibold text-[15px] transition-all duration-200 hover:bg-white/90 active:scale-[0.98]">
                 Schedule Sessions

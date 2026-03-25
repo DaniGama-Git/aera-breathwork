@@ -143,6 +143,8 @@ const BreathworkMenu = () => {
                 sessionSubtitle={`Recommended: ${profileRec?.recommended_frequency}x per week`}
                 sessionCategory={profileRec?.recommended_session || "activate"}
                 durationMinutes={5}
+                recommendedFrequency={profileRec?.recommended_frequency || undefined}
+                recommendedTime={profileRec?.recommended_time || undefined}
                 trigger={
                   <button className="mt-3 px-4 py-2 rounded-xl bg-[#1D1D1C] text-white font-body font-medium text-[13px] transition-all duration-200 hover:bg-[#333] active:scale-[0.98]">
                     Schedule Sessions
