@@ -14,6 +14,7 @@ import BreathworkSessionFocus from "./pages/BreathworkSessionFocus.tsx";
 import BreathworkSessionReset from "./pages/BreathworkSessionReset.tsx";
 import HrvDemo from "./pages/HrvDemo.tsx";
 import BreathworkMenu from "./pages/BreathworkMenu.tsx";
+import SearchScreen from "./pages/SearchScreen.tsx";
 import Auth from "./pages/Auth.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
 
@@ -96,6 +97,7 @@ const App = () => (
           <Route path="/breathwork-session-reset" element={<ProtectedRoute><BreathworkSessionReset /></ProtectedRoute>} />
           <Route path="/hrv" element={<ProtectedRoute><HrvDemo /></ProtectedRoute>} />
           <Route path="/menu" element={<ProtectedRoute><BreathworkMenu /></ProtectedRoute>} />
+          <Route path="/search" element={<ProtectedRoute><SearchScreen /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

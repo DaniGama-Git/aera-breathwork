@@ -20,7 +20,7 @@ const getRecommendedRoute = () => {
 const tabConfig = [
   { label: "Home", icon: homeIcon, paths: ["/"] },
   { label: "Breathe", icon: breatheIcon, paths: ["/breathwork-session"] },
-  { label: "Search", icon: searchIcon, paths: ["/menu"] },
+  { label: "Search", icon: searchIcon, paths: ["/search"] },
   { label: "Science", icon: scienceIcon, paths: ["/hrv"] },
 ];
 
@@ -31,7 +31,7 @@ const BottomNavBar = ({ activeTab }: { activeTab?: string }) => {
   const navigateTo = (label: string) => {
     if (label === "Home") navigate("/");
     else if (label === "Breathe") navigate(getRecommendedRoute());
-    else if (label === "Search") navigate("/menu");
+    else if (label === "Search") navigate("/search");
     else if (label === "Science") navigate("/hrv");
   };
 
