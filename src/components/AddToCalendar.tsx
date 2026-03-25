@@ -138,6 +138,7 @@ function pickWeekdays(frequency: number): Date[] {
 }
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const RRULE_DAYS = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
 
 const AddToCalendar = ({
   sessionTitle, sessionSubtitle, sessionCategory, durationMinutes, trigger,
@@ -176,8 +177,19 @@ const AddToCalendar = ({
   };
 
   const handleGoogle = () => {
-    if (isRecurring) {
-      downloadRecurringICS("Import into Google Calendar via Settings → Import & Export.");
+    if (isRecurring && activeDates.length > 0) {
+      const firstDate = activeDates[0];
+      const start = toCalendarDatetime(firstDate, defaultTime);
+      const end = getEndDatetime(firstDate, defaultTime, durationMinutes);
+      const byDay = activeDates.map((d) => RRULE_DAYS[getDay(d)]).join(",");
+      const recur = `RRULE:FREQ=WEEKLY;BYDAY=${byDay}`;
+      const params = new URLSearchParams({ action: "TEMPLATE", text: eventTitle, details: description, dates: `${start}/${end}`, recur });
+      const url = `https://calendar.google.com/calendar/render?${params.toString()}`;
+      if (!openExternalCalendarLink(url)) {
+        toast.error("Popup blocked. Please allow popups and try again."); return;
+      }
+      setOpen(false);
+      toast.success("Google Calendar opened with weekly repeat.");
     } else {
       if (!date) return;
       if (!openExternalCalendarLink(buildGoogleCalendarUrl(eventTitle, description, date, time, durationMinutes))) {
