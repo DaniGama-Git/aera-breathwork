@@ -67,39 +67,20 @@ const StressScoreGauge = () => {
   );
 };
 
+/* ─── Time-range data sets ─── */
+const timeRangeData: Record<string, { hrv: string; change: string; changePct: string; rhr: string; rhrChange: string; hrvVal: string; resp: string; respChange: string }> = {
+  Days:      { hrv: "74 ms", change: "+12 ms", changePct: "+5.6%", rhr: "74 ms", rhrChange: "+12 ms", hrvVal: "36 ms", resp: "17.4", respChange: "+2.6%" },
+  Month:     { hrv: "68 ms", change: "+8 ms",  changePct: "+3.2%", rhr: "71 ms", rhrChange: "+6 ms",  hrvVal: "42 ms", resp: "16.8", respChange: "+1.4%" },
+  "6 Months": { hrv: "61 ms", change: "+4 ms",  changePct: "+1.8%", rhr: "68 ms", rhrChange: "+3 ms",  hrvVal: "48 ms", resp: "15.9", respChange: "-0.8%" },
+  Year:      { hrv: "55 ms", change: "+2 ms",  changePct: "+0.9%", rhr: "65 ms", rhrChange: "-2 ms",  hrvVal: "52 ms", resp: "15.2", respChange: "-1.2%" },
+};
+
 /* ─── HRV Trend Chart ─── */
-const HrvTrendCard = () => {
+const HrvTrendCard = ({ activePill, setActivePill }: { activePill: string; setActivePill: (v: string) => void }) => {
   const timePills = ["Days", "Month", "6 Months", "Year"];
-  const [activePill, setActivePill] = useState("Days");
+  const data = timeRangeData[activePill];
 
-  // Data points for the smooth wave
-  const dataPoints = [30, 45, 38, 65, 55, 72, 48, 78, 60, 50, 68, 55, 80, 65, 48, 70, 58, 42, 75, 82, 60, 50, 70, 62, 45, 58, 72, 68, 55, 78];
-  const chartW = 340;
-  const chartH = 110;
-  const barCount = dataPoints.length;
-  const barW = 3;
-  const totalGap = chartW - barW * barCount;
-  const gap = totalGap / (barCount - 1);
-
-  // Generate smooth curve using catmull-rom to bezier
-  const points = dataPoints.map((h, i) => {
-    const x = i * (barW + gap) + barW / 2;
-    const y = chartH - (h / 90) * chartH + 6;
-    return { x, y };
-  });
-
-  let curvePath = `M ${points[0].x},${points[0].y}`;
-  for (let i = 0; i < points.length - 1; i++) {
-    const p0 = points[Math.max(0, i - 1)];
-    const p1 = points[i];
-    const p2 = points[i + 1];
-    const p3 = points[Math.min(points.length - 1, i + 2)];
-    const cp1x = p1.x + (p2.x - p0.x) / 6;
-    const cp1y = p1.y + (p2.y - p0.y) / 6;
-    const cp2x = p2.x - (p3.x - p1.x) / 6;
-    const cp2y = p2.y - (p3.y - p1.y) / 6;
-    curvePath += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2.x},${p2.y}`;
-  }
+  const isPositiveChange = data.changePct.startsWith("+");
 
   return (
     <div className="bg-card rounded-2xl p-5 flex flex-col gap-4">
@@ -116,9 +97,12 @@ const HrvTrendCard = () => {
         </div>
         <span
           className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-body font-medium"
-          style={{ backgroundColor: "hsl(145, 55%, 92%)", color: "hsl(145, 60%, 36%)" }}
+          style={{
+            backgroundColor: isPositiveChange ? "hsl(145, 55%, 92%)" : "hsl(0, 55%, 92%)",
+            color: isPositiveChange ? "hsl(145, 60%, 36%)" : "hsl(0, 60%, 45%)",
+          }}
         >
-          +5.6%
+          {data.changePct}
         </span>
       </div>
 
@@ -128,12 +112,12 @@ const HrvTrendCard = () => {
           <span className="font-body text-[13px] text-muted-foreground">Post Session HRV</span>
           <span
             className="font-body text-[12px] font-medium"
-            style={{ color: "hsl(145, 60%, 36%)" }}
+            style={{ color: isPositiveChange ? "hsl(145, 60%, 36%)" : "hsl(0, 60%, 45%)" }}
           >
-            +12 ms
+            {data.change}
           </span>
         </div>
-        <span className="font-display text-[42px] font-light text-foreground leading-tight">74 ms</span>
+        <span className="font-display text-[42px] font-light text-foreground leading-tight">{data.hrv}</span>
       </div>
 
       {/* Chart */}
@@ -173,20 +157,24 @@ const MetricCard = ({
   change?: string;
   changeColor?: string;
 }) => (
-  <div className="bg-card rounded-2xl p-4 flex flex-col gap-1 flex-1 min-w-0">
+  <div className="bg-card rounded-2xl p-4 flex flex-col flex-1 min-w-0 min-h-[100px]">
     <span className="font-body text-[11px] text-muted-foreground leading-tight">{label}</span>
-    <span className="font-display text-[20px] font-light text-foreground leading-none mt-1">{value}</span>
-    {change && (
-      <span className="font-body text-[11px] font-medium mt-0.5" style={{ color: changeColor }}>
-        {change}
-      </span>
-    )}
+    <div className="mt-auto">
+      <span className="font-display text-[20px] font-light text-foreground leading-none block">{value}</span>
+      {change && (
+        <span className="font-body text-[11px] font-medium mt-1 block" style={{ color: changeColor }}>
+          {change}
+        </span>
+      )}
+    </div>
   </div>
 );
 
 /* ─── Main Page ─── */
 const HrvDemo = () => {
   const navigate = useNavigate();
+  const [activePill, setActivePill] = useState("Days");
+  const data = timeRangeData[activePill];
 
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col" style={{ backgroundColor: "hsl(30, 15%, 95%)" }}>
@@ -203,25 +191,25 @@ const HrvDemo = () => {
       {/* Content */}
       <div className="flex-1 flex flex-col gap-3 px-4 md:px-8 pb-4 overflow-y-auto max-w-[960px] mx-auto w-full">
         <StressScoreGauge />
-        <HrvTrendCard />
+        <HrvTrendCard activePill={activePill} setActivePill={setActivePill} />
 
         {/* Metrics row */}
         <div className="flex gap-3">
           <MetricCard
             label="Resting Heart Rate"
-            value="74 ms"
-            change="+12 ms"
+            value={data.rhr}
+            change={data.rhrChange}
             changeColor="hsl(18, 78%, 55%)"
           />
           <MetricCard
             label="Heart Rate Variability"
-            value="36 ms"
+            value={data.hrvVal}
           />
           <MetricCard
             label="Respiratory Rate"
-            value="17.4 ms"
-            change="+2.6%"
-            changeColor="hsl(145, 60%, 36%)"
+            value={data.resp}
+            change={data.respChange}
+            changeColor={data.respChange.startsWith("+") ? "hsl(145, 60%, 36%)" : "hsl(0, 60%, 45%)"}
           />
         </div>
       </div>
