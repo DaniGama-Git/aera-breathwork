@@ -4,16 +4,24 @@
  * Shows greeting, category cards, favorites, and recommendations.
  */
 
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import categoryActivate from "@/assets/category-activate.webp";
 import categoryReset from "@/assets/category-reset.webp";
 import categoryFocus from "@/assets/category-focus.webp";
 import categoryRecover from "@/assets/category-recover.webp";
 import BottomNavBar from "@/components/BottomNavBar";
+import AddToCalendar from "@/components/AddToCalendar";
 import homeIndicator from "@/assets/home-indicator.png";
 import playIconSmall from "@/assets/play-icon-small.svg";
 import playIconLarge from "@/assets/play-icon-large.svg";
+import {
+  CATEGORY_DISPLAY,
+  TIME_DISPLAY,
+} from "@/lib/recommendationMaps";
 
 const categories = [
   { label: "Activate", image: categoryActivate, to: "/category/activate" },
@@ -43,11 +51,51 @@ function getGreeting() {
   return "Good Evening";
 }
 
+interface ProfileRec {
+  stress_archetype: string | null;
+  recommended_session: string | null;
+  recommended_frequency: number | null;
+  recommended_time: string | null;
+  recommendation_dismissed: boolean;
+}
+
 const BreathworkMenu = () => {
   const { signOut, user } = useAuth();
+  const [profileRec, setProfileRec] = useState<ProfileRec | null>(null);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
 
   const displayName = user?.user_metadata?.full_name?.split(" ")[0] || user?.user_metadata?.name?.split(" ")[0] || "there";
   const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+
+  useEffect(() => {
+    if (!user) return;
+    const fetchProfile = async () => {
+      const { data } = await supabase
+        .from("profiles")
+        .select("stress_archetype, recommended_session, recommended_frequency, recommended_time, recommendation_dismissed")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (data) {
+        setProfileRec(data);
+        setBannerDismissed(data.recommendation_dismissed);
+      }
+    };
+    void fetchProfile();
+  }, [user]);
+
+  const dismissBanner = async () => {
+    setBannerDismissed(true);
+    if (user) {
+      await supabase
+        .from("profiles")
+        .update({ recommendation_dismissed: true })
+        .eq("user_id", user.id);
+    }
+  };
+
+  const showBanner = profileRec?.stress_archetype && !bannerDismissed;
+  const categoryName = CATEGORY_DISPLAY[profileRec?.recommended_session || ""] || profileRec?.recommended_session || "";
+  const timeName = TIME_DISPLAY[profileRec?.recommended_time || ""] || profileRec?.recommended_time || "";
 
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col bg-[#F7F6F5]">
@@ -72,6 +120,38 @@ const BreathworkMenu = () => {
             )}
           </button>
         </div>
+
+        {/* Recommendation Banner */}
+        {showBanner && (
+          <div className="px-5 md:px-8 mt-1 mb-2">
+            <div className="relative bg-white rounded-xl px-5 py-4 shadow-sm border border-[#ECECEC]">
+              <button
+                onClick={dismissBanner}
+                className="absolute top-3 right-3 p-1 text-[#BDBDBD] hover:text-[#1D1D1C] transition-colors"
+                aria-label="Dismiss"
+              >
+                <X size={16} />
+              </button>
+              <p className="font-body font-semibold text-[15px] text-[#1D1D1C] pr-6">
+                {profileRec?.recommended_frequency}x {categoryName} sessions per week
+              </p>
+              <p className="font-body font-normal text-[13px] text-[#BDBDBD] mt-0.5">
+                Best time: {timeName}
+              </p>
+              <AddToCalendar
+                sessionTitle={`${categoryName} Session`}
+                sessionSubtitle={`Recommended: ${profileRec?.recommended_frequency}x per week`}
+                sessionCategory={profileRec?.recommended_session || "activate"}
+                durationMinutes={5}
+                trigger={
+                  <button className="mt-3 px-4 py-2 rounded-xl bg-[#1D1D1C] text-white font-body font-medium text-[13px] transition-all duration-200 hover:bg-[#333] active:scale-[0.98]">
+                    Schedule Sessions
+                  </button>
+                }
+              />
+            </div>
+          </div>
+        )}
 
         {/* Categories */}
         <div className="px-5 md:px-8 mt-2">
