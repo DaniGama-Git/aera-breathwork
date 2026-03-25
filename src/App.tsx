@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import HomeScreen from "./pages/HomeScreen.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -33,41 +33,35 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [onboardingChecked, setOnboardingChecked] = useState(false);
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
 
-  useEffect(() => {
-    let isActive = true;
+  const checkOnboarding = useCallback(async (userId: string) => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("onboarding_completed")
+      .eq("user_id", userId)
+      .maybeSingle();
 
+    if (error) {
+      setNeedsOnboarding(false);
+    } else {
+      setNeedsOnboarding(!data?.onboarding_completed);
+    }
+    setOnboardingChecked(true);
+  }, []);
+
+  useEffect(() => {
     if (!user) {
       setNeedsOnboarding(false);
       setOnboardingChecked(true);
       return;
     }
-
-    supabase
-      .from("profiles")
-      .select("onboarding_completed")
-      .eq("user_id", user.id)
-      .maybeSingle()
-      .then(({ data, error }) => {
-        if (!isActive) return;
-
-        if (error) {
-          setNeedsOnboarding(false);
-        } else {
-          setNeedsOnboarding(!data?.onboarding_completed);
-        }
-
-        setOnboardingChecked(true);
-      });
-
-    return () => {
-      isActive = false;
-    };
-  }, [user]);
+    // Re-check onboarding status every time the route changes
+    // This ensures that after completing onboarding, navigating to a new page won't loop back
+    checkOnboarding(user.id);
+  }, [user, location.pathname, checkOnboarding]);
 
   if (loading || !onboardingChecked) return <LoadingSpinner />;
   if (!user) return <Navigate to="/auth" replace />;
 
-  // Redirect to onboarding if not completed (unless already on onboarding page)
   if (needsOnboarding && location.pathname !== "/onboarding") {
     return <Navigate to="/onboarding" replace />;
   }
@@ -89,7 +83,6 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Public landing */}
           <Route path="/" element={<HomeScreen />} />
           <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
           <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
