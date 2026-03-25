@@ -168,15 +168,16 @@ const AddToCalendar = ({
   const activeDates = generatedDates.filter((_, i) => enabledDates[i]);
   const isReady = isRecurring ? activeDates.length > 0 : !!date;
 
+  const downloadRecurringICS = (importHint: string) => {
+    const events = activeDates.map((d) => ({ title: eventTitle, description, sessionLink, date: d, time: defaultTime, durationMinutes }));
+    downloadICSBlob(generateMultiICS(events), `${sessionTitle.replace(/\s+/g, "-").toLowerCase()}-schedule.ics`);
+    setOpen(false);
+    toast.success(`${activeDates.length} sessions downloaded. ${importHint}`, { duration: 10000 });
+  };
+
   const handleGoogle = () => {
     if (isRecurring) {
-      let blocked = false;
-      activeDates.forEach((d) => {
-        if (!openExternalCalendarLink(buildGoogleCalendarUrl(eventTitle, description, d, defaultTime, durationMinutes))) blocked = true;
-      });
-      if (blocked) { toast.error("Some popups were blocked. Please allow popups."); return; }
-      setOpen(false);
-      toast.success(`${activeDates.length} sessions added to Google Calendar.`);
+      downloadRecurringICS("Import into Google Calendar via Settings → Import & Export.");
     } else {
       if (!date) return;
       if (!openExternalCalendarLink(buildGoogleCalendarUrl(eventTitle, description, date, time, durationMinutes))) {
@@ -189,13 +190,7 @@ const AddToCalendar = ({
 
   const handleOutlook = () => {
     if (isRecurring) {
-      let blocked = false;
-      activeDates.forEach((d) => {
-        if (!openExternalCalendarLink(buildOutlookUrl(eventTitle, description, d, defaultTime, durationMinutes))) blocked = true;
-      });
-      if (blocked) { toast.error("Some popups were blocked. Please allow popups."); return; }
-      setOpen(false);
-      toast.success(`${activeDates.length} sessions added to Outlook Calendar.`);
+      downloadRecurringICS("Import into Outlook via File → Import.");
     } else {
       if (!date) return;
       if (!openExternalCalendarLink(buildOutlookUrl(eventTitle, description, date, time, durationMinutes))) {
