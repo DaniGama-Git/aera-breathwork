@@ -1,0 +1,1 @@
+ALTER TABLE public.onboarding_answers DROP CONSTRAINT IF EXISTS onboarding_answers_user_id_fkey;
