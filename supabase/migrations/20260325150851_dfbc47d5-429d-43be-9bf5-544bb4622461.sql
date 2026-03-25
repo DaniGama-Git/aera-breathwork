@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN recommendation_dismissed boolean NOT NULL DEFAULT false;
