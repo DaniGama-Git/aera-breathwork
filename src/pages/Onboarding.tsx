@@ -9,6 +9,7 @@ const steps = [
   {
     title: "What best describes you?",
     subtitle: "Role Context",
+    insight: "",
     key: "role_context",
     options: [
       { label: "I run a company", value: "run_company" },
@@ -20,6 +21,7 @@ const steps = [
   {
     title: "Where does stress show up most?",
     subtitle: "Pressure Pattern",
+    insight: "This tells us when to trigger your breathwork interventions.",
     key: "pressure_pattern",
     options: [
       { label: "Back-to-back meetings", value: "back_to_back" },
@@ -31,6 +33,7 @@ const steps = [
   {
     title: "When stress hits, what happens?",
     subtitle: "Stress Response",
+    insight: "We'll match you with the right breathwork protocol — activate, focus, reset, or recover.",
     key: "stress_response",
     options: [
       { label: "Mind races, can't focus", value: "mind_races" },
@@ -42,6 +45,7 @@ const steps = [
   {
     title: "When do you need to be at your best?",
     subtitle: "Performance Timing",
+    insight: "This helps us place sessions in your calendar at the right time.",
     key: "performance_timing",
     options: [
       { label: "Start of day", value: "start_of_day" },
@@ -53,6 +57,7 @@ const steps = [
   {
     title: "What does success look like?",
     subtitle: "Outcome Anchor",
+    insight: "This anchors your progress — so you can see the value over time.",
     key: "outcome_anchor",
     options: [
       { label: "Walk into every room ready", value: "walk_in_ready" },
@@ -140,9 +145,15 @@ const Onboarding = () => {
 
         {/* Content */}
         <div className="flex-1 px-6 flex flex-col">
-          <h1 className="text-white font-body font-semibold text-[28px] leading-tight mb-10">
+          <h1 className="text-white font-body font-semibold text-[28px] leading-tight mb-3">
             {step.title}
           </h1>
+          {step.insight && (
+            <p className="text-white/40 font-body text-[14px] leading-relaxed mb-8">
+              {step.insight}
+            </p>
+          )}
+          {!step.insight && <div className="mb-7" />}
 
         {/* Options */}
         <div className="flex flex-col gap-3">
