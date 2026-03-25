@@ -217,13 +217,20 @@ const Onboarding = () => {
           })}
         </div>
 
-        {isLastStep && (
+        {isLastStep && answers[step.key] && (
           <button
             onClick={completeOnboarding}
-            disabled={saving || !answers[step.key]}
-            className="mt-6 w-full rounded-2xl px-5 py-4 bg-white text-black font-body text-[15px] font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={saving}
+            className="mt-8 w-full rounded-full py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-body text-[15px] font-medium tracking-wide transition-all duration-300 hover:bg-white/20 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {saving ? "Finishing..." : "Take me to my suggested session"}
+            {saving ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Finishing…
+              </span>
+            ) : (
+              "Take me to my suggested session →"
+            )}
           </button>
         )}
 
