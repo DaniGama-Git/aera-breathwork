@@ -1,9 +1,9 @@
 /**
  * HrvDemo — Static demo page for HRV data visualization
  * Route: /hrv
- * Shows stress score gauge, HRV trend chart, and health metrics.
- * All data is hardcoded for demo purposes.
  */
+
+import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import BottomNavBar from "@/components/BottomNavBar";
@@ -70,7 +70,7 @@ const StressScoreGauge = () => {
 /* ─── HRV Trend Chart ─── */
 const HrvTrendCard = () => {
   const timePills = ["Days", "Month", "6 Months", "Year"];
-  const activePill = "Days";
+  const [activePill, setActivePill] = useState("Days");
 
   // Data points for the smooth wave
   const dataPoints = [30, 45, 38, 65, 55, 72, 48, 78, 60, 50, 68, 55, 80, 65, 48, 70, 58, 42, 75, 82, 60, 50, 70, 62, 45, 58, 72, 68, 55, 78];
@@ -146,10 +146,11 @@ const HrvTrendCard = () => {
         {timePills.map((pill) => (
           <button
             key={pill}
-            className={`px-3 py-1 rounded-full text-[12px] font-body font-medium transition-colors ${
+            onClick={() => setActivePill(pill)}
+            className={`px-3 py-1 rounded-full text-[12px] font-body font-medium transition-colors cursor-pointer ${
               pill === activePill
                 ? "bg-foreground text-background"
-                : "bg-muted text-muted-foreground"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
             }`}
           >
             {pill}
