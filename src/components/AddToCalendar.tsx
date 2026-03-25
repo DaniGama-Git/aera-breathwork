@@ -65,6 +65,8 @@ function openExternalCalendarLink(url: string): boolean {
   const popup = window.open(url, "_blank", "noopener,noreferrer");
   if (!popup) return false;
   popup.opener = null;
+  // Bring focus back to Aera
+  window.focus();
   return true;
 }
 
