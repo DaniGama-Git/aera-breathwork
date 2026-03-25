@@ -1,48 +1,55 @@
 
 
-## Stress Archetype Scoring System (Implemented)
+## Plan: Full-screen recommendation + persistent menu banner with calendar scheduling
 
-All 5 onboarding questions now contribute weighted points to determine the user's archetype, recommended session, and weekly frequency.
+### Overview
+After onboarding completes, the user sees a full-screen recommendation screen showing their archetype and suggested weekly plan. They can schedule sessions from there or skip to the menu, where a persistent banner repeats the recommendation with a "Schedule Sessions" CTA.
 
-### Scoring logic: `src/lib/archetypeScoring.ts`
+### Step 1: Create the Recommendation Screen (`/recommendation`)
 
-| Question | Answer | Activate | Focus | Reset | Recover |
-|---|---|:---:|:---:|:---:|:---:|
-| **Q1: Role** | run_company | +2 | 0 | 0 | +1 |
-| | lead_teams | +1 | 0 | +1 | 0 |
-| | manage_up_down | 0 | +1 | +1 | 0 |
-| | execute_independently | 0 | +2 | 0 | 0 |
-| **Q2: Pressure** | back_to_back | +3 | 0 | +1 | 0 |
-| | high_stakes | 0 | +1 | +3 | 0 |
-| | context_switching | 0 | +3 | 0 | +1 |
-| | long_days | 0 | 0 | 0 | +3 |
-| **Q3: Stress Response** | mind_races | 0 | +3 | +1 | 0 |
-| | energy_drops | +3 | 0 | 0 | +1 |
-| | carry_tension | 0 | 0 | +3 | 0 |
-| | push_through | 0 | 0 | 0 | +3 |
-| **Q4: Timing** | start_of_day | +1 | +1 | 0 | 0 |
-| | before_key_moments | 0 | +1 | +1 | 0 |
-| | between_meetings | 0 | 0 | +1 | +1 |
-| | end_of_day | 0 | 0 | 0 | +2 |
-| **Q5: Outcome** | walk_in_ready | +1 | +1 | 0 | 0 |
-| | stay_sharp | +1 | +1 | 0 | 0 |
-| | switch_off | 0 | 0 | 0 | +2 |
-| | stay_in_control | 0 | 0 | +2 | 0 |
+New page: `src/pages/Recommendation.tsx`
+- Full-screen dark overlay (matching onboarding aesthetic)
+- Fetches `stress_archetype`, `recommended_session`, `recommended_frequency`, `recommended_time` from the `profiles` table
+- Displays:
+  - Archetype name in friendly format (e.g. "You're a Deep Worker")
+  - Recommended category with its image (e.g. Focus card image)
+  - Frequency (e.g. "We recommend 4 Focus sessions per week")
+  - Best time (e.g. "Best time: Before key moments")
+- Two CTAs:
+  - "Schedule Sessions" -- opens the existing `AddToCalendar` dialog pre-filled with the recommended session details
+  - "Go to Menu" -- navigates to `/menu`
 
-### Archetypes
+### Step 2: Update routing and onboarding flow
 
-| Winner | Archetype | Session |
-|---|---|---|
-| Activate | Pack Animal | activate |
-| Focus | Deep Worker | focus |
-| Reset | Anticipator | reset |
-| Recover | Sprinter | recover |
+- Add `/recommendation` route in `App.tsx` as a `ProtectedRoute`
+- Change `Onboarding.tsx` line 144: navigate to `/recommendation` instead of `/menu`
+- The recommendation page is a one-time post-onboarding screen (not gated -- user can always navigate away)
 
-### Frequency
+### Step 3: Add persistent banner to BreathworkMenu
 
-Base from Q1: run_company=5, lead_teams=4, manage_up_down=4, execute_independently=3. +1 if Q2 is back_to_back or long_days. Capped at 7.
+In `src/pages/BreathworkMenu.tsx`:
+- Fetch the user's profile (`stress_archetype`, `recommended_session`, `recommended_frequency`, `recommended_time`) from the database
+- Render a dismissible banner card between the header and categories section:
+  - Rounded card (`rounded-xl`) with light background
+  - Shows: "4x Focus sessions per week" + "Best time: Before key moments"
+  - "Schedule Sessions" button opens `AddToCalendar`
+  - Dismiss (X) button hides the banner and saves `recommendation_dismissed` flag (stored in `localStorage` to avoid a schema change)
+- Only shown when `stress_archetype` exists and not dismissed
 
-### Database columns added to `profiles`
+### Step 4: Add `recommendation_dismissed` to profiles table (database migration)
 
-- `stress_archetype` (text, nullable)
-- `recommended_frequency` (integer, nullable)
+Add a `recommendation_dismissed` boolean column (default `false`) to the `profiles` table so the dismiss state persists across devices.
+
+### Files to create/modify
+- **Create**: `src/pages/Recommendation.tsx`
+- **Modify**: `src/App.tsx` (add route)
+- **Modify**: `src/pages/Onboarding.tsx` (redirect to `/recommendation`)
+- **Modify**: `src/pages/BreathworkMenu.tsx` (add banner)
+- **Database migration**: Add `recommendation_dismissed` column to `profiles`
+
+### Technical details
+- Archetype display names map: `{ pack_animal: "Pack Animal", deep_worker: "Deep Worker", anticipator: "Anticipator", sprinter: "Sprinter" }`
+- Category display names map: `{ activate: "Activate", focus: "Focus", reset: "Reset", recover: "Recover" }`
+- Recommended time display: `{ start_of_day: "Start of day", before_key_moments: "Before key moments", between_meetings: "Between meetings", end_of_day: "End of day" }`
+- Reuses existing `AddToCalendar` component and category images from `sessionData.ts`
+
