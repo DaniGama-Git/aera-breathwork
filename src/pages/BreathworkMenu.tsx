@@ -68,7 +68,6 @@ const BreathworkMenu = () => {
             )}
           </button>
         </div>
-        </div>
 
         {/* Categories */}
         <div className="px-5 md:px-8 mt-2">
