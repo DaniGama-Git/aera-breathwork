@@ -3,9 +3,9 @@
  * Route: /search
  */
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, CalendarPlus } from "lucide-react";
+import { Search, CalendarPlus, SlidersHorizontal, X } from "lucide-react";
 import { categoryConfig } from "@/data/sessionData";
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
@@ -73,6 +73,8 @@ const SearchScreen = () => {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeDuration, setActiveDuration] = useState<string | null>(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
   const [recentSearches, setRecentSearches] = useState<string[]>(getRecentSearches);
 
   const categoryNames = useMemo(() => {
