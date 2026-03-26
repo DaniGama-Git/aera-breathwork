@@ -72,6 +72,7 @@ function saveRecentSearch(term: string) {
 const SearchScreen = () => {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeDuration, setActiveDuration] = useState<string | null>(null);
   const [recentSearches, setRecentSearches] = useState<string[]>(getRecentSearches);
 
   const categoryNames = useMemo(() => {
@@ -79,12 +80,23 @@ const SearchScreen = () => {
     return Array.from(unique).sort();
   }, []);
 
+  const durationBuckets = ["3 min", "5 min", "8 min", "10 min"];
+
+  const matchesDuration = (sessionDuration: string, bucket: string) => {
+    const mins = parseInt(sessionDuration);
+    const bucketMins = parseInt(bucket);
+    return mins === bucketMins;
+  };
+
   const isSearching = query.trim().length > 0;
 
   const filteredSessions = useMemo(() => {
     let list = allSessions;
     if (activeCategory) {
       list = list.filter((s) => s.category === activeCategory);
+    }
+    if (activeDuration) {
+      list = list.filter((s) => matchesDuration(s.duration, activeDuration));
     }
     if (isSearching) {
       const q = query.toLowerCase();
@@ -96,7 +108,7 @@ const SearchScreen = () => {
       );
     }
     return list;
-  }, [query, isSearching, activeCategory]);
+  }, [query, isSearching, activeCategory, activeDuration]);
 
   const handleSessionClick = (title: string) => {
     if (isSearching) {
