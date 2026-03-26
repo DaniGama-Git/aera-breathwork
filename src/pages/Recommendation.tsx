@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import homeBg from "@/assets/home-bg.webp";
 import areaLogo from "@/assets/aera-logo.svg";
-import loadingIcon from "@/assets/loading-icon.png";
+import BreatheDots from "@/components/BreatheDots";
 import AddToCalendar from "@/components/AddToCalendar";
 import {
   ARCHETYPE_DISPLAY,
@@ -44,7 +44,7 @@ const Recommendation = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <img src={loadingIcon} alt="" className="w-12 h-12 animate-spin" />
+        <BreatheDots className="w-12 h-12" />
       </div>
     );
   }
