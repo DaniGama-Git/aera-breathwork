@@ -176,6 +176,25 @@ const SearchScreen = () => {
             ))}
           </div>
         </div>
+
+        {/* Duration filters */}
+        <div className="px-5 md:px-8 mb-4">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar">
+            {durationBuckets.map((d) => (
+              <button
+                key={d}
+                onClick={() => setActiveDuration(activeDuration === d ? null : d)}
+                className={`px-3.5 py-1.5 rounded-full font-body text-[13px] border-0 cursor-pointer whitespace-nowrap transition-colors ${
+                  activeDuration === d
+                    ? "bg-[#1D1D1C] text-white"
+                    : "bg-white text-[#1D1D1C] hover:bg-[#EEEEEE]"
+                }`}
+              >
+                {d}
+              </button>
+            ))}
+          </div>
+        </div>
         {/* Recent searches */}
         {!isSearching && recentSearches.length > 0 && (
           <div className="px-5 md:px-8 mb-6">
