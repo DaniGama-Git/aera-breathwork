@@ -112,6 +112,25 @@ const SearchScreen = () => {
     return list;
   }, [query, isSearching, activeCategory, activeDuration]);
 
+  const activeFilterCount = (activeCategory ? 1 : 0) + (activeDuration ? 1 : 0);
+
+  const clearFilters = () => {
+    setActiveCategory(null);
+    setActiveDuration(null);
+  };
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!filterOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
+        setFilterOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [filterOpen]);
+
   const handleSessionClick = (title: string) => {
     if (isSearching) {
       saveRecentSearch(query.trim());
