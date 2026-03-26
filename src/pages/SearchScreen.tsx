@@ -71,20 +71,32 @@ function saveRecentSearch(term: string) {
 
 const SearchScreen = () => {
   const [query, setQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [recentSearches, setRecentSearches] = useState<string[]>(getRecentSearches);
+
+  const categoryNames = useMemo(() => {
+    const unique = new Set(allSessions.map((s) => s.category));
+    return Array.from(unique).sort();
+  }, []);
 
   const isSearching = query.trim().length > 0;
 
   const filteredSessions = useMemo(() => {
-    if (!isSearching) return allSessions;
-    const q = query.toLowerCase();
-    return allSessions.filter(
-      (s) =>
-        s.title.toLowerCase().includes(q) ||
-        s.category.toLowerCase().includes(q) ||
-        s.description.toLowerCase().includes(q)
-    );
-  }, [query, isSearching]);
+    let list = allSessions;
+    if (activeCategory) {
+      list = list.filter((s) => s.category === activeCategory);
+    }
+    if (isSearching) {
+      const q = query.toLowerCase();
+      list = list.filter(
+        (s) =>
+          s.title.toLowerCase().includes(q) ||
+          s.category.toLowerCase().includes(q) ||
+          s.description.toLowerCase().includes(q)
+      );
+    }
+    return list;
+  }, [query, isSearching, activeCategory]);
 
   const handleSessionClick = (title: string) => {
     if (isSearching) {
@@ -124,6 +136,34 @@ const SearchScreen = () => {
           </div>
         </div>
 
+        {/* Category filters */}
+        <div className="px-5 md:px-8 mb-4">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar">
+            <button
+              onClick={() => setActiveCategory(null)}
+              className={`px-3.5 py-1.5 rounded-full font-body text-[13px] border-0 cursor-pointer whitespace-nowrap transition-colors ${
+                !activeCategory
+                  ? "bg-[#1D1D1C] text-white"
+                  : "bg-white text-[#1D1D1C] hover:bg-[#EEEEEE]"
+              }`}
+            >
+              All
+            </button>
+            {categoryNames.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+                className={`px-3.5 py-1.5 rounded-full font-body text-[13px] border-0 cursor-pointer whitespace-nowrap transition-colors ${
+                  activeCategory === cat
+                    ? "bg-[#1D1D1C] text-white"
+                    : "bg-white text-[#1D1D1C] hover:bg-[#EEEEEE]"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
         {/* Recent searches */}
         {!isSearching && recentSearches.length > 0 && (
           <div className="px-5 md:px-8 mb-6">
