@@ -19,13 +19,13 @@ import SearchScreen from "./pages/SearchScreen.tsx";
 import Auth from "./pages/Auth.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
 import Recommendation from "./pages/Recommendation.tsx";
-import loadingIcon from "@/assets/loading-icon.png";
+import BreatheDots from "@/components/BreatheDots";
 
 const queryClient = new QueryClient();
 
 const LoadingSpinner = () => (
   <div className="min-h-screen bg-black flex items-center justify-center">
-    <img src={loadingIcon} alt="" className="w-12 h-12 animate-spin" />
+    <BreatheDots className="w-12 h-12" />
   </div>
 );
 
