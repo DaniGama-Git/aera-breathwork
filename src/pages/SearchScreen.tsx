@@ -155,66 +155,115 @@ const SearchScreen = () => {
           <h1 className="font-body font-semibold text-[28px] text-[#1D1D1C]">Search</h1>
         </div>
 
-        {/* Search bar */}
+        {/* Search bar + filter icon */}
         <div className="px-5 md:px-8 mb-5">
-          <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#BDBDBD] pointer-events-none" />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search sessions..."
-              className="w-full h-11 rounded-2xl bg-white pl-10 pr-4 text-[14px] font-body text-[#1D1D1C] placeholder:text-[#BDBDBD] border-0 outline-none focus:ring-2 focus:ring-[#1D1D1C]/10 transition-shadow"
-            />
-          </div>
-        </div>
-
-        {/* Category filters */}
-        <div className="px-5 md:px-8 mb-4">
-          <div className="flex gap-2 overflow-x-auto no-scrollbar">
-            <button
-              onClick={() => setActiveCategory(null)}
-              className={`px-3.5 py-1.5 rounded-full font-body text-[13px] border-0 cursor-pointer whitespace-nowrap transition-colors ${
-                !activeCategory
-                  ? "bg-[#1D1D1C] text-white"
-                  : "bg-white text-[#1D1D1C] hover:bg-[#EEEEEE]"
-              }`}
-            >
-              All
-            </button>
-            {categoryNames.map((cat) => (
+          <div className="flex gap-2 items-center">
+            <div className="relative flex-1">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#BDBDBD] pointer-events-none" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search sessions..."
+                className="w-full h-11 rounded-2xl bg-white pl-10 pr-4 text-[14px] font-body text-[#1D1D1C] placeholder:text-[#BDBDBD] border-0 outline-none focus:ring-2 focus:ring-[#1D1D1C]/10 transition-shadow"
+              />
+            </div>
+            <div className="relative" ref={filterRef}>
               <button
-                key={cat}
-                onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-                className={`px-3.5 py-1.5 rounded-full font-body text-[13px] border-0 cursor-pointer whitespace-nowrap transition-colors ${
-                  activeCategory === cat
+                onClick={() => setFilterOpen(!filterOpen)}
+                className={`relative w-11 h-11 rounded-2xl flex items-center justify-center border-0 cursor-pointer transition-colors ${
+                  filterOpen || activeFilterCount > 0
                     ? "bg-[#1D1D1C] text-white"
-                    : "bg-white text-[#1D1D1C] hover:bg-[#EEEEEE]"
+                    : "bg-white text-[#BDBDBD] hover:text-[#1D1D1C]"
                 }`}
+                aria-label="Filters"
               >
-                {cat}
+                <SlidersHorizontal className="w-4 h-4" />
+                {activeFilterCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#1D1D1C] border-2 border-[#F7F6F5] text-white text-[9px] font-body font-semibold flex items-center justify-center">
+                    {activeFilterCount}
+                  </span>
+                )}
               </button>
-            ))}
-          </div>
-        </div>
 
-        {/* Duration filters */}
-        <div className="px-5 md:px-8 mb-4">
-          <div className="flex gap-2 overflow-x-auto no-scrollbar">
-            {durationBuckets.map((d) => (
-              <button
-                key={d}
-                onClick={() => setActiveDuration(activeDuration === d ? null : d)}
-                className={`px-3.5 py-1.5 rounded-full font-body text-[13px] border-0 cursor-pointer whitespace-nowrap transition-colors ${
-                  activeDuration === d
-                    ? "bg-[#1D1D1C] text-white"
-                    : "bg-white text-[#1D1D1C] hover:bg-[#EEEEEE]"
-                }`}
-              >
-                {d}
-              </button>
-            ))}
+              {/* Filter dropdown */}
+              {filterOpen && (
+                <div className="absolute right-0 top-[calc(100%+8px)] w-56 bg-white rounded-2xl shadow-lg border border-[#ECECEC] p-4 z-50">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="font-body font-semibold text-[14px] text-[#1D1D1C]">Filters</p>
+                    {activeFilterCount > 0 && (
+                      <button
+                        onClick={clearFilters}
+                        className="font-body text-[12px] text-[#BDBDBD] bg-transparent border-0 cursor-pointer hover:text-[#1D1D1C] transition-colors"
+                      >
+                        Clear all
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Category */}
+                  <p className="font-body font-medium text-[12px] text-[#BDBDBD] mb-2">Category</p>
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {categoryNames.map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+                        className={`px-3 py-1 rounded-full font-body text-[12px] border-0 cursor-pointer transition-colors ${
+                          activeCategory === cat
+                            ? "bg-[#1D1D1C] text-white"
+                            : "bg-[#F0EFED] text-[#1D1D1C] hover:bg-[#E5E4E2]"
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Duration */}
+                  <p className="font-body font-medium text-[12px] text-[#BDBDBD] mb-2">Duration</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {durationBuckets.map((d) => (
+                      <button
+                        key={d}
+                        onClick={() => setActiveDuration(activeDuration === d ? null : d)}
+                        className={`px-3 py-1 rounded-full font-body text-[12px] border-0 cursor-pointer transition-colors ${
+                          activeDuration === d
+                            ? "bg-[#1D1D1C] text-white"
+                            : "bg-[#F0EFED] text-[#1D1D1C] hover:bg-[#E5E4E2]"
+                        }`}
+                      >
+                        {d}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
+
+          {/* Active filter tags */}
+          {activeFilterCount > 0 && (
+            <div className="flex gap-1.5 mt-2.5 flex-wrap">
+              {activeCategory && (
+                <button
+                  onClick={() => setActiveCategory(null)}
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#1D1D1C] text-white font-body text-[12px] border-0 cursor-pointer"
+                >
+                  {activeCategory}
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+              {activeDuration && (
+                <button
+                  onClick={() => setActiveDuration(null)}
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#1D1D1C] text-white font-body text-[12px] border-0 cursor-pointer"
+                >
+                  {activeDuration}
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+          )}
         </div>
         {/* Recent searches */}
         {!isSearching && recentSearches.length > 0 && (
