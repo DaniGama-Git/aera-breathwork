@@ -82,12 +82,13 @@ const SearchScreen = () => {
     return Array.from(unique).sort();
   }, []);
 
-  const durationBuckets = ["3 min", "5 min", "8 min", "10 min"];
+  const durationBuckets = ["Short", "Medium", "Long"];
 
   const matchesDuration = (sessionDuration: string, bucket: string) => {
     const mins = parseInt(sessionDuration);
-    const bucketMins = parseInt(bucket);
-    return mins === bucketMins;
+    if (bucket === "Short") return mins <= 5;
+    if (bucket === "Medium") return mins > 5 && mins < 10;
+    return mins >= 10;
   };
 
   const isSearching = query.trim().length > 0;
