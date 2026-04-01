@@ -116,6 +116,7 @@ const App = () => (
           <Route path="/hrv" element={<ProtectedRoute><HrvDemo /></ProtectedRoute>} />
           <Route path="/category/:slug" element={<ProtectedRoute><CategoryLibrary /></ProtectedRoute>} />
           <Route path="/search" element={<ProtectedRoute><SearchScreen /></ProtectedRoute>} />
+          <Route path="/extension" element={<Extension />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
