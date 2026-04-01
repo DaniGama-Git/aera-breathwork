@@ -1,29 +1,31 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Download, Chrome, Monitor, Puzzle } from "lucide-react";
-import areaExtIcon from "@/assets/aera-ext-icon.png";
+import { ArrowLeft, Download } from "lucide-react";
+import activateGradientBg from "@/assets/activate-gradient-v2.webp";
+import areaLogo from "@/assets/aera-logo.svg";
+import BottomNavBar from "@/components/BottomNavBar";
 
 const STEPS = [
   {
-    icon: Download,
+    number: "01",
     title: "Download",
     description: "Click the button below to download the āera extension.",
   },
   {
-    icon: Monitor,
+    number: "02",
     title: "Unzip",
     description: "Unzip the downloaded file to a folder on your computer.",
   },
   {
-    icon: Chrome,
+    number: "03",
     title: "Open Extensions",
     description:
-      'Go to chrome://extensions in Chrome, Edge, Brave, or Arc and enable "Developer mode" (top-right toggle).',
+      'Go to chrome://extensions and enable "Developer mode" (top-right toggle).',
   },
   {
-    icon: Puzzle,
+    number: "04",
     title: "Load Unpacked",
     description:
-      'Click "Load unpacked" and select the unzipped folder. The āera icon will appear in your toolbar.',
+      'Click "Load unpacked" and select the unzipped folder. āera will appear in your toolbar.',
   },
 ];
 
@@ -47,47 +49,76 @@ const Extension = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="max-w-md mx-auto px-5 py-8 pb-32">
+    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
+      {/* Same gradient background as session screens */}
+      <img
+        src={activateGradientBg}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover"
+        aria-hidden="true"
+      />
+      {/* Noise overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
+        aria-hidden="true"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "128px 128px",
+        }}
+      />
+
+      <div className="relative z-10 flex flex-col min-h-screen max-w-[800px] mx-auto w-full overflow-y-auto">
         {/* Back */}
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-white/40 hover:text-white/70 transition mb-10 text-sm tracking-wide"
-        >
-          <ArrowLeft size={16} />
-          Back
-        </button>
+        <div className="pt-14 px-6">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-white/40 hover:text-white/70 transition text-sm font-body font-medium tracking-wide"
+          >
+            <ArrowLeft size={16} />
+            Back
+          </button>
+        </div>
 
         {/* Hero */}
-        <div className="flex flex-col items-center text-center mb-12">
+        <div className="flex flex-col items-center text-center px-6 pt-12 pb-10">
           <img
-            src={areaExtIcon}
-            alt="āera extension icon"
-            width={80}
-            height={80}
-            className="rounded-2xl mb-6"
+            src={areaLogo}
+            alt="āera"
+            className="h-8 mb-6 opacity-90"
           />
-          <h1 className="text-2xl font-light tracking-wide mb-2">
-            āera for Chrome
+          <h1
+            className="text-white font-body font-semibold mb-3"
+            style={{
+              fontSize: "34px",
+              lineHeight: "100%",
+              letterSpacing: "-0.01em",
+            }}
+          >
+            Chrome Extension
           </h1>
-          <p className="text-white/40 text-sm leading-relaxed max-w-xs">
+          <p className="text-white/50 text-[16px] leading-[140%] font-body font-medium max-w-xs">
             Calendar-triggered breathwork. Get a gentle prompt before key
             meetings so you show up sharp.
           </p>
         </div>
 
         {/* Steps */}
-        <div className="space-y-6 mb-12">
-          {STEPS.map((step, i) => (
-            <div key={i} className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/50">
-                <step.icon size={14} />
-              </div>
+        <div className="px-6 space-y-5 mb-10">
+          {STEPS.map((step) => (
+            <div
+              key={step.number}
+              className="flex gap-4 items-start p-4 rounded-xl"
+              style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(8px)" }}
+            >
+              <span className="text-white/20 font-body font-light text-[13px] tracking-widest mt-0.5">
+                {step.number}
+              </span>
               <div>
-                <p className="text-sm font-medium text-white/80 mb-0.5">
+                <p className="text-white/90 text-[15px] font-body font-semibold mb-1">
                   {step.title}
                 </p>
-                <p className="text-xs text-white/30 leading-relaxed">
+                <p className="text-white/40 text-[13px] leading-relaxed font-body font-medium">
                   {step.description}
                 </p>
               </div>
@@ -96,17 +127,26 @@ const Extension = () => {
         </div>
 
         {/* Download CTA */}
-        <button
-          onClick={handleDownload}
-          className="w-full py-3 border border-white/15 text-white/70 hover:text-white hover:border-white/40 transition text-xs tracking-[2px] uppercase rounded-sm flex items-center justify-center gap-2"
-        >
-          <Download size={14} />
-          Download Extension
-        </button>
+        <div className="px-6 pb-8">
+          <button
+            onClick={handleDownload}
+            className="w-full py-4 rounded-xl text-white font-body font-semibold text-[15px] tracking-wide flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-[0.98]"
+            style={{
+              background: "rgba(255,255,255,0.12)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255,255,255,0.15)",
+            }}
+          >
+            <Download size={18} />
+            Download Extension
+          </button>
+          <p className="text-center text-[11px] text-white/25 mt-3 font-body font-medium tracking-wide">
+            Works in Chrome, Edge, Brave, and Arc
+          </p>
+        </div>
 
-        <p className="text-center text-[10px] text-white/20 mt-4 tracking-wide">
-          Works in Chrome, Edge, Brave, and Arc
-        </p>
+        <BottomNavBar />
+        <div className="h-24" />
       </div>
     </div>
   );
