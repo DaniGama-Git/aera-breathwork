@@ -19,6 +19,7 @@ import SearchScreen from "./pages/SearchScreen.tsx";
 import Auth from "./pages/Auth.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
 import Recommendation from "./pages/Recommendation.tsx";
+import Extension from "./pages/Extension.tsx";
 import BreatheDots from "@/components/BreatheDots";
 
 const queryClient = new QueryClient();
@@ -115,6 +116,7 @@ const App = () => (
           <Route path="/hrv" element={<ProtectedRoute><HrvDemo /></ProtectedRoute>} />
           <Route path="/category/:slug" element={<ProtectedRoute><CategoryLibrary /></ProtectedRoute>} />
           <Route path="/search" element={<ProtectedRoute><SearchScreen /></ProtectedRoute>} />
+          <Route path="/extension" element={<Extension />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
