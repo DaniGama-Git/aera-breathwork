@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import HomeScreen from "./pages/HomeScreen.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import WavePreview from "./pages/WavePreview.tsx";
 import DynamicSession from "./pages/DynamicSession.tsx";
 import HrvDemo from "./pages/HrvDemo.tsx";
 import CategoryLibrary from "./pages/CategoryLibrary.tsx";
@@ -97,6 +98,7 @@ const App = () => (
           <Route path="/category/:slug" element={<ProtectedRoute><CategoryLibrary /></ProtectedRoute>} />
           <Route path="/search" element={<ProtectedRoute><SearchScreen /></ProtectedRoute>} />
           <Route path="/extension" element={<Extension />} />
+          <Route path="/wave" element={<WavePreview />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
