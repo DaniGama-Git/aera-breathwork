@@ -18,61 +18,8 @@ const LoadingSpinner = () => (
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
-  const location = useLocation();
-  const [onboardingChecked, setOnboardingChecked] = useState(false);
-  const [checkedPath, setCheckedPath] = useState<string | null>(null);
-  const [needsOnboarding, setNeedsOnboarding] = useState(false);
-
-  useEffect(() => {
-    if (!user) {
-      setNeedsOnboarding(false);
-      setOnboardingChecked(true);
-      setCheckedPath(location.pathname);
-      return;
-    }
-
-    let isActive = true;
-    setOnboardingChecked(false);
-    setCheckedPath(null);
-
-    const checkOnboarding = async () => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("onboarding_completed")
-        .eq("user_id", user.id)
-        .maybeSingle();
-
-      if (!isActive) return;
-
-      if (error) {
-        setNeedsOnboarding(false);
-      } else {
-        setNeedsOnboarding(!data?.onboarding_completed);
-      }
-      setOnboardingChecked(true);
-      setCheckedPath(location.pathname);
-    };
-
-    void checkOnboarding();
-
-    return () => {
-      isActive = false;
-    };
-  }, [user, location.pathname]);
-
-  const isCurrentPathChecked = onboardingChecked && checkedPath === location.pathname;
-
-  if (loading || !isCurrentPathChecked) return <LoadingSpinner />;
+  if (loading) return <LoadingSpinner />;
   if (!user) return <Navigate to="/auth" replace />;
-
-  if (needsOnboarding && location.pathname !== "/onboarding") {
-    return <Navigate to="/onboarding" replace />;
-  }
-
-  if (!needsOnboarding && location.pathname === "/onboarding") {
-    return <Navigate to="/menu" replace />;
-  }
-
   return <>{children}</>;
 };
 
