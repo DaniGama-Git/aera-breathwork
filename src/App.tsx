@@ -8,10 +8,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import HomeScreen from "./pages/HomeScreen.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import BreathworkSession from "./pages/BreathworkSession.tsx";
-import BreathworkSessionRecover from "./pages/BreathworkSessionRecover.tsx";
-import BreathworkSessionFocus from "./pages/BreathworkSessionFocus.tsx";
-import BreathworkSessionReset from "./pages/BreathworkSessionReset.tsx";
+import DynamicSession from "./pages/DynamicSession.tsx";
 import HrvDemo from "./pages/HrvDemo.tsx";
 import CategoryLibrary from "./pages/CategoryLibrary.tsx";
 import BreathworkMenu from "./pages/BreathworkMenu.tsx";
@@ -109,10 +106,12 @@ const App = () => (
           <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
           <Route path="/recommendation" element={<ProtectedRoute><Recommendation /></ProtectedRoute>} />
           <Route path="/menu" element={<ProtectedRoute><BreathworkMenu /></ProtectedRoute>} />
-          <Route path="/breathwork-session-activate" element={<ProtectedRoute><BreathworkSession /></ProtectedRoute>} />
-          <Route path="/breathwork-session-recover" element={<ProtectedRoute><BreathworkSessionRecover /></ProtectedRoute>} />
-          <Route path="/breathwork-session-focus" element={<ProtectedRoute><BreathworkSessionFocus /></ProtectedRoute>} />
-          <Route path="/breathwork-session-reset" element={<ProtectedRoute><BreathworkSessionReset /></ProtectedRoute>} />
+          <Route path="/session/:category/:slug" element={<ProtectedRoute><DynamicSession /></ProtectedRoute>} />
+          {/* Legacy redirects */}
+          <Route path="/breathwork-session-activate" element={<Navigate to="/session/activate/morning-activation" replace />} />
+          <Route path="/breathwork-session-recover" element={<Navigate to="/session/recover/back-to-back-recharge" replace />} />
+          <Route path="/breathwork-session-focus" element={<Navigate to="/session/focus/focus-activation" replace />} />
+          <Route path="/breathwork-session-reset" element={<Navigate to="/session/ground/evening-decompression" replace />} />
           <Route path="/hrv" element={<ProtectedRoute><HrvDemo /></ProtectedRoute>} />
           <Route path="/category/:slug" element={<ProtectedRoute><CategoryLibrary /></ProtectedRoute>} />
           <Route path="/search" element={<ProtectedRoute><SearchScreen /></ProtectedRoute>} />

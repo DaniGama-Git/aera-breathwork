@@ -31,7 +31,7 @@ function buildAllSessions(): SearchSession[] {
         description: s.description,
         duration: s.duration,
         category: cat.label,
-        to: cat.sessionRoute,
+        to: `/session/${Object.keys(categoryConfig).find(k => categoryConfig[k] === cat) || "perform"}/${s.slug}`,
         image: cat.image,
       });
     });

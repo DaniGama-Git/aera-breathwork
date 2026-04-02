@@ -1,7 +1,7 @@
 import categoryActivate from "@/assets/category-activate.webp";
-import categoryReset from "@/assets/category-reset.webp";
-import categoryFocus from "@/assets/category-focus.webp";
 import categoryRecover from "@/assets/category-recover.webp";
+import categoryFocus from "@/assets/category-focus.webp";
+import categoryReset from "@/assets/category-reset.webp";
 
 export const ARCHETYPE_DISPLAY: Record<string, string> = {
   pack_animal: "Pack Animal",
@@ -11,17 +11,19 @@ export const ARCHETYPE_DISPLAY: Record<string, string> = {
 };
 
 export const CATEGORY_DISPLAY: Record<string, string> = {
+  perform: "Perform",
   activate: "Activate",
   focus: "Focus",
-  reset: "Reset",
   recover: "Recover",
+  ground: "Ground",
 };
 
 export const CATEGORY_IMAGES: Record<string, string> = {
+  perform: categoryFocus,
   activate: categoryActivate,
   focus: categoryFocus,
-  reset: categoryReset,
   recover: categoryRecover,
+  ground: categoryReset,
 };
 
 export const TIME_DISPLAY: Record<string, string> = {
@@ -32,8 +34,9 @@ export const TIME_DISPLAY: Record<string, string> = {
 };
 
 export const SESSION_ROUTES: Record<string, string> = {
-  activate: "/breathwork-session-activate",
-  focus: "/breathwork-session-focus",
-  reset: "/breathwork-session-reset",
-  recover: "/breathwork-session-recover",
+  perform: "/session/perform/pre-pitch",
+  activate: "/session/activate/morning-activation",
+  focus: "/session/focus/focus-activation",
+  recover: "/session/recover/back-to-back-recharge",
+  ground: "/session/ground/evening-decompression",
 };

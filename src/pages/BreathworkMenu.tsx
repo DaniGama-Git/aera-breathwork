@@ -1,7 +1,5 @@
 /**
  * BreathworkMenu — Main browsing/home screen
- * Route: /menu
- * Shows greeting, category cards, favorites, and recommendations.
  */
 
 import { useEffect, useState } from "react";
@@ -10,9 +8,9 @@ import { X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import categoryActivate from "@/assets/category-activate.webp";
-import categoryReset from "@/assets/category-reset.webp";
-import categoryFocus from "@/assets/category-focus.webp";
 import categoryRecover from "@/assets/category-recover.webp";
+import categoryFocus from "@/assets/category-focus.webp";
+import categoryReset from "@/assets/category-reset.webp";
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
 import homeIndicator from "@/assets/home-indicator.png";
@@ -24,24 +22,25 @@ import {
 } from "@/lib/recommendationMaps";
 
 const categories = [
-  { label: "Activate", image: categoryActivate, to: "/category/activate" },
-  { label: "Reset", image: categoryReset, to: "/category/reset" },
-  { label: "Focus", image: categoryFocus, to: "/category/focus" },
+  { label: "Perform", image: categoryFocus, to: "/category/perform" },
   { label: "Recover", image: categoryRecover, to: "/category/recover" },
+  { label: "Focus", image: categoryFocus, to: "/category/focus" },
+  { label: "Activate", image: categoryActivate, to: "/category/activate" },
+  { label: "Ground", image: categoryReset, to: "/category/ground" },
 ];
 
 const favorites = [
-  { title: "Performance Reset", duration: "5 mins", to: "/breathwork-session-reset", image: categoryReset },
-  { title: "Focus Activation", duration: "5 mins", to: "/breathwork-session-focus", image: categoryFocus },
-  { title: "Morning Ignition", duration: "5 mins", to: "/breathwork-session-activate", image: categoryActivate },
-  { title: "Evening Unwind", duration: "8 mins", to: "/breathwork-session-recover", image: categoryRecover },
+  { title: "Pre-Pitch", duration: "5 mins", to: "/session/perform/pre-pitch", image: categoryFocus },
+  { title: "Focus Activation", duration: "5 mins", to: "/session/focus/focus-activation", image: categoryFocus },
+  { title: "Morning Activation", duration: "5 mins", to: "/session/activate/morning-activation", image: categoryActivate },
+  { title: "Back-To-Back Recharge", duration: "5 mins", to: "/session/recover/back-to-back-recharge", image: categoryRecover },
 ];
 
 const recommendations = [
-  { title: "Deep Decompression", duration: "10 mins", to: "/breathwork-session-recover", image: categoryActivate },
-  { title: "Context Switching", duration: "5 mins", to: "/breathwork-session-reset", image: categoryReset },
-  { title: "Pre-Call Clarity", duration: "3 mins", to: "/breathwork-session-focus", image: categoryFocus },
-  { title: "Afternoon Boost", duration: "5 mins", to: "/breathwork-session-activate", image: categoryRecover },
+  { title: "Decision Clarity", duration: "5 mins", to: "/session/perform/decision-clarity", image: categoryFocus },
+  { title: "Post-Setback Recovery", duration: "5 mins", to: "/session/recover/post-setback-recovery", image: categoryRecover },
+  { title: "Pre-Meeting", duration: "5 mins", to: "/session/perform/pre-meeting", image: categoryFocus },
+  { title: "Conflict De-escalation", duration: "5 mins", to: "/session/recover/conflict-de-escalation", image: categoryRecover },
 ];
 
 function getGreeting() {
@@ -141,7 +140,7 @@ const BreathworkMenu = () => {
               <AddToCalendar
                 sessionTitle={`${categoryName} Session`}
                 sessionSubtitle={`Recommended: ${profileRec?.recommended_frequency}x per week`}
-                sessionCategory={profileRec?.recommended_session || "activate"}
+                sessionCategory={profileRec?.recommended_session || "perform"}
                 durationMinutes={5}
                 recommendedFrequency={profileRec?.recommended_frequency || undefined}
                 recommendedTime={profileRec?.recommended_time || undefined}
