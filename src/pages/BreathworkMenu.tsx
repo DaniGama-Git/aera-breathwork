@@ -42,51 +42,11 @@ function getGreeting() {
   return "Good Evening";
 }
 
-interface ProfileRec {
-  stress_archetype: string | null;
-  recommended_session: string | null;
-  recommended_frequency: number | null;
-  recommended_time: string | null;
-  recommendation_dismissed: boolean;
-}
-
 const BreathworkMenu = () => {
   const { signOut, user } = useAuth();
-  const [profileRec, setProfileRec] = useState<ProfileRec | null>(null);
-  const [bannerDismissed, setBannerDismissed] = useState(false);
 
   const displayName = user?.user_metadata?.full_name?.split(" ")[0] || user?.user_metadata?.name?.split(" ")[0] || "there";
   const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
-
-  useEffect(() => {
-    if (!user) return;
-    const fetchProfile = async () => {
-      const { data } = await supabase
-        .from("profiles")
-        .select("stress_archetype, recommended_session, recommended_frequency, recommended_time, recommendation_dismissed")
-        .eq("user_id", user.id)
-        .maybeSingle();
-      if (data) {
-        setProfileRec(data);
-        setBannerDismissed(data.recommendation_dismissed);
-      }
-    };
-    void fetchProfile();
-  }, [user]);
-
-  const dismissBanner = async () => {
-    setBannerDismissed(true);
-    if (user) {
-      await supabase
-        .from("profiles")
-        .update({ recommendation_dismissed: true })
-        .eq("user_id", user.id);
-    }
-  };
-
-  const showBanner = profileRec?.stress_archetype && !bannerDismissed;
-  const categoryName = CATEGORY_DISPLAY[profileRec?.recommended_session || ""] || profileRec?.recommended_session || "";
-  const timeName = TIME_DISPLAY[profileRec?.recommended_time || ""] || profileRec?.recommended_time || "";
 
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col bg-[#F7F6F5]">
