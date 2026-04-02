@@ -28,8 +28,44 @@ const LoadingSpinner = () => (
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
-  if (loading) return <LoadingSpinner />;
+  const location = useLocation();
+  const [onboardingChecked, setOnboardingChecked] = useState(false);
+  const [needsOnboarding, setNeedsOnboarding] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      setNeedsOnboarding(false);
+      setOnboardingChecked(true);
+      return;
+    }
+
+    let active = true;
+    setOnboardingChecked(false);
+
+    supabase
+      .from("profiles")
+      .select("onboarding_completed")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (!active) return;
+        setNeedsOnboarding(!error && !data?.onboarding_completed);
+        setOnboardingChecked(true);
+      });
+
+    return () => { active = false; };
+  }, [user]);
+
+  if (loading || !onboardingChecked) return <LoadingSpinner />;
   if (!user) return <Navigate to="/auth" replace />;
+
+  if (needsOnboarding && location.pathname !== "/onboarding") {
+    return <Navigate to="/onboarding" replace />;
+  }
+  if (!needsOnboarding && location.pathname === "/onboarding") {
+    return <Navigate to="/menu" replace />;
+  }
+
   return <>{children}</>;
 };
 
