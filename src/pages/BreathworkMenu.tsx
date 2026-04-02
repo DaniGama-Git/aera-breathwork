@@ -2,24 +2,16 @@
  * BreathworkMenu — Main browsing/home screen
  */
 
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import categoryActivate from "@/assets/category-activate.webp";
 import categoryRecover from "@/assets/category-recover.webp";
 import categoryFocus from "@/assets/category-focus.webp";
 import categoryReset from "@/assets/category-reset.webp";
 import BottomNavBar from "@/components/BottomNavBar";
-import AddToCalendar from "@/components/AddToCalendar";
 import homeIndicator from "@/assets/home-indicator.png";
 import playIconSmall from "@/assets/play-icon-small.svg";
 import playIconLarge from "@/assets/play-icon-large.svg";
-import {
-  CATEGORY_DISPLAY,
-  TIME_DISPLAY,
-} from "@/lib/recommendationMaps";
 
 const categories = [
   { label: "Perform", image: categoryFocus, to: "/category/perform" },
