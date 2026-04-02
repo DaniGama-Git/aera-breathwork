@@ -1,73 +1,99 @@
 import categoryActivate from "@/assets/category-activate.webp";
-import categoryReset from "@/assets/category-reset.webp";
-import categoryFocus from "@/assets/category-focus.webp";
 import categoryRecover from "@/assets/category-recover.webp";
+import categoryFocus from "@/assets/category-focus.webp";
+import categoryReset from "@/assets/category-reset.webp";
+
+// Visual config per category (gradient bg, icon, category card image)
+import activateGradient from "@/assets/activate-gradient-v2.webp";
+import focusGradient from "@/assets/focus-gradient-v2.webp";
+import resetGradient from "@/assets/reset-gradient-v2.webp";
+import recoverGradient from "@/assets/recover-gradient-v2.webp";
+import activateIcon from "@/assets/activate-icon.svg";
+import focusIcon from "@/assets/focus-icon.svg";
+import resetIcon from "@/assets/reset-icon.svg";
+import recoverIcon from "@/assets/recover-icon.svg";
 
 export interface SessionItem {
   title: string;
   description: string;
   duration: string;
+  slug: string;
+  audioSrc?: string;
 }
 
 export interface CategoryConfig {
   label: string;
   image: string;
-  sessionRoute: string;
+  gradient: string;
+  icon: string;
   sessions: SessionItem[];
 }
 
 export const categoryConfig: Record<string, CategoryConfig> = {
-  activate: {
-    label: "Activate",
-    image: categoryActivate,
-    sessionRoute: "/breathwork-session-activate",
-    sessions: [
-      { title: "Morning Ignition", description: "Kickstart your day before the first meeting.", duration: "5 mins" },
-      { title: "Afternoon Boost", description: "Counter the afternoon energy dip.", duration: "5 mins" },
-      { title: "Presentation Power-Up", description: "Energize before a big moment.", duration: "3 mins" },
-      { title: "Creative Spark", description: "Break through mental blocks.", duration: "6 mins" },
-      { title: "Monday Momentum", description: "Set the tone for a high-output week.", duration: "4 mins" },
-      { title: "Pre-Negotiation Charge", description: "Build energy before a tough conversation.", duration: "3 mins" },
-    ],
-  },
-  reset: {
-    label: "Reset",
-    image: categoryReset,
-    sessionRoute: "/breathwork-session-reset",
-    sessions: [
-      { title: "Performance Reset", description: "Clear your head between tasks.", duration: "5 mins" },
-      { title: "Meeting Recovery", description: "Reset after back-to-back meetings.", duration: "3 mins" },
-      { title: "Midday Reboot", description: "Hit the reset button on your nervous system.", duration: "5 mins" },
-      { title: "Context Switching", description: "Smoothly transition between work modes.", duration: "4 mins" },
-      { title: "Stress Flush", description: "Rapidly clear accumulated tension.", duration: "3 mins" },
-      { title: "Travel Reset", description: "Recalibrate after long commutes or flights.", duration: "7 mins" },
-      { title: "Weekend Transition", description: "Shift from work mode to rest mode.", duration: "5 mins" },
-    ],
-  },
-  focus: {
-    label: "Focus",
+  perform: {
+    label: "Perform",
     image: categoryFocus,
-    sessionRoute: "/breathwork-session-focus",
+    gradient: focusGradient,
+    icon: focusIcon,
     sessions: [
-      { title: "Focus Activation", description: "Calm down before you walk in.", duration: "5 mins" },
-      { title: "Deep Work Entry", description: "Drop into sustained concentration.", duration: "4 mins" },
-      { title: "Pre-Call Clarity", description: "Sharpen your mind before an important call.", duration: "3 mins" },
-      { title: "Strategic Thinking", description: "Clear the noise for better judgment.", duration: "5 mins" },
-      { title: "Decision Making", description: "Cut through complexity with a clear head.", duration: "4 mins" },
-      { title: "Flow State Primer", description: "Set the conditions for peak flow.", duration: "6 mins" },
+      { title: "Pre-Pitch", description: "Ground yourself before the big moment.", slug: "pre-pitch", audioSrc: "/audio/pre-pitch-grounding.mp3" },
+      { title: "Pre-Negotiation", description: "Settle your nerves before a tough conversation.", slug: "pre-negotiation", audioSrc: "/audio/pre-negotiation.mp3" },
+      { title: "Decision Clarity", description: "Cut through the noise to decide clearly.", slug: "decision-clarity", audioSrc: "/audio/decision-clarity.mp3" },
+      { title: "Pre-Meeting", description: "Arrive centered and fully present.", slug: "pre-meeting", audioSrc: "/audio/pre-meeting.mp3" },
+      { title: "Pre-Creative Work", description: "Open up before creative deep work.", slug: "pre-creative-work" },
     ],
   },
   recover: {
     label: "Recover",
     image: categoryRecover,
-    sessionRoute: "/breathwork-session-recover",
+    gradient: recoverGradient,
+    icon: recoverIcon,
     sessions: [
-      { title: "Deep Decompression", description: "Wind down after an intense day.", duration: "10 mins" },
-      { title: "Evening Unwind", description: "Transition into a restful evening.", duration: "8 mins" },
-      { title: "Burnout Prevention", description: "Restore when you're running on empty.", duration: "12 mins" },
-      { title: "Sleep Preparation", description: "Prime your nervous system for deep sleep.", duration: "10 mins" },
-      { title: "Weekend Recharge", description: "Deep nervous system restoration.", duration: "15 mins" },
-      { title: "Post-Quarter Reset", description: "Decompress after a high-pressure sprint.", duration: "8 mins" },
+      { title: "Back-To-Back Recharge", description: "Reset between consecutive meetings.", slug: "back-to-back-recharge", audioSrc: "/audio/back-to-back-recharge.mp3" },
+      { title: "Post-Setback Recovery", description: "Process and bounce back emotionally.", slug: "post-setback-recovery", audioSrc: "/audio/post-setback-recovery.mp3" },
+      { title: "Context Switch", description: "Smoothly transition between work modes.", slug: "context-switch" },
+      { title: "Post-Meeting Reset", description: "Decompress after an intense meeting.", slug: "post-meeting-reset" },
+      { title: "Stress/Anxiety SOS", description: "Rapid relief when stress peaks.", slug: "stress-anxiety-sos" },
+      { title: "Conflict De-escalation", description: "Calm down after a heated exchange.", slug: "conflict-de-escalation", audioSrc: "/audio/conflict-de-escalation.mp3" },
+    ],
+  },
+  focus: {
+    label: "Focus",
+    image: categoryFocus,
+    gradient: focusGradient,
+    icon: focusIcon,
+    sessions: [
+      { title: "Focus Activation", description: "Drop into deep concentration.", slug: "focus-activation", audioSrc: "/audio/focus-activation.mp3" },
+    ],
+  },
+  activate: {
+    label: "Activate",
+    image: categoryActivate,
+    gradient: activateGradient,
+    icon: activateIcon,
+    sessions: [
+      { title: "Morning Activation", description: "Kickstart your day with energy.", slug: "morning-activation", audioSrc: "/audio/morning-activation.mp3" },
+      { title: "Mid-Day Energy Boost", description: "Counter the afternoon energy dip.", slug: "mid-day-energy-boost" },
+    ],
+  },
+  ground: {
+    label: "Ground",
+    image: categoryReset,
+    gradient: resetGradient,
+    icon: resetIcon,
+    sessions: [
+      { title: "Evening Decompression", description: "Wind down after an intense day.", slug: "evening-decompression" },
+      { title: "Travel Reset", description: "Recalibrate after long commutes or flights.", slug: "travel-reset" },
+      { title: "Deep Decompression", description: "Deep nervous system restoration.", slug: "deep-decompression" },
     ],
   },
 };
+
+/** Flat lookup: slug → { session, category key, category config } */
+export function findSessionBySlug(slug: string) {
+  for (const [categoryKey, config] of Object.entries(categoryConfig)) {
+    const session = config.sessions.find((s) => s.slug === slug);
+    if (session) return { session, categoryKey, config };
+  }
+  return null;
+}
