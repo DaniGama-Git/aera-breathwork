@@ -72,7 +72,7 @@ export const categoryConfig: Record<string, CategoryConfig> = {
     icon: activateIcon,
     sessions: [
       { title: "Morning Activation", description: "Kickstart your day with energy.", duration: "5 mins", slug: "morning-activation", audioSrc: "/audio/morning-activation.mp3" },
-      { title: "Mid-Day Energy Boost", description: "Counter the afternoon energy dip.", duration: "5 mins", slug: "mid-day-energy-boost" },
+      { title: "Mid-Day Energy Boost", description: "Counter the afternoon energy dip.", duration: "5 mins", slug: "mid-day-energy-boost", audioSrc: "/audio/mid-day-energy-boost.mp3" },
     ],
   },
   ground: {
