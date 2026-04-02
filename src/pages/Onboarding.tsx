@@ -23,10 +23,10 @@ interface OnboardingData {
 }
 
 const GOAL_OPTIONS = [
-  { label: "Focus", value: "focus" },
-  { label: "Performance", value: "performance" },
-  { label: "Recovery", value: "recovery" },
-  { label: "Energy", value: "energy" },
+  { label: "To focus", value: "focus" },
+  { label: "To perform better", value: "performance" },
+  { label: "To recover", value: "recovery" },
+  { label: "To boost my energy", value: "energy" },
 ];
 
 const MOMENT_OPTIONS = [
