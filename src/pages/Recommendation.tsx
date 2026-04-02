@@ -112,6 +112,13 @@ const Recommendation = () => {
           />
 
           <button
+            onClick={() => navigate("/extension")}
+            className="w-full max-w-[320px] py-4 rounded-2xl border border-white/20 bg-white/[0.06] text-white font-body font-semibold text-[15px] transition-all duration-200 hover:bg-white/10 active:scale-[0.98]"
+          >
+            Get the Chrome Extension
+          </button>
+
+          <button
             onClick={() => navigate("/menu", { replace: true })}
             className="text-white/50 font-body text-[14px] underline underline-offset-4 decoration-white/30 transition-all duration-300 hover:text-white/90 hover:decoration-white/60"
           >
