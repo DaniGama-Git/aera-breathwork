@@ -50,9 +50,9 @@ export const categoryConfig: Record<string, CategoryConfig> = {
     sessions: [
       { title: "Back-To-Back Recharge", description: "Reset between consecutive meetings.", duration: "5 mins", slug: "back-to-back-recharge", audioSrc: "/audio/back-to-back-recharge.mp3" },
       { title: "Post-Setback Recovery", description: "Process and bounce back emotionally.", duration: "5 mins", slug: "post-setback-recovery", audioSrc: "/audio/post-setback-recovery.mp3" },
-      { title: "Context Switch", description: "Smoothly transition between work modes.", duration: "5 mins", slug: "context-switch" },
-      { title: "Post-Meeting Reset", description: "Decompress after an intense meeting.", duration: "5 mins", slug: "post-meeting-reset" },
-      { title: "Stress/Anxiety SOS", description: "Rapid relief when stress peaks.", duration: "3 mins", slug: "stress-anxiety-sos" },
+      { title: "Context Switch", description: "Smoothly transition between work modes.", duration: "5 mins", slug: "context-switch", audioSrc: "/audio/context-switching.mp3" },
+      { title: "Post-Meeting Reset", description: "Decompress after an intense meeting.", duration: "5 mins", slug: "post-meeting-reset", audioSrc: "/audio/post-meeting-reset.mp3" },
+      { title: "Stress/Anxiety SOS", description: "Rapid relief when stress peaks.", duration: "3 mins", slug: "stress-anxiety-sos", audioSrc: "/audio/stress-anxiety-sos.mp3" },
       { title: "Conflict De-escalation", description: "Calm down after a heated exchange.", duration: "5 mins", slug: "conflict-de-escalation", audioSrc: "/audio/conflict-de-escalation.mp3" },
     ],
   },
@@ -72,7 +72,7 @@ export const categoryConfig: Record<string, CategoryConfig> = {
     icon: activateIcon,
     sessions: [
       { title: "Morning Activation", description: "Kickstart your day with energy.", duration: "5 mins", slug: "morning-activation", audioSrc: "/audio/morning-activation.mp3" },
-      { title: "Mid-Day Energy Boost", description: "Counter the afternoon energy dip.", duration: "5 mins", slug: "mid-day-energy-boost" },
+      { title: "Mid-Day Energy Boost", description: "Counter the afternoon energy dip.", duration: "5 mins", slug: "mid-day-energy-boost", audioSrc: "/audio/mid-day-energy-boost.mp3" },
     ],
   },
   ground: {
@@ -81,7 +81,7 @@ export const categoryConfig: Record<string, CategoryConfig> = {
     gradient: resetGradient,
     icon: resetIcon,
     sessions: [
-      { title: "Evening Decompression", description: "Wind down after an intense day.", duration: "10 mins", slug: "evening-decompression" },
+      { title: "Evening Decompression", description: "Wind down after an intense day.", duration: "10 mins", slug: "evening-decompression", audioSrc: "/audio/evening-decompression.mp3" },
       { title: "Travel Reset", description: "Recalibrate after long commutes or flights.", duration: "7 mins", slug: "travel-reset" },
       { title: "Deep Decompression", description: "Deep nervous system restoration.", duration: "12 mins", slug: "deep-decompression" },
     ],
