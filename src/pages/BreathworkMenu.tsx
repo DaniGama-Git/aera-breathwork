@@ -72,40 +72,6 @@ const BreathworkMenu = () => {
           </button>
         </div>
 
-        {/* Recommendation Banner */}
-        {showBanner && (
-          <div className="px-5 md:px-8 mt-1 mb-2">
-            <div className="relative bg-white rounded-xl px-5 py-4 shadow-sm border border-[#ECECEC]">
-              <button
-                onClick={dismissBanner}
-                className="absolute top-3 right-3 p-1 text-[#BDBDBD] hover:text-[#1D1D1C] transition-colors"
-                aria-label="Dismiss"
-              >
-                <X size={16} />
-              </button>
-              <p className="font-body font-semibold text-[15px] text-[#1D1D1C] pr-6">
-                {profileRec?.recommended_frequency}x {categoryName} sessions per week
-              </p>
-              <p className="font-body font-normal text-[13px] text-[#BDBDBD] mt-0.5">
-                Best time: {timeName}
-              </p>
-              <AddToCalendar
-                sessionTitle={`${categoryName} Session`}
-                sessionSubtitle={`Recommended: ${profileRec?.recommended_frequency}x per week`}
-                sessionCategory={profileRec?.recommended_session || "perform"}
-                durationMinutes={5}
-                recommendedFrequency={profileRec?.recommended_frequency || undefined}
-                recommendedTime={profileRec?.recommended_time || undefined}
-                trigger={
-                  <button className="mt-3 px-4 py-2 rounded-xl bg-[#1D1D1C] text-white font-body font-medium text-[13px] transition-all duration-200 hover:bg-[#333] active:scale-[0.98]">
-                    Schedule Sessions
-                  </button>
-                }
-              />
-            </div>
-          </div>
-        )}
-
         {/* Categories */}
         <div className="px-5 md:px-8 mt-2">
           <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Categories</h2>

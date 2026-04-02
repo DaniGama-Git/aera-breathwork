@@ -39,8 +39,6 @@ const App = () => (
         <Routes>
           <Route path="/" element={<HomeScreen />} />
           <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
-          <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
-          <Route path="/recommendation" element={<ProtectedRoute><Recommendation /></ProtectedRoute>} />
           <Route path="/menu" element={<ProtectedRoute><BreathworkMenu /></ProtectedRoute>} />
           <Route path="/session/:category/:slug" element={<ProtectedRoute><DynamicSession /></ProtectedRoute>} />
           {/* Legacy redirects */}
