@@ -1,12 +1,12 @@
 /**
  * BottomNavBar — shared dark pill-shaped navigation bar
- * Home → /menu, Breathe → user's recommended session from profile
  */
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { SESSION_ROUTES } from "@/lib/recommendationMaps";
 import breatheIcon from "@/assets/breathe-nav-icon.svg";
 import scienceIcon from "@/assets/science-nav-icon.svg";
 import homeIcon from "@/assets/home-nav-icon.svg";
@@ -14,22 +14,15 @@ import searchIcon from "@/assets/search-nav-icon.svg";
 
 const getTimeBasedRoute = () => {
   const h = new Date().getHours();
-  if (h >= 5 && h < 11) return "/breathwork-session-activate";
-  if (h >= 11 && h < 17) return "/breathwork-session-focus";
-  if (h >= 17 && h < 21) return "/breathwork-session-recover";
-  return "/breathwork-session-reset";
-};
-
-const sessionRouteMap: Record<string, string> = {
-  activate: "/breathwork-session-activate",
-  focus: "/breathwork-session-focus",
-  recover: "/breathwork-session-recover",
-  reset: "/breathwork-session-reset",
+  if (h >= 5 && h < 11) return SESSION_ROUTES.activate;
+  if (h >= 11 && h < 17) return SESSION_ROUTES.perform;
+  if (h >= 17 && h < 21) return SESSION_ROUTES.recover;
+  return SESSION_ROUTES.ground;
 };
 
 const tabConfig = [
   { label: "Home", icon: homeIcon, paths: ["/menu"] },
-  { label: "Breathe", icon: breatheIcon, paths: ["/breathwork-session"] },
+  { label: "Breathe", icon: breatheIcon, paths: ["/session"] },
   { label: "Search", icon: searchIcon, paths: ["/search"] },
   { label: "Science", icon: scienceIcon, paths: ["/hrv"] },
 ];
@@ -48,8 +41,8 @@ const BottomNavBar = ({ activeTab }: { activeTab?: string }) => {
       .eq("user_id", user.id)
       .maybeSingle()
       .then(({ data }) => {
-        if (data?.recommended_session && sessionRouteMap[data.recommended_session]) {
-          setRecommendedRoute(sessionRouteMap[data.recommended_session]);
+        if (data?.recommended_session && SESSION_ROUTES[data.recommended_session]) {
+          setRecommendedRoute(SESSION_ROUTES[data.recommended_session]);
         }
       });
   }, [user]);
