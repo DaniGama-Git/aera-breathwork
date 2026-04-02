@@ -52,7 +52,7 @@ const CategoryLibrary = () => {
           {config.sessions.map((session) => (
             <Link
               key={session.title}
-              to={config.sessionRoute}
+              to={`/session/${slug}/${session.slug}`}
               className="flex items-center gap-4 no-underline bg-card rounded-2xl p-3 transition-shadow hover:shadow-md"
             >
               <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 relative">
