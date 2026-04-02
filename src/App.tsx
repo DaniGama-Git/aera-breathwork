@@ -4,18 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import HomeScreen from "./pages/HomeScreen.tsx";
-import NotFound from "./pages/NotFound.tsx";
-import DynamicSession from "./pages/DynamicSession.tsx";
-import HrvDemo from "./pages/HrvDemo.tsx";
-import CategoryLibrary from "./pages/CategoryLibrary.tsx";
-import BreathworkMenu from "./pages/BreathworkMenu.tsx";
-import SearchScreen from "./pages/SearchScreen.tsx";
 import Auth from "./pages/Auth.tsx";
-import Onboarding from "./pages/Onboarding.tsx";
-import Recommendation from "./pages/Recommendation.tsx";
 import Extension from "./pages/Extension.tsx";
 import BreatheDots from "@/components/BreatheDots";
 
