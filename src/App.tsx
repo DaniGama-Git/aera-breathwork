@@ -1,9 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import HomeScreen from "./pages/HomeScreen.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import DynamicSession from "./pages/DynamicSession.tsx";
@@ -12,6 +14,7 @@ import CategoryLibrary from "./pages/CategoryLibrary.tsx";
 import BreathworkMenu from "./pages/BreathworkMenu.tsx";
 import SearchScreen from "./pages/SearchScreen.tsx";
 import Auth from "./pages/Auth.tsx";
+import Onboarding from "./pages/Onboarding.tsx";
 import Extension from "./pages/Extension.tsx";
 import BreatheDots from "@/components/BreatheDots";
 
@@ -25,8 +28,44 @@ const LoadingSpinner = () => (
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
-  if (loading) return <LoadingSpinner />;
+  const location = useLocation();
+  const [onboardingChecked, setOnboardingChecked] = useState(false);
+  const [needsOnboarding, setNeedsOnboarding] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      setNeedsOnboarding(false);
+      setOnboardingChecked(true);
+      return;
+    }
+
+    let active = true;
+    setOnboardingChecked(false);
+
+    supabase
+      .from("profiles")
+      .select("onboarding_completed")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (!active) return;
+        setNeedsOnboarding(!error && !data?.onboarding_completed);
+        setOnboardingChecked(true);
+      });
+
+    return () => { active = false; };
+  }, [user]);
+
+  if (loading || !onboardingChecked) return <LoadingSpinner />;
   if (!user) return <Navigate to="/auth" replace />;
+
+  if (needsOnboarding && location.pathname !== "/onboarding") {
+    return <Navigate to="/onboarding" replace />;
+  }
+  if (!needsOnboarding && location.pathname === "/onboarding") {
+    return <Navigate to="/menu" replace />;
+  }
+
   return <>{children}</>;
 };
 
@@ -46,6 +85,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<HomeScreen />} />
           <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
+          <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
           <Route path="/menu" element={<ProtectedRoute><BreathworkMenu /></ProtectedRoute>} />
           <Route path="/session/:category/:slug" element={<ProtectedRoute><DynamicSession /></ProtectedRoute>} />
           {/* Legacy redirects */}
