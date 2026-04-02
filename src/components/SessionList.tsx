@@ -35,7 +35,7 @@ const SessionList = ({ sessions, categoryImage, categoryLabel, sessionRoute, cur
               className="flex items-center gap-3 bg-white/[0.06] rounded-xl p-3 transition-colors hover:bg-white/[0.1]"
             >
               <Link
-                to={sessionRoute}
+                to={`${sessionRoute}/${session.slug}`}
                 className="flex items-center gap-3 no-underline flex-1 min-w-0"
               >
                 <div className="w-11 h-11 rounded-lg overflow-hidden flex-shrink-0 relative">
