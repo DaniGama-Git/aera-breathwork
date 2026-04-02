@@ -47,6 +47,51 @@ export type Database = {
         }
         Relationships: []
       }
+      onboarding_preferences: {
+        Row: {
+          calendar_keywords: string[]
+          created_at: string
+          goals: string[]
+          id: string
+          moments: string[]
+          scheduled_enabled: boolean
+          scheduled_frequency: string | null
+          scheduled_length: string | null
+          scheduled_practice: string | null
+          scheduled_times: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          calendar_keywords?: string[]
+          created_at?: string
+          goals?: string[]
+          id?: string
+          moments?: string[]
+          scheduled_enabled?: boolean
+          scheduled_frequency?: string | null
+          scheduled_length?: string | null
+          scheduled_practice?: string | null
+          scheduled_times?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          calendar_keywords?: string[]
+          created_at?: string
+          goals?: string[]
+          id?: string
+          moments?: string[]
+          scheduled_enabled?: boolean
+          scheduled_frequency?: string | null
+          scheduled_length?: string | null
+          scheduled_practice?: string | null
+          scheduled_times?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
