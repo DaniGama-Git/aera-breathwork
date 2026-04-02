@@ -81,7 +81,7 @@ export const categoryConfig: Record<string, CategoryConfig> = {
     gradient: resetGradient,
     icon: resetIcon,
     sessions: [
-      { title: "Evening Decompression", description: "Wind down after an intense day.", duration: "10 mins", slug: "evening-decompression" },
+      { title: "Evening Decompression", description: "Wind down after an intense day.", duration: "10 mins", slug: "evening-decompression", audioSrc: "/audio/evening-decompression.mp3" },
       { title: "Travel Reset", description: "Recalibrate after long commutes or flights.", duration: "7 mins", slug: "travel-reset" },
       { title: "Deep Decompression", description: "Deep nervous system restoration.", duration: "12 mins", slug: "deep-decompression" },
     ],
