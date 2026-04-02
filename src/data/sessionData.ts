@@ -50,7 +50,7 @@ export const categoryConfig: Record<string, CategoryConfig> = {
     sessions: [
       { title: "Back-To-Back Recharge", description: "Reset between consecutive meetings.", duration: "5 mins", slug: "back-to-back-recharge", audioSrc: "/audio/back-to-back-recharge.mp3" },
       { title: "Post-Setback Recovery", description: "Process and bounce back emotionally.", duration: "5 mins", slug: "post-setback-recovery", audioSrc: "/audio/post-setback-recovery.mp3" },
-      { title: "Context Switch", description: "Smoothly transition between work modes.", duration: "5 mins", slug: "context-switch" },
+      { title: "Context Switch", description: "Smoothly transition between work modes.", duration: "5 mins", slug: "context-switch", audioSrc: "/audio/context-switching.mp3" },
       { title: "Post-Meeting Reset", description: "Decompress after an intense meeting.", duration: "5 mins", slug: "post-meeting-reset" },
       { title: "Stress/Anxiety SOS", description: "Rapid relief when stress peaks.", duration: "3 mins", slug: "stress-anxiety-sos" },
       { title: "Conflict De-escalation", description: "Calm down after a heated exchange.", duration: "5 mins", slug: "conflict-de-escalation", audioSrc: "/audio/conflict-de-escalation.mp3" },
