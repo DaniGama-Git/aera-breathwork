@@ -59,6 +59,7 @@ const WavePreview = () => {
   const [sessionStart, setSessionStart] = useState(0);
   const [round, setRound] = useState(0);
   const barRef = useRef<HTMLDivElement>(null);
+  const gradientRef = useRef<HTMLDivElement>(null);
   const phaseLabelRef = useRef<HTMLSpanElement>(null);
 
   /* ── Preload all backgrounds before first screen ── */
