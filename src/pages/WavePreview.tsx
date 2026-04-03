@@ -170,7 +170,7 @@ const WavePreview = () => {
   };
 
   const fadeClass = fadeIn ? "opacity-100" : "opacity-0";
-  const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[400ms] ${fadeClass}`;
+  const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[600ms] ease-in-out ${fadeClass}`;
 
   const isBreathing = screen === "breathing";
 
