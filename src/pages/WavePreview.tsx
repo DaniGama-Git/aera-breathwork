@@ -80,8 +80,7 @@ const WavePreview = () => {
       setFadeIn(false);
       setTimeout(() => {
         if (screen === "logo") setScreen("intro");
-        else if (screen === "intro") setScreen("description");
-        else if (screen === "description") {
+        else if (screen === "intro") {
           setScreen("breathing");
           setSessionStart(Date.now());
           setPhase("INHALE");
