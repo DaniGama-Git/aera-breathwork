@@ -11,12 +11,11 @@ import {
   type TimelineEntry,
 } from "@/data/breathingProtocols";
 
-type Screen = "loading" | "logo" | "intro" | "description" | "breathing" | "done";
+type Screen = "loading" | "logo" | "intro" | "breathing" | "done";
 
 const SCREEN_DELAYS: Partial<Record<Screen, number>> = {
   logo: 2200,
   intro: 3000,
-  description: 4000,
 };
 
 const ALL_IMAGES = [waveBgLogo, waveBgIntro, waveBgDescription, waveBgInhale];
@@ -24,7 +23,6 @@ const ALL_IMAGES = [waveBgLogo, waveBgIntro, waveBgDescription, waveBgInhale];
 const SCREEN_BG: Partial<Record<Screen, string>> = {
   logo: waveBgLogo,
   intro: waveBgIntro,
-  description: waveBgDescription,
   done: waveBgLogo,
 };
 
@@ -82,8 +80,7 @@ const WavePreview = () => {
       setFadeIn(false);
       setTimeout(() => {
         if (screen === "logo") setScreen("intro");
-        else if (screen === "intro") setScreen("description");
-        else if (screen === "description") {
+        else if (screen === "intro") {
           setScreen("breathing");
           setSessionStart(Date.now());
           setPhase("INHALE");
@@ -296,21 +293,6 @@ const WavePreview = () => {
             </div>
           )}
 
-          {screen === "description" && (
-            <div className={contentBase}>
-              <div className="flex items-start gap-3 text-left max-w-[240px]">
-                <img src={lightbulbIcon} alt="" style={{ width: 61, height: 82 }} className="mt-0.5 opacity-70 shrink-0" />
-                <div>
-                  <p className="text-white/80 text-[13px] leading-relaxed font-medium">
-                    {protocol.descriptionPrimary}
-                  </p>
-                  <p className="text-white/50 text-[13px] leading-relaxed font-medium mt-3">
-                    {protocol.descriptionSecondary}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
 
           {screen === "breathing" && (
             <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
@@ -332,8 +314,9 @@ const WavePreview = () => {
                 className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-700"
                 style={{ opacity: showScience ? 1 : 0 }}
               >
-              <div className="text-center max-w-[240px]">
-                  <p className="text-white/70 text-[13px] leading-relaxed font-medium"
+                <div className="flex items-start gap-3 text-left max-w-[240px]">
+                  <img src={lightbulbIcon} alt="" style={{ width: 40, height: 54 }} className="mt-0.5 opacity-70 shrink-0" />
+                  <p className="text-white/70 text-[12px] leading-relaxed font-medium"
                      style={{ textShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>
                     {scienceText}
                   </p>
