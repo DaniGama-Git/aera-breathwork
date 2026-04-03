@@ -73,11 +73,9 @@ const WavePreview = () => {
   const gradientRef = useRef<HTMLDivElement>(null);
   const phaseLabelRef = useRef<HTMLSpanElement>(null);
 
-  /* ── Preload all backgrounds before first screen ── */
+  /* ── No preloading needed — pure CSS gradients ── */
   useEffect(() => {
-    preloadImages(ALL_IMAGES).then(() => {
-      setScreen("logo");
-    });
+    setScreen("logo");
   }, []);
 
   /* ── Screen auto-advance ── */
