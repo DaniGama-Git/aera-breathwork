@@ -332,9 +332,8 @@ const WavePreview = () => {
                 className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-700"
                 style={{ opacity: showScience ? 1 : 0 }}
               >
-                <div className="flex items-start gap-3 text-left max-w-[240px]">
-                  <img src={lightbulbIcon} alt="" style={{ width: 40, height: 54 }} className="mt-0.5 opacity-70 shrink-0" />
-                  <p className="text-white/70 text-[12px] leading-relaxed font-medium"
+              <div className="text-center max-w-[240px]">
+                  <p className="text-white/70 text-[13px] leading-relaxed font-medium"
                      style={{ textShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>
                     {scienceText}
                   </p>
