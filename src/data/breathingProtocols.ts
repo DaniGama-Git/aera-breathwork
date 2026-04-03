@@ -375,6 +375,7 @@ export const wakeMeUpProtocol: Protocol = {
       method: "nose",
       transition:
         "Now take one deep inhale and hold. Let the alertness build.",
+      science: "Controlled breath hold after activation creates an alertness spike without overstimulation.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "HOLD", duration: 10000 },
