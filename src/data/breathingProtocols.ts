@@ -399,6 +399,7 @@ export const wakeMeUpProtocol: Protocol = {
       method: "nose",
       transition:
         "A few deeper breaths to fully expand and oxygenate before you start your day.",
+      science: "Expands lung capacity and restores full oxygenation before starting the day.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
