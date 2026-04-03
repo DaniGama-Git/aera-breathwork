@@ -219,7 +219,7 @@ const WavePreview = () => {
                 backgroundImage: `url(${PHASE_BG[p]})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                opacity: phase === p ? 1 : 0,
+                opacity: isBreathing && phase === p ? 1 : 0,
               }}
             />
           ))}
