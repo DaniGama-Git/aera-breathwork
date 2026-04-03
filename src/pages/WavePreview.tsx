@@ -238,7 +238,7 @@ const WavePreview = () => {
               </span>
               <p
                 className="text-white font-medium leading-[1.15]"
-                style={{ fontSize: 40, letterSpacing: "-0.01em" }}
+                style={{ fontSize: "1.4rem", letterSpacing: "-0.01em" }}
               >
                 You're about to step in,
                 <br />
