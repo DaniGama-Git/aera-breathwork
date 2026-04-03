@@ -215,19 +215,29 @@ const WavePreview = () => {
             />
           ))}
 
-          {/* Animated breathing backgrounds - all 3 layered, opacity-controlled */}
-          {(["INHALE", "HOLD", "EXHALE"] as const).map((p) => (
-            <div
-              key={p}
-              className="absolute inset-0 transition-opacity duration-[800ms] ease-in-out"
-              style={{
-                backgroundImage: `url(${PHASE_BG[p]})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                opacity: isBreathing && phase === p ? 1 : 0,
-              }}
-            />
-          ))}
+          {/* Base breathing background */}
+          <div
+            className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
+            style={{
+              backgroundImage: `url(${waveBgInhale})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              opacity: isBreathing ? 1 : 0,
+            }}
+          />
+
+          {/* Traveling gradient overlay — follows the bar */}
+          <div
+            ref={gradientRef}
+            className="absolute left-0 right-0 pointer-events-none transition-none"
+            style={{
+              height: "60%",
+              top: "55%",
+              opacity: isBreathing ? 1 : 0,
+              background: "radial-gradient(ellipse 100% 50% at 50% 50%, rgba(200,210,220,0.45) 0%, rgba(200,210,220,0.15) 35%, transparent 70%)",
+              transition: "opacity 600ms ease-in-out",
+            }}
+          />
 
           {/* Screen overlays */}
           {screen === "logo" && (
