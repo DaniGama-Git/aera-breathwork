@@ -50,14 +50,15 @@ function preloadImages(srcs: string[]): Promise<void> {
 }
 
 function buildBreathingGradient(barTop: number): string {
+  // Light at top, gets darker as bar travels down
   return `linear-gradient(180deg, 
-    hsl(195, 15%, 35%) 0%, 
-    hsl(195, 18%, 45%) ${Math.max(0, barTop - 20)}%, 
-    hsl(190, 15%, 60%) ${Math.max(0, barTop - 8)}%, 
-    hsl(200, 15%, 78%) ${barTop}%, 
-    hsl(210, 15%, 90%) ${Math.min(100, barTop + 8)}%, 
-    hsl(220, 10%, 96%) ${Math.min(100, barTop + 20)}%, 
-    hsl(0, 0%, 100%) 100%)`;
+    hsl(210, 10%, 95%) 0%, 
+    hsl(210, 12%, 88%) ${Math.max(0, barTop - 25)}%, 
+    hsl(200, 14%, 75%) ${Math.max(0, barTop - 12)}%, 
+    hsl(195, 16%, 62%) ${barTop}%, 
+    hsl(195, 18%, 48%) ${Math.min(100, barTop + 12)}%, 
+    hsl(195, 18%, 38%) ${Math.min(100, barTop + 25)}%, 
+    hsl(195, 15%, 30%) 100%)`;
 }
 
 const WavePreview = () => {
