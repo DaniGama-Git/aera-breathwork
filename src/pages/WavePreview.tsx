@@ -91,7 +91,9 @@ const WavePreview = () => {
           style={{
             aspectRatio: "1 / 1.1",
             borderRadius: 22,
-            background: "linear-gradient(180deg, #4a6b6b 0%, #5d7f7d 20%, #7a9e98 40%, #9fbcb4 60%, #c4d8d0 78%, #dfe9e4 90%, #edf2ef 100%)",
+            backgroundImage: screen === "logo" ? `url(${waveBgLogo})` : "linear-gradient(180deg, #4a6b6b 0%, #5d7f7d 20%, #7a9e98 40%, #9fbcb4 60%, #c4d8d0 78%, #dfe9e4 90%, #edf2ef 100%)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
         >
           {/* Overlays per screen */}
