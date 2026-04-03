@@ -214,7 +214,7 @@ const WavePreview = () => {
           <div
             className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
             style={{
-              backgroundImage: `url(${waveBgInhale})`,
+              backgroundImage: `url(${waveBgDescription})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               opacity: isBreathing ? 1 : 0,
