@@ -335,7 +335,7 @@ const WavePreview = () => {
                 className="absolute left-0 right-0"
                 style={{
                   top: "92%",
-                  opacity: showOverlay ? 0 : 1,
+                  opacity: (!hasStartedBreathing && startsWithOverlay) || showOverlay ? 0 : 1,
                   transition: showOverlay ? "opacity 400ms ease-out" : "opacity 400ms ease-in 300ms",
                 }}
               >
@@ -345,7 +345,7 @@ const WavePreview = () => {
               <div
                 className="pb-7 flex flex-col items-center gap-2"
                 style={{
-                  opacity: showOverlay ? 0 : 1,
+                  opacity: (!hasStartedBreathing && startsWithOverlay) || showOverlay ? 0 : 1,
                   transition: showOverlay ? "opacity 400ms ease-out" : "opacity 400ms ease-in 300ms",
                 }}
               >
