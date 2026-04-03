@@ -133,7 +133,15 @@ const WavePreview = () => {
         barRef.current.style.top = `${barTop}%`;
       }
       if (gradientRef.current) {
-        gradientRef.current.style.top = `${barTop - 30}%`;
+        // The gradient transition point follows the bar
+        gradientRef.current.style.background = `linear-gradient(180deg, 
+          hsl(195, 15%, 35%) 0%, 
+          hsl(195, 18%, 45%) ${Math.max(0, barTop - 20)}%, 
+          hsl(190, 15%, 60%) ${Math.max(0, barTop - 8)}%, 
+          hsl(200, 15%, 78%) ${barTop}%, 
+          hsl(210, 15%, 90%) ${Math.min(100, barTop + 8)}%, 
+          hsl(220, 10%, 96%) ${Math.min(100, barTop + 20)}%, 
+          hsl(0, 0%, 100%) 100%)`;
       }
       if (phaseLabelRef.current) {
         phaseLabelRef.current.textContent = currentPhase;
