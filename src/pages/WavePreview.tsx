@@ -188,6 +188,7 @@ const WavePreview = () => {
       setScreen("intro");
       setTransitionText("");
       setScienceText("");
+      setHasStartedBreathing(false);
       setFadeIn(true);
     }, 300);
   };
