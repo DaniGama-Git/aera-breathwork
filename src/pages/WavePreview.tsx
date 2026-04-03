@@ -228,7 +228,7 @@ const WavePreview = () => {
             style={{
               opacity: isBreathing ? 1 : 0,
               transition: "opacity 600ms ease-in-out",
-              background: buildBreathingMask(85),
+              background: buildBreathingMask(92),
             }}
           />
 
