@@ -188,6 +188,7 @@ const WavePreview = () => {
     setTimeout(() => {
       setScreen("intro");
       setTransitionText("");
+      setScienceText("");
       setFadeIn(true);
     }, 300);
   };
