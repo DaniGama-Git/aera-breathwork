@@ -206,7 +206,7 @@ const WavePreview = () => {
           {(Object.entries(SCREEN_BG) as [Screen, string][]).map(([key, src]) => (
             <div
               key={key}
-              className="absolute inset-0 transition-opacity duration-[800ms] ease-in-out"
+              className="absolute inset-0 transition-opacity duration-[1200ms] ease-in-out"
               style={{
                 backgroundImage: `url(${src})`,
                 backgroundSize: "cover",
