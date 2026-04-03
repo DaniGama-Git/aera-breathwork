@@ -222,7 +222,7 @@ const WavePreview = () => {
             <div className={contentBase}>
               <span
                 className="text-white/90 tracking-[0.2em] font-light"
-                style={{ fontSize: 26, fontWeight: 300 }}
+                style={{ fontSize: 26, fontWeight: 300, filter: "drop-shadow(0px 4px 4px rgba(0,0,0,0.25))" }}
               >
                 āera
               </span>
