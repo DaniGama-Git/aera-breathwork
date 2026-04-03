@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      favorites: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          session_slug: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          session_slug: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          session_slug?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       onboarding_answers: {
         Row: {
           created_at: string
