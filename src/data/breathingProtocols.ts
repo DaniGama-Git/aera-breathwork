@@ -272,6 +272,7 @@ export const creativeFlowProtocol: Protocol = {
     {
       name: "Release Control",
       method: "nose",
+      science: "Downregulates prefrontal control and reduces cognitive rigidity.",
       cycle: [
         { type: "INHALE", duration: 4000 },
         { type: "EXHALE", duration: 6000 },
