@@ -284,6 +284,7 @@ export const creativeFlowProtocol: Protocol = {
       method: "nose",
       transition:
         "Now let your breathing become less rigid. Allow natural variation in your exhales.",
+      science: "Breaks rigid attentional rhythm and increases cognitive flexibility for divergent thinking.",
       cycle: [
         { type: "INHALE", duration: 4000 },
         { type: "EXHALE", duration: 4500 },
