@@ -11,7 +11,8 @@ import AddToCalendar from "@/components/AddToCalendar";
 import SessionList from "@/components/SessionList";
 import { categoryConfig, findSessionBySlug } from "@/data/sessionData";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
-import { Pause } from "lucide-react";
+import { useFavorites } from "@/hooks/useFavorites";
+import { Pause, Heart } from "lucide-react";
 
 const DynamicSession = () => {
   const { category, slug } = useParams<{ category: string; slug: string }>();
