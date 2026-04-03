@@ -12,6 +12,7 @@ export interface ProtocolStage {
   name: string;
   method: "nose" | "mouth";
   transition?: string; // text shown before this stage starts
+  science?: string; // science note shown with lightbulb before this stage
   cycle: BreathPhase[];
   cycles: number;
   midSetHold?: {
