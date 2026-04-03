@@ -363,6 +363,7 @@ export const wakeMeUpProtocol: Protocol = {
     {
       name: "Activate",
       method: "nose",
+      science: "Light cyclic breathing increases oxygen uptake and triggers sympathetic activation for clean alertness.",
       cycle: [
         { type: "INHALE", duration: 2000 },
         { type: "EXHALE", duration: 2000 },
