@@ -297,7 +297,7 @@ const WavePreview = () => {
                  className="absolute left-0 right-0"
                  style={{ top: "92%" }}
                >
-                 <div style={{ height: 2, background: "rgba(255,255,255,0.85)", width: "100%", boxShadow: "0 0 6px 2px rgba(255,255,255,0.25), 0 1px 4px 1px rgba(0,0,0,0.06)" }} />
+                 <div style={{ height: 1.5, background: "rgba(255,255,255,0.7)", width: "100%", boxShadow: "0 0 8px 4px rgba(255,255,255,0.15)" }} />
                </div>
                <div className="pb-7 flex flex-col items-center gap-2">
                  <span
