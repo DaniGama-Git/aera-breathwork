@@ -6,6 +6,7 @@ import waveBgInhale from "@/assets/wave-bg-inhale.png";
 import waveBgHold from "@/assets/wave-bg-hold.png";
 import waveBgExhale from "@/assets/wave-bg-exhale.png";
 import lightbulbIcon from "@/assets/lightbulb-icon.svg";
+import breathProgressBar from "@/assets/breath-progress-bar.svg";
 
 /* ── Timing ── */
 const TOTAL_ROUNDS = 3;
