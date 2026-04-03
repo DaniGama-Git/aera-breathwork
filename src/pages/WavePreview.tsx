@@ -4,8 +4,6 @@ import waveBgIntro from "@/assets/wave-bg-intro.png";
 import waveBgDescription from "@/assets/wave-bg-description.png";
 import waveBgInhale from "@/assets/wave-bg-inhale.png";
 import lightbulbIcon from "@/assets/lightbulb-icon.svg";
-import breathingIconTop from "@/assets/breathing-icon-top.svg";
-import breathingIconBottom from "@/assets/breathing-icon-bottom.svg";
 import {
   creativeFlowProtocol,
   buildTimeline,
@@ -254,7 +252,7 @@ const WavePreview = () => {
             ref={gradientRef}
             className="absolute inset-0"
             style={{
-              opacity: isBreathing ? 1 : 0,
+              opacity: isBreathing && !showOverlay ? 1 : 0,
               transition: "opacity 600ms ease-in-out",
               background: buildBreathingMask(92),
             }}
@@ -320,22 +318,24 @@ const WavePreview = () => {
 
               {/* Transition text overlay */}
               <div
-                className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-500"
+                className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-700"
                 style={{ opacity: showTransition ? 1 : 0 }}
               >
-                <p className="text-white/70 text-[13px] leading-relaxed font-medium text-center max-w-[220px]">
+                <p className="text-white/80 text-[14px] leading-relaxed font-medium text-center max-w-[230px]"
+                   style={{ textShadow: "0 1px 8px rgba(0,0,0,0.15)" }}>
                   {transitionText}
                 </p>
               </div>
 
               {/* Science overlay with lightbulb */}
               <div
-                className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-500"
+                className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-700"
                 style={{ opacity: showScience ? 1 : 0 }}
               >
                 <div className="flex items-start gap-3 text-left max-w-[240px]">
                   <img src={lightbulbIcon} alt="" style={{ width: 40, height: 54 }} className="mt-0.5 opacity-70 shrink-0" />
-                  <p className="text-white/60 text-[12px] leading-relaxed font-medium">
+                  <p className="text-white/70 text-[12px] leading-relaxed font-medium"
+                     style={{ textShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>
                     {scienceText}
                   </p>
                 </div>
@@ -344,15 +344,22 @@ const WavePreview = () => {
               {/* Traveling progress bar */}
               <div
                 ref={barRef}
-                className="absolute left-0 right-0 transition-opacity duration-300"
-                style={{ top: "92%", opacity: showOverlay ? 0 : 1 }}
+                className="absolute left-0 right-0"
+                style={{
+                  top: "92%",
+                  opacity: showOverlay ? 0 : 1,
+                  transition: showOverlay ? "opacity 400ms ease-out" : "opacity 400ms ease-in 300ms",
+                }}
               >
                 <div style={{ height: 1.5, background: "hsla(0, 0%, 100%, 0.62)", width: "100%", boxShadow: "0 0 4px 1px hsla(0, 0%, 100%, 0.08)" }} />
               </div>
 
               <div
-                className="pb-7 flex flex-col items-center gap-2 transition-opacity duration-300"
-                style={{ opacity: showOverlay ? 0 : 1 }}
+                className="pb-7 flex flex-col items-center gap-2"
+                style={{
+                  opacity: showOverlay ? 0 : 1,
+                  transition: showOverlay ? "opacity 400ms ease-out" : "opacity 400ms ease-in 300ms",
+                }}
               >
                 <span
                   ref={phaseLabelRef}
@@ -361,10 +368,6 @@ const WavePreview = () => {
                 >
                   {phase}
                 </span>
-                <div className="flex items-center">
-                  <img src={breathingIconTop} alt="" style={{ width: 17, height: 4 }} />
-                  <img src={breathingIconBottom} alt="" style={{ width: 21, height: 2 }} />
-                </div>
               </div>
             </div>
           )}
