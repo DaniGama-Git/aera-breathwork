@@ -196,20 +196,22 @@ const WavePreview = () => {
             borderRadius: 22,
           }}
         >
-          {/* Static background for non-breathing screens */}
-          {!isBreathing && staticBg && (
+          {/* All static backgrounds layered with crossfade */}
+          {allStaticBgs.map((bg) => (
             <div
-              className="absolute inset-0"
+              key={bg.key}
+              className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
               style={{
-                backgroundImage: `url(${staticBg})`,
+                backgroundImage: `url(${bg.src})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                opacity: !isBreathing && bg.screens.includes(screen) ? 1 : 0,
               }}
             />
-          )}
+          ))}
 
           {/* Animated breathing backgrounds - all 3 layered, opacity-controlled */}
-          {isBreathing && (["INHALE", "HOLD", "EXHALE"] as const).map((p) => (
+          {(["INHALE", "HOLD", "EXHALE"] as const).map((p) => (
             <div
               key={p}
               className="absolute inset-0 transition-opacity duration-[800ms] ease-in-out"
