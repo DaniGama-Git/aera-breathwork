@@ -318,6 +318,7 @@ export const deepFocusProtocol: Protocol = {
     {
       name: "Settle",
       method: "nose",
+      science: "Reduces surface noise and prepares the nervous system for sustained attention.",
       cycle: [
         { type: "INHALE", duration: 4000 },
         { type: "EXHALE", duration: 6000 },
