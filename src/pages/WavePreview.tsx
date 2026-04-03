@@ -237,8 +237,8 @@ const WavePreview = () => {
                 4 mins
               </span>
               <p
-                className="text-white font-semibold leading-[1.15]"
-                style={{ fontSize: 22, letterSpacing: "-0.01em" }}
+                className="text-white font-medium leading-[1.15]"
+                style={{ fontSize: 40, letterSpacing: "-0.01em" }}
               >
                 You're about to step in,
                 <br />
@@ -250,7 +250,7 @@ const WavePreview = () => {
           {screen === "description" && (
             <div className={contentBase}>
               <div className="flex items-start gap-3 text-left max-w-[240px]">
-                <img src={lightbulbIcon} alt="" className="w-5 h-5 mt-0.5 opacity-70" />
+                <img src={lightbulbIcon} alt="" style={{ width: 61, height: 82 }} className="mt-0.5 opacity-70 shrink-0" />
                 <div>
                   <p className="text-white/80 text-[13px] leading-relaxed font-medium">
                     Two rounds of box breathing to clear mental noise.
@@ -268,10 +268,9 @@ const WavePreview = () => {
               <div className="flex-1" />
               {/* Traveling progress bar: top=10% to bottom=85% range */}
               <div
-                className="absolute left-6 right-6"
+                className="absolute left-0 right-0"
                 style={{
                   top: `${10 + phaseProgress * 75}%`,
-                  transition: "top 0.15s linear",
                 }}
               >
                 <img src={breathProgressBar} alt="" className="w-full opacity-60" />
