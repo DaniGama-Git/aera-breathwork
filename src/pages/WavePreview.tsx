@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import waveBgLogo from "@/assets/wave-bg-logo.png";
 import waveBgIntro from "@/assets/wave-bg-intro.png";
 import waveBgDescription from "@/assets/wave-bg-description.png";
@@ -15,8 +15,13 @@ const HOLD_MS = 2000;
 const EXHALE_MS = 6000;
 const CYCLE_MS = INHALE_MS + HOLD_MS + EXHALE_MS;
 
-type Screen = "logo" | "intro" | "description" | "breathing" | "done";
+type Screen = "loading" | "logo" | "intro" | "description" | "breathing" | "done";
 type Phase = "INHALE" | "HOLD" | "EXHALE" | "";
+
+const ALL_IMAGES = [
+  waveBgLogo, waveBgIntro, waveBgDescription,
+  waveBgInhale, waveBgHold, waveBgExhale,
+];
 
 const SCREEN_DELAYS: Partial<Record<Screen, number>> = {
   logo: 2200,
@@ -30,13 +35,35 @@ const PHASE_BG: Record<string, string> = {
   EXHALE: waveBgExhale,
 };
 
+/* ── Preload all images before showing anything ── */
+function preloadImages(srcs: string[]): Promise<void> {
+  return Promise.all(
+    srcs.map(
+      (src) =>
+        new Promise<void>((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve();
+          img.onerror = () => resolve(); // don't block on error
+          img.src = src;
+        })
+    )
+  ).then(() => {});
+}
+
 const WavePreview = () => {
-  const [screen, setScreen] = useState<Screen>("logo");
+  const [screen, setScreen] = useState<Screen>("loading");
   const [phase, setPhase] = useState<Phase>("");
   const [fadeIn, setFadeIn] = useState(true);
   const [sessionStart, setSessionStart] = useState(0);
   const [round, setRound] = useState(0);
   const [phaseProgress, setPhaseProgress] = useState(0);
+
+  /* ── Preload all backgrounds before first screen ── */
+  useEffect(() => {
+    preloadImages(ALL_IMAGES).then(() => {
+      setScreen("logo");
+    });
+  }, []);
 
   /* ── Screen auto-advance ── */
   useEffect(() => {
@@ -84,12 +111,15 @@ const WavePreview = () => {
       const cycleElapsed = elapsed % CYCLE_MS;
       if (cycleElapsed < INHALE_MS) {
         setPhase("INHALE");
-        setPhaseProgress(cycleElapsed / INHALE_MS);
+        // Inhale: bar travels UP → progress 1 → 0
+        setPhaseProgress(1 - cycleElapsed / INHALE_MS);
       } else if (cycleElapsed < INHALE_MS + HOLD_MS) {
         setPhase("HOLD");
-        setPhaseProgress((cycleElapsed - INHALE_MS) / HOLD_MS);
+        // Hold: bar stays at top → 0
+        setPhaseProgress(0);
       } else {
         setPhase("EXHALE");
+        // Exhale: bar travels DOWN → progress 0 → 1
         setPhaseProgress((cycleElapsed - INHALE_MS - HOLD_MS) / EXHALE_MS);
       }
 
@@ -108,10 +138,6 @@ const WavePreview = () => {
     }, 300);
   };
 
-  const progress = screen === "breathing" && sessionStart
-    ? Math.min(((Date.now() - sessionStart) / (CYCLE_MS * TOTAL_ROUNDS)) * 100, 100)
-    : 0;
-
   const fadeClass = fadeIn ? "opacity-100" : "opacity-0";
   const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[400ms] ${fadeClass}`;
 
@@ -126,6 +152,24 @@ const WavePreview = () => {
 
   const isBreathing = screen === "breathing";
   const staticBg = getStaticBg();
+
+  /* Loading state */
+  if (screen === "loading") {
+    return (
+      <div className="min-h-screen bg-[#111] flex items-center justify-center font-body">
+        <div style={{ width: 320, padding: 16 }}>
+          <div
+            className="relative w-full overflow-hidden flex items-center justify-center"
+            style={{ aspectRatio: "1 / 1.1", borderRadius: 22, background: "#1a1a1a" }}
+          >
+            <span className="text-white/30 text-[11px] tracking-[0.15em] font-medium animate-pulse">
+              loading
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#111] flex items-center justify-center font-body">
@@ -221,13 +265,12 @@ const WavePreview = () => {
 
           {screen === "breathing" && (
             <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
-              {/* Phase label at bottom */}
               <div className="flex-1" />
-              {/* Traveling progress bar */}
+              {/* Traveling progress bar: top=10% to bottom=85% range */}
               <div
                 className="absolute left-6 right-6"
                 style={{
-                  top: `${phaseProgress * 100}%`,
+                  top: `${10 + phaseProgress * 75}%`,
                   transition: "top 0.15s linear",
                 }}
               >
