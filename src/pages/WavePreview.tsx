@@ -174,11 +174,6 @@ const WavePreview = () => {
 
   const isBreathing = screen === "breathing";
 
-  /* Current gradient for non-breathing screens */
-  const currentGradient = !isBreathing && screen !== "loading"
-    ? SCREEN_GRADIENTS[screen] || SCREEN_GRADIENTS.logo
-    : undefined;
-
   /* Loading state */
   if (screen === "loading") {
     return (
@@ -207,15 +202,19 @@ const WavePreview = () => {
             borderRadius: 22,
           }}
         >
-          {/* Single gradient background — animates between screens */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: currentGradient || SCREEN_GRADIENTS.logo,
-              opacity: isBreathing ? 0 : 1,
-              transition: "background 1s ease-in-out, opacity 600ms ease-in-out",
-            }}
-          />
+          {/* All static backgrounds layered — opacity crossfade */}
+          {(Object.entries(SCREEN_BG) as [Screen, string][]).map(([key, src]) => (
+            <div
+              key={key}
+              className="absolute inset-0 transition-opacity duration-[800ms] ease-in-out"
+              style={{
+                backgroundImage: `url(${src})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                opacity: !isBreathing && (screen === key || (screen === "done" && key === "logo")) ? 1 : 0,
+              }}
+            />
+          ))}
 
           {/* Breathing gradient — transition point follows the bar */}
           <div
