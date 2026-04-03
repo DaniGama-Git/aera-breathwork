@@ -128,13 +128,17 @@ const WavePreview = () => {
       }
 
       // Direct DOM mutation — no React re-render
+      const barTop = 10 + progress * 75;
       if (barRef.current) {
-        barRef.current.style.top = `${10 + progress * 75}%`;
+        barRef.current.style.top = `${barTop}%`;
+      }
+      if (gradientRef.current) {
+        gradientRef.current.style.top = `${barTop - 30}%`;
       }
       if (phaseLabelRef.current) {
         phaseLabelRef.current.textContent = currentPhase;
       }
-      setPhase(currentPhase); // still needed for bg crossfade
+      setPhase(currentPhase);
 
       rafId = requestAnimationFrame(tick);
     };
