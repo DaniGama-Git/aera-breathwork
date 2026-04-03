@@ -67,6 +67,15 @@ const DynamicSession = () => {
               sessionCategory={config.label}
               durationMinutes={durationNum}
             />
+            <button
+              onClick={() => toggleFavorite(slug!, category!)}
+              className="w-[25px] h-[25px] rounded-full border border-white flex items-center justify-center transition-colors"
+              aria-label={isFavorite(slug!) ? "Remove from favorites" : "Add to favorites"}
+            >
+              <Heart
+                className={`w-3 h-3 ${isFavorite(slug!) ? "fill-white text-white" : "text-white"}`}
+              />
+            </button>
           </div>
           <h1
             className="text-white font-body font-semibold mb-3"
