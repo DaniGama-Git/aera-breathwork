@@ -5,6 +5,7 @@ export type PhaseType = "INHALE" | "HOLD" | "EXHALE" | "HOLD_EMPTY";
 export interface BreathPhase {
   type: PhaseType;
   duration: number; // ms
+  label?: string; // custom display label override
 }
 
 export interface ProtocolStage {
@@ -49,7 +50,6 @@ export function buildTimeline(protocol: Protocol): TimelineEntry[] {
   let cursor = 0;
 
   protocol.stages.forEach((stage, stageIdx) => {
-    // Show transition text before stages (skip first stage)
     if (stage.transition) {
       entries.push({
         type: "TRANSITION",
@@ -63,9 +63,7 @@ export function buildTimeline(protocol: Protocol): TimelineEntry[] {
       cursor += TRANSITION_DURATION;
     }
 
-    // Build cycles, inserting mid-set hold if configured
     for (let c = 0; c < stage.cycles; c++) {
-      // Insert mid-set hold after specified cycle
       if (stage.midSetHold && c === stage.midSetHold.afterCycle) {
         const hp = stage.midSetHold.phase;
         entries.push({
@@ -73,7 +71,7 @@ export function buildTimeline(protocol: Protocol): TimelineEntry[] {
           duration: hp.duration,
           startMs: cursor,
           endMs: cursor + hp.duration,
-          displayLabel: "HOLD",
+          displayLabel: hp.label || "HOLD",
           stageIndex: stageIdx,
         });
         cursor += hp.duration;
@@ -81,6 +79,7 @@ export function buildTimeline(protocol: Protocol): TimelineEntry[] {
 
       for (const phase of stage.cycle) {
         const label =
+          phase.label ? phase.label :
           phase.type === "HOLD_EMPTY" ? "HOLD" :
           phase.type === "HOLD" ? "HOLD" :
           phase.type;
@@ -98,12 +97,11 @@ export function buildTimeline(protocol: Protocol): TimelineEntry[] {
     }
   });
 
-  // Final sequence (e.g. final exhale + hold)
   if (protocol.finalSequence) {
-    // Show transition if there's a stage with transition text for it
-    // The final sequence transition is embedded in the last stage's transition
     for (const phase of protocol.finalSequence) {
-      const label = phase.type === "HOLD_EMPTY" ? "HOLD" : phase.type;
+      const label =
+        phase.label ? phase.label :
+        phase.type === "HOLD_EMPTY" ? "HOLD" : phase.type;
       entries.push({
         type: phase.type,
         duration: phase.duration,
@@ -130,19 +128,14 @@ export function getBarPosition(
 ): number {
   switch (type) {
     case "INHALE":
-      // bottom → top
       return BAR_BOTTOM - progress * (BAR_BOTTOM - BAR_TOP);
     case "EXHALE":
-      // top → bottom
       return BAR_TOP + progress * (BAR_BOTTOM - BAR_TOP);
     case "HOLD":
-      // stay at top (after inhale)
       return BAR_TOP;
     case "HOLD_EMPTY":
-      // stay at bottom (after exhale)
       return BAR_BOTTOM;
     case "TRANSITION":
-      // keep at last position — default to bottom
       return prevType === "INHALE" || prevType === "HOLD" ? BAR_TOP : BAR_BOTTOM;
     default:
       return BAR_BOTTOM;
@@ -201,4 +194,51 @@ export const prePitchProtocol: Protocol = {
     { type: "HOLD_EMPTY", duration: 8000 },
   ],
   finalMethod: "mouth",
+};
+
+export const preNegotiationProtocol: Protocol = {
+  id: "pre-negotiation",
+  title: "Pre-Negotiation",
+  subtitle: "~3.5 mins",
+  duration: "~3.5 mins",
+  introText: "Time to lock in.\nLet's sharpen your edge.",
+  descriptionPrimary: "Coherence breathing to stabilize your nervous system.",
+  descriptionSecondary: "Activation inhales to prime alertness before you step in.",
+  stages: [
+    {
+      name: "Coherence Breathing",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 7,
+    },
+    {
+      name: "Extended Exhale",
+      method: "mouth",
+      transition:
+        "Let's continue with extended exhales to deepen your parasympathetic state.",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 7000 },
+      ],
+      cycles: 6,
+    },
+    {
+      name: "Activation",
+      method: "nose",
+      transition:
+        "Now, three slow deep inhales to activate your system. Exhale naturally after each.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 3,
+    },
+  ],
+  finalSequence: [
+    { type: "HOLD_EMPTY", duration: 8000 },
+  ],
+  finalMethod: "nose",
 };
