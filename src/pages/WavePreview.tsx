@@ -250,7 +250,7 @@ const WavePreview = () => {
           {screen === "description" && (
             <div className={contentBase}>
               <div className="flex items-start gap-3 text-left max-w-[240px]">
-                <img src={lightbulbIcon} alt="" className="w-5 h-5 mt-0.5 opacity-70" />
+                <img src={lightbulbIcon} alt="" style={{ width: 61, height: 82 }} className="mt-0.5 opacity-70 shrink-0" />
                 <div>
                   <p className="text-white/80 text-[13px] leading-relaxed font-medium">
                     Two rounds of box breathing to clear mental noise.
