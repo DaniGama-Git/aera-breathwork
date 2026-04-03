@@ -145,7 +145,7 @@ const WavePreview = () => {
   const restart = () => {
     setFadeIn(false);
     setTimeout(() => {
-      setScreen("logo");
+      setScreen("intro");
       setFadeIn(true);
     }, 300);
   };
