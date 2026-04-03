@@ -352,7 +352,7 @@ const WavePreview = () => {
 
               <div
                 className="pb-7 flex flex-col items-center gap-2 transition-opacity duration-300"
-                style={{ opacity: showTransition ? 0 : 1 }}
+                style={{ opacity: showOverlay ? 0 : 1 }}
               >
                 <span
                   ref={phaseLabelRef}
