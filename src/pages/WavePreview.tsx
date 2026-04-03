@@ -268,10 +268,9 @@ const WavePreview = () => {
               <div className="flex-1" />
               {/* Traveling progress bar: top=10% to bottom=85% range */}
               <div
-                className="absolute left-6 right-6"
+                className="absolute left-0 right-0"
                 style={{
                   top: `${10 + phaseProgress * 75}%`,
-                  transition: "top 0.15s linear",
                 }}
               >
                 <img src={breathProgressBar} alt="" className="w-full opacity-60" />
