@@ -16,7 +16,6 @@ type Screen = "loading" | "logo" | "intro" | "breathing" | "done";
 const SCREEN_DELAYS: Partial<Record<Screen, number>> = {
   logo: 2200,
   intro: 3000,
-  description: 4000,
 };
 
 const ALL_IMAGES = [waveBgLogo, waveBgIntro, waveBgDescription, waveBgInhale];
