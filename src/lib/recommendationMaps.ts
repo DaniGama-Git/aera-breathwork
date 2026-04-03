@@ -13,7 +13,6 @@ export const ARCHETYPE_DISPLAY: Record<string, string> = {
 export const CATEGORY_DISPLAY: Record<string, string> = {
   perform: "Perform",
   activate: "Activate",
-  focus: "Focus",
   recover: "Recover",
   ground: "Ground",
 };

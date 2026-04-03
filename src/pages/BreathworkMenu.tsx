@@ -23,16 +23,16 @@ const categories = [
 
 const favorites = [
   { title: "Pre-Pitch", duration: "5 mins", to: "/session/perform/pre-pitch", image: categoryFocus },
-  { title: "Focus Activation", duration: "5 mins", to: "/session/focus/focus-activation", image: categoryFocus },
-  { title: "Morning Activation", duration: "5 mins", to: "/session/activate/morning-activation", image: categoryActivate },
-  { title: "Back-To-Back Recharge", duration: "5 mins", to: "/session/recover/back-to-back-recharge", image: categoryRecover },
+  { title: "Deep Focus", duration: "5 mins", to: "/session/perform/deep-focus", image: categoryFocus },
+  { title: "Wake Me Up", duration: "5 mins", to: "/session/activate/wake-me-up", image: categoryActivate },
+  { title: "Back-to-Back", duration: "5 mins", to: "/session/recover/back-to-back", image: categoryRecover },
 ];
 
 const recommendations = [
   { title: "Decision Clarity", duration: "5 mins", to: "/session/perform/decision-clarity", image: categoryFocus },
-  { title: "Post-Setback Recovery", duration: "5 mins", to: "/session/recover/post-setback-recovery", image: categoryRecover },
+  { title: "Rebound", duration: "5 mins", to: "/session/recover/rebound", image: categoryRecover },
   { title: "Pre-Meeting", duration: "5 mins", to: "/session/perform/pre-meeting", image: categoryFocus },
-  { title: "Conflict De-escalation", duration: "5 mins", to: "/session/recover/conflict-de-escalation", image: categoryRecover },
+  { title: "Conflict Reset", duration: "5 mins", to: "/session/recover/conflict-reset", image: categoryRecover },
 ];
 
 function getGreeting() {
