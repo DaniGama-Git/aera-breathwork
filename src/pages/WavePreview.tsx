@@ -274,26 +274,26 @@ const WavePreview = () => {
           )}
 
           {screen === "breathing" && (
-            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
-              <div className="flex-1" />
-              {/* Traveling progress bar: top=10% to bottom=85% range */}
-              <div
-                className="absolute left-0 right-0"
-                style={{
-                  top: `${10 + phaseProgress * 75}%`,
-                }}
-              >
-                <img src={breathProgressBar} alt="" className="w-full opacity-60" />
-              </div>
-              <div className="pb-7 flex flex-col items-center">
-                <span
-                  className="tracking-[0.25em] font-medium"
-                  style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
-                >
-                  {phase}
-                </span>
-              </div>
-            </div>
+             <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
+               <div className="flex-1" />
+               {/* Traveling progress bar — positioned via ref, no React re-renders */}
+               <div
+                 ref={barRef}
+                 className="absolute left-0 right-0"
+                 style={{ top: "85%" }}
+               >
+                 <div style={{ height: 3, background: "rgba(247,246,245,0.6)", width: "100%" }} />
+               </div>
+               <div className="pb-7 flex flex-col items-center">
+                 <span
+                   ref={phaseLabelRef}
+                   className="tracking-[0.25em] font-medium"
+                   style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
+                 >
+                   {phase}
+                 </span>
+               </div>
+             </div>
           )}
 
           {screen === "done" && (
