@@ -134,7 +134,7 @@ const WavePreview = () => {
         setPhase("");
       } else {
         // Clear transition text
-        if (transitionText) setTransitionText("");
+        setTransitionText("");
         const barTop = getBarPosition(entry.type, progress, prevEntryType);
 
         if (barRef.current) barRef.current.style.top = `${barTop}%`;
