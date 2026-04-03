@@ -202,3 +202,98 @@ export const prePitchProtocol: Protocol = {
   ],
   finalMethod: "mouth",
 };
+
+export const preNegotiationProtocol: Protocol = {
+  id: "pre-negotiation",
+  title: "Pre-Negotiation",
+  subtitle: "~3.5 mins",
+  duration: "~3.5 mins",
+  introText: "Time to lock in.\nLet's sharpen your edge.",
+  descriptionPrimary: "Coherence breathing to stabilize your nervous system.",
+  descriptionSecondary: "Activation inhales to prime alertness before you step in.",
+  stages: [
+    {
+      name: "Coherence Breathing",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 7,
+    },
+    {
+      name: "Extended Exhale",
+      method: "mouth",
+      transition:
+        "Let's continue with extended exhales to deepen your parasympathetic state.",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 7000 },
+      ],
+      cycles: 6,
+    },
+    {
+      name: "Activation",
+      method: "nose",
+      transition:
+        "Now, three slow deep inhales to activate your system. Exhale naturally after each.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 3,
+    },
+  ],
+  finalSequence: [
+    { type: "HOLD_EMPTY", duration: 8000 },
+  ],
+  finalMethod: "nose",
+};
+  id: "pre-pitch",
+  title: "Pre-Pitch",
+  subtitle: "~3 mins",
+  duration: "~3 mins",
+  introText: "You're about to step in,\nlet's get you sharp",
+  descriptionPrimary: "Coherence breathing to sync your nervous system.",
+  descriptionSecondary: "Extended exhales to lower cortisol and sharpen focus.",
+  stages: [
+    {
+      name: "Coherence Breathing",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 6,
+      midSetHold: {
+        afterCycle: 3,
+        phase: { type: "HOLD_EMPTY", duration: 6000 },
+      },
+    },
+    {
+      name: "Extended Exhale",
+      method: "mouth",
+      transition:
+        "Let's continue with extended exhales through your mouth to deepen your parasympathetic state.",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "HOLD", duration: 2000 },
+        { type: "EXHALE", duration: 8000 },
+      ],
+      cycles: 6,
+    },
+    {
+      name: "Final Breath Hold",
+      method: "mouth",
+      transition:
+        "Let's go for one extended breath hold. Exhale fully, then hold to lower your heart rate.",
+      cycle: [],
+      cycles: 0,
+    },
+  ],
+  finalSequence: [
+    { type: "EXHALE", duration: 4000 },
+    { type: "HOLD_EMPTY", duration: 8000 },
+  ],
+  finalMethod: "mouth",
+};
