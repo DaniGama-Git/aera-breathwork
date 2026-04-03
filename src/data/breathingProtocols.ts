@@ -66,6 +66,19 @@ export function buildTimeline(protocol: Protocol): TimelineEntry[] {
       cursor += TRANSITION_DURATION;
     }
 
+    if (stage.science) {
+      entries.push({
+        type: "SCIENCE",
+        duration: SCIENCE_DURATION,
+        startMs: cursor,
+        endMs: cursor + SCIENCE_DURATION,
+        displayLabel: "",
+        stageIndex: stageIdx,
+        scienceText: stage.science,
+      });
+      cursor += SCIENCE_DURATION;
+    }
+
     for (let c = 0; c < stage.cycles; c++) {
       if (stage.midSetHold && c === stage.midSetHold.afterCycle) {
         const hp = stage.midSetHold.phase;
