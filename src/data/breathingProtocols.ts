@@ -296,6 +296,7 @@ export const creativeFlowProtocol: Protocol = {
       method: "nose",
       transition:
         "Take a few slightly deeper breaths. Relaxed, not controlled. Open up your mental space.",
+      science: "Opens mental space without re-introducing control.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
