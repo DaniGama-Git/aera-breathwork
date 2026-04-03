@@ -93,7 +93,7 @@ const WavePreview = () => {
           setRound(0);
         }
         setFadeIn(true);
-      }, 400);
+      }, 600);
     }, delay);
     return () => clearTimeout(timer);
   }, [screen]);
