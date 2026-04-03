@@ -220,33 +220,26 @@ const WavePreview = () => {
           )}
 
           {screen === "breathing" && (
-            <div className={`absolute bottom-7 left-0 right-0 z-10 flex flex-col items-center pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
-              <span
-                className="tracking-[0.25em] font-medium"
-                style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
+            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
+              {/* Phase label at bottom */}
+              <div className="flex-1" />
+              {/* Traveling progress bar */}
+              <div
+                className="absolute left-6 right-6"
+                style={{
+                  top: `${phaseProgress * 100}%`,
+                  transition: "top 0.15s linear",
+                }}
               >
-                {phase}
-              </span>
-              {/* Progress bar */}
-              <div className="mt-3 flex items-center gap-0">
-                <div
-                  className="rounded-full"
-                  style={{
-                    width: `${Math.max(4, progress * 0.38)}px`,
-                    height: phase ? 4 : 2,
-                    background: "#595959",
-                    transition: "width 0.3s ease",
-                  }}
-                />
-                <div
-                  className="rounded-full"
-                  style={{
-                    width: `${Math.max(4, (100 - progress) * 0.38)}px`,
-                    height: 2,
-                    background: "#d9d9d9",
-                    transition: "width 0.3s ease",
-                  }}
-                />
+                <img src={breathProgressBar} alt="" className="w-full opacity-60" />
+              </div>
+              <div className="pb-7 flex flex-col items-center">
+                <span
+                  className="tracking-[0.25em] font-medium"
+                  style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
+                >
+                  {phase}
+                </span>
               </div>
             </div>
           )}
