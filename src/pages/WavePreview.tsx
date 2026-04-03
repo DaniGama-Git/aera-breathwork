@@ -294,10 +294,10 @@ const WavePreview = () => {
                  >
                    {phase}
                  </span>
-                  <div className="flex flex-col items-center gap-[2px]">
-                    <img src={breathingIconTop} alt="" style={{ width: 17, height: 4 }} />
-                    <img src={breathingIconBottom} alt="" style={{ width: 21, height: 2 }} />
-                  </div>
+                   <div className="flex items-center gap-[3px]">
+                     <img src={breathingIconTop} alt="" style={{ width: 17, height: 4 }} />
+                     <img src={breathingIconBottom} alt="" style={{ width: 21, height: 2 }} />
+                   </div>
                 </div>
              </div>
           )}
