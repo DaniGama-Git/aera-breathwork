@@ -50,14 +50,15 @@ function preloadImages(srcs: string[]): Promise<void> {
 }
 
 function buildBreathingGradient(barTop: number): string {
+  // Light at top, gets darker as bar travels down
   return `linear-gradient(180deg, 
-    hsl(195, 15%, 35%) 0%, 
-    hsl(195, 18%, 45%) ${Math.max(0, barTop - 20)}%, 
-    hsl(190, 15%, 60%) ${Math.max(0, barTop - 8)}%, 
-    hsl(200, 15%, 78%) ${barTop}%, 
-    hsl(210, 15%, 90%) ${Math.min(100, barTop + 8)}%, 
-    hsl(220, 10%, 96%) ${Math.min(100, barTop + 20)}%, 
-    hsl(0, 0%, 100%) 100%)`;
+    hsl(210, 10%, 95%) 0%, 
+    hsl(210, 12%, 88%) ${Math.max(0, barTop - 25)}%, 
+    hsl(200, 14%, 75%) ${Math.max(0, barTop - 12)}%, 
+    hsl(195, 16%, 62%) ${barTop}%, 
+    hsl(195, 18%, 48%) ${Math.min(100, barTop + 12)}%, 
+    hsl(195, 18%, 38%) ${Math.min(100, barTop + 25)}%, 
+    hsl(195, 15%, 30%) 100%)`;
 }
 
 const WavePreview = () => {
@@ -92,7 +93,7 @@ const WavePreview = () => {
           setRound(0);
         }
         setFadeIn(true);
-      }, 400);
+      }, 600);
     }, delay);
     return () => clearTimeout(timer);
   }, [screen]);
@@ -139,15 +140,14 @@ const WavePreview = () => {
         barRef.current.style.top = `${barTop}%`;
       }
       if (gradientRef.current) {
-        // The gradient transition point follows the bar
         gradientRef.current.style.background = `linear-gradient(180deg, 
-          hsl(195, 15%, 35%) 0%, 
-          hsl(195, 18%, 45%) ${Math.max(0, barTop - 20)}%, 
-          hsl(190, 15%, 60%) ${Math.max(0, barTop - 8)}%, 
-          hsl(200, 15%, 78%) ${barTop}%, 
-          hsl(210, 15%, 90%) ${Math.min(100, barTop + 8)}%, 
-          hsl(220, 10%, 96%) ${Math.min(100, barTop + 20)}%, 
-          hsl(0, 0%, 100%) 100%)`;
+          hsl(210, 10%, 95%) 0%, 
+          hsl(210, 12%, 88%) ${Math.max(0, barTop - 25)}%, 
+          hsl(200, 14%, 75%) ${Math.max(0, barTop - 12)}%, 
+          hsl(195, 16%, 62%) ${barTop}%, 
+          hsl(195, 18%, 48%) ${Math.min(100, barTop + 12)}%, 
+          hsl(195, 18%, 38%) ${Math.min(100, barTop + 25)}%, 
+          hsl(195, 15%, 30%) 100%)`;
       }
       if (phaseLabelRef.current) {
         phaseLabelRef.current.textContent = currentPhase;
@@ -170,7 +170,7 @@ const WavePreview = () => {
   };
 
   const fadeClass = fadeIn ? "opacity-100" : "opacity-0";
-  const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[400ms] ${fadeClass}`;
+  const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[600ms] ease-in-out ${fadeClass}`;
 
   const isBreathing = screen === "breathing";
 
@@ -206,7 +206,7 @@ const WavePreview = () => {
           {(Object.entries(SCREEN_BG) as [Screen, string][]).map(([key, src]) => (
             <div
               key={key}
-              className="absolute inset-0 transition-opacity duration-[800ms] ease-in-out"
+              className="absolute inset-0 transition-opacity duration-[1200ms] ease-in-out"
               style={{
                 backgroundImage: `url(${src})`,
                 backgroundSize: "cover",
