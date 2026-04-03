@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import waveBgLogo from "@/assets/wave-bg-logo.png";
 import waveBgIntro from "@/assets/wave-bg-intro.png";
 import waveBgDescription from "@/assets/wave-bg-description.png";
+import waveBgInhale from "@/assets/wave-bg-inhale.png";
+import waveBgHold from "@/assets/wave-bg-hold.png";
+import waveBgExhale from "@/assets/wave-bg-exhale.png";
+import lightbulbIcon from "@/assets/lightbulb-icon.svg";
 
 /* ── Timing ── */
 const TOTAL_ROUNDS = 3;
@@ -11,6 +15,7 @@ const EXHALE_MS = 6000;
 const CYCLE_MS = INHALE_MS + HOLD_MS + EXHALE_MS;
 
 type Screen = "logo" | "intro" | "description" | "breathing" | "done";
+type Phase = "INHALE" | "HOLD" | "EXHALE" | "";
 
 const SCREEN_DELAYS: Partial<Record<Screen, number>> = {
   logo: 2200,
@@ -18,11 +23,18 @@ const SCREEN_DELAYS: Partial<Record<Screen, number>> = {
   description: 4000,
 };
 
+const PHASE_BG: Record<string, string> = {
+  INHALE: waveBgInhale,
+  HOLD: waveBgHold,
+  EXHALE: waveBgExhale,
+};
+
 const WavePreview = () => {
   const [screen, setScreen] = useState<Screen>("logo");
-  const [phase, setPhase] = useState("");
+  const [phase, setPhase] = useState<Phase>("");
   const [fadeIn, setFadeIn] = useState(true);
   const [sessionStart, setSessionStart] = useState(0);
+  const [round, setRound] = useState(0);
 
   /* ── Screen auto-advance ── */
   useEffect(() => {
@@ -38,6 +50,7 @@ const WavePreview = () => {
           setScreen("breathing");
           setSessionStart(Date.now());
           setPhase("INHALE");
+          setRound(0);
         }
         setFadeIn(true);
       }, 400);
@@ -57,10 +70,14 @@ const WavePreview = () => {
         setFadeIn(false);
         setTimeout(() => {
           setScreen("done");
+          setPhase("");
           setFadeIn(true);
         }, 400);
         return;
       }
+
+      const currentRound = Math.min(Math.floor(elapsed / CYCLE_MS), TOTAL_ROUNDS - 1);
+      setRound(currentRound);
 
       const cycleElapsed = elapsed % CYCLE_MS;
       if (cycleElapsed < INHALE_MS) setPhase("INHALE");
@@ -82,8 +99,24 @@ const WavePreview = () => {
     }, 300);
   };
 
+  const progress = screen === "breathing" && sessionStart
+    ? Math.min(((Date.now() - sessionStart) / (CYCLE_MS * TOTAL_ROUNDS)) * 100, 100)
+    : 0;
+
   const fadeClass = fadeIn ? "opacity-100" : "opacity-0";
   const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[400ms] ${fadeClass}`;
+
+  /* ── Background logic ── */
+  const getStaticBg = () => {
+    if (screen === "logo") return waveBgLogo;
+    if (screen === "intro") return waveBgIntro;
+    if (screen === "description") return waveBgDescription;
+    if (screen === "done") return waveBgLogo;
+    return undefined;
+  };
+
+  const isBreathing = screen === "breathing";
+  const staticBg = getStaticBg();
 
   return (
     <div className="min-h-screen bg-[#111] flex items-center justify-center font-body">
@@ -93,12 +126,35 @@ const WavePreview = () => {
           style={{
             aspectRatio: "1 / 1.1",
             borderRadius: 22,
-            backgroundImage: screen === "logo" ? `url(${waveBgLogo})` : screen === "intro" ? `url(${waveBgIntro})` : screen === "description" ? `url(${waveBgDescription})` : "linear-gradient(180deg, #4a6b6b 0%, #5d7f7d 20%, #7a9e98 40%, #9fbcb4 60%, #c4d8d0 78%, #dfe9e4 90%, #edf2ef 100%)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
           }}
         >
-          {/* Overlays per screen */}
+          {/* Static background for non-breathing screens */}
+          {!isBreathing && staticBg && (
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url(${staticBg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
+          )}
+
+          {/* Animated breathing backgrounds - all 3 layered, opacity-controlled */}
+          {isBreathing && (["INHALE", "HOLD", "EXHALE"] as const).map((p) => (
+            <div
+              key={p}
+              className="absolute inset-0 transition-opacity duration-[800ms] ease-in-out"
+              style={{
+                backgroundImage: `url(${PHASE_BG[p]})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                opacity: phase === p ? 1 : 0,
+              }}
+            />
+          ))}
+
+          {/* Screen overlays */}
           {screen === "logo" && (
             <div className={contentBase}>
               <span
@@ -141,7 +197,7 @@ const WavePreview = () => {
           {screen === "description" && (
             <div className={contentBase}>
               <div className="flex items-start gap-3 text-left max-w-[240px]">
-                <span className="text-xl mt-0.5 opacity-70">💡</span>
+                <img src={lightbulbIcon} alt="" className="w-5 h-5 mt-0.5 opacity-70" />
                 <div>
                   <p className="text-white/80 text-[13px] leading-relaxed font-medium">
                     Two rounds of box breathing to clear mental noise.
@@ -162,14 +218,27 @@ const WavePreview = () => {
               >
                 {phase}
               </span>
-              <div
-                className="mt-2 rounded-full"
-                style={{
-                  width: 20,
-                  height: 2,
-                  background: "rgba(80,80,80,0.25)",
-                }}
-              />
+              {/* Progress bar */}
+              <div className="mt-3 flex items-center gap-0">
+                <div
+                  className="rounded-full"
+                  style={{
+                    width: `${Math.max(4, progress * 0.38)}px`,
+                    height: phase ? 4 : 2,
+                    background: "#595959",
+                    transition: "width 0.3s ease",
+                  }}
+                />
+                <div
+                  className="rounded-full"
+                  style={{
+                    width: `${Math.max(4, (100 - progress) * 0.38)}px`,
+                    height: 2,
+                    background: "#d9d9d9",
+                    transition: "width 0.3s ease",
+                  }}
+                />
+              </div>
             </div>
           )}
 
