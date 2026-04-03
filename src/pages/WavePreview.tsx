@@ -60,7 +60,9 @@ const WavePreview = () => {
   const [fadeIn, setFadeIn] = useState(true);
   const [sessionStart, setSessionStart] = useState(0);
   const [transitionText, setTransitionText] = useState("");
+  const [scienceText, setScienceText] = useState("");
   const transitionTextRef = useRef("");
+  const scienceTextRef = useRef("");
   const barRef = useRef<HTMLDivElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
   const phaseLabelRef = useRef<HTMLSpanElement>(null);
