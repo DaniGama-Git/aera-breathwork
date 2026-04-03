@@ -49,16 +49,13 @@ function preloadImages(srcs: string[]): Promise<void> {
   ).then(() => {});
 }
 
-function buildBreathingGradient(barTop: number): string {
-  // Dark pulls down from top, light below
-  return `linear-gradient(180deg, 
-    hsl(195, 15%, 30%) 0%, 
-    hsl(195, 18%, 38%) ${Math.max(0, barTop - 25)}%, 
-    hsl(195, 18%, 48%) ${Math.max(0, barTop - 12)}%, 
-    hsl(195, 16%, 62%) ${barTop}%, 
-    hsl(200, 14%, 75%) ${Math.min(100, barTop + 12)}%, 
-    hsl(210, 12%, 88%) ${Math.min(100, barTop + 25)}%, 
-    hsl(210, 10%, 95%) 100%)`;
+/* White-to-transparent mask: solid white below the bar, fading to clear above */
+function buildBreathingMask(barTop: number): string {
+  return `linear-gradient(180deg,
+    rgba(255,255,255,0) ${Math.max(0, barTop - 8)}%,
+    rgba(255,255,255,0.5) ${barTop}%,
+    rgba(255,255,255,0.85) ${Math.min(100, barTop + 10)}%,
+    rgba(255,255,255,0.95) 100%)`;
 }
 
 const WavePreview = () => {
@@ -140,14 +137,11 @@ const WavePreview = () => {
         barRef.current.style.top = `${barTop}%`;
       }
       if (gradientRef.current) {
-        gradientRef.current.style.background = `linear-gradient(180deg, 
-          hsl(195, 15%, 30%) 0%, 
-          hsl(195, 18%, 38%) ${Math.max(0, barTop - 25)}%, 
-          hsl(195, 18%, 48%) ${Math.max(0, barTop - 12)}%, 
-          hsl(195, 16%, 62%) ${barTop}%, 
-          hsl(200, 14%, 75%) ${Math.min(100, barTop + 12)}%, 
-          hsl(210, 12%, 88%) ${Math.min(100, barTop + 25)}%, 
-          hsl(210, 10%, 95%) 100%)`;
+        gradientRef.current.style.background = `linear-gradient(180deg,
+          rgba(255,255,255,0) ${Math.max(0, barTop - 8)}%,
+          rgba(255,255,255,0.5) ${barTop}%,
+          rgba(255,255,255,0.85) ${Math.min(100, barTop + 10)}%,
+          rgba(255,255,255,0.95) 100%)`;
       }
       if (phaseLabelRef.current) {
         phaseLabelRef.current.textContent = currentPhase;
@@ -216,14 +210,25 @@ const WavePreview = () => {
             />
           ))}
 
-          {/* Breathing gradient — transition point follows the bar */}
+          {/* Breathing background image */}
+          <div
+            className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
+            style={{
+              backgroundImage: `url(${waveBgInhale})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              opacity: isBreathing ? 1 : 0,
+            }}
+          />
+
+          {/* White mask overlay — covers from bar downward */}
           <div
             ref={gradientRef}
             className="absolute inset-0"
             style={{
               opacity: isBreathing ? 1 : 0,
               transition: "opacity 600ms ease-in-out",
-              background: buildBreathingGradient(85),
+              background: buildBreathingMask(85),
             }}
           />
 
