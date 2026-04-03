@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import waveBgLogo from "@/assets/wave-bg-logo.png";
+import waveBgIntro from "@/assets/wave-bg-intro.png";
 
 /* ── Timing ── */
 const TOTAL_ROUNDS = 3;
