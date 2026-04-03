@@ -23,7 +23,6 @@ const ALL_IMAGES = [waveBgLogo, waveBgIntro, waveBgDescription, waveBgInhale];
 const SCREEN_BG: Partial<Record<Screen, string>> = {
   logo: waveBgLogo,
   intro: waveBgIntro,
-  description: waveBgDescription,
   done: waveBgLogo,
 };
 
