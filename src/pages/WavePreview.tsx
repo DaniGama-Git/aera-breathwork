@@ -132,7 +132,7 @@ const WavePreview = () => {
       }
 
       // Direct DOM mutation — no React re-render
-      const barTop = 10 + progress * 75;
+      const barTop = 10 + progress * 82;
       if (barRef.current) {
         barRef.current.style.top = `${barTop}%`;
       }
