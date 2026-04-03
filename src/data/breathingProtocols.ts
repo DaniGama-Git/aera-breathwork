@@ -249,8 +249,8 @@ export const preNegotiationProtocol: Protocol = {
     { type: "HOLD_EMPTY", duration: 8000 },
   ],
   finalMethod: "nose",
-};
-  id: "pre-pitch",
+
+
   title: "Pre-Pitch",
   subtitle: "~3 mins",
   duration: "~3 mins",
