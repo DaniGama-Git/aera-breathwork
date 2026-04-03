@@ -4,8 +4,6 @@ import waveBgIntro from "@/assets/wave-bg-intro.png";
 import waveBgDescription from "@/assets/wave-bg-description.png";
 import waveBgInhale from "@/assets/wave-bg-inhale.png";
 import lightbulbIcon from "@/assets/lightbulb-icon.svg";
-import breathingIconTop from "@/assets/breathing-icon-top.svg";
-import breathingIconBottom from "@/assets/breathing-icon-bottom.svg";
 import {
   creativeFlowProtocol,
   buildTimeline,
