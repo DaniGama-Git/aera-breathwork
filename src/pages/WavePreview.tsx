@@ -155,6 +155,7 @@ const WavePreview = () => {
         if (phaseLabelRef.current) phaseLabelRef.current.textContent = "";
         setPhase("");
       } else {
+        if (!hasStartedBreathing) setHasStartedBreathing(true);
         if (transitionTextRef.current !== "") {
           transitionTextRef.current = "";
           setTransitionText("");
