@@ -34,8 +34,8 @@ export const TIME_DISPLAY: Record<string, string> = {
 
 export const SESSION_ROUTES: Record<string, string> = {
   perform: "/session/perform/pre-pitch",
-  activate: "/session/activate/morning-activation",
-  focus: "/session/focus/focus-activation",
+  activate: "/session/activate/wake-me-up",
+  focus: "/session/focus/deep-focus",
   recover: "/session/recover/back-to-back-recharge",
   ground: "/session/ground/evening-decompression",
 };
