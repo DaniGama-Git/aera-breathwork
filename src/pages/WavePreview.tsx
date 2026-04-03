@@ -49,16 +49,13 @@ function preloadImages(srcs: string[]): Promise<void> {
   ).then(() => {});
 }
 
-function buildBreathingGradient(barTop: number): string {
-  // Dark pulls down from top, light below
-  return `linear-gradient(180deg, 
-    hsl(195, 15%, 30%) 0%, 
-    hsl(195, 18%, 38%) ${Math.max(0, barTop - 25)}%, 
-    hsl(195, 18%, 48%) ${Math.max(0, barTop - 12)}%, 
-    hsl(195, 16%, 62%) ${barTop}%, 
-    hsl(200, 14%, 75%) ${Math.min(100, barTop + 12)}%, 
-    hsl(210, 12%, 88%) ${Math.min(100, barTop + 25)}%, 
-    hsl(210, 10%, 95%) 100%)`;
+/* White-to-transparent mask: solid white below the bar, fading to clear above */
+function buildBreathingMask(barTop: number): string {
+  return `linear-gradient(180deg,
+    rgba(255,255,255,0) ${Math.max(0, barTop - 8)}%,
+    rgba(255,255,255,0.5) ${barTop}%,
+    rgba(255,255,255,0.85) ${Math.min(100, barTop + 10)}%,
+    rgba(255,255,255,0.95) 100%)`;
 }
 
 const WavePreview = () => {
