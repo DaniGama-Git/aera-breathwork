@@ -178,23 +178,23 @@ const WavePreview = () => {
           {screen === "intro" && (
             <div className={contentBase}>
               <div
-                className="px-5 py-2 rounded-full mb-2"
+                className="px-5 py-1.5 rounded-full mb-1.5"
                 style={{
-                  background: "rgba(255,255,255,0.1)",
-                  border: "1px solid rgba(255,255,255,0.18)",
+                  background: "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(255,255,255,0.15)",
                   backdropFilter: "blur(10px)",
                 }}
               >
-                <span className="text-white/80 text-[13px] tracking-[0.08em] font-medium">
+                <span className="text-white/70 text-[11px] tracking-[0.08em] font-medium">
                   Pre-Pitch
                 </span>
               </div>
-              <span className="text-white/40 text-[11px] tracking-[0.08em] font-medium mb-6">
+              <span className="text-white/35 text-[10px] tracking-[0.08em] font-medium mb-5">
                 4 mins
               </span>
               <p
-                className="text-white font-semibold leading-[1.25]"
-                style={{ fontSize: 24, letterSpacing: "-0.01em" }}
+                className="text-white font-semibold leading-[1.15]"
+                style={{ fontSize: 22, letterSpacing: "-0.01em" }}
               >
                 You're about to step in,
                 <br />
