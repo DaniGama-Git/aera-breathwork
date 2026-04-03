@@ -7,7 +7,7 @@ import lightbulbIcon from "@/assets/lightbulb-icon.svg";
 import breathingIconTop from "@/assets/breathing-icon-top.svg";
 import breathingIconBottom from "@/assets/breathing-icon-bottom.svg";
 import {
-  prePitchProtocol,
+  creativeFlowProtocol,
   buildTimeline,
   getBarPosition,
   type TimelineEntry,
@@ -52,7 +52,7 @@ function buildBreathingMask(barTop: number): string {
     rgba(255,255,255,0.95) 100%)`;
 }
 
-const protocol = prePitchProtocol;
+const protocol = creativeFlowProtocol;
 
 const WavePreview = () => {
   const [screen, setScreen] = useState<Screen>("loading");
