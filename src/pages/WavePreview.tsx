@@ -52,7 +52,7 @@ function buildBreathingMask(barTop: number): string {
     rgba(255,255,255,0.95) 100%)`;
 }
 
-const protocol = prePitchProtocol;
+const protocol = creativeFlowProtocol;
 
 const WavePreview = () => {
   const [screen, setScreen] = useState<Screen>("loading");
