@@ -46,6 +46,7 @@ export interface TimelineEntry {
 }
 
 const TRANSITION_DURATION = 3500;
+const SCIENCE_DURATION = 4500;
 
 export function buildTimeline(protocol: Protocol): TimelineEntry[] {
   const entries: TimelineEntry[] = [];
