@@ -154,16 +154,19 @@ const WavePreview = () => {
   const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[400ms] ${fadeClass}`;
 
   /* ── Background logic ── */
-  const getStaticBg = () => {
-    if (screen === "logo") return waveBgLogo;
-    if (screen === "intro") return waveBgIntro;
-    if (screen === "description") return waveBgDescription;
-    if (screen === "done") return waveBgLogo;
-    return undefined;
+  const staticBgMap: Partial<Record<Screen, string>> = {
+    logo: waveBgLogo,
+    intro: waveBgIntro,
+    description: waveBgDescription,
+    done: waveBgLogo,
   };
 
   const isBreathing = screen === "breathing";
-  const staticBg = getStaticBg();
+  const allStaticBgs = [
+    { key: "logo", src: waveBgLogo, screens: ["logo", "done"] },
+    { key: "intro", src: waveBgIntro, screens: ["intro"] },
+    { key: "desc", src: waveBgDescription, screens: ["description"] },
+  ];
 
   /* Loading state */
   if (screen === "loading") {
