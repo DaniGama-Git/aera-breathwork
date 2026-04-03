@@ -4,6 +4,8 @@
 
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useFavorites } from "@/hooks/useFavorites";
+import { categoryConfig, findSessionBySlug } from "@/data/sessionData";
 import categoryActivate from "@/assets/category-activate.webp";
 import categoryRecover from "@/assets/category-recover.webp";
 import categoryFocus from "@/assets/category-focus.webp";
@@ -18,13 +20,6 @@ const categories = [
   { label: "Activate", image: categoryReset, to: "/category/activate" },
   { label: "Ground", image: categoryFocus, to: "/category/ground" },
   { label: "Recover", image: categoryRecover, to: "/category/recover" },
-];
-
-const favorites = [
-  { title: "Pre-Pitch", duration: "5 mins", to: "/session/perform/pre-pitch", image: categoryFocus },
-  { title: "Deep Focus", duration: "5 mins", to: "/session/perform/deep-focus", image: categoryFocus },
-  { title: "Wake Me Up", duration: "5 mins", to: "/session/activate/wake-me-up", image: categoryActivate },
-  { title: "Back-to-Back", duration: "5 mins", to: "/session/recover/back-to-back", image: categoryRecover },
 ];
 
 const recommendations = [
@@ -43,9 +38,25 @@ function getGreeting() {
 
 const BreathworkMenu = () => {
   const { signOut, user } = useAuth();
+  const { favorites, loading: favLoading } = useFavorites();
 
   const displayName = user?.user_metadata?.full_name?.split(" ")[0] || user?.user_metadata?.name?.split(" ")[0] || "there";
   const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+
+  // Map favorites to display data
+  const favoriteSessions = favorites
+    .map((fav) => {
+      const match = findSessionBySlug(fav.session_slug);
+      if (!match) return null;
+      const catConfig = categoryConfig[fav.category] || match.config;
+      return {
+        title: match.session.title,
+        duration: match.session.duration,
+        to: `/session/${fav.category}/${fav.session_slug}`,
+        image: catConfig.image,
+      };
+    })
+    .filter(Boolean) as { title: string; duration: string; to: string; image: string }[];
 
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col bg-[#F7F6F5]">
@@ -86,26 +97,28 @@ const BreathworkMenu = () => {
         </div>
 
         {/* Favorites */}
-        <div className="px-5 md:px-8 mt-8">
-          <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Favorites</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {favorites.map((fav) => (
-              <Link key={fav.title} to={fav.to} className="flex items-center gap-3 no-underline">
-                <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 relative">
-                  <img src={fav.image} alt={fav.title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" style={{ filter: "blur(6px)", transform: "scale(1.15)" }} />
-                  <div className="absolute inset-0 bg-[#111111]/[0.01]" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <img src={playIconSmall} alt="Play" width="16" height="17" />
+        {favoriteSessions.length > 0 && (
+          <div className="px-5 md:px-8 mt-8">
+            <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Favorites</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {favoriteSessions.map((fav) => (
+                <Link key={fav.title} to={fav.to} className="flex items-center gap-3 no-underline">
+                  <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 relative">
+                    <img src={fav.image} alt={fav.title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" style={{ filter: "blur(6px)", transform: "scale(1.15)" }} />
+                    <div className="absolute inset-0 bg-[#111111]/[0.01]" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <img src={playIconSmall} alt="Play" width="16" height="17" />
+                    </div>
                   </div>
-                </div>
-                <div className="min-w-0">
-                  <p className="font-body font-medium text-[14px] text-[#1D1D1C] leading-tight truncate">{fav.title}</p>
-                  <p className="font-body font-normal text-[12px] text-[#BDBDBD] mt-0.5">{fav.duration}</p>
-                </div>
-              </Link>
-            ))}
+                  <div className="min-w-0">
+                    <p className="font-body font-medium text-[14px] text-[#1D1D1C] leading-tight truncate">{fav.title}</p>
+                    <p className="font-body font-normal text-[12px] text-[#BDBDBD] mt-0.5">{fav.duration}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Recommendations */}
         <div className="px-5 md:px-8 mt-8">
