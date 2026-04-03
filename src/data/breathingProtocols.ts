@@ -387,6 +387,7 @@ export const wakeMeUpProtocol: Protocol = {
       method: "nose",
       transition:
         "Let's stabilize with coherence breathing. Steady rhythm to lock in your energy.",
+      science: "Coherence breathing stabilises HRV and sharpens cognition after activation — prevents energy crash.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "EXHALE", duration: 5000 },
