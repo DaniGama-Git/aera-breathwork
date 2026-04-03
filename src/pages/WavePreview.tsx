@@ -210,14 +210,25 @@ const WavePreview = () => {
             />
           ))}
 
-          {/* Breathing gradient — transition point follows the bar */}
+          {/* Breathing background image */}
+          <div
+            className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
+            style={{
+              backgroundImage: `url(${waveBgInhale})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              opacity: isBreathing ? 1 : 0,
+            }}
+          />
+
+          {/* White mask overlay — covers from bar downward */}
           <div
             ref={gradientRef}
             className="absolute inset-0"
             style={{
               opacity: isBreathing ? 1 : 0,
               transition: "opacity 600ms ease-in-out",
-              background: buildBreathingGradient(85),
+              background: buildBreathingMask(85),
             }}
           />
 
