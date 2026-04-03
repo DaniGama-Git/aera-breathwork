@@ -65,6 +65,9 @@ const WavePreview = () => {
 
   const timeline = useMemo(() => buildTimeline(protocol), []);
   const totalDuration = timeline.length > 0 ? timeline[timeline.length - 1].endMs : 0;
+  // Check if session starts with an overlay (science/transition) — hide bar until first real breath phase
+  const startsWithOverlay = timeline.length > 0 && (timeline[0].type === "SCIENCE" || timeline[0].type === "TRANSITION");
+  const [hasStartedBreathing, setHasStartedBreathing] = useState(false);
 
   /* ── Preload ── */
   useEffect(() => {
