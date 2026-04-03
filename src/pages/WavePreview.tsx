@@ -286,7 +286,11 @@ const WavePreview = () => {
                >
                  <div style={{ height: 3, background: "rgba(247,246,245,0.6)", width: "100%" }} />
                </div>
-               <div className="pb-7 flex flex-col items-center">
+               <div className="pb-7 flex flex-col items-center gap-3">
+                 <div className="flex flex-col items-center gap-1">
+                   <img src={breathingIconTop} alt="" style={{ width: 17, height: 4 }} />
+                   <img src={breathingIconBottom} alt="" style={{ width: 21, height: 2 }} />
+                 </div>
                  <span
                    ref={phaseLabelRef}
                    className="tracking-[0.25em] font-medium"
