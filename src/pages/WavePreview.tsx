@@ -293,21 +293,6 @@ const WavePreview = () => {
             </div>
           )}
 
-          {screen === "description" && (
-            <div className={contentBase}>
-              <div className="flex items-start gap-3 text-left max-w-[240px]">
-                <img src={lightbulbIcon} alt="" style={{ width: 61, height: 82 }} className="mt-0.5 opacity-70 shrink-0" />
-                <div>
-                  <p className="text-white/80 text-[13px] leading-relaxed font-medium">
-                    {protocol.descriptionPrimary}
-                  </p>
-                  <p className="text-white/50 text-[13px] leading-relaxed font-medium mt-3">
-                    {protocol.descriptionSecondary}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
 
           {screen === "breathing" && (
             <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
