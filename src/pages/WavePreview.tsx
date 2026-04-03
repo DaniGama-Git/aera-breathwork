@@ -56,7 +56,8 @@ const WavePreview = () => {
   const [fadeIn, setFadeIn] = useState(true);
   const [sessionStart, setSessionStart] = useState(0);
   const [round, setRound] = useState(0);
-  const [phaseProgress, setPhaseProgress] = useState(0);
+  const barRef = useRef<HTMLDivElement>(null);
+  const phaseLabelRef = useRef<HTMLSpanElement>(null);
 
   /* ── Preload all backgrounds before first screen ── */
   useEffect(() => {
