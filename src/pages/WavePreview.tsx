@@ -56,7 +56,8 @@ const WavePreview = () => {
   const [fadeIn, setFadeIn] = useState(true);
   const [sessionStart, setSessionStart] = useState(0);
   const [round, setRound] = useState(0);
-  const [phaseProgress, setPhaseProgress] = useState(0);
+  const barRef = useRef<HTMLDivElement>(null);
+  const phaseLabelRef = useRef<HTMLSpanElement>(null);
 
   /* ── Preload all backgrounds before first screen ── */
   useEffect(() => {
@@ -87,7 +88,7 @@ const WavePreview = () => {
     return () => clearTimeout(timer);
   }, [screen]);
 
-  /* ── Breathing phase tracker ── */
+  /* ── Breathing phase tracker (ref-based to avoid flicker) ── */
   useEffect(() => {
     if (screen !== "breathing") return;
 
@@ -109,19 +110,28 @@ const WavePreview = () => {
       setRound(currentRound);
 
       const cycleElapsed = elapsed % CYCLE_MS;
+      let progress: number;
+      let currentPhase: Phase;
+
       if (cycleElapsed < INHALE_MS) {
-        setPhase("INHALE");
-        // Inhale: bar travels UP → progress 1 → 0
-        setPhaseProgress(1 - cycleElapsed / INHALE_MS);
+        currentPhase = "INHALE";
+        progress = 1 - cycleElapsed / INHALE_MS;
       } else if (cycleElapsed < INHALE_MS + HOLD_MS) {
-        setPhase("HOLD");
-        // Hold: bar stays at top → 0
-        setPhaseProgress(0);
+        currentPhase = "HOLD";
+        progress = 0;
       } else {
-        setPhase("EXHALE");
-        // Exhale: bar travels DOWN → progress 0 → 1
-        setPhaseProgress((cycleElapsed - INHALE_MS - HOLD_MS) / EXHALE_MS);
+        currentPhase = "EXHALE";
+        progress = (cycleElapsed - INHALE_MS - HOLD_MS) / EXHALE_MS;
       }
+
+      // Direct DOM mutation — no React re-render
+      if (barRef.current) {
+        barRef.current.style.top = `${10 + progress * 75}%`;
+      }
+      if (phaseLabelRef.current) {
+        phaseLabelRef.current.textContent = currentPhase;
+      }
+      setPhase(currentPhase); // still needed for bg crossfade
 
       rafId = requestAnimationFrame(tick);
     };
@@ -264,26 +274,26 @@ const WavePreview = () => {
           )}
 
           {screen === "breathing" && (
-            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
-              <div className="flex-1" />
-              {/* Traveling progress bar: top=10% to bottom=85% range */}
-              <div
-                className="absolute left-0 right-0"
-                style={{
-                  top: `${10 + phaseProgress * 75}%`,
-                }}
-              >
-                <img src={breathProgressBar} alt="" className="w-full opacity-60" />
-              </div>
-              <div className="pb-7 flex flex-col items-center">
-                <span
-                  className="tracking-[0.25em] font-medium"
-                  style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
-                >
-                  {phase}
-                </span>
-              </div>
-            </div>
+             <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
+               <div className="flex-1" />
+               {/* Traveling progress bar — positioned via ref, no React re-renders */}
+               <div
+                 ref={barRef}
+                 className="absolute left-0 right-0"
+                 style={{ top: "85%" }}
+               >
+                 <div style={{ height: 3, background: "rgba(247,246,245,0.6)", width: "100%" }} />
+               </div>
+               <div className="pb-7 flex flex-col items-center">
+                 <span
+                   ref={phaseLabelRef}
+                   className="tracking-[0.25em] font-medium"
+                   style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
+                 >
+                   {phase}
+                 </span>
+               </div>
+             </div>
           )}
 
           {screen === "done" && (
