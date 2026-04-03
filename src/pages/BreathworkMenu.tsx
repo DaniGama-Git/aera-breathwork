@@ -14,9 +14,9 @@ import playIconSmall from "@/assets/play-icon-small.svg";
 import playIconLarge from "@/assets/play-icon-large.svg";
 
 const categories = [
-  { label: "Perform", image: categoryFocus, to: "/category/perform" },
-  { label: "Activate", image: categoryActivate, to: "/category/activate" },
-  { label: "Ground", image: categoryReset, to: "/category/ground" },
+  { label: "Perform", image: categoryActivate, to: "/category/perform" },
+  { label: "Activate", image: categoryReset, to: "/category/activate" },
+  { label: "Ground", image: categoryFocus, to: "/category/ground" },
   { label: "Recover", image: categoryRecover, to: "/category/recover" },
 ];
 
