@@ -36,6 +36,7 @@ const WavePreview = () => {
   const [fadeIn, setFadeIn] = useState(true);
   const [sessionStart, setSessionStart] = useState(0);
   const [round, setRound] = useState(0);
+  const [phaseProgress, setPhaseProgress] = useState(0);
 
   /* ── Screen auto-advance ── */
   useEffect(() => {
