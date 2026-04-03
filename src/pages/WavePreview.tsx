@@ -7,7 +7,7 @@ import lightbulbIcon from "@/assets/lightbulb-icon.svg";
 import breathingIconTop from "@/assets/breathing-icon-top.svg";
 import breathingIconBottom from "@/assets/breathing-icon-bottom.svg";
 import {
-  prePitchProtocol,
+  creativeFlowProtocol,
   buildTimeline,
   getBarPosition,
   type TimelineEntry,
