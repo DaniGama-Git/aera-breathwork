@@ -132,7 +132,7 @@ const WavePreview = () => {
       }
 
       // Direct DOM mutation — no React re-render
-      const barTop = 10 + progress * 75;
+      const barTop = 10 + progress * 82;
       if (barRef.current) {
         barRef.current.style.top = `${barTop}%`;
       }
@@ -228,7 +228,7 @@ const WavePreview = () => {
             style={{
               opacity: isBreathing ? 1 : 0,
               transition: "opacity 600ms ease-in-out",
-              background: buildBreathingMask(85),
+              background: buildBreathingMask(92),
             }}
           />
 
@@ -295,7 +295,7 @@ const WavePreview = () => {
                <div
                  ref={barRef}
                  className="absolute left-0 right-0"
-                 style={{ top: "85%" }}
+                 style={{ top: "92%" }}
                >
                  <div style={{ height: 2, background: "rgba(255,255,255,0.9)", width: "100%", boxShadow: "0 0 10px 3px rgba(255,255,255,0.4), 0 1px 6px 2px rgba(0,0,0,0.12), 0 -1px 6px 2px rgba(0,0,0,0.06)" }} />
                </div>
