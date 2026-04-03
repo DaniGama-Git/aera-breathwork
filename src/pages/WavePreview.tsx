@@ -88,7 +88,7 @@ const WavePreview = () => {
     return () => clearTimeout(timer);
   }, [screen]);
 
-  /* ── Breathing phase tracker ── */
+  /* ── Breathing phase tracker (ref-based to avoid flicker) ── */
   useEffect(() => {
     if (screen !== "breathing") return;
 
@@ -110,19 +110,28 @@ const WavePreview = () => {
       setRound(currentRound);
 
       const cycleElapsed = elapsed % CYCLE_MS;
+      let progress: number;
+      let currentPhase: Phase;
+
       if (cycleElapsed < INHALE_MS) {
-        setPhase("INHALE");
-        // Inhale: bar travels UP → progress 1 → 0
-        setPhaseProgress(1 - cycleElapsed / INHALE_MS);
+        currentPhase = "INHALE";
+        progress = 1 - cycleElapsed / INHALE_MS;
       } else if (cycleElapsed < INHALE_MS + HOLD_MS) {
-        setPhase("HOLD");
-        // Hold: bar stays at top → 0
-        setPhaseProgress(0);
+        currentPhase = "HOLD";
+        progress = 0;
       } else {
-        setPhase("EXHALE");
-        // Exhale: bar travels DOWN → progress 0 → 1
-        setPhaseProgress((cycleElapsed - INHALE_MS - HOLD_MS) / EXHALE_MS);
+        currentPhase = "EXHALE";
+        progress = (cycleElapsed - INHALE_MS - HOLD_MS) / EXHALE_MS;
       }
+
+      // Direct DOM mutation — no React re-render
+      if (barRef.current) {
+        barRef.current.style.top = `${10 + progress * 75}%`;
+      }
+      if (phaseLabelRef.current) {
+        phaseLabelRef.current.textContent = currentPhase;
+      }
+      setPhase(currentPhase); // still needed for bg crossfade
 
       rafId = requestAnimationFrame(tick);
     };
