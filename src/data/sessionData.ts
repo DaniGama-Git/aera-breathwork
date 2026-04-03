@@ -39,30 +39,8 @@ export const categoryConfig: Record<string, CategoryConfig> = {
       { title: "Pre-Negotiation", description: "Settle your nerves before a tough conversation.", duration: "5 mins", slug: "pre-negotiation", audioSrc: "/audio/pre-negotiation.mp3" },
       { title: "Decision Clarity", description: "Cut through the noise to decide clearly.", duration: "5 mins", slug: "decision-clarity", audioSrc: "/audio/decision-clarity.mp3" },
       { title: "Pre-Meeting", description: "Arrive centered and fully present.", duration: "5 mins", slug: "pre-meeting", audioSrc: "/audio/pre-meeting.mp3" },
-      { title: "Pre-Creative Work", description: "Open up before creative deep work.", duration: "5 mins", slug: "pre-creative-work" },
-    ],
-  },
-  recover: {
-    label: "Recover",
-    image: categoryRecover,
-    gradient: recoverGradient,
-    icon: recoverIcon,
-    sessions: [
-      { title: "Back-To-Back Recharge", description: "Reset between consecutive meetings.", duration: "5 mins", slug: "back-to-back-recharge", audioSrc: "/audio/back-to-back-recharge.mp3" },
-      { title: "Post-Setback Recovery", description: "Process and bounce back emotionally.", duration: "5 mins", slug: "post-setback-recovery", audioSrc: "/audio/post-setback-recovery.mp3" },
-      { title: "Context Switch", description: "Smoothly transition between work modes.", duration: "5 mins", slug: "context-switch", audioSrc: "/audio/context-switching.mp3" },
-      { title: "Post-Meeting Reset", description: "Decompress after an intense meeting.", duration: "5 mins", slug: "post-meeting-reset", audioSrc: "/audio/post-meeting-reset.mp3" },
-      { title: "Stress/Anxiety SOS", description: "Rapid relief when stress peaks.", duration: "3 mins", slug: "stress-anxiety-sos", audioSrc: "/audio/stress-anxiety-sos.mp3" },
-      { title: "Conflict De-escalation", description: "Calm down after a heated exchange.", duration: "5 mins", slug: "conflict-de-escalation", audioSrc: "/audio/conflict-de-escalation.mp3" },
-    ],
-  },
-  focus: {
-    label: "Focus",
-    image: categoryFocus,
-    gradient: focusGradient,
-    icon: focusIcon,
-    sessions: [
-      { title: "Focus Activation", description: "Drop into deep concentration.", duration: "5 mins", slug: "focus-activation", audioSrc: "/audio/focus-activation.mp3" },
+      { title: "Creative Flow", description: "Open up before creative deep work.", duration: "5 mins", slug: "creative-flow" },
+      { title: "Deep Focus", description: "Drop into deep concentration.", duration: "5 mins", slug: "deep-focus", audioSrc: "/audio/focus-activation.mp3" },
     ],
   },
   activate: {
@@ -71,8 +49,22 @@ export const categoryConfig: Record<string, CategoryConfig> = {
     gradient: activateGradient,
     icon: activateIcon,
     sessions: [
-      { title: "Morning Activation", description: "Kickstart your day with energy.", duration: "5 mins", slug: "morning-activation", audioSrc: "/audio/morning-activation.mp3" },
-      { title: "Mid-Day Energy Boost", description: "Counter the afternoon energy dip.", duration: "5 mins", slug: "mid-day-energy-boost", audioSrc: "/audio/mid-day-energy-boost.mp3" },
+      { title: "Wake Me Up", description: "Kickstart your day with energy.", duration: "5 mins", slug: "wake-me-up", audioSrc: "/audio/morning-activation.mp3" },
+      { title: "Energy Reset", description: "Counter the afternoon energy dip.", duration: "5 mins", slug: "energy-reset", audioSrc: "/audio/mid-day-energy-boost.mp3" },
+    ],
+  },
+  recover: {
+    label: "Recover",
+    image: categoryRecover,
+    gradient: recoverGradient,
+    icon: recoverIcon,
+    sessions: [
+      { title: "Back-to-Back", description: "Reset between consecutive meetings.", duration: "5 mins", slug: "back-to-back", audioSrc: "/audio/back-to-back-recharge.mp3" },
+      { title: "Rebound", description: "Process and bounce back emotionally.", duration: "5 mins", slug: "rebound", audioSrc: "/audio/post-setback-recovery.mp3" },
+      { title: "Context Switch", description: "Smoothly transition between work modes.", duration: "5 mins", slug: "context-switch", audioSrc: "/audio/context-switching.mp3" },
+      { title: "Quick Recovery", description: "Decompress after an intense meeting.", duration: "5 mins", slug: "quick-recovery", audioSrc: "/audio/post-meeting-reset.mp3" },
+      { title: "Anxiety Reset", description: "Rapid relief when stress peaks.", duration: "3 mins", slug: "anxiety-reset", audioSrc: "/audio/stress-anxiety-sos.mp3" },
+      { title: "Conflict Reset", description: "Calm down after a heated exchange.", duration: "5 mins", slug: "conflict-reset", audioSrc: "/audio/conflict-de-escalation.mp3" },
     ],
   },
   ground: {
@@ -81,7 +73,7 @@ export const categoryConfig: Record<string, CategoryConfig> = {
     gradient: resetGradient,
     icon: resetIcon,
     sessions: [
-      { title: "Evening Decompression", description: "Wind down after an intense day.", duration: "10 mins", slug: "evening-decompression", audioSrc: "/audio/evening-decompression.mp3" },
+      { title: "Wind Down", description: "Wind down after an intense day.", duration: "10 mins", slug: "wind-down", audioSrc: "/audio/evening-decompression.mp3" },
       { title: "Travel Reset", description: "Recalibrate after long commutes or flights.", duration: "7 mins", slug: "travel-reset" },
       { title: "Deep Decompression", description: "Deep nervous system restoration.", duration: "12 mins", slug: "deep-decompression" },
     ],
