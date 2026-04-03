@@ -59,6 +59,7 @@ const WavePreview = () => {
   const [sessionStart, setSessionStart] = useState(0);
   const [round, setRound] = useState(0);
   const barRef = useRef<HTMLDivElement>(null);
+  const gradientRef = useRef<HTMLDivElement>(null);
   const phaseLabelRef = useRef<HTMLSpanElement>(null);
 
   /* ── Preload all backgrounds before first screen ── */
@@ -127,13 +128,17 @@ const WavePreview = () => {
       }
 
       // Direct DOM mutation — no React re-render
+      const barTop = 10 + progress * 75;
       if (barRef.current) {
-        barRef.current.style.top = `${10 + progress * 75}%`;
+        barRef.current.style.top = `${barTop}%`;
+      }
+      if (gradientRef.current) {
+        gradientRef.current.style.top = `${barTop - 30}%`;
       }
       if (phaseLabelRef.current) {
         phaseLabelRef.current.textContent = currentPhase;
       }
-      setPhase(currentPhase); // still needed for bg crossfade
+      setPhase(currentPhase);
 
       rafId = requestAnimationFrame(tick);
     };
@@ -210,19 +215,29 @@ const WavePreview = () => {
             />
           ))}
 
-          {/* Animated breathing backgrounds - all 3 layered, opacity-controlled */}
-          {(["INHALE", "HOLD", "EXHALE"] as const).map((p) => (
-            <div
-              key={p}
-              className="absolute inset-0 transition-opacity duration-[800ms] ease-in-out"
-              style={{
-                backgroundImage: `url(${PHASE_BG[p]})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                opacity: isBreathing && phase === p ? 1 : 0,
-              }}
-            />
-          ))}
+          {/* Base breathing background */}
+          <div
+            className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
+            style={{
+              backgroundImage: `url(${waveBgInhale})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              opacity: isBreathing ? 1 : 0,
+            }}
+          />
+
+          {/* Traveling gradient overlay — follows the bar */}
+          <div
+            ref={gradientRef}
+            className="absolute left-0 right-0 pointer-events-none transition-none"
+            style={{
+              height: "60%",
+              top: "55%",
+              opacity: isBreathing ? 1 : 0,
+              background: "radial-gradient(ellipse 100% 50% at 50% 50%, rgba(200,210,220,0.45) 0%, rgba(200,210,220,0.15) 35%, transparent 70%)",
+              transition: "opacity 600ms ease-in-out",
+            }}
+          />
 
           {/* Screen overlays */}
           {screen === "logo" && (
