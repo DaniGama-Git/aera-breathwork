@@ -82,9 +82,16 @@ const WavePreview = () => {
       setRound(currentRound);
 
       const cycleElapsed = elapsed % CYCLE_MS;
-      if (cycleElapsed < INHALE_MS) setPhase("INHALE");
-      else if (cycleElapsed < INHALE_MS + HOLD_MS) setPhase("HOLD");
-      else setPhase("EXHALE");
+      if (cycleElapsed < INHALE_MS) {
+        setPhase("INHALE");
+        setPhaseProgress(cycleElapsed / INHALE_MS);
+      } else if (cycleElapsed < INHALE_MS + HOLD_MS) {
+        setPhase("HOLD");
+        setPhaseProgress((cycleElapsed - INHALE_MS) / HOLD_MS);
+      } else {
+        setPhase("EXHALE");
+        setPhaseProgress((cycleElapsed - INHALE_MS - HOLD_MS) / EXHALE_MS);
+      }
 
       rafId = requestAnimationFrame(tick);
     };
