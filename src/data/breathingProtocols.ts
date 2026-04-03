@@ -242,3 +242,143 @@ export const preNegotiationProtocol: Protocol = {
   ],
   finalMethod: "nose",
 };
+
+export const creativeFlowProtocol: Protocol = {
+  id: "creative-flow",
+  title: "Creative Flow",
+  subtitle: "~3.5 mins",
+  duration: "~3.5 mins",
+  introText: "Let go of control.\nLet your mind open up.",
+  descriptionPrimary: "Longer exhales to release prefrontal control and reduce cognitive rigidity.",
+  descriptionSecondary: "Variable breathing to increase cognitive flexibility for divergent thinking.",
+  stages: [
+    {
+      name: "Release Control",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 6000 },
+      ],
+      cycles: 7,
+    },
+    {
+      name: "Add Variability",
+      method: "nose",
+      transition:
+        "Now let your breathing become less rigid. Allow natural variation in your exhales.",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 4500 },
+      ],
+      cycles: 12,
+    },
+    {
+      name: "Expand",
+      method: "nose",
+      transition:
+        "Take a few slightly deeper breaths. Relaxed, not controlled. Open up your mental space.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 3,
+    },
+  ],
+};
+
+export const deepFocusProtocol: Protocol = {
+  id: "deep-focus",
+  title: "Deep Focus",
+  subtitle: "~3.5 mins",
+  duration: "~3.5 mins",
+  introText: "Settle in.\nLet's lock your attention.",
+  descriptionPrimary: "Longer exhales to reduce surface noise and prepare for sustained attention.",
+  descriptionSecondary: "Coherence breathing to build HRV and attentional stability.",
+  stages: [
+    {
+      name: "Settle",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 6000 },
+      ],
+      cycles: 7,
+    },
+    {
+      name: "Lock-in",
+      method: "nose",
+      transition:
+        "Now settle into a steady rhythm. Same pace, no variation. Let your attention lock in.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 12,
+    },
+    {
+      name: "Transition Breath",
+      method: "nose",
+      transition:
+        "One final breath. Inhale deeply, exhale slowly, then begin.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 1,
+    },
+  ],
+};
+
+export const wakeMeUpProtocol: Protocol = {
+  id: "wake-me-up",
+  title: "Wake Me Up",
+  subtitle: "~4 mins",
+  duration: "~4 mins",
+  introText: "Time to wake up.\nLet's build some clean energy.",
+  descriptionPrimary: "Cyclic breathing to trigger sympathetic activation for clean alertness.",
+  descriptionSecondary: "Coherence breathing to stabilize and prevent an energy crash.",
+  stages: [
+    {
+      name: "Activate",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 2000 },
+        { type: "EXHALE", duration: 2000 },
+      ],
+      cycles: 25,
+    },
+    {
+      name: "Peak Inhale",
+      method: "nose",
+      transition:
+        "Now take one deep inhale and hold. Let the alertness build.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "HOLD", duration: 10000 },
+      ],
+      cycles: 1,
+    },
+    {
+      name: "Stabilise",
+      method: "nose",
+      transition:
+        "Let's stabilize with coherence breathing. Steady rhythm to lock in your energy.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 9,
+    },
+    {
+      name: "Final Lift",
+      method: "nose",
+      transition:
+        "A few deeper breaths to fully expand and oxygenate before you start your day.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 3,
+    },
+  ],
+};
