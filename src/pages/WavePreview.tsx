@@ -223,27 +223,20 @@ const WavePreview = () => {
             />
           ))}
 
-          {/* Base breathing background */}
-          <div
-            className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
-            style={{
-              backgroundImage: `url(${waveBgInhale})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              opacity: isBreathing ? 1 : 0,
-            }}
-          />
-
-          {/* Traveling gradient overlay — follows the bar */}
+          {/* Breathing gradient — transition point follows the bar */}
           <div
             ref={gradientRef}
-            className="absolute left-0 right-0 pointer-events-none transition-none"
+            className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
             style={{
-              height: "60%",
-              top: "55%",
               opacity: isBreathing ? 1 : 0,
-              background: "radial-gradient(ellipse 100% 50% at 50% 50%, rgba(200,210,220,0.45) 0%, rgba(200,210,220,0.15) 35%, transparent 70%)",
-              transition: "opacity 600ms ease-in-out",
+              background: `linear-gradient(180deg, 
+                hsl(195, 15%, 35%) 0%, 
+                hsl(195, 18%, 45%) 55%, 
+                hsl(190, 15%, 60%) 67%, 
+                hsl(200, 15%, 78%) 75%, 
+                hsl(210, 15%, 90%) 83%, 
+                hsl(220, 10%, 96%) 90%, 
+                hsl(0, 0%, 100%) 100%)`,
             }}
           />
 
