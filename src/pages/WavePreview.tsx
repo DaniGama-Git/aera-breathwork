@@ -197,6 +197,8 @@ const WavePreview = () => {
   const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[600ms] ease-in-out ${fadeClass}`;
   const isBreathing = screen === "breathing";
   const showTransition = isBreathing && !!transitionText;
+  const showScience = isBreathing && !!scienceText;
+  const showOverlay = showTransition || showScience;
 
   if (screen === "loading") {
     return (
