@@ -345,7 +345,7 @@ const WavePreview = () => {
               <div
                 ref={barRef}
                 className="absolute left-0 right-0 transition-opacity duration-300"
-                style={{ top: "92%", opacity: showTransition ? 0 : 1 }}
+                style={{ top: "92%", opacity: showOverlay ? 0 : 1 }}
               >
                 <div style={{ height: 1.5, background: "hsla(0, 0%, 100%, 0.62)", width: "100%", boxShadow: "0 0 4px 1px hsla(0, 0%, 100%, 0.08)" }} />
               </div>
