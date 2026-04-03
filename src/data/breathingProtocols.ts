@@ -408,3 +408,156 @@ export const wakeMeUpProtocol: Protocol = {
     },
   ],
 };
+
+export const energyResetProtocol: Protocol = {
+  id: "energy-reset",
+  title: "Energy Reset",
+  subtitle: "~3.5 mins",
+  duration: "~3.5 mins",
+  introText: "Feeling the dip?\nLet's bring you back online.",
+  descriptionPrimary: "Cyclic activation to boost oxygen uptake and trigger clean alertness.",
+  descriptionSecondary: "Coherence breathing to stabilize and lock in focused energy.",
+  stages: [
+    {
+      name: "Activate",
+      method: "nose",
+      science: "Light cyclic breathing increases oxygen uptake and triggers sympathetic nervous system activation.",
+      cycle: [
+        { type: "INHALE", duration: 2000 },
+        { type: "EXHALE", duration: 2000 },
+      ],
+      cycles: 22,
+    },
+    {
+      name: "Peak Breath",
+      method: "nose",
+      transition:
+        "Now take one deep inhale and hold. Let the alertness spike.",
+      science: "Controlled breath hold after activation creates an alertness spike without overstimulation.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "HOLD", duration: 10000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 1,
+    },
+    {
+      name: "Stabilise",
+      method: "nose",
+      transition:
+        "Let's stabilize with coherence breathing. Steady rhythm to prevent a crash.",
+      science: "Coherence breathing stabilises HRV and prevents energy crash after activation.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 9,
+    },
+    {
+      name: "Focus Lock",
+      method: "nose",
+      transition:
+        "Now a slight exhale extension to bring cognitive clarity online.",
+      science: "Slight exhale extension lowers residual arousal and brings cognitive clarity online.",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 6000 },
+      ],
+      cycles: 4,
+    },
+  ],
+};
+
+export const reboundProtocol: Protocol = {
+  id: "rebound",
+  title: "Rebound",
+  subtitle: "~3 mins",
+  duration: "~3 mins",
+  introText: "That was tough.\nLet's reset your system.",
+  descriptionPrimary: "Physiological sighs to break the acute stress spike.",
+  descriptionSecondary: "Extended exhales to discharge adrenaline, then re-entry inhales to restore alertness.",
+  stages: [
+    {
+      name: "Discharge",
+      method: "nose",
+      science: "Breaks the acute stress spike and rapidly lowers cortisol.",
+      cycle: [
+        { type: "INHALE", duration: 3000 },
+        { type: "INHALE", duration: 1000, label: "TOP UP" },
+        { type: "EXHALE", duration: 6000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 3,
+    },
+    {
+      name: "Regulate",
+      method: "nose",
+      transition:
+        "Now let's regulate with extended exhales. Let the tension leave your body.",
+      science: "Extended exhales activate the vagus nerve and discharge residual adrenaline.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 8000 },
+      ],
+      cycles: 8,
+    },
+    {
+      name: "Re-entry",
+      method: "nose",
+      transition:
+        "Three slow deep inhales to bring you back. Exhale naturally after each.",
+      science: "Restores alertness and prevents flat post-regulation state.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 3,
+    },
+  ],
+};
+
+export const contextSwitchProtocol: Protocol = {
+  id: "context-switch",
+  title: "Context Switch",
+  subtitle: "~3.5 mins",
+  duration: "~3.5 mins",
+  introText: "New task, new state.\nLet's clear the slate.",
+  descriptionPrimary: "Physiological sighs to interrupt cognitive carryover.",
+  descriptionSecondary: "Coherence breathing to re-establish a neutral baseline for the next task.",
+  stages: [
+    {
+      name: "Interrupt",
+      method: "nose",
+      science: "Immediately breaks the previous mental loop and interrupts cognitive carryover.",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "INHALE", duration: 1500, label: "TOP UP" },
+        { type: "EXHALE", duration: 7000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 2,
+    },
+    {
+      name: "Clear",
+      method: "nose",
+      transition:
+        "Now let's clear residual activation with extended exhales.",
+      science: "Extended exhale clears residual cognitive activation and reduces attentional fragmentation.",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 6000 },
+      ],
+      cycles: 13,
+    },
+    {
+      name: "Re-align",
+      method: "nose",
+      transition:
+        "Settle into coherence breathing. Equal pace to reset your baseline.",
+      science: "Coherence breathing re-establishes neutral autonomic baseline and cognitive flexibility.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 8,
+    },
+  ],
+};
