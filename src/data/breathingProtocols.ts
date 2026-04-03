@@ -330,6 +330,7 @@ export const deepFocusProtocol: Protocol = {
       method: "nose",
       transition:
         "Now settle into a steady rhythm. Same pace, no variation. Let your attention lock in.",
+      science: "Builds HRV and attentional stability through consistent internal rhythm.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "EXHALE", duration: 5000 },
