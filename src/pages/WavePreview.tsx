@@ -254,7 +254,7 @@ const WavePreview = () => {
             ref={gradientRef}
             className="absolute inset-0"
             style={{
-              opacity: isBreathing ? 1 : 0,
+              opacity: isBreathing && !showOverlay ? 1 : 0,
               transition: "opacity 600ms ease-in-out",
               background: buildBreathingMask(92),
             }}
