@@ -131,7 +131,26 @@ const WavePreview = () => {
           transitionTextRef.current = entry.transitionText || "";
           setTransitionText(transitionTextRef.current);
         }
+        if (scienceTextRef.current !== "") {
+          scienceTextRef.current = "";
+          setScienceText("");
+        }
         const barTop = getBarPosition("TRANSITION", 0, prevEntryType);
+        if (barRef.current) barRef.current.style.top = `${barTop}%`;
+        if (gradientRef.current)
+          gradientRef.current.style.background = buildBreathingMask(barTop);
+        if (phaseLabelRef.current) phaseLabelRef.current.textContent = "";
+        setPhase("");
+      } else if (entry.type === "SCIENCE") {
+        if (scienceTextRef.current !== (entry.scienceText || "")) {
+          scienceTextRef.current = entry.scienceText || "";
+          setScienceText(scienceTextRef.current);
+        }
+        if (transitionTextRef.current !== "") {
+          transitionTextRef.current = "";
+          setTransitionText("");
+        }
+        const barTop = getBarPosition("SCIENCE", 0, prevEntryType);
         if (barRef.current) barRef.current.style.top = `${barTop}%`;
         if (gradientRef.current)
           gradientRef.current.style.background = buildBreathingMask(barTop);
@@ -141,6 +160,10 @@ const WavePreview = () => {
         if (transitionTextRef.current !== "") {
           transitionTextRef.current = "";
           setTransitionText("");
+        }
+        if (scienceTextRef.current !== "") {
+          scienceTextRef.current = "";
+          setScienceText("");
         }
         const barTop = getBarPosition(entry.type, progress, prevEntryType);
 
