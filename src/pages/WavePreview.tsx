@@ -60,7 +60,9 @@ const WavePreview = () => {
   const [fadeIn, setFadeIn] = useState(true);
   const [sessionStart, setSessionStart] = useState(0);
   const [transitionText, setTransitionText] = useState("");
+  const [scienceText, setScienceText] = useState("");
   const transitionTextRef = useRef("");
+  const scienceTextRef = useRef("");
   const barRef = useRef<HTMLDivElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
   const phaseLabelRef = useRef<HTMLSpanElement>(null);
@@ -129,7 +131,26 @@ const WavePreview = () => {
           transitionTextRef.current = entry.transitionText || "";
           setTransitionText(transitionTextRef.current);
         }
+        if (scienceTextRef.current !== "") {
+          scienceTextRef.current = "";
+          setScienceText("");
+        }
         const barTop = getBarPosition("TRANSITION", 0, prevEntryType);
+        if (barRef.current) barRef.current.style.top = `${barTop}%`;
+        if (gradientRef.current)
+          gradientRef.current.style.background = buildBreathingMask(barTop);
+        if (phaseLabelRef.current) phaseLabelRef.current.textContent = "";
+        setPhase("");
+      } else if (entry.type === "SCIENCE") {
+        if (scienceTextRef.current !== (entry.scienceText || "")) {
+          scienceTextRef.current = entry.scienceText || "";
+          setScienceText(scienceTextRef.current);
+        }
+        if (transitionTextRef.current !== "") {
+          transitionTextRef.current = "";
+          setTransitionText("");
+        }
+        const barTop = getBarPosition("SCIENCE", 0, prevEntryType);
         if (barRef.current) barRef.current.style.top = `${barTop}%`;
         if (gradientRef.current)
           gradientRef.current.style.background = buildBreathingMask(barTop);
@@ -139,6 +160,10 @@ const WavePreview = () => {
         if (transitionTextRef.current !== "") {
           transitionTextRef.current = "";
           setTransitionText("");
+        }
+        if (scienceTextRef.current !== "") {
+          scienceTextRef.current = "";
+          setScienceText("");
         }
         const barTop = getBarPosition(entry.type, progress, prevEntryType);
 
@@ -163,6 +188,7 @@ const WavePreview = () => {
     setTimeout(() => {
       setScreen("intro");
       setTransitionText("");
+      setScienceText("");
       setFadeIn(true);
     }, 300);
   };
@@ -171,6 +197,8 @@ const WavePreview = () => {
   const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[600ms] ease-in-out ${fadeClass}`;
   const isBreathing = screen === "breathing";
   const showTransition = isBreathing && !!transitionText;
+  const showScience = isBreathing && !!scienceText;
+  const showOverlay = showTransition || showScience;
 
   if (screen === "loading") {
     return (
@@ -300,18 +328,31 @@ const WavePreview = () => {
                 </p>
               </div>
 
+              {/* Science overlay with lightbulb */}
+              <div
+                className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-500"
+                style={{ opacity: showScience ? 1 : 0 }}
+              >
+                <div className="flex items-start gap-3 text-left max-w-[240px]">
+                  <img src={lightbulbIcon} alt="" style={{ width: 40, height: 54 }} className="mt-0.5 opacity-70 shrink-0" />
+                  <p className="text-white/60 text-[12px] leading-relaxed font-medium">
+                    {scienceText}
+                  </p>
+                </div>
+              </div>
+
               {/* Traveling progress bar */}
               <div
                 ref={barRef}
                 className="absolute left-0 right-0 transition-opacity duration-300"
-                style={{ top: "92%", opacity: showTransition ? 0 : 1 }}
+                style={{ top: "92%", opacity: showOverlay ? 0 : 1 }}
               >
                 <div style={{ height: 1.5, background: "hsla(0, 0%, 100%, 0.62)", width: "100%", boxShadow: "0 0 4px 1px hsla(0, 0%, 100%, 0.08)" }} />
               </div>
 
               <div
                 className="pb-7 flex flex-col items-center gap-2 transition-opacity duration-300"
-                style={{ opacity: showTransition ? 0 : 1 }}
+                style={{ opacity: showOverlay ? 0 : 1 }}
               >
                 <span
                   ref={phaseLabelRef}

@@ -12,6 +12,7 @@ export interface ProtocolStage {
   name: string;
   method: "nose" | "mouth";
   transition?: string; // text shown before this stage starts
+  science?: string; // science note shown with lightbulb before this stage
   cycle: BreathPhase[];
   cycles: number;
   midSetHold?: {
@@ -34,16 +35,18 @@ export interface Protocol {
 }
 
 export interface TimelineEntry {
-  type: PhaseType | "TRANSITION";
+  type: PhaseType | "TRANSITION" | "SCIENCE";
   duration: number; // ms
   startMs: number;
   endMs: number;
   displayLabel: string;
   stageIndex: number;
   transitionText?: string;
+  scienceText?: string;
 }
 
 const TRANSITION_DURATION = 3500;
+const SCIENCE_DURATION = 4500;
 
 export function buildTimeline(protocol: Protocol): TimelineEntry[] {
   const entries: TimelineEntry[] = [];
@@ -61,6 +64,19 @@ export function buildTimeline(protocol: Protocol): TimelineEntry[] {
         transitionText: stage.transition,
       });
       cursor += TRANSITION_DURATION;
+    }
+
+    if (stage.science) {
+      entries.push({
+        type: "SCIENCE",
+        duration: SCIENCE_DURATION,
+        startMs: cursor,
+        endMs: cursor + SCIENCE_DURATION,
+        displayLabel: "",
+        stageIndex: stageIdx,
+        scienceText: stage.science,
+      });
+      cursor += SCIENCE_DURATION;
     }
 
     for (let c = 0; c < stage.cycles; c++) {
@@ -122,9 +138,9 @@ const BAR_TOP = 10;
 const BAR_BOTTOM = 92;
 
 export function getBarPosition(
-  type: PhaseType | "TRANSITION",
+  type: PhaseType | "TRANSITION" | "SCIENCE",
   progress: number,
-  prevType?: PhaseType | "TRANSITION"
+  prevType?: PhaseType | "TRANSITION" | "SCIENCE"
 ): number {
   switch (type) {
     case "INHALE":
@@ -136,6 +152,7 @@ export function getBarPosition(
     case "HOLD_EMPTY":
       return BAR_BOTTOM;
     case "TRANSITION":
+    case "SCIENCE":
       return prevType === "INHALE" || prevType === "HOLD" ? BAR_TOP : BAR_BOTTOM;
     default:
       return BAR_BOTTOM;
@@ -255,6 +272,7 @@ export const creativeFlowProtocol: Protocol = {
     {
       name: "Release Control",
       method: "nose",
+      science: "Downregulates prefrontal control and reduces cognitive rigidity.",
       cycle: [
         { type: "INHALE", duration: 4000 },
         { type: "EXHALE", duration: 6000 },
@@ -266,6 +284,7 @@ export const creativeFlowProtocol: Protocol = {
       method: "nose",
       transition:
         "Now let your breathing become less rigid. Allow natural variation in your exhales.",
+      science: "Breaks rigid attentional rhythm and increases cognitive flexibility for divergent thinking.",
       cycle: [
         { type: "INHALE", duration: 4000 },
         { type: "EXHALE", duration: 4500 },
@@ -277,6 +296,7 @@ export const creativeFlowProtocol: Protocol = {
       method: "nose",
       transition:
         "Take a few slightly deeper breaths. Relaxed, not controlled. Open up your mental space.",
+      science: "Opens mental space without re-introducing control.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
@@ -298,6 +318,7 @@ export const deepFocusProtocol: Protocol = {
     {
       name: "Settle",
       method: "nose",
+      science: "Reduces surface noise and prepares the nervous system for sustained attention.",
       cycle: [
         { type: "INHALE", duration: 4000 },
         { type: "EXHALE", duration: 6000 },
@@ -309,6 +330,7 @@ export const deepFocusProtocol: Protocol = {
       method: "nose",
       transition:
         "Now settle into a steady rhythm. Same pace, no variation. Let your attention lock in.",
+      science: "Builds HRV and attentional stability through consistent internal rhythm.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "EXHALE", duration: 5000 },
@@ -341,6 +363,7 @@ export const wakeMeUpProtocol: Protocol = {
     {
       name: "Activate",
       method: "nose",
+      science: "Light cyclic breathing increases oxygen uptake and triggers sympathetic activation for clean alertness.",
       cycle: [
         { type: "INHALE", duration: 2000 },
         { type: "EXHALE", duration: 2000 },
@@ -352,6 +375,7 @@ export const wakeMeUpProtocol: Protocol = {
       method: "nose",
       transition:
         "Now take one deep inhale and hold. Let the alertness build.",
+      science: "Controlled breath hold after activation creates an alertness spike without overstimulation.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "HOLD", duration: 10000 },
@@ -363,6 +387,7 @@ export const wakeMeUpProtocol: Protocol = {
       method: "nose",
       transition:
         "Let's stabilize with coherence breathing. Steady rhythm to lock in your energy.",
+      science: "Coherence breathing stabilises HRV and sharpens cognition after activation — prevents energy crash.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "EXHALE", duration: 5000 },
@@ -374,6 +399,7 @@ export const wakeMeUpProtocol: Protocol = {
       method: "nose",
       transition:
         "A few deeper breaths to fully expand and oxygenate before you start your day.",
+      science: "Expands lung capacity and restores full oxygenation before starting the day.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
