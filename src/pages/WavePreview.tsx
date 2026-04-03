@@ -145,7 +145,7 @@ const WavePreview = () => {
   const restart = () => {
     setFadeIn(false);
     setTimeout(() => {
-      setScreen("logo");
+      setScreen("intro");
       setFadeIn(true);
     }, 300);
   };
@@ -154,16 +154,19 @@ const WavePreview = () => {
   const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[400ms] ${fadeClass}`;
 
   /* ── Background logic ── */
-  const getStaticBg = () => {
-    if (screen === "logo") return waveBgLogo;
-    if (screen === "intro") return waveBgIntro;
-    if (screen === "description") return waveBgDescription;
-    if (screen === "done") return waveBgLogo;
-    return undefined;
+  const staticBgMap: Partial<Record<Screen, string>> = {
+    logo: waveBgLogo,
+    intro: waveBgIntro,
+    description: waveBgDescription,
+    done: waveBgLogo,
   };
 
   const isBreathing = screen === "breathing";
-  const staticBg = getStaticBg();
+  const allStaticBgs = [
+    { key: "logo", src: waveBgLogo, screens: ["logo", "done"] },
+    { key: "intro", src: waveBgIntro, screens: ["intro"] },
+    { key: "desc", src: waveBgDescription, screens: ["description"] },
+  ];
 
   /* Loading state */
   if (screen === "loading") {
@@ -193,20 +196,22 @@ const WavePreview = () => {
             borderRadius: 22,
           }}
         >
-          {/* Static background for non-breathing screens */}
-          {!isBreathing && staticBg && (
+          {/* All static backgrounds layered with crossfade */}
+          {allStaticBgs.map((bg) => (
             <div
-              className="absolute inset-0"
+              key={bg.key}
+              className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
               style={{
-                backgroundImage: `url(${staticBg})`,
+                backgroundImage: `url(${bg.src})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                opacity: !isBreathing && bg.screens.includes(screen) ? 1 : 0,
               }}
             />
-          )}
+          ))}
 
           {/* Animated breathing backgrounds - all 3 layered, opacity-controlled */}
-          {isBreathing && (["INHALE", "HOLD", "EXHALE"] as const).map((p) => (
+          {(["INHALE", "HOLD", "EXHALE"] as const).map((p) => (
             <div
               key={p}
               className="absolute inset-0 transition-opacity duration-[800ms] ease-in-out"
@@ -214,7 +219,7 @@ const WavePreview = () => {
                 backgroundImage: `url(${PHASE_BG[p]})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                opacity: phase === p ? 1 : 0,
+                opacity: isBreathing && phase === p ? 1 : 0,
               }}
             />
           ))}
@@ -294,7 +299,7 @@ const WavePreview = () => {
                  >
                    {phase}
                  </span>
-                   <div className="flex items-center gap-[3px]">
+                   <div className="flex items-center">
                      <img src={breathingIconTop} alt="" style={{ width: 17, height: 4 }} />
                      <img src={breathingIconBottom} alt="" style={{ width: 21, height: 2 }} />
                    </div>
