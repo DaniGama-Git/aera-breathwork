@@ -125,8 +125,10 @@ const WavePreview = () => {
       const progress = (elapsed - entry.startMs) / entry.duration;
 
       if (entry.type === "TRANSITION") {
-        // Show transition text, keep bar at last position
-        setTransitionText(entry.transitionText || "");
+        if (transitionTextRef.current !== (entry.transitionText || "")) {
+          transitionTextRef.current = entry.transitionText || "";
+          setTransitionText(transitionTextRef.current);
+        }
         const barTop = getBarPosition("TRANSITION", 0, prevEntryType);
         if (barRef.current) barRef.current.style.top = `${barTop}%`;
         if (gradientRef.current)
@@ -134,8 +136,10 @@ const WavePreview = () => {
         if (phaseLabelRef.current) phaseLabelRef.current.textContent = "";
         setPhase("");
       } else {
-        // Clear transition text
-        setTransitionText("");
+        if (transitionTextRef.current !== "") {
+          transitionTextRef.current = "";
+          setTransitionText("");
+        }
         const barTop = getBarPosition(entry.type, progress, prevEntryType);
 
         if (barRef.current) barRef.current.style.top = `${barTop}%`;
