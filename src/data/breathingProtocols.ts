@@ -5,6 +5,7 @@ export type PhaseType = "INHALE" | "HOLD" | "EXHALE" | "HOLD_EMPTY";
 export interface BreathPhase {
   type: PhaseType;
   duration: number; // ms
+  label?: string; // custom display label override
 }
 
 export interface ProtocolStage {
