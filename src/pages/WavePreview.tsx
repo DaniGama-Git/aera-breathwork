@@ -1,22 +1,19 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import waveBgLogo from "@/assets/wave-bg-logo.png";
 import waveBgIntro from "@/assets/wave-bg-intro.png";
 import waveBgDescription from "@/assets/wave-bg-description.png";
 import waveBgInhale from "@/assets/wave-bg-inhale.png";
 import lightbulbIcon from "@/assets/lightbulb-icon.svg";
-import breathProgressBar from "@/assets/breath-progress-bar.svg";
 import breathingIconTop from "@/assets/breathing-icon-top.svg";
 import breathingIconBottom from "@/assets/breathing-icon-bottom.svg";
-
-/* ── Timing ── */
-const TOTAL_ROUNDS = 3;
-const INHALE_MS = 4000;
-const HOLD_MS = 2000;
-const EXHALE_MS = 6000;
-const CYCLE_MS = INHALE_MS + HOLD_MS + EXHALE_MS;
+import {
+  prePitchProtocol,
+  buildTimeline,
+  getBarPosition,
+  type TimelineEntry,
+} from "@/data/breathingProtocols";
 
 type Screen = "loading" | "logo" | "intro" | "description" | "breathing" | "done";
-type Phase = "INHALE" | "HOLD" | "EXHALE" | "";
 
 const SCREEN_DELAYS: Partial<Record<Screen, number>> = {
   logo: 2200,
@@ -24,10 +21,8 @@ const SCREEN_DELAYS: Partial<Record<Screen, number>> = {
   description: 4000,
 };
 
-/* ── All background images to preload ── */
 const ALL_IMAGES = [waveBgLogo, waveBgIntro, waveBgDescription, waveBgInhale];
 
-/* ── Static screen → background image mapping ── */
 const SCREEN_BG: Partial<Record<Screen, string>> = {
   logo: waveBgLogo,
   intro: waveBgIntro,
@@ -49,7 +44,6 @@ function preloadImages(srcs: string[]): Promise<void> {
   ).then(() => {});
 }
 
-/* White-to-transparent mask: solid white below the bar, fading to clear above */
 function buildBreathingMask(barTop: number): string {
   return `linear-gradient(180deg,
     rgba(255,255,255,0) ${Math.max(0, barTop - 8)}%,
@@ -58,17 +52,22 @@ function buildBreathingMask(barTop: number): string {
     rgba(255,255,255,0.95) 100%)`;
 }
 
+const protocol = prePitchProtocol;
+
 const WavePreview = () => {
   const [screen, setScreen] = useState<Screen>("loading");
-  const [phase, setPhase] = useState<Phase>("");
+  const [phase, setPhase] = useState("");
   const [fadeIn, setFadeIn] = useState(true);
   const [sessionStart, setSessionStart] = useState(0);
-  const [round, setRound] = useState(0);
+  const [transitionText, setTransitionText] = useState("");
   const barRef = useRef<HTMLDivElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
   const phaseLabelRef = useRef<HTMLSpanElement>(null);
 
-  /* ── Preload all backgrounds before first screen ── */
+  const timeline = useMemo(() => buildTimeline(protocol), []);
+  const totalDuration = timeline.length > 0 ? timeline[timeline.length - 1].endMs : 0;
+
+  /* ── Preload ── */
   useEffect(() => {
     preloadImages(ALL_IMAGES).then(() => setScreen("logo"));
   }, []);
@@ -87,7 +86,7 @@ const WavePreview = () => {
           setScreen("breathing");
           setSessionStart(Date.now());
           setPhase("INHALE");
-          setRound(0);
+          setTransitionText("");
         }
         setFadeIn(true);
       }, 600);
@@ -95,80 +94,79 @@ const WavePreview = () => {
     return () => clearTimeout(timer);
   }, [screen]);
 
-  /* ── Breathing phase tracker (ref-based to avoid flicker) ── */
+  /* ── Timeline-driven breathing engine ── */
   useEffect(() => {
     if (screen !== "breathing") return;
 
+    let prevEntryType: TimelineEntry["type"] | undefined;
+
     const tick = () => {
       const elapsed = Date.now() - sessionStart;
-      const totalDuration = CYCLE_MS * TOTAL_ROUNDS;
 
       if (elapsed >= totalDuration) {
         setFadeIn(false);
         setTimeout(() => {
           setScreen("done");
           setPhase("");
+          setTransitionText("");
           setFadeIn(true);
         }, 400);
         return;
       }
 
-      const currentRound = Math.min(Math.floor(elapsed / CYCLE_MS), TOTAL_ROUNDS - 1);
-      setRound(currentRound);
+      // Find current timeline entry
+      const entry = timeline.find((e) => elapsed >= e.startMs && elapsed < e.endMs);
+      if (!entry) {
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
 
-      const cycleElapsed = elapsed % CYCLE_MS;
-      let progress: number;
-      let currentPhase: Phase;
+      const progress = (elapsed - entry.startMs) / entry.duration;
 
-      if (cycleElapsed < INHALE_MS) {
-        currentPhase = "INHALE";
-        progress = 1 - cycleElapsed / INHALE_MS;
-      } else if (cycleElapsed < INHALE_MS + HOLD_MS) {
-        currentPhase = "HOLD";
-        progress = 0;
+      if (entry.type === "TRANSITION") {
+        // Show transition text, keep bar at last position
+        setTransitionText(entry.transitionText || "");
+        const barTop = getBarPosition("TRANSITION", 0, prevEntryType);
+        if (barRef.current) barRef.current.style.top = `${barTop}%`;
+        if (gradientRef.current)
+          gradientRef.current.style.background = buildBreathingMask(barTop);
+        if (phaseLabelRef.current) phaseLabelRef.current.textContent = "";
+        setPhase("");
       } else {
-        currentPhase = "EXHALE";
-        progress = (cycleElapsed - INHALE_MS - HOLD_MS) / EXHALE_MS;
+        // Clear transition text
+        if (transitionText) setTransitionText("");
+        const barTop = getBarPosition(entry.type, progress, prevEntryType);
+
+        if (barRef.current) barRef.current.style.top = `${barTop}%`;
+        if (gradientRef.current)
+          gradientRef.current.style.background = buildBreathingMask(barTop);
+        if (phaseLabelRef.current)
+          phaseLabelRef.current.textContent = entry.displayLabel;
+        setPhase(entry.displayLabel);
       }
 
-      // Direct DOM mutation — no React re-render
-      const barTop = 10 + progress * 82;
-      if (barRef.current) {
-        barRef.current.style.top = `${barTop}%`;
-      }
-      if (gradientRef.current) {
-        gradientRef.current.style.background = `linear-gradient(180deg,
-          rgba(255,255,255,0) ${Math.max(0, barTop - 8)}%,
-          rgba(255,255,255,0.5) ${barTop}%,
-          rgba(255,255,255,0.85) ${Math.min(100, barTop + 10)}%,
-          rgba(255,255,255,0.95) 100%)`;
-      }
-      if (phaseLabelRef.current) {
-        phaseLabelRef.current.textContent = currentPhase;
-      }
-      setPhase(currentPhase);
-
+      prevEntryType = entry.type;
       rafId = requestAnimationFrame(tick);
     };
 
     let rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [screen, sessionStart]);
+  }, [screen, sessionStart, timeline, totalDuration]);
 
   const restart = () => {
     setFadeIn(false);
     setTimeout(() => {
       setScreen("intro");
+      setTransitionText("");
       setFadeIn(true);
     }, 300);
   };
 
   const fadeClass = fadeIn ? "opacity-100" : "opacity-0";
   const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[600ms] ease-in-out ${fadeClass}`;
-
   const isBreathing = screen === "breathing";
+  const showTransition = isBreathing && !!transitionText;
 
-  /* Loading state */
   if (screen === "loading") {
     return (
       <div className="min-h-screen bg-[#111] flex items-center justify-center font-body">
@@ -191,12 +189,9 @@ const WavePreview = () => {
       <div style={{ width: 320, padding: 16 }}>
         <div
           className="relative w-full overflow-hidden"
-          style={{
-            aspectRatio: "1 / 1.1",
-            borderRadius: 22,
-          }}
+          style={{ aspectRatio: "1 / 1.1", borderRadius: 22 }}
         >
-          {/* All static backgrounds layered — opacity crossfade */}
+          {/* Static backgrounds — crossfade */}
           {(Object.entries(SCREEN_BG) as [Screen, string][]).map(([key, src]) => (
             <div
               key={key}
@@ -221,7 +216,7 @@ const WavePreview = () => {
             }}
           />
 
-          {/* White mask overlay — covers from bar downward */}
+          {/* White mask overlay */}
           <div
             ref={gradientRef}
             className="absolute inset-0"
@@ -255,19 +250,17 @@ const WavePreview = () => {
                 }}
               >
                 <span className="text-white/70 text-[11px] tracking-[0.08em] font-medium">
-                  Pre-Pitch
+                  {protocol.title}
                 </span>
               </div>
               <span className="text-white/35 text-[10px] tracking-[0.08em] font-medium mb-5">
-                4 mins
+                {protocol.subtitle}
               </span>
               <p
-                className="text-white font-medium leading-[1.15]"
+                className="text-white font-medium leading-[1.15] whitespace-pre-line"
                 style={{ fontSize: 18, letterSpacing: "-0.01em" }}
               >
-                You're about to step in,
-                <br />
-                let's get you sharp
+                {protocol.introText}
               </p>
             </div>
           )}
@@ -278,10 +271,10 @@ const WavePreview = () => {
                 <img src={lightbulbIcon} alt="" style={{ width: 61, height: 82 }} className="mt-0.5 opacity-70 shrink-0" />
                 <div>
                   <p className="text-white/80 text-[13px] leading-relaxed font-medium">
-                    Two rounds of box breathing to clear mental noise.
+                    {protocol.descriptionPrimary}
                   </p>
                   <p className="text-white/50 text-[13px] leading-relaxed font-medium mt-3">
-                    One round of extended exhale to drop cortisol
+                    {protocol.descriptionSecondary}
                   </p>
                 </div>
               </div>
@@ -289,30 +282,45 @@ const WavePreview = () => {
           )}
 
           {screen === "breathing" && (
-             <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
-               <div className="flex-1" />
-               {/* Traveling progress bar — positioned via ref, no React re-renders */}
-               <div
-                 ref={barRef}
-                 className="absolute left-0 right-0"
-                 style={{ top: "92%" }}
-               >
-                 <div style={{ height: 1.5, background: "hsla(0, 0%, 100%, 0.62)", width: "100%", boxShadow: "0 0 4px 1px hsla(0, 0%, 100%, 0.08)" }} />
-               </div>
-               <div className="pb-7 flex flex-col items-center gap-2">
-                 <span
-                   ref={phaseLabelRef}
-                   className="tracking-[0.25em] font-medium"
-                   style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
-                 >
-                   {phase}
-                 </span>
-                   <div className="flex items-center">
-                     <img src={breathingIconTop} alt="" style={{ width: 17, height: 4 }} />
-                     <img src={breathingIconBottom} alt="" style={{ width: 21, height: 2 }} />
-                   </div>
+            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
+              <div className="flex-1" />
+
+              {/* Transition text overlay */}
+              <div
+                className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-500"
+                style={{ opacity: showTransition ? 1 : 0 }}
+              >
+                <p className="text-white/70 text-[13px] leading-relaxed font-medium text-center max-w-[220px]">
+                  {transitionText}
+                </p>
+              </div>
+
+              {/* Traveling progress bar */}
+              <div
+                ref={barRef}
+                className="absolute left-0 right-0 transition-opacity duration-300"
+                style={{ top: "92%", opacity: showTransition ? 0 : 1 }}
+              >
+                <div style={{ height: 1.5, background: "hsla(0, 0%, 100%, 0.62)", width: "100%", boxShadow: "0 0 4px 1px hsla(0, 0%, 100%, 0.08)" }} />
+              </div>
+
+              <div
+                className="pb-7 flex flex-col items-center gap-2 transition-opacity duration-300"
+                style={{ opacity: showTransition ? 0 : 1 }}
+              >
+                <span
+                  ref={phaseLabelRef}
+                  className="tracking-[0.25em] font-medium"
+                  style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
+                >
+                  {phase}
+                </span>
+                <div className="flex items-center">
+                  <img src={breathingIconTop} alt="" style={{ width: 17, height: 4 }} />
+                  <img src={breathingIconBottom} alt="" style={{ width: 21, height: 2 }} />
                 </div>
-             </div>
+              </div>
+            </div>
           )}
 
           {screen === "done" && (
