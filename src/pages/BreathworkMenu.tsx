@@ -15,10 +15,9 @@ import playIconLarge from "@/assets/play-icon-large.svg";
 
 const categories = [
   { label: "Perform", image: categoryFocus, to: "/category/perform" },
-  { label: "Recover", image: categoryRecover, to: "/category/recover" },
-  { label: "Focus", image: categoryFocus, to: "/category/focus" },
   { label: "Activate", image: categoryActivate, to: "/category/activate" },
   { label: "Ground", image: categoryReset, to: "/category/ground" },
+  { label: "Recover", image: categoryRecover, to: "/category/recover" },
 ];
 
 const favorites = [
