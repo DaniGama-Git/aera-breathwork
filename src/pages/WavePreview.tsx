@@ -137,14 +137,11 @@ const WavePreview = () => {
         barRef.current.style.top = `${barTop}%`;
       }
       if (gradientRef.current) {
-        gradientRef.current.style.background = `linear-gradient(180deg, 
-          hsl(195, 15%, 30%) 0%, 
-          hsl(195, 18%, 38%) ${Math.max(0, barTop - 25)}%, 
-          hsl(195, 18%, 48%) ${Math.max(0, barTop - 12)}%, 
-          hsl(195, 16%, 62%) ${barTop}%, 
-          hsl(200, 14%, 75%) ${Math.min(100, barTop + 12)}%, 
-          hsl(210, 12%, 88%) ${Math.min(100, barTop + 25)}%, 
-          hsl(210, 10%, 95%) 100%)`;
+        gradientRef.current.style.background = `linear-gradient(180deg,
+          rgba(255,255,255,0) ${Math.max(0, barTop - 8)}%,
+          rgba(255,255,255,0.5) ${barTop}%,
+          rgba(255,255,255,0.85) ${Math.min(100, barTop + 10)}%,
+          rgba(255,255,255,0.95) 100%)`;
       }
       if (phaseLabelRef.current) {
         phaseLabelRef.current.textContent = currentPhase;
