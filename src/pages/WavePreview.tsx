@@ -175,20 +175,12 @@ const WavePreview = () => {
   const fadeClass = fadeIn ? "opacity-100" : "opacity-0";
   const contentBase = `absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-[400ms] ${fadeClass}`;
 
-  /* ── Background logic ── */
-  const staticBgMap: Partial<Record<Screen, string>> = {
-    logo: waveBgLogo,
-    intro: waveBgIntro,
-    description: waveBgDescription,
-    done: waveBgLogo,
-  };
-
   const isBreathing = screen === "breathing";
-  const allStaticBgs = [
-    { key: "logo", src: waveBgLogo, screens: ["logo", "done"] },
-    { key: "intro", src: waveBgIntro, screens: ["intro"] },
-    { key: "desc", src: waveBgDescription, screens: ["description"] },
-  ];
+
+  /* Current gradient for non-breathing screens */
+  const currentGradient = !isBreathing && screen !== "loading"
+    ? SCREEN_GRADIENTS[screen] || SCREEN_GRADIENTS.logo
+    : undefined;
 
   /* Loading state */
   if (screen === "loading") {
@@ -218,34 +210,24 @@ const WavePreview = () => {
             borderRadius: 22,
           }}
         >
-          {/* All static backgrounds layered with crossfade */}
-          {allStaticBgs.map((bg) => (
-            <div
-              key={bg.key}
-              className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
-              style={{
-                backgroundImage: `url(${bg.src})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                opacity: !isBreathing && bg.screens.includes(screen) ? 1 : 0,
-              }}
-            />
-          ))}
+          {/* Single gradient background — animates between screens */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: currentGradient || SCREEN_GRADIENTS.logo,
+              opacity: isBreathing ? 0 : 1,
+              transition: "background 1s ease-in-out, opacity 600ms ease-in-out",
+            }}
+          />
 
           {/* Breathing gradient — transition point follows the bar */}
           <div
             ref={gradientRef}
-            className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
+            className="absolute inset-0"
             style={{
               opacity: isBreathing ? 1 : 0,
-              background: `linear-gradient(180deg, 
-                hsl(195, 15%, 35%) 0%, 
-                hsl(195, 18%, 45%) 55%, 
-                hsl(190, 15%, 60%) 67%, 
-                hsl(200, 15%, 78%) 75%, 
-                hsl(210, 15%, 90%) 83%, 
-                hsl(220, 10%, 96%) 90%, 
-                hsl(0, 0%, 100%) 100%)`,
+              transition: "opacity 600ms ease-in-out",
+              background: buildBreathingGradient(85),
             }}
           />
 
