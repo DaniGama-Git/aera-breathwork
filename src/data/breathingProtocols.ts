@@ -152,6 +152,7 @@ export function getBarPosition(
     case "HOLD_EMPTY":
       return BAR_BOTTOM;
     case "TRANSITION":
+    case "SCIENCE":
       return prevType === "INHALE" || prevType === "HOLD" ? BAR_TOP : BAR_BOTTOM;
     default:
       return BAR_BOTTOM;
