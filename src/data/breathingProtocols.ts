@@ -138,9 +138,9 @@ const BAR_TOP = 10;
 const BAR_BOTTOM = 92;
 
 export function getBarPosition(
-  type: PhaseType | "TRANSITION",
+  type: PhaseType | "TRANSITION" | "SCIENCE",
   progress: number,
-  prevType?: PhaseType | "TRANSITION"
+  prevType?: PhaseType | "TRANSITION" | "SCIENCE"
 ): number {
   switch (type) {
     case "INHALE":
