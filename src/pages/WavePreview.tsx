@@ -1,10 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import waveBgLogo from "@/assets/wave-bg-logo.png";
-import waveBgIntro from "@/assets/wave-bg-intro.png";
-import waveBgDescription from "@/assets/wave-bg-description.png";
-import waveBgInhale from "@/assets/wave-bg-inhale.png";
-import waveBgHold from "@/assets/wave-bg-hold.png";
-import waveBgExhale from "@/assets/wave-bg-exhale.png";
 import lightbulbIcon from "@/assets/lightbulb-icon.svg";
 import breathProgressBar from "@/assets/breath-progress-bar.svg";
 import breathingIconTop from "@/assets/breathing-icon-top.svg";
@@ -20,36 +14,53 @@ const CYCLE_MS = INHALE_MS + HOLD_MS + EXHALE_MS;
 type Screen = "loading" | "logo" | "intro" | "description" | "breathing" | "done";
 type Phase = "INHALE" | "HOLD" | "EXHALE" | "";
 
-const ALL_IMAGES = [
-  waveBgLogo, waveBgIntro, waveBgDescription,
-  waveBgInhale, waveBgHold, waveBgExhale,
-];
-
 const SCREEN_DELAYS: Partial<Record<Screen, number>> = {
   logo: 2200,
   intro: 3000,
   description: 4000,
 };
 
-const PHASE_BG: Record<string, string> = {
-  INHALE: waveBgInhale,
-  HOLD: waveBgHold,
-  EXHALE: waveBgExhale,
+/* ── Gradient definitions per screen ── */
+const SCREEN_GRADIENTS: Record<string, string> = {
+  logo: `linear-gradient(180deg, 
+    hsl(200, 18%, 28%) 0%, 
+    hsl(198, 16%, 38%) 30%, 
+    hsl(195, 14%, 52%) 55%, 
+    hsl(200, 12%, 70%) 75%, 
+    hsl(210, 10%, 88%) 90%, 
+    hsl(0, 0%, 98%) 100%)`,
+  intro: `linear-gradient(180deg, 
+    hsl(195, 20%, 32%) 0%, 
+    hsl(195, 18%, 42%) 25%, 
+    hsl(192, 15%, 55%) 50%, 
+    hsl(200, 13%, 72%) 70%, 
+    hsl(210, 12%, 88%) 88%, 
+    hsl(0, 0%, 98%) 100%)`,
+  description: `linear-gradient(180deg, 
+    hsl(190, 22%, 30%) 0%, 
+    hsl(192, 18%, 40%) 25%, 
+    hsl(195, 15%, 52%) 50%, 
+    hsl(200, 12%, 68%) 72%, 
+    hsl(210, 10%, 85%) 88%, 
+    hsl(0, 0%, 97%) 100%)`,
+  done: `linear-gradient(180deg, 
+    hsl(200, 18%, 28%) 0%, 
+    hsl(198, 16%, 38%) 30%, 
+    hsl(195, 14%, 52%) 55%, 
+    hsl(200, 12%, 70%) 75%, 
+    hsl(210, 10%, 88%) 90%, 
+    hsl(0, 0%, 98%) 100%)`,
 };
 
-/* ── Preload all images before showing anything ── */
-function preloadImages(srcs: string[]): Promise<void> {
-  return Promise.all(
-    srcs.map(
-      (src) =>
-        new Promise<void>((resolve) => {
-          const img = new Image();
-          img.onload = () => resolve();
-          img.onerror = () => resolve(); // don't block on error
-          img.src = src;
-        })
-    )
-  ).then(() => {});
+function buildBreathingGradient(barTop: number): string {
+  return `linear-gradient(180deg, 
+    hsl(195, 15%, 35%) 0%, 
+    hsl(195, 18%, 45%) ${Math.max(0, barTop - 20)}%, 
+    hsl(190, 15%, 60%) ${Math.max(0, barTop - 8)}%, 
+    hsl(200, 15%, 78%) ${barTop}%, 
+    hsl(210, 15%, 90%) ${Math.min(100, barTop + 8)}%, 
+    hsl(220, 10%, 96%) ${Math.min(100, barTop + 20)}%, 
+    hsl(0, 0%, 100%) 100%)`;
 }
 
 const WavePreview = () => {
