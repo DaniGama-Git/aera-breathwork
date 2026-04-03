@@ -24,6 +24,7 @@ const DynamicSession = () => {
 
   const audioSrc = session?.audioSrc || "";
   const { isPlaying, toggle, timeDisplay, getFrequencyData } = useAudioPlayer(audioSrc);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   if (!config || !session) {
     return (
