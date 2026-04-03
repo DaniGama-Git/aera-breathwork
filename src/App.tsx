@@ -90,10 +90,10 @@ const App = () => (
           <Route path="/menu" element={<ProtectedRoute><BreathworkMenu /></ProtectedRoute>} />
           <Route path="/session/:category/:slug" element={<ProtectedRoute><DynamicSession /></ProtectedRoute>} />
           {/* Legacy redirects */}
-          <Route path="/breathwork-session-activate" element={<Navigate to="/session/activate/morning-activation" replace />} />
-          <Route path="/breathwork-session-recover" element={<Navigate to="/session/recover/back-to-back-recharge" replace />} />
-          <Route path="/breathwork-session-focus" element={<Navigate to="/session/focus/focus-activation" replace />} />
-          <Route path="/breathwork-session-reset" element={<Navigate to="/session/ground/evening-decompression" replace />} />
+          <Route path="/breathwork-session-activate" element={<Navigate to="/session/activate/wake-me-up" replace />} />
+          <Route path="/breathwork-session-recover" element={<Navigate to="/session/recover/back-to-back" replace />} />
+          <Route path="/breathwork-session-focus" element={<Navigate to="/session/perform/deep-focus" replace />} />
+          <Route path="/breathwork-session-reset" element={<Navigate to="/session/ground/wind-down" replace />} />
           <Route path="/hrv" element={<ProtectedRoute><HrvDemo /></ProtectedRoute>} />
           <Route path="/category/:slug" element={<ProtectedRoute><CategoryLibrary /></ProtectedRoute>} />
           <Route path="/search" element={<ProtectedRoute><SearchScreen /></ProtectedRoute>} />
