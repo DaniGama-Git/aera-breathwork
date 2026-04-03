@@ -35,13 +35,14 @@ export interface Protocol {
 }
 
 export interface TimelineEntry {
-  type: PhaseType | "TRANSITION";
+  type: PhaseType | "TRANSITION" | "SCIENCE";
   duration: number; // ms
   startMs: number;
   endMs: number;
   displayLabel: string;
   stageIndex: number;
   transitionText?: string;
+  scienceText?: string;
 }
 
 const TRANSITION_DURATION = 3500;
