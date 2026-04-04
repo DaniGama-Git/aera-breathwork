@@ -8,8 +8,8 @@ import BottomNavBar from "@/components/BottomNavBar";
 const STEPS = [
   {
     number: "01",
-    title: "Open Google Calendar Settings",
-    description: "Click the button below to go directly to your calendar settings page.",
+    title: "Open Google Calendar",
+    description: "Click the button below to open Google Calendar settings.",
     action: {
       label: "Open Calendar Settings",
       url: "https://calendar.google.com/calendar/r/settings",
@@ -17,21 +17,27 @@ const STEPS = [
   },
   {
     number: "02",
-    title: "Select your calendar",
+    title: "Click your calendar name",
     description:
-      "In the left sidebar under 'Settings for my calendars', click the calendar you want āera to watch (usually your primary calendar).",
+      'In the left sidebar, look for "Settings for my calendars". Click on the name of the calendar you use for work (usually your email address).',
   },
   {
     number: "03",
-    title: 'Find "Integrate calendar"',
+    title: 'Scroll down to "Integrate calendar"',
     description:
-      'Scroll down until you see the "Integrate calendar" section. Look for "Secret address in iCal format".',
+      'Scroll past "Calendar settings" and "Event notifications" until you reach a section called "Integrate calendar". It\'s near the bottom of the page.',
   },
   {
     number: "04",
-    title: "Copy the secret iCal URL",
+    title: "Copy the secret iCal address",
     description:
-      "Click the copy icon next to the URL. It starts with https://calendar.google.com/calendar/ical/... — paste this into the āera extension settings.",
+      'Under "Secret address in iCal format", you\'ll see a long URL starting with https://calendar.google.com/calendar/ical/... — click the copy icon (📋) next to it.',
+  },
+  {
+    number: "05",
+    title: "Paste into āera",
+    description:
+      "Open the āera extension, go to the Settings tab, and paste the URL into the iCal field. That's it.",
   },
 ];
 
