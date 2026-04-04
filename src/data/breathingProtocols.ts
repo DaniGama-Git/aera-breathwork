@@ -561,3 +561,49 @@ export const contextSwitchProtocol: Protocol = {
     },
   ],
 };
+
+export const preMeetingProtocol: Protocol = {
+  id: "pre-meeting",
+  title: "Pre-Meeting",
+  subtitle: "~2 mins",
+  duration: "~2 mins",
+  introText: "Meeting coming up.\nLet's get you centered.",
+  descriptionPrimary: "Physiological sighs to discharge stress and clear mental noise.",
+  descriptionSecondary: "Reset breathing to stabilize, then one transition breath to step in sharp.",
+  stages: [
+    {
+      name: "Physiological Sigh",
+      method: "nose",
+      science: "Double inhale activates alveolar sacs and rapidly lowers CO₂, breaking the stress loop in seconds.",
+      cycle: [
+        { type: "INHALE", duration: 3000 },
+        { type: "INHALE", duration: 1000, label: "SNIFF" },
+        { type: "EXHALE", duration: 5000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 2,
+    },
+    {
+      name: "Reset Breathing",
+      method: "nose",
+      transition: "Now settle into a smooth, continuous rhythm. No holds, just flow.",
+      science: "Balanced nasal breathing at a slow cadence maximises HRV and resets the autonomic baseline.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 6000 },
+      ],
+      cycles: 6,
+    },
+    {
+      name: "Transition Breath",
+      method: "nose",
+      transition: "One final breath. Inhale deeply through your nose, then exhale fully through your mouth.",
+      cycle: [],
+      cycles: 0,
+    },
+  ],
+  finalSequence: [
+    { type: "INHALE", duration: 5000 },
+    { type: "EXHALE", duration: 7000, label: "FULL EXHALE" },
+  ],
+  finalMethod: "mouth",
+};

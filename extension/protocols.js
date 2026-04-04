@@ -182,6 +182,27 @@ const PROTOCOLS = {
       ], 8),
     ],
   },
+  },
+
+  "pre-meeting": {
+    title: "Pre-Meeting",
+    phases: [
+      // Stage 1: Physiological Sigh × 2
+      ...repeat([
+        { phase: "inhale", duration: 3000 },
+        { phase: "inhale", duration: 1000, label: "SNIFF" },
+        { phase: "exhale", duration: 5000, label: "NATURALLY EXHALE" },
+      ], 2),
+      // Stage 2: Reset Breathing × 6
+      ...repeat([
+        { phase: "inhale", duration: 5000 },
+        { phase: "exhale", duration: 6000 },
+      ], 6),
+      // Final: Transition Breath
+      { phase: "inhale", duration: 5000 },
+      { phase: "exhale", duration: 7000, label: "FULL EXHALE" },
+    ],
+  },
 };
 
 function repeat(phases, n) {
