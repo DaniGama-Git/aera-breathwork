@@ -59,7 +59,8 @@ saveBtn.addEventListener("click", async () => {
 
   await chrome.storage.local.set({ icalUrl, keywords, leadMinutes });
   updateConnectionStatus(true);
-  showStatus(`Saved. Watching for: ${keywords.join(", ")}`);
+  urlValidated.classList.add("visible");
+  showStatus(`Connected. Watching for: ${keywords.join(", ")}`);
 });
 
 function showStatus(msg, isError = false) {
