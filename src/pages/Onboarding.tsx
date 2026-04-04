@@ -164,11 +164,22 @@ const Onboarding = () => {
         {/* Header */}
         <div className="px-6 pt-14 pb-4 flex items-center justify-between">
           <img src={areaLogo} alt="Aera" className="h-6" />
-          {step !== "closing" && (
-            <span className="text-white/30 font-body text-xs">
-              {visualIndex} / {totalVisualSteps}
-            </span>
-          )}
+          <div className="flex items-center gap-4">
+            {step !== "closing" && (
+              <span className="text-white/30 font-body text-xs">
+                {visualIndex} / {totalVisualSteps}
+              </span>
+            )}
+            {step !== "closing" && (
+              <button
+                onClick={saveAndFinish}
+                disabled={saving}
+                className="text-white/30 font-body text-xs hover:text-white/50 transition-colors"
+              >
+                Skip
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Progress bar */}
