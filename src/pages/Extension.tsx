@@ -27,6 +27,12 @@ const STEPS = [
     description:
       'Click "Load unpacked" and select the unzipped folder. āera will appear in your toolbar.',
   },
+  {
+    number: "05",
+    title: "Connect Calendar",
+    description:
+      "Open the āera extension, go to Settings, and connect your Google Calendar to trigger sessions before key moments.",
+  },
 ];
 
 const Extension = () => {
