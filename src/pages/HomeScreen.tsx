@@ -101,6 +101,17 @@ const HomeScreen = () => {
           Take a breath
         </button>
 
+        {/* Guest bypass */}
+        {!user && (
+          <button
+            onClick={() => navigate("/wave")}
+            className="mt-3 flex items-center justify-center h-10 bg-transparent border border-[#F7F6F5]/40 rounded-full font-body font-normal text-[#F7F6F5]/80 cursor-pointer transition-colors hover:bg-[#F7F6F5]/10"
+            style={{ fontSize: "clamp(13px, 3.5vw, 15px)", letterSpacing: "0.02em" }}
+          >
+            Try without signing in
+          </button>
+        )}
+
         {/* iOS Home Indicator */}
         <div className="flex justify-center pt-3">
           <img src={homeIndicator} alt="" className="h-[5px] w-36 opacity-70" aria-hidden="true" />
