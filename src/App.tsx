@@ -99,6 +99,7 @@ const App = () => (
           <Route path="/category/:slug" element={<ProtectedRoute><CategoryLibrary /></ProtectedRoute>} />
           <Route path="/search" element={<ProtectedRoute><SearchScreen /></ProtectedRoute>} />
           <Route path="/extension" element={<Extension />} />
+          <Route path="/calendar-setup" element={<CalendarSetup />} />
           <Route path="/wave" element={<WavePreview />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
