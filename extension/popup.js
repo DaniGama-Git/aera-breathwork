@@ -26,6 +26,7 @@ const saveBtn = document.getElementById("save-btn");
 const statusEl = document.getElementById("status");
 const connectionDot = document.getElementById("connection-dot");
 const connectionText = document.getElementById("connection-text");
+const urlValidated = document.getElementById("url-validated");
 
 async function loadSettings() {
   const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes"]);
