@@ -247,22 +247,63 @@ body{
       <span class="connection-dot" id="connection-dot"></span>
       <span id="connection-text">Not configured</span>
     </div>
-    <div class="field">
-      <label>Google Calendar iCal URL</label>
-      <textarea id="ical-url" placeholder="https://calendar.google.com/calendar/ical/..."></textarea>
-      <span class="hint">Google Calendar → Settings → Your calendar → "Secret address in iCal format"</span>
+
+    <div class="setup-header">
+      <h3>Connect Calendar</h3>
+      <p>āera scans your calendar for keywords and triggers the right session before key moments.</p>
     </div>
+
+    <div class="guide-step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Open Google Calendar Settings</strong>
+        <span>Click below to go directly to your calendar settings.</span>
+      </div>
+    </div>
+    <a href="https://calendar.google.com/calendar/r/settings" target="_blank" class="guide-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Open Google Calendar Settings
+    </a>
+
+    <div class="guide-step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Select your calendar</strong>
+        <span>In the left sidebar, click the calendar you want āera to watch.</span>
+      </div>
+    </div>
+
+    <div class="guide-step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Copy secret iCal address</strong>
+        <span>Scroll to "Integrate calendar" and copy the URL under "Secret address in iCal format".</span>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="field">
+      <label>Paste your iCal URL</label>
+      <textarea id="ical-url" placeholder="https://calendar.google.com/calendar/ical/..."></textarea>
+      <div class="validated-badge" id="url-validated">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Calendar connected
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
     <div class="field">
       <label>Trigger keywords</label>
       <input id="keywords" placeholder="pitch, board, negotiation"/>
-      <span class="hint">Comma-separated. The popup triggers when an event title contains any of these.</span>
+      <span class="hint">Comma-separated. āera triggers when an event title contains any of these.</span>
     </div>
     <div class="field">
-      <label>Trigger before event (minutes)</label>
+      <label>Lead time (minutes before event)</label>
       <input id="lead-minutes" type="number" value="2" min="0" max="30"/>
-      <span class="hint">How many minutes before the event to show the notification.</span>
     </div>
-    <button class="save-btn" id="save-btn">Save Settings</button>
+    <button class="save-btn" id="save-btn">Save & Connect</button>
     <div class="status" id="status"></div>
   </div>
 
