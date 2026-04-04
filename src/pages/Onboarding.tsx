@@ -228,7 +228,7 @@ const Onboarding = () => {
           {step === "scheduled_ask" && (
             <OnboardingStep
               title="Part 2 — Scheduled Sessions"
-              subtitle="This is optional. āera is moment-based by design — scheduled sessions are not the core experience. The default is off."
+              subtitle="āera works best in the moment. But if you'd like a gentle nudge, you can set one here."
             >
               <SingleSelectStep
                 question="Would you like scheduled sessions throughout your day as well?"
