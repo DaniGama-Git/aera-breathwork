@@ -132,10 +132,50 @@ body{
 .breathe-tab{display:flex;flex-direction:column;align-items:center;width:100%}
 .breathe-tab.hidden{display:none}
 .settings-tab{
-  padding:24px;width:100%;display:none;flex-direction:column;gap:18px;
+  padding:20px;width:100%;display:none;flex-direction:column;gap:0;
+  max-height:420px;overflow-y:auto;
 }
 .settings-tab.visible{display:flex}
-.field{display:flex;flex-direction:column;gap:5px}
+
+/* Guide steps */
+.setup-header{
+  text-align:center;margin-bottom:16px;
+}
+.setup-header h3{
+  font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(255,255,255,0.85);margin-bottom:4px;
+}
+.setup-header p{
+  font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;
+}
+.guide-step{
+  display:flex;gap:10px;align-items:flex-start;padding:10px 12px;
+  border-radius:14px;background:rgba(255,255,255,0.03);margin-bottom:8px;
+}
+.step-num{
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(255,255,255,0.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:600;color:rgba(255,255,255,0.5);
+  flex-shrink:0;margin-top:1px;
+}
+.step-content{flex:1}
+.step-content strong{font-size:11px;font-weight:600;color:rgba(255,255,255,0.75);display:block;margin-bottom:2px}
+.step-content span{font-size:10px;color:rgba(255,255,255,0.3);line-height:1.5}
+.guide-link{
+  display:inline-flex;align-items:center;gap:4px;padding:7px 14px;border-radius:12px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  color:rgba(255,255,255,0.6);font-size:10px;font-weight:500;letter-spacing:0.5px;
+  text-decoration:none;cursor:pointer;transition:all 0.3s;margin:4px 0 12px;
+}
+.guide-link:hover{border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.1)}
+.guide-link svg{width:12px;height:12px;opacity:0.5}
+
+.section-divider{
+  height:1px;background:rgba(255,255,255,0.06);margin:12px 0;
+}
+
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
 .field label{font-size:11px;font-weight:500;letter-spacing:0.6px;color:rgba(255,255,255,0.6)}
 .field .hint{font-size:10px;color:rgba(255,255,255,0.25);line-height:1.5}
 .field input,.field textarea{
@@ -152,12 +192,18 @@ body{
   cursor:pointer;transition:all 0.3s;align-self:flex-start;backdrop-filter:blur(8px);
 }
 .save-btn:hover{border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.1)}
-.status{font-size:11px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5);display:none}
+.status{font-size:11px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5);display:none;margin-top:8px}
 .status.visible{display:block}
 .status.error{background:rgba(220,38,38,0.1);color:#f87171}
-.connection-status{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.4px}
+.connection-status{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.4px;margin-bottom:16px}
 .connection-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.12)}
 .connection-dot.connected{background:rgba(255,255,255,0.6)}
+.validated-badge{
+  display:none;align-items:center;gap:4px;font-size:10px;color:rgba(130,200,130,0.8);
+  margin-top:4px;
+}
+.validated-badge.visible{display:flex}
+.validated-badge svg{width:12px;height:12px}
 </style>
 </head>
 <body>
