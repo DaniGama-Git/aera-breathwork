@@ -1,6 +1,44 @@
 // background.js — polls Google Calendar iCal feed and triggers popup
 
 const CHECK_INTERVAL_MINUTES = 1;
+
+// Keyword-stem → protocol-ID mapping
+const KEYWORD_PROTOCOL_MAP = {
+  "pitch":        "pre-pitch",
+  "present":      "pre-pitch",
+  "demo":         "pre-pitch",
+  "interview":    "pre-pitch",
+  "negotiat":     "pre-negotiation",
+  "review":       "pre-negotiation",
+  "feedback":     "pre-negotiation",
+  "board":        "pre-negotiation",
+  "brainstorm":   "creative-flow",
+  "ideate":       "creative-flow",
+  "creative":     "creative-flow",
+  "workshop":     "creative-flow",
+  "focus":        "deep-focus",
+  "deep work":    "deep-focus",
+  "writing":      "deep-focus",
+  "standup":      "context-switch",
+  "stand-up":     "context-switch",
+  "sync":         "context-switch",
+  "1:1":          "context-switch",
+  "one-on-one":   "context-switch",
+  "morning":      "wake-me-up",
+  "wake":         "wake-me-up",
+  "energy":       "energy-reset",
+  "recharge":     "energy-reset",
+  "reset":        "rebound",
+  "recover":      "rebound",
+};
+
+function resolveProtocol(matchedKeyword) {
+  const kw = matchedKeyword.toLowerCase();
+  for (const [stem, protocolId] of Object.entries(KEYWORD_PROTOCOL_MAP)) {
+    if (kw.includes(stem)) return protocolId;
+  }
+  return "deep-focus"; // default fallback
+}
 const ALARM_NAME = "check-calendar";
 
 chrome.runtime.onInstalled.addListener(() => {
