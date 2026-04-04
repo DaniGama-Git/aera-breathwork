@@ -76,6 +76,7 @@ export type Database = {
           calendar_keywords: string[]
           created_at: string
           goals: string[]
+          ical_url: string | null
           id: string
           moments: string[]
           scheduled_enabled: boolean
@@ -90,6 +91,7 @@ export type Database = {
           calendar_keywords?: string[]
           created_at?: string
           goals?: string[]
+          ical_url?: string | null
           id?: string
           moments?: string[]
           scheduled_enabled?: boolean
@@ -104,6 +106,7 @@ export type Database = {
           calendar_keywords?: string[]
           created_at?: string
           goals?: string[]
+          ical_url?: string | null
           id?: string
           moments?: string[]
           scheduled_enabled?: boolean
