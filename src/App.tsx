@@ -17,6 +17,7 @@ import SearchScreen from "./pages/SearchScreen.tsx";
 import Auth from "./pages/Auth.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
 import Extension from "./pages/Extension.tsx";
+import CalendarSetup from "./pages/CalendarSetup.tsx";
 import BreatheDots from "@/components/BreatheDots";
 
 const queryClient = new QueryClient();
@@ -98,6 +99,7 @@ const App = () => (
           <Route path="/category/:slug" element={<ProtectedRoute><CategoryLibrary /></ProtectedRoute>} />
           <Route path="/search" element={<ProtectedRoute><SearchScreen /></ProtectedRoute>} />
           <Route path="/extension" element={<Extension />} />
+          <Route path="/calendar-setup" element={<CalendarSetup />} />
           <Route path="/wave" element={<WavePreview />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

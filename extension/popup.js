@@ -26,6 +26,7 @@ const saveBtn = document.getElementById("save-btn");
 const statusEl = document.getElementById("status");
 const connectionDot = document.getElementById("connection-dot");
 const connectionText = document.getElementById("connection-text");
+const urlValidated = document.getElementById("url-validated");
 
 async function loadSettings() {
   const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes"]);
@@ -58,7 +59,8 @@ saveBtn.addEventListener("click", async () => {
 
   await chrome.storage.local.set({ icalUrl, keywords, leadMinutes });
   updateConnectionStatus(true);
-  showStatus(`Saved. Watching for: ${keywords.join(", ")}`);
+  urlValidated.classList.add("visible");
+  showStatus(`Connected. Watching for: ${keywords.join(", ")}`);
 });
 
 function showStatus(msg, isError = false) {

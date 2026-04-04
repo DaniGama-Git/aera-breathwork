@@ -143,6 +143,16 @@ const Extension = () => {
           <p className="text-center text-[11px] text-white/25 mt-3 font-body font-medium tracking-wide">
             Works in Chrome, Edge, Brave, and Arc
           </p>
+          <button
+            onClick={() => navigate("/calendar-setup")}
+            className="w-full mt-4 py-3 rounded-xl text-white/60 font-body font-medium text-[13px] tracking-wide flex items-center justify-center gap-2 transition-all hover:text-white/80"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            How to connect your calendar
+          </button>
         </div>
 
         <BottomNavBar />
