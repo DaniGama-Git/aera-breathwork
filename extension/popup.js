@@ -69,7 +69,7 @@ function showStatus(msg, isError = false) {
 
 chrome.storage.local.get(["icalUrl"], data => updateConnectionStatus(!!data.icalUrl));
 
-// ─── Wave Breathing ───
+// ─── Wave Breathing (Protocol-Driven) ───
 const canvas = document.getElementById("wave-canvas");
 const ctx = canvas.getContext("2d");
 const card = document.getElementById("card");
@@ -79,22 +79,32 @@ const startBtnEl = document.getElementById("start-btn");
 const phaseLabel = document.getElementById("phase-label");
 const roundLabel = document.getElementById("round-label");
 const progressFill = document.getElementById("progress-fill");
-
-// Session config
-const TOTAL_ROUNDS = 3;
-const INHALE_MS = 4000;
-const HOLD_MS = 2000;
-const EXHALE_MS = 6000;
-const CYCLE_MS = INHALE_MS + HOLD_MS + EXHALE_MS;
+const sessionTitle = document.getElementById("session-title");
+const sessionDuration = document.getElementById("session-duration");
+const sessionNameOverlay = document.querySelector(".session-name");
 
 let running = false;
 let sessionStart = 0;
 let raf = 0;
+let activeTimeline = [];
+let activeTotalMs = 0;
+let activeProtocolId = "deep-focus";
 
-// Wave level: 0 = wave at bottom (white card), 1 = wave at top (dark card)
-// Inhale = wave rises (dark fills card) → exhale = wave falls (white shows)
-let waveLevel = 0.45; // resting position
+// Wave rendering state
+let waveLevel = 0.45;
 let targetLevel = 0.45;
+
+function setProtocol(protocolId) {
+  activeProtocolId = protocolId || "deep-focus";
+  activeTimeline = buildProtocolTimeline(activeProtocolId);
+  activeTotalMs = getProtocolTotalDuration(activeTimeline);
+
+  const title = getProtocolTitle(activeProtocolId);
+  const mins = Math.round(activeTotalMs / 60000);
+  sessionTitle.textContent = title.toUpperCase();
+  sessionDuration.textContent = `${mins} MINS`;
+  if (sessionNameOverlay) sessionNameOverlay.textContent = title;
+}
 
 function resizeCanvas() {
   const dpr = window.devicePixelRatio || 1;
@@ -110,22 +120,16 @@ function resizeCanvas() {
 function drawWave(time) {
   const w = card.clientWidth;
   const h = card.clientHeight;
-
   ctx.clearRect(0, 0, w, h);
 
-  // Smoothly approach target
   waveLevel += (targetLevel - waveLevel) * 0.04;
-
-  // Wave Y position (0=top, h=bottom)
   const baseY = h * (1 - waveLevel);
 
-  // Draw dark region from top to wave
   ctx.beginPath();
   ctx.moveTo(0, 0);
   ctx.lineTo(w, 0);
   ctx.lineTo(w, baseY);
 
-  // Smooth wave curve
   const amplitude = 12 + 6 * Math.sin(time * 0.0008);
   const freq = 0.012;
   const speed = time * 0.0012;
@@ -138,31 +142,31 @@ function drawWave(time) {
   }
 
   ctx.closePath();
-
-  // Dark fill
   ctx.fillStyle = "#3a3a3c";
   ctx.fill();
 }
 
-function getPhaseAt(elapsed) {
-  const cycleTime = elapsed % CYCLE_MS;
-  if (cycleTime < INHALE_MS) return "inhale";
-  if (cycleTime < INHALE_MS + HOLD_MS) return "hold";
-  return "exhale";
+function getPhaseAtElapsed(elapsed) {
+  for (let i = activeTimeline.length - 1; i >= 0; i--) {
+    if (elapsed >= activeTimeline[i].startMs) {
+      const entry = activeTimeline[i];
+      const progress = Math.min(1, (elapsed - entry.startMs) / entry.duration);
+      return { entry, progress, index: i };
+    }
+  }
+  return { entry: activeTimeline[0], progress: 0, index: 0 };
 }
 
-function getRoundAt(elapsed) {
-  return Math.min(Math.floor(elapsed / CYCLE_MS), TOTAL_ROUNDS - 1);
+function easeInOut(t) {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
 
 function animate(time) {
   if (!running) return;
 
   const elapsed = Date.now() - sessionStart;
-  const totalDuration = CYCLE_MS * TOTAL_ROUNDS;
 
-  if (elapsed >= totalDuration) {
-    // Session done
+  if (elapsed >= activeTotalMs) {
     running = false;
     targetLevel = 0.45;
     doneOverlay.classList.add("visible");
@@ -172,35 +176,34 @@ function animate(time) {
     return;
   }
 
-  const phase = getPhaseAt(elapsed);
-  const round = getRoundAt(elapsed);
-  const cycleElapsed = elapsed % CYCLE_MS;
+  const { entry, progress } = getPhaseAtElapsed(elapsed);
 
   // Update wave target based on phase
-  if (phase === "inhale") {
-    // Rise from 0.35 to 0.85
-    const t = cycleElapsed / INHALE_MS;
-    targetLevel = 0.35 + 0.5 * easeInOut(t);
-  } else if (phase === "hold") {
+  if (entry.phase === "inhale") {
+    targetLevel = 0.35 + 0.5 * easeInOut(progress);
+  } else if (entry.phase === "hold") {
     targetLevel = 0.85;
   } else {
-    // Exhale: fall from 0.85 to 0.35
-    const t = (cycleElapsed - INHALE_MS - HOLD_MS) / EXHALE_MS;
-    targetLevel = 0.85 - 0.5 * easeInOut(t);
+    // exhale
+    targetLevel = 0.85 - 0.5 * easeInOut(progress);
   }
 
   // Update labels
-  const labels = { inhale: "INHALE", hold: "HOLD", exhale: "EXHALE" };
-  phaseLabel.textContent = labels[phase];
-  roundLabel.textContent = `ROUND ${round + 1}/${TOTAL_ROUNDS}`;
-  progressFill.style.width = `${((elapsed / totalDuration) * 100).toFixed(1)}%`;
+  const displayLabel = entry.label || entry.phase.toUpperCase();
+  phaseLabel.textContent = displayLabel;
+
+  // Show elapsed time
+  const elapsedSec = Math.floor(elapsed / 1000);
+  const totalSec = Math.floor(activeTotalMs / 1000);
+  const remSec = totalSec - elapsedSec;
+  const m = Math.floor(remSec / 60).toString().padStart(2, "0");
+  const s = (remSec % 60).toString().padStart(2, "0");
+  roundLabel.textContent = `${m}:${s}`;
+
+  progressFill.style.width = `${((elapsed / activeTotalMs) * 100).toFixed(1)}%`;
 
   drawWave(time);
   raf = requestAnimationFrame(animate);
-}
-
-function easeInOut(t) {
-  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
 
 function startSession() {
@@ -211,7 +214,7 @@ function startSession() {
   startOverlay.classList.add("hidden");
   doneOverlay.classList.remove("visible");
   phaseLabel.textContent = "INHALE";
-  roundLabel.textContent = `ROUND 1/${TOTAL_ROUNDS}`;
+  roundLabel.textContent = "";
   progressFill.style.width = "0%";
   raf = requestAnimationFrame(animate);
 }
@@ -219,7 +222,6 @@ function startSession() {
 // Idle wave animation
 function idleAnimate(time) {
   if (running) return;
-  // Gentle breathing idle
   targetLevel = 0.45 + 0.05 * Math.sin(time * 0.001);
   drawWave(time);
   requestAnimationFrame(idleAnimate);
@@ -230,13 +232,17 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 startBtnEl.addEventListener("click", startSession);
 
+// Set default protocol
+setProtocol("deep-focus");
+
 // Start idle animation
 requestAnimationFrame(idleAnimate);
 
 // Auto-start if triggered by calendar
-chrome.storage.local.get(["autoStart"], data => {
+chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
   if (data.autoStart) {
-    chrome.storage.local.remove("autoStart");
+    chrome.storage.local.remove(["autoStart", "activeProtocol"]);
+    setProtocol(data.activeProtocol || "deep-focus");
     startSession();
   }
 });
