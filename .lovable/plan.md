@@ -1,32 +1,31 @@
 
 
-## Problem
+## Plan: Connect Calendar Keywords to Specific Breathing Protocols
 
-When clicking "Google Calendar" for recurring sessions, the code tries to open multiple popups (one per date) via `window.open`. Browsers block all popups after the first one, so only one day gets through -- the session replay confirms "Some popups were blocked."
+### Problem
+The extension triggers the same generic breathing animation for every keyword match. Keywords like "pitch", "standup", or "interview" should route to their relevant protocol (Pre-Pitch, Context Switch, etc.).
 
-Opening multiple tabs is not a viable approach for Google/Outlook Calendar links.
+### Changes
 
-## Solution
+**1. Add keyword-to-protocol mapping in `extension/background.js`**
+- Define a map: `{ "pitch": "pre-pitch", "negotiat": "pre-negotiation", "interview": "pre-pitch", "focus": "deep-focus", "standup": "context-switch", "review": "pre-negotiation", "presentation": "pre-pitch", "brainstorm": "creative-flow", ... }`
+- When a keyword match fires, store the matched keyword and resolved protocol ID in `chrome.storage.local` alongside `autoStart: true`
+- Fallback to a default protocol (e.g. Deep Focus) if no mapping exists
 
-For Google and Outlook recurring sessions, instead of opening N popups, **download a single .ics file containing all N events**. This is the same approach already used by the "Download .ics" button and works reliably without popup blockers.
+**2. Update `extension/popup.js` to read the selected protocol**
+- On auto-start, read the protocol ID from storage
+- Look up the matching protocol from the existing protocol engine
+- Run that protocol's phase sequence instead of the hardcoded 3-round wave animation
+- Update the notification message to reference the specific session name (e.g. `"Pitch in 2 min — starting Pre-Pitch breathwork"`)
 
-The Google and Outlook buttons will still be shown for **single-session** mode (no recurring props). For recurring mode, simplify to a single "Add All to Calendar" button that downloads one .ics file with all sessions, which works with Google Calendar, Outlook, Apple Calendar, etc.
+**3. Update `extension/popup.html`** (minor)
+- Show the session name in the UI header when a protocol-specific session is active
 
-### Changes to `src/components/AddToCalendar.tsx`
+### What stays the same
+- The iCal polling, keyword matching, and alarm logic remain unchanged
+- The protocol engine and all existing protocols remain unchanged
+- Onboarding keyword collection stays in the web app (syncing to extension is a separate concern requiring the extension to be installed)
 
-1. **Recurring mode**: Replace the three separate buttons (Google, Outlook, .ics) with a single "Download Schedule (.ics)" button that generates one multi-event .ics file
-2. Alternatively, keep all three buttons but change Google/Outlook handlers to also download the .ics file instead of trying to open multiple popups, with a toast explaining to import the file into their calendar
-3. Remove the `openExternalCalendarLink` loop logic for recurring mode
-
-### Recommended approach
-
-Keep the three buttons for visual consistency, but for recurring mode:
-- **Google**: Download the .ics file + show toast "Import this file into Google Calendar (Settings > Import)"
-- **Outlook**: Download the .ics file + show toast "Import this file into Outlook (File > Import)"  
-- **.ics**: Same as current behavior
-
-This avoids popup blocking entirely while giving users clear instructions.
-
-### Files to modify
-- `src/components/AddToCalendar.tsx` -- update `handleGoogle` and `handleOutlook` for recurring mode to use .ics download instead of multiple popups
+### Technical detail
+The keyword matching uses substring includes (`evt.summary.toLowerCase().includes(kw)`), so the mapping should use keyword stems (e.g. "negotiat" matches "negotiation", "negotiations", "negotiating").
 
