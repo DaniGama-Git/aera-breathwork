@@ -45,6 +45,13 @@ const Auth = () => {
         {error && (
           <p className="text-red-400 text-xs font-body text-center mt-4">{error}</p>
         )}
+
+        <button
+          onClick={() => window.location.href = "/wave"}
+          className="mt-6 text-[#F7F6F5]/60 font-body text-sm underline underline-offset-4 hover:text-[#F7F6F5]/90 transition-colors"
+        >
+          Try without signing in
+        </button>
       </div>
     </div>
   );
