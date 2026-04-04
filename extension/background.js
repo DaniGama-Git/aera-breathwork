@@ -105,8 +105,17 @@ async function checkCalendar() {
           evt.summary.toLowerCase().includes(kw.toLowerCase())
         );
         if (matchesKeyword && !triggeredEvents[evt.uid]) {
+          const matchedKw = keywords.find((kw) =>
+            evt.summary.toLowerCase().includes(kw.toLowerCase())
+          );
+          const protocolId = resolveProtocol(matchedKw || "");
           triggeredEvents[evt.uid] = Date.now();
-          await chrome.storage.local.set({ triggeredEvents, autoStart: true });
+          await chrome.storage.local.set({
+            triggeredEvents,
+            autoStart: true,
+            activeProtocol: protocolId,
+            activeEventName: evt.summary,
+          });
 
           chrome.action.openPopup?.() ||
             chrome.notifications.create(evt.uid, {
