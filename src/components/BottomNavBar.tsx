@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { SESSION_ROUTES } from "@/lib/recommendationMaps";
 import breatheIcon from "@/assets/breathe-nav-icon.svg";
-import scienceIcon from "@/assets/science-nav-icon.svg";
+
 import homeIcon from "@/assets/home-nav-icon.svg";
 import searchIcon from "@/assets/search-nav-icon.svg";
 
@@ -24,7 +24,6 @@ const tabConfig = [
   { label: "Home", icon: homeIcon, paths: ["/menu"] },
   { label: "Breathe", icon: breatheIcon, paths: ["/session"] },
   { label: "Search", icon: searchIcon, paths: ["/search"] },
-  { label: "Science", icon: scienceIcon, paths: ["/hrv"] },
 ];
 
 const BottomNavBar = ({ activeTab }: { activeTab?: string }) => {
@@ -51,7 +50,7 @@ const BottomNavBar = ({ activeTab }: { activeTab?: string }) => {
     if (label === "Home") navigate("/menu");
     else if (label === "Breathe") navigate(recommendedRoute || getTimeBasedRoute());
     else if (label === "Search") navigate("/search");
-    else if (label === "Science") navigate("/hrv");
+    
   };
 
   return (
