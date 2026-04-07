@@ -125,10 +125,22 @@ body{
 }
 
 .phase-label{
-  padding-bottom:28px;
+  padding-bottom:6px;
   font-size:14px;letter-spacing:0.25em;font-weight:500;
   color:rgba(80,80,80,0.6);
   transition:opacity 400ms ease;
+}
+
+.session-progress-wrap{
+  width:80px;height:3px;border-radius:2px;
+  background:rgba(0,0,0,0.08);overflow:hidden;
+  margin-bottom:24px;
+  transition:opacity 400ms ease;
+}
+.session-progress-fill{
+  height:100%;width:0%;border-radius:2px;
+  background:rgba(60,60,60,0.45);
+  transition:width 0.4s ease;
 }
 
 /* Transition text overlay */
@@ -161,7 +173,7 @@ body{
   text-align:left;max-width:250px;
 }
 .science-content img{
-  width:28px;height:38px;opacity:0.9;flex-shrink:0;margin-top:2px;
+  width:24px;height:auto;opacity:0.9;flex-shrink:0;margin-top:2px;
 }
 .science-content p{
   font-size:12px;line-height:1.6;font-weight:500;
