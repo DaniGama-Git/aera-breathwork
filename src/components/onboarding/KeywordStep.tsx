@@ -35,7 +35,7 @@ const KeywordStep = ({ selected, suggestions, onChange, onContinue }: Props) => 
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-white font-body font-semibold text-[28px] leading-tight mb-3">
+      <h1 className="text-white font-body font-semibold text-[22px] leading-tight mb-3">
         What words typically appear in your most important calendar events?
       </h1>
       <p className="text-white/40 font-body text-[14px] leading-relaxed mb-8">

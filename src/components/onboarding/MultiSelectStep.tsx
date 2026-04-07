@@ -23,7 +23,7 @@ const MultiSelectStep = ({ question, hint, options, selected, onChange, onContin
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-white font-body font-semibold text-[28px] leading-tight mb-3">
+      <h1 className="text-white font-body font-semibold text-[22px] leading-tight mb-3">
         {question}
       </h1>
       {hint && (
