@@ -52,6 +52,7 @@ function buildBreathingMask(barTop: number): string {
 const protocol = creativeFlowProtocol;
 
 const WavePreview = () => {
+  const navigate = useNavigate();
   const [screen, setScreen] = useState<Screen>("loading");
   const [phase, setPhase] = useState("");
   const [fadeIn, setFadeIn] = useState(true);
