@@ -117,8 +117,8 @@ const Onboarding = () => {
     setSaving(true);
 
     try {
-      // Save preferences (non-blocking for skip)
-      await supabase
+      // Save preferences
+      const { error: prefError } = await supabase
         .from("onboarding_preferences")
         .upsert({
           user_id: user.id,
@@ -130,8 +130,8 @@ const Onboarding = () => {
           scheduled_length: data.scheduledLength || null,
           scheduled_times: data.scheduledTimes,
           scheduled_frequency: data.scheduledFrequency || null,
-        }, { onConflict: "user_id" })
-        .then(({ error }) => { if (error) console.warn("Prefs save:", error); });
+        }, { onConflict: "user_id" });
+      if (prefError) console.warn("Prefs save:", prefError);
 
       // Mark onboarding complete — this is critical
       const { data: existing } = await supabase
