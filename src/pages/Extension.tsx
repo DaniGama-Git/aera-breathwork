@@ -127,7 +127,7 @@ const Extension = () => {
           <h1
             className="text-white font-body font-semibold mb-3"
             style={{
-              fontSize: "34px",
+              fontSize: "26px",
               lineHeight: "100%",
               letterSpacing: "-0.01em",
             }}
