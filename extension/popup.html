@@ -10,7 +10,7 @@
 body{
   width:320px;
   font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',system-ui,sans-serif;
-  background:#1a1a1a;
+  background:#111;
   color:#f0ece8;
   display:flex;
   flex-direction:column;
@@ -32,7 +32,7 @@ body{
 }
 .tab.active{color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.1)}
 
-/* ─── Wave Card ─── */
+/* ─── Card ─── */
 .card-wrap{
   padding:16px;
   width:100%;
@@ -40,93 +40,163 @@ body{
 .card{
   position:relative;
   width:100%;
-  aspect-ratio:1/1.15;
-  border-radius:20px;
+  aspect-ratio:1/1.1;
+  border-radius:22px;
   overflow:hidden;
-  background:#fff;
+  background:#1a1a1a;
 }
 
-/* Dark top region — filled by the wave canvas */
-.wave-canvas{
+/* Background layers */
+.bg-layer{
   position:absolute;
   inset:0;
-  width:100%;
-  height:100%;
+  background-size:cover;
+  background-position:center;
+  transition:opacity 1200ms ease-in-out;
+  opacity:0;
 }
+.bg-layer.active{opacity:1}
 
-/* Title overlay (top, on dark area) */
-.card-title{
+/* White gradient mask */
+.gradient-mask{
   position:absolute;
-  top:24px;left:0;right:0;
-  text-align:center;
-  z-index:2;
-  pointer-events:none;
+  inset:0;
+  opacity:0;
+  transition:opacity 600ms ease-in-out;
 }
-.card-title h2{
-  font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;
-  color:rgba(255,255,255,0.85);
-}
-.card-title .duration{
-  font-size:10px;letter-spacing:1.2px;color:rgba(255,255,255,0.4);margin-top:4px;
-  font-weight:400;
-}
+.gradient-mask.active{opacity:1}
 
-/* Phase label + round (bottom, on white area) */
-.card-bottom{
-  position:absolute;
-  bottom:20px;left:0;right:0;
-  text-align:center;
-  z-index:2;
-  pointer-events:none;
-}
-.phase-label{
-  font-size:14px;letter-spacing:2px;text-transform:uppercase;
-  color:#2a2a2a;font-weight:500;
-}
-.round-label{
-  font-size:10px;letter-spacing:1px;color:rgba(0,0,0,0.3);
-  margin-top:6px;font-weight:400;
-}
-.progress-bar{
-  width:60px;height:2px;margin:8px auto 0;background:rgba(0,0,0,0.08);
-  border-radius:1px;overflow:hidden;
-}
-.progress-fill{
-  height:100%;background:rgba(0,0,0,0.25);border-radius:1px;
-  transition:width 0.4s ease;
-}
-
-/* Start overlay */
-.start-overlay{
-  position:absolute;inset:0;z-index:5;
+/* Content overlays */
+.screen-overlay{
+  position:absolute;inset:0;z-index:10;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:rgba(42,42,42,0.92);
-  border-radius:20px;
-  transition:opacity 0.6s ease;
-}
-.start-overlay.hidden{opacity:0;pointer-events:none}
-.start-overlay .logo{font-size:15px;letter-spacing:3px;font-weight:300;color:rgba(255,255,255,0.85)}
-.start-overlay .session-name{font-size:11px;letter-spacing:1.5px;color:rgba(255,255,255,0.35);margin-top:6px;text-transform:uppercase}
-.start-btn{
-  margin-top:32px;padding:11px 36px;border-radius:20px;
-  border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);
-  color:rgba(255,255,255,0.7);font-size:11px;font-weight:500;letter-spacing:1.8px;
-  text-transform:uppercase;cursor:pointer;transition:all 0.3s ease;backdrop-filter:blur(8px);
-}
-.start-btn:hover{border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.1)}
-
-/* Done overlay */
-.done-overlay{
-  position:absolute;inset:0;z-index:5;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:rgba(42,42,42,0.92);
-  border-radius:20px;
+  text-align:center;padding:24px;
+  transition:opacity 600ms ease-in-out;
   opacity:0;pointer-events:none;
-  transition:opacity 0.8s ease;
 }
-.done-overlay.visible{opacity:1;pointer-events:auto}
-.done-overlay .logo{font-size:15px;letter-spacing:3px;font-weight:300;color:rgba(255,255,255,0.85)}
-.done-overlay .end-text{font-size:12px;letter-spacing:1.2px;color:rgba(255,255,255,0.45);margin-top:12px;font-weight:400}
+.screen-overlay.active{opacity:1;pointer-events:auto}
+
+/* Logo screen */
+.logo-text{
+  font-size:26px;font-weight:300;letter-spacing:0.2em;
+  color:rgba(255,255,255,0.9);
+  filter:drop-shadow(0px 4px 4px rgba(0,0,0,0.25));
+}
+
+/* Intro screen */
+.intro-pill{
+  padding:6px 20px;border-radius:20px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  backdrop-filter:blur(10px);
+  margin-bottom:6px;
+}
+.intro-pill span{
+  font-size:11px;letter-spacing:0.08em;font-weight:500;
+  color:rgba(255,255,255,0.7);
+}
+.intro-subtitle{
+  font-size:10px;letter-spacing:0.08em;font-weight:500;
+  color:rgba(255,255,255,0.35);margin-bottom:20px;
+}
+.intro-text{
+  font-size:18px;font-weight:500;line-height:1.15;
+  letter-spacing:-0.01em;color:#fff;
+  white-space:pre-line;
+}
+
+/* Breathing UI */
+.breathing-ui{
+  position:absolute;inset:0;z-index:10;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-end;
+  pointer-events:none;
+  transition:opacity 400ms ease-in-out;
+  opacity:0;
+}
+.breathing-ui.active{opacity:1}
+
+.progress-line{
+  position:absolute;left:0;right:0;
+  height:1.5px;
+  background:hsla(0,0%,100%,0.62);
+  box-shadow:0 0 4px 1px hsla(0,0%,100%,0.08);
+  transition:opacity 400ms ease;
+}
+
+.phase-label{
+  padding-bottom:28px;
+  font-size:14px;letter-spacing:0.25em;font-weight:500;
+  color:rgba(80,80,80,0.6);
+  transition:opacity 400ms ease;
+}
+
+/* Transition text overlay */
+.transition-overlay{
+  position:absolute;inset:0;z-index:12;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  opacity:0;transition:opacity 700ms ease;
+  pointer-events:none;
+}
+.transition-overlay.active{opacity:1}
+.transition-text{
+  font-size:14px;line-height:1.6;font-weight:500;
+  color:rgba(255,255,255,0.8);
+  text-align:center;max-width:230px;
+  text-shadow:0 1px 8px rgba(0,0,0,0.15);
+}
+
+/* Science overlay */
+.science-overlay{
+  position:absolute;inset:0;z-index:12;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  opacity:0;transition:opacity 700ms ease;
+  pointer-events:none;
+}
+.science-overlay.active{opacity:1}
+.science-content{
+  display:flex;align-items:flex-start;gap:12px;
+  text-align:left;max-width:240px;
+}
+.science-content img{
+  width:40px;height:54px;opacity:0.7;flex-shrink:0;margin-top:2px;
+}
+.science-content p{
+  font-size:12px;line-height:1.6;font-weight:500;
+  color:rgba(255,255,255,0.7);
+  text-shadow:0 1px 6px rgba(0,0,0,0.1);
+}
+
+/* Done screen */
+.done-subtitle{
+  font-size:13px;letter-spacing:0.08em;font-weight:500;
+  color:rgba(255,255,255,0.5);margin-top:12px;
+}
+.done-btn{
+  margin-top:32px;padding:10px 28px;border-radius:20px;
+  border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.55);font-size:10px;font-weight:500;letter-spacing:0.2em;
+  text-transform:uppercase;cursor:pointer;transition:all 0.3s ease;
+}
+.done-btn:hover{border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.1)}
+
+/* Loading dots */
+.loading-dots{
+  display:flex;gap:6px;
+}
+.loading-dots span{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.3);
+  animation:dotPulse 1.4s infinite ease-in-out;
+}
+.loading-dots span:nth-child(2){animation-delay:0.2s}
+.loading-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes dotPulse{
+  0%,80%,100%{opacity:0.3;transform:scale(1)}
+  40%{opacity:1;transform:scale(1.2)}
+}
 
 /* ─── Settings Tab ─── */
 .breathe-tab{display:flex;flex-direction:column;align-items:center;width:100%}
@@ -137,60 +207,25 @@ body{
 }
 .settings-tab.visible{display:flex}
 
-/* Guide steps */
-.setup-header{
-  text-align:center;margin-bottom:16px;
-}
-.setup-header h3{
-  font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
-  color:rgba(255,255,255,0.85);margin-bottom:4px;
-}
-.setup-header p{
-  font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;
-}
-.guide-step{
-  display:flex;gap:10px;align-items:flex-start;padding:10px 12px;
-  border-radius:14px;background:rgba(255,255,255,0.03);margin-bottom:8px;
-}
-.step-num{
-  width:20px;height:20px;border-radius:50%;
-  background:rgba(255,255,255,0.08);
-  display:flex;align-items:center;justify-content:center;
-  font-size:9px;font-weight:600;color:rgba(255,255,255,0.5);
-  flex-shrink:0;margin-top:1px;
-}
+.setup-header{text-align:center;margin-bottom:16px}
+.setup-header h3{font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:4px}
+.setup-header p{font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5}
+.guide-step{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,0.03);margin-bottom:8px}
+.step-num{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:rgba(255,255,255,0.5);flex-shrink:0;margin-top:1px}
 .step-content{flex:1}
 .step-content strong{font-size:11px;font-weight:600;color:rgba(255,255,255,0.75);display:block;margin-bottom:2px}
 .step-content span{font-size:10px;color:rgba(255,255,255,0.3);line-height:1.5}
-.guide-link{
-  display:inline-flex;align-items:center;gap:4px;padding:7px 14px;border-radius:12px;
-  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
-  color:rgba(255,255,255,0.6);font-size:10px;font-weight:500;letter-spacing:0.5px;
-  text-decoration:none;cursor:pointer;transition:all 0.3s;margin:4px 0 12px;
-}
+.guide-link{display:inline-flex;align-items:center;gap:4px;padding:7px 14px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:10px;font-weight:500;letter-spacing:0.5px;text-decoration:none;cursor:pointer;transition:all 0.3s;margin:4px 0 12px}
 .guide-link:hover{border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.1)}
 .guide-link svg{width:12px;height:12px;opacity:0.5}
-
-.section-divider{
-  height:1px;background:rgba(255,255,255,0.06);margin:12px 0;
-}
-
+.section-divider{height:1px;background:rgba(255,255,255,0.06);margin:12px 0}
 .field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
 .field label{font-size:11px;font-weight:500;letter-spacing:0.6px;color:rgba(255,255,255,0.6)}
 .field .hint{font-size:10px;color:rgba(255,255,255,0.25);line-height:1.5}
-.field input,.field textarea{
-  padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,0.08);
-  background:rgba(255,255,255,0.04);font-size:12px;font-family:inherit;
-  color:#f0ece8;outline:none;transition:border 0.3s,background 0.3s;backdrop-filter:blur(8px);
-}
+.field input,.field textarea{padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);font-size:12px;font-family:inherit;color:#f0ece8;outline:none;transition:border 0.3s,background 0.3s;backdrop-filter:blur(8px)}
 .field input:focus,.field textarea:focus{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06)}
 .field textarea{resize:vertical;min-height:52px}
-.save-btn{
-  padding:10px 24px;border-radius:20px;border:1px solid rgba(255,255,255,0.12);
-  background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);
-  font-size:11px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;
-  cursor:pointer;transition:all 0.3s;align-self:flex-start;backdrop-filter:blur(8px);
-}
+.save-btn{padding:10px 24px;border-radius:20px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);font-size:11px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;align-self:flex-start;backdrop-filter:blur(8px)}
 .save-btn:hover{border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.1)}
 .status{font-size:11px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5);display:none;margin-top:8px}
 .status.visible{display:block}
@@ -198,10 +233,7 @@ body{
 .connection-status{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.4px;margin-bottom:16px}
 .connection-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.12)}
 .connection-dot.connected{background:rgba(255,255,255,0.6)}
-.validated-badge{
-  display:none;align-items:center;gap:4px;font-size:10px;color:rgba(130,200,130,0.8);
-  margin-top:4px;
-}
+.validated-badge{display:none;align-items:center;gap:4px;font-size:10px;color:rgba(130,200,130,0.8);margin-top:4px}
 .validated-badge.visible{display:flex}
 .validated-badge svg{width:12px;height:12px}
 </style>
@@ -215,28 +247,58 @@ body{
   <div class="breathe-tab" id="breathe-panel">
     <div class="card-wrap">
       <div class="card" id="card">
-        <canvas class="wave-canvas" id="wave-canvas"></canvas>
+        <!-- Background image layers -->
+        <div class="bg-layer" id="bg-logo" style="background-image:url(wave-bg-logo.png)"></div>
+        <div class="bg-layer" id="bg-intro" style="background-image:url(wave-bg-intro.png)"></div>
+        <div class="bg-layer" id="bg-breathing" style="background-image:url(wave-bg-description.png)"></div>
 
-        <div class="card-title">
-          <h2 id="session-title">PRE-PITCH</h2>
-          <div class="duration" id="session-duration">4 MINS</div>
+        <!-- Gradient mask for breathing -->
+        <div class="gradient-mask" id="gradient-mask"></div>
+
+        <!-- Loading screen -->
+        <div class="screen-overlay active" id="screen-loading">
+          <div class="loading-dots">
+            <span></span><span></span><span></span>
+          </div>
         </div>
 
-        <div class="card-bottom">
-          <div class="phase-label" id="phase-label">INHALE</div>
-          <div class="round-label" id="round-label"></div>
-          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <!-- Logo screen -->
+        <div class="screen-overlay" id="screen-logo">
+          <span class="logo-text">āera</span>
         </div>
 
-        <div class="start-overlay" id="start-overlay">
-          <span class="logo">āera</span>
-          <span class="session-name">Pre-Pitch</span>
-          <button class="start-btn" id="start-btn">Begin</button>
+        <!-- Intro screen -->
+        <div class="screen-overlay" id="screen-intro">
+          <div class="intro-pill"><span id="intro-title">CREATIVE FLOW</span></div>
+          <span class="intro-subtitle" id="intro-subtitle">~3.5 MINS</span>
+          <p class="intro-text" id="intro-text">Let go of control.
+Let your mind open up.</p>
         </div>
 
-        <div class="done-overlay" id="done-overlay">
-          <span class="logo">āera</span>
-          <span class="end-text">You're ready.</span>
+        <!-- Breathing UI -->
+        <div class="breathing-ui" id="breathing-ui">
+          <div class="progress-line" id="progress-line" style="top:92%"></div>
+          <span class="phase-label" id="phase-label">INHALE</span>
+        </div>
+
+        <!-- Transition text overlay -->
+        <div class="transition-overlay" id="transition-overlay">
+          <p class="transition-text" id="transition-text"></p>
+        </div>
+
+        <!-- Science overlay -->
+        <div class="science-overlay" id="science-overlay">
+          <div class="science-content">
+            <img src="lightbulb.png" alt="" id="lightbulb-img"/>
+            <p id="science-text"></p>
+          </div>
+        </div>
+
+        <!-- Done screen -->
+        <div class="screen-overlay" id="screen-done">
+          <span class="logo-text">āera</span>
+          <p class="done-subtitle">You're ready.</p>
+          <button class="done-btn" id="again-btn">Again</button>
         </div>
       </div>
     </div>

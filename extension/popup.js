@@ -71,19 +71,27 @@ function showStatus(msg, isError = false) {
 
 chrome.storage.local.get(["icalUrl"], data => updateConnectionStatus(!!data.icalUrl));
 
-// ─── Wave Breathing (Protocol-Driven) ───
-const canvas = document.getElementById("wave-canvas");
-const ctx = canvas.getContext("2d");
+// ─── Wave-style Breathing (Image + Gradient Mask) ───
 const card = document.getElementById("card");
-const startOverlay = document.getElementById("start-overlay");
-const doneOverlay = document.getElementById("done-overlay");
-const startBtnEl = document.getElementById("start-btn");
+const bgLogo = document.getElementById("bg-logo");
+const bgIntro = document.getElementById("bg-intro");
+const bgBreathing = document.getElementById("bg-breathing");
+const gradientMask = document.getElementById("gradient-mask");
+const screenLoading = document.getElementById("screen-loading");
+const screenLogo = document.getElementById("screen-logo");
+const screenIntro = document.getElementById("screen-intro");
+const screenDone = document.getElementById("screen-done");
+const breathingUI = document.getElementById("breathing-ui");
+const progressLine = document.getElementById("progress-line");
 const phaseLabel = document.getElementById("phase-label");
-const roundLabel = document.getElementById("round-label");
-const progressFill = document.getElementById("progress-fill");
-const sessionTitle = document.getElementById("session-title");
-const sessionDuration = document.getElementById("session-duration");
-const sessionNameOverlay = document.querySelector(".session-name");
+const transitionOverlay = document.getElementById("transition-overlay");
+const transitionTextEl = document.getElementById("transition-text");
+const scienceOverlay = document.getElementById("science-overlay");
+const scienceTextEl = document.getElementById("science-text");
+const againBtn = document.getElementById("again-btn");
+const introTitle = document.getElementById("intro-title");
+const introSubtitle = document.getElementById("intro-subtitle");
+const introText = document.getElementById("intro-text");
 
 let running = false;
 let sessionStart = 0;
@@ -91,160 +99,279 @@ let raf = 0;
 let activeTimeline = [];
 let activeTotalMs = 0;
 let activeProtocolId = "deep-focus";
+let hasStartedBreathing = false;
+let startsWithOverlay = false;
 
-// Wave rendering state
-let waveLevel = 0.45;
-let targetLevel = 0.45;
+const BAR_TOP = 10;
+const BAR_BOTTOM = 92;
+const TRANSITION_DURATION = 4500;
+const SCIENCE_DURATION = 5000;
+
+// ─── Preload images ───
+const ALL_IMAGES = [
+  "wave-bg-logo.png",
+  "wave-bg-intro.png",
+  "wave-bg-description.png",
+  "wave-bg-inhale.png",
+  "lightbulb.png",
+];
+
+function preloadImages(srcs) {
+  return Promise.all(
+    srcs.map(src => new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+      img.src = src;
+    }))
+  );
+}
+
+// ─── Build full timeline from protocol (with TRANSITION/SCIENCE entries) ───
+function buildFullTimeline(protocolId) {
+  const proto = PROTOCOLS[protocolId] || PROTOCOLS["deep-focus"];
+  const entries = [];
+  let cursor = 0;
+
+  proto.stages.forEach((stage, stageIdx) => {
+    if (stage.transition) {
+      entries.push({
+        type: "TRANSITION",
+        duration: TRANSITION_DURATION,
+        startMs: cursor,
+        endMs: cursor + TRANSITION_DURATION,
+        displayLabel: "",
+        stageIndex: stageIdx,
+        transitionText: stage.transition,
+      });
+      cursor += TRANSITION_DURATION;
+    }
+    if (stage.science) {
+      entries.push({
+        type: "SCIENCE",
+        duration: SCIENCE_DURATION,
+        startMs: cursor,
+        endMs: cursor + SCIENCE_DURATION,
+        displayLabel: "",
+        stageIndex: stageIdx,
+        scienceText: stage.science,
+      });
+      cursor += SCIENCE_DURATION;
+    }
+
+    for (let c = 0; c < (stage.cycles || 0); c++) {
+      if (stage.midSetHold && c === stage.midSetHold.afterCycle) {
+        const hp = stage.midSetHold.phase;
+        entries.push({
+          type: hp.type || "HOLD",
+          duration: hp.duration,
+          startMs: cursor,
+          endMs: cursor + hp.duration,
+          displayLabel: hp.label || "HOLD",
+          stageIndex: stageIdx,
+        });
+        cursor += hp.duration;
+      }
+      for (const phase of stage.cycle) {
+        const label = phase.label || phase.phase.toUpperCase();
+        entries.push({
+          type: phase.phase.toUpperCase(),
+          duration: phase.duration,
+          startMs: cursor,
+          endMs: cursor + phase.duration,
+          displayLabel: label,
+          stageIndex: stageIdx,
+        });
+        cursor += phase.duration;
+      }
+    }
+  });
+
+  if (proto.finalSequence) {
+    for (const phase of proto.finalSequence) {
+      entries.push({
+        type: phase.phase.toUpperCase(),
+        duration: phase.duration,
+        startMs: cursor,
+        endMs: cursor + phase.duration,
+        displayLabel: phase.label || phase.phase.toUpperCase(),
+        stageIndex: proto.stages.length,
+      });
+      cursor += phase.duration;
+    }
+  }
+
+  return entries;
+}
 
 function setProtocol(protocolId) {
   activeProtocolId = protocolId || "deep-focus";
-  activeTimeline = buildProtocolTimeline(activeProtocolId);
-  activeTotalMs = getProtocolTotalDuration(activeTimeline);
+  activeTimeline = buildFullTimeline(activeProtocolId);
+  activeTotalMs = activeTimeline.length > 0 ? activeTimeline[activeTimeline.length - 1].endMs : 0;
 
-  const title = getProtocolTitle(activeProtocolId);
+  const proto = PROTOCOLS[activeProtocolId] || PROTOCOLS["deep-focus"];
   const mins = Math.round(activeTotalMs / 60000);
-  sessionTitle.textContent = title.toUpperCase();
-  sessionDuration.textContent = `${mins} MINS`;
-  if (sessionNameOverlay) sessionNameOverlay.textContent = title;
+  introTitle.textContent = proto.title.toUpperCase();
+  introSubtitle.textContent = `~${mins} MINS`;
+  introText.textContent = proto.introText || "";
+
+  startsWithOverlay = activeTimeline.length > 0 &&
+    (activeTimeline[0].type === "SCIENCE" || activeTimeline[0].type === "TRANSITION");
 }
 
-function resizeCanvas() {
-  const dpr = window.devicePixelRatio || 1;
-  const w = card.clientWidth;
-  const h = card.clientHeight;
-  canvas.width = w * dpr;
-  canvas.height = h * dpr;
-  canvas.style.width = w + "px";
-  canvas.style.height = h + "px";
-  ctx.scale(dpr, dpr);
+// ─── Gradient mask ───
+function buildMask(barTop) {
+  return `linear-gradient(180deg,
+    rgba(255,255,255,0) ${Math.max(0, barTop - 8)}%,
+    rgba(255,255,255,0.5) ${barTop}%,
+    rgba(255,255,255,0.85) ${Math.min(100, barTop + 10)}%,
+    rgba(255,255,255,0.95) 100%)`;
 }
 
-function drawWave(time) {
-  const w = card.clientWidth;
-  const h = card.clientHeight;
-  ctx.clearRect(0, 0, w, h);
-
-  waveLevel += (targetLevel - waveLevel) * 0.04;
-  const baseY = h * (1 - waveLevel);
-
-  ctx.beginPath();
-  ctx.moveTo(0, 0);
-  ctx.lineTo(w, 0);
-  ctx.lineTo(w, baseY);
-
-  const amplitude = 12 + 6 * Math.sin(time * 0.0008);
-  const freq = 0.012;
-  const speed = time * 0.0012;
-
-  for (let x = w; x >= 0; x -= 2) {
-    const y = baseY
-      + Math.sin(x * freq + speed) * amplitude
-      + Math.sin(x * freq * 1.8 + speed * 1.3) * (amplitude * 0.4);
-    ctx.lineTo(x, y);
+function getBarPosition(type, progress, prevType) {
+  switch (type) {
+    case "INHALE": return BAR_BOTTOM - progress * (BAR_BOTTOM - BAR_TOP);
+    case "EXHALE": return BAR_BOTTOM - (1 - progress) * (BAR_BOTTOM - BAR_TOP);
+    case "HOLD": return BAR_TOP;
+    case "HOLD_EMPTY": return BAR_BOTTOM;
+    case "TRANSITION":
+    case "SCIENCE":
+      return (prevType === "INHALE" || prevType === "HOLD") ? BAR_TOP : BAR_BOTTOM;
+    default: return BAR_BOTTOM;
   }
-
-  ctx.closePath();
-  ctx.fillStyle = "#3a3a3c";
-  ctx.fill();
 }
 
-function getPhaseAtElapsed(elapsed) {
-  for (let i = activeTimeline.length - 1; i >= 0; i--) {
-    if (elapsed >= activeTimeline[i].startMs) {
-      const entry = activeTimeline[i];
-      const progress = Math.min(1, (elapsed - entry.startMs) / entry.duration);
-      return { entry, progress, index: i };
-    }
+// ─── Screen management ───
+function showScreen(name) {
+  [screenLoading, screenLogo, screenIntro, screenDone].forEach(el => el.classList.remove("active"));
+  [bgLogo, bgIntro, bgBreathing].forEach(el => el.classList.remove("active"));
+  breathingUI.classList.remove("active");
+  gradientMask.classList.remove("active");
+  transitionOverlay.classList.remove("active");
+  scienceOverlay.classList.remove("active");
+
+  if (name === "loading") {
+    screenLoading.classList.add("active");
+  } else if (name === "logo") {
+    screenLogo.classList.add("active");
+    bgLogo.classList.add("active");
+  } else if (name === "intro") {
+    screenIntro.classList.add("active");
+    bgIntro.classList.add("active");
+  } else if (name === "breathing") {
+    bgBreathing.classList.add("active");
+    breathingUI.classList.add("active");
+    gradientMask.classList.add("active");
+  } else if (name === "done") {
+    screenDone.classList.add("active");
+    bgLogo.classList.add("active");
   }
-  return { entry: activeTimeline[0], progress: 0, index: 0 };
 }
 
-function easeInOut(t) {
-  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+function fadeTransition(from, to, delay) {
+  setTimeout(() => {
+    showScreen(to);
+  }, delay);
 }
 
-function animate(time) {
+// ─── Breathing animation ───
+let prevEntryType = undefined;
+
+function animate() {
   if (!running) return;
 
   const elapsed = Date.now() - sessionStart;
 
   if (elapsed >= activeTotalMs) {
     running = false;
-    targetLevel = 0.45;
-    doneOverlay.classList.add("visible");
-    phaseLabel.textContent = "";
-    roundLabel.textContent = "";
-    drawWave(time);
+    showScreen("done");
     return;
   }
 
-  const { entry, progress } = getPhaseAtElapsed(elapsed);
-
-  // Update wave target based on phase
-  if (entry.phase === "inhale") {
-    targetLevel = 0.35 + 0.5 * easeInOut(progress);
-  } else if (entry.phase === "hold") {
-    targetLevel = 0.85;
-  } else {
-    // exhale
-    targetLevel = 0.85 - 0.5 * easeInOut(progress);
+  const entry = activeTimeline.find(e => elapsed >= e.startMs && elapsed < e.endMs);
+  if (!entry) {
+    raf = requestAnimationFrame(animate);
+    return;
   }
 
-  // Update labels
-  const displayLabel = entry.label || entry.phase.toUpperCase();
-  phaseLabel.textContent = displayLabel;
+  const progress = (elapsed - entry.startMs) / entry.duration;
+  const isOverlay = entry.type === "TRANSITION" || entry.type === "SCIENCE";
 
-  // Show elapsed time
-  const elapsedSec = Math.floor(elapsed / 1000);
-  const totalSec = Math.floor(activeTotalMs / 1000);
-  const remSec = totalSec - elapsedSec;
-  const m = Math.floor(remSec / 60).toString().padStart(2, "0");
-  const s = (remSec % 60).toString().padStart(2, "0");
-  roundLabel.textContent = `${m}:${s}`;
+  if (entry.type === "TRANSITION") {
+    transitionTextEl.textContent = entry.transitionText || "";
+    transitionOverlay.classList.add("active");
+    scienceOverlay.classList.remove("active");
+    phaseLabel.textContent = "";
+  } else if (entry.type === "SCIENCE") {
+    scienceTextEl.textContent = entry.scienceText || "";
+    scienceOverlay.classList.add("active");
+    transitionOverlay.classList.remove("active");
+    phaseLabel.textContent = "";
+  } else {
+    if (!hasStartedBreathing) hasStartedBreathing = true;
+    transitionOverlay.classList.remove("active");
+    scienceOverlay.classList.remove("active");
+    phaseLabel.textContent = entry.displayLabel;
+  }
 
-  progressFill.style.width = `${((elapsed / activeTotalMs) * 100).toFixed(1)}%`;
+  const barTop = getBarPosition(entry.type, progress, prevEntryType);
+  progressLine.style.top = barTop + "%";
+  gradientMask.style.background = buildMask(barTop);
 
-  drawWave(time);
+  // Hide bar/label during overlays or before first breath
+  const hideBar = isOverlay || (!hasStartedBreathing && startsWithOverlay);
+  progressLine.style.opacity = hideBar ? "0" : "1";
+  phaseLabel.style.opacity = hideBar ? "0" : "1";
+
+  prevEntryType = entry.type;
   raf = requestAnimationFrame(animate);
 }
 
 function startSession() {
   running = true;
   sessionStart = Date.now();
-  waveLevel = 0.35;
-  targetLevel = 0.35;
-  startOverlay.classList.add("hidden");
-  doneOverlay.classList.remove("visible");
-  phaseLabel.textContent = "INHALE";
-  roundLabel.textContent = "";
-  progressFill.style.width = "0%";
+  hasStartedBreathing = false;
+  prevEntryType = undefined;
+  showScreen("breathing");
+  gradientMask.style.background = buildMask(BAR_BOTTOM);
+  progressLine.style.top = BAR_BOTTOM + "%";
   raf = requestAnimationFrame(animate);
 }
 
-// Idle wave animation
-function idleAnimate(time) {
-  if (running) return;
-  targetLevel = 0.45 + 0.05 * Math.sin(time * 0.001);
-  drawWave(time);
-  requestAnimationFrame(idleAnimate);
+function restart() {
+  showScreen("intro");
+  setTimeout(() => {
+    startSession();
+  }, 3000);
 }
 
-// Init
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
-startBtnEl.addEventListener("click", startSession);
+againBtn.addEventListener("click", restart);
 
-// Set default protocol
+// ─── Init ───
 setProtocol("deep-focus");
+showScreen("loading");
 
-// Start idle animation
-requestAnimationFrame(idleAnimate);
+preloadImages(ALL_IMAGES).then(() => {
+  showScreen("logo");
+  setTimeout(() => {
+    showScreen("intro");
+    setTimeout(() => {
+      startSession();
+    }, 3000);
+  }, 2200);
+});
 
 // Auto-start if triggered by calendar
 chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
   if (data.autoStart) {
     chrome.storage.local.remove(["autoStart", "activeProtocol"]);
     setProtocol(data.activeProtocol || "deep-focus");
-    startSession();
+    preloadImages(ALL_IMAGES).then(() => {
+      showScreen("logo");
+      setTimeout(() => {
+        showScreen("intro");
+        setTimeout(() => startSession(), 3000);
+      }, 2200);
+    });
   }
 });
