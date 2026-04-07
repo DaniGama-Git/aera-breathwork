@@ -21,8 +21,10 @@ const STEPS = [
   {
     number: "03",
     title: "Open Extensions",
-    description:
-      'Go to chrome://extensions and enable "Developer mode" (top-right toggle).',
+    description: "Go to ",
+    linkText: "chrome://extensions",
+    linkHref: "chrome://extensions",
+    descriptionAfter: ' and enable "Developer mode" (top-right toggle).',
   },
   {
     number: "04",
