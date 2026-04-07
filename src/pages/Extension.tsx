@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Download, Copy, Check } from "lucide-react";
 import { useState, useEffect } from "react";
+import JSZip from "jszip";
 import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import areaLogo from "@/assets/aera-logo.svg";
 import BottomNavBar from "@/components/BottomNavBar";
@@ -63,20 +64,28 @@ const Extension = () => {
       });
   }, [user]);
 
-  const handleDownload = () => {
-    fetch("/aera-extension.zip")
-      .then((res) => {
-        if (!res.ok) throw new Error(`Download failed: ${res.status}`);
-        return res.blob();
-      })
-      .then((blob) => {
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "aera-extension.zip";
-        a.click();
-        URL.revokeObjectURL(a.href);
-      })
-      .catch((err) => alert(err.message));
+  const handleDownload = async () => {
+    try {
+      const res = await fetch("/aera-extension.zip");
+      if (!res.ok) throw new Error(`Download failed: ${res.status}`);
+      const blob = await res.blob();
+
+      // If user has keywords, inject defaults.json into the zip
+      let finalBlob = blob;
+      if (keywords.length > 0) {
+        const zip = await JSZip.loadAsync(blob);
+        zip.file("defaults.json", JSON.stringify({ keywords, leadMinutes: 15 }));
+        finalBlob = await zip.generateAsync({ type: "blob" });
+      }
+
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(finalBlob);
+      a.download = "aera-extension.zip";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    } catch (err: any) {
+      alert(err.message);
+    }
   };
 
   const handleCopyKeywords = () => {

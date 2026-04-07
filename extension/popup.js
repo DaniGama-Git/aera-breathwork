@@ -29,7 +29,28 @@ const connectionText = document.getElementById("connection-text");
 const urlValidated = document.getElementById("url-validated");
 
 async function loadSettings() {
-  const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes"]);
+  const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes", "defaultsApplied"]);
+
+  // On first run, check for bundled defaults.json
+  if (!data.defaultsApplied) {
+    try {
+      const resp = await fetch(chrome.runtime.getURL("defaults.json"));
+      if (resp.ok) {
+        const defaults = await resp.json();
+        if (defaults.keywords?.length && !data.keywords?.length) {
+          await chrome.storage.local.set({
+            keywords: defaults.keywords,
+            leadMinutes: defaults.leadMinutes ?? 15,
+            defaultsApplied: true,
+          });
+          data.keywords = defaults.keywords;
+          data.leadMinutes = defaults.leadMinutes ?? 15;
+        }
+      }
+    } catch (_) { /* no defaults.json bundled — skip */ }
+    await chrome.storage.local.set({ defaultsApplied: true });
+  }
+
   icalInput.value = data.icalUrl || "";
   keywordsInput.value = (data.keywords || []).join(", ");
   leadInput.value = data.leadMinutes ?? 15;
