@@ -372,17 +372,30 @@ const WavePreview = () => {
               <p className="text-white/50 text-[13px] tracking-wide mt-3 font-medium">
                 You're ready.
               </p>
-              <button
-                onClick={restart}
-                className="mt-8 px-7 py-2.5 rounded-full text-[10px] tracking-[0.2em] uppercase font-medium cursor-pointer transition-all hover:brightness-110"
-                style={{
-                  background: "rgba(255,255,255,0.08)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  color: "rgba(255,255,255,0.55)",
-                }}
-              >
-                Again
-              </button>
+              <div className="flex flex-col items-center gap-3 mt-8">
+                <button
+                  onClick={restart}
+                  className="px-7 py-2.5 rounded-full text-[10px] tracking-[0.2em] uppercase font-medium cursor-pointer transition-all hover:brightness-110"
+                  style={{
+                    background: "rgba(255,255,255,0.08)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    color: "rgba(255,255,255,0.55)",
+                  }}
+                >
+                  Again
+                </button>
+                <button
+                  onClick={() => navigate("/")}
+                  className="px-7 py-2.5 rounded-full text-[10px] tracking-[0.2em] uppercase font-medium cursor-pointer transition-all hover:brightness-110"
+                  style={{
+                    background: "rgba(255,255,255,0.15)",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    color: "rgba(255,255,255,0.75)",
+                  }}
+                >
+                  Get Started
+                </button>
+              </div>
             </div>
           )}
         </div>
