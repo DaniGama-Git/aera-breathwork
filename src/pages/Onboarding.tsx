@@ -176,7 +176,7 @@ const Onboarding = () => {
             )}
             {step !== "closing" && (
               <button
-                onClick={saveAndFinish}
+                onClick={() => saveAndFinish()}
                 disabled={saving}
                 className="text-white/30 font-body text-xs hover:text-white/50 transition-colors"
               >
