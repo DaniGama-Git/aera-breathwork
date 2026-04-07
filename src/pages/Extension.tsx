@@ -21,8 +21,10 @@ const STEPS = [
   {
     number: "03",
     title: "Open Extensions",
-    description:
-      'Go to chrome://extensions and enable "Developer mode" (top-right toggle).',
+    description: "Go to ",
+    linkText: "chrome://extensions",
+    linkHref: "chrome://extensions",
+    descriptionAfter: ' and enable "Developer mode" (top-right toggle).',
   },
   {
     number: "04",
@@ -156,12 +158,23 @@ const Extension = () => {
                 <p className="text-white/40 text-[13px] leading-relaxed font-body font-medium">
                   {step.description}
                   {"linkText" in step && step.linkText && (
-                    <button
-                      onClick={() => navigate((step as any).linkTo)}
-                      className="text-white/60 underline underline-offset-2 decoration-white/30 hover:text-white/80 transition-colors"
-                    >
-                      {step.linkText}
-                    </button>
+                    "linkHref" in step ? (
+                      <a
+                        href={(step as any).linkHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white/60 underline underline-offset-2 decoration-white/30 hover:text-white/80 transition-colors"
+                      >
+                        {step.linkText}
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => navigate((step as any).linkTo)}
+                        className="text-white/60 underline underline-offset-2 decoration-white/30 hover:text-white/80 transition-colors"
+                      >
+                        {step.linkText}
+                      </button>
+                    )
                   )}
                   {"descriptionAfter" in step && (step as any).descriptionAfter}
                 </p>
