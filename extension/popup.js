@@ -224,10 +224,12 @@ function setProtocol(protocolId) {
 // ─── Gradient mask ───
 function buildMask(barTop) {
   return `linear-gradient(180deg,
-    rgba(255,255,255,0) ${Math.max(0, barTop - 8)}%,
-    rgba(255,255,255,0.5) ${barTop}%,
-    rgba(255,255,255,0.85) ${Math.min(100, barTop + 10)}%,
-    rgba(255,255,255,0.95) 100%)`;
+    rgba(255,255,255,0) ${Math.max(0, barTop - 12)}%,
+    rgba(255,255,255,0.15) ${Math.max(0, barTop - 4)}%,
+    rgba(255,255,255,0.35) ${barTop}%,
+    rgba(255,255,255,0.55) ${Math.min(100, barTop + 6)}%,
+    rgba(255,255,255,0.75) ${Math.min(100, barTop + 14)}%,
+    rgba(255,255,255,0.9) 100%)`;
 }
 
 function getBarPosition(type, progress, prevType) {
