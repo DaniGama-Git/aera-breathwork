@@ -178,6 +178,12 @@ const WavePreview = () => {
         setPhase(entry.displayLabel);
       }
 
+      // Update session progress bar
+      if (progressBarRef.current) {
+        const pct = Math.min(100, (elapsed / totalDuration) * 100);
+        progressBarRef.current.style.width = `${pct.toFixed(1)}%`;
+      }
+
       prevEntryType = entry.type;
       rafId = requestAnimationFrame(tick);
     };
