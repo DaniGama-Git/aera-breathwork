@@ -15,5 +15,11 @@
   "icons": {
     "48": "icon-48.png",
     "128": "icon.png"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["defaults.json"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
