@@ -56,7 +56,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       });
 
     return () => { active = false; };
-  }, [user]);
+  }, [user, location.pathname]);
 
   if (loading || !onboardingChecked) return <LoadingSpinner />;
   if (!user) return <Navigate to="/auth" replace />;
