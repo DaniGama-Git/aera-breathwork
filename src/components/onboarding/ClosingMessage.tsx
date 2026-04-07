@@ -1,4 +1,5 @@
 import BreatheDots from "@/components/BreatheDots";
+import AddToCalendar from "@/components/AddToCalendar";
 
 interface OnboardingData {
   goals: string[];
@@ -17,13 +18,42 @@ interface Props {
   onFinish: () => void;
 }
 
+const PRACTICE_LABELS: Record<string, string> = {
+  perform: "Perform",
+  energize: "Energize",
+  recover: "Recover",
+};
+
+const LENGTH_MINUTES: Record<string, number> = {
+  under_3: 3,
+  "3_to_5": 5,
+  up_to_10: 10,
+};
+
+const FREQUENCY_COUNT: Record<string, number> = {
+  "1x": 1,
+  "2x": 2,
+  "3x": 3,
+};
+
 const TIME_LABELS: Record<string, string> = {
   morning: "morning",
   midday: "midday",
   evening: "evening",
 };
 
+const TIME_MAP: Record<string, string> = {
+  morning: "start_of_day",
+  midday: "between_meetings",
+  evening: "end_of_day",
+};
+
 const ClosingMessage = ({ data, saving, onFinish }: Props) => {
+  const practiceLabel = PRACTICE_LABELS[data.scheduledPractice] || data.scheduledPractice;
+  const durationMinutes = LENGTH_MINUTES[data.scheduledLength] || 5;
+  const frequency = FREQUENCY_COUNT[data.scheduledFrequency] || 1;
+  const recommendedTime = data.scheduledTimes.length > 0 ? TIME_MAP[data.scheduledTimes[0]] : "start_of_day";
+
   const scheduleDescription = data.scheduledEnabled
     ? `${data.scheduledFrequency?.replace("x", "x per day")}, ${data.scheduledTimes.map((t) => TIME_LABELS[t] || t).join(" and ")}`
     : null;
@@ -35,22 +65,37 @@ const ClosingMessage = ({ data, saving, onFinish }: Props) => {
       </h1>
 
       <div className="max-w-[360px] space-y-4">
-        <p className="text-white/60 font-body text-[15px] leading-relaxed">
-          Moment-based sessions will surface via the Chrome extension before and between the calendar moments you selected.
-        </p>
-
         {scheduleDescription && (
           <p className="text-white/60 font-body text-[15px] leading-relaxed">
             Your scheduled sessions are set to {scheduleDescription}.
           </p>
         )}
 
-        <p className="text-white/60 font-body text-[15px] leading-relaxed">
-          Three sessions — Conflict Reset, Performance Reset, and Post-Setback Reset — are always available by clicking the āera icon, for moments your calendar can't predict.
-        </p>
+        {data.scheduledEnabled && (
+          <div className="pt-2 pb-2">
+            <AddToCalendar
+              sessionTitle={`${practiceLabel} Breathwork`}
+              sessionSubtitle={`Scheduled ${practiceLabel} session`}
+              sessionCategory={practiceLabel}
+              durationMinutes={durationMinutes}
+              recommendedFrequency={frequency}
+              recommendedTime={recommendedTime}
+              trigger={
+                <button className="w-full max-w-[320px] py-3.5 rounded-xl text-white font-body font-semibold text-[14px] tracking-wide flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98]"
+                  style={{
+                    background: "rgba(255,255,255,0.12)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                  }}
+                >
+                  Add Scheduled Sessions to Calendar
+                </button>
+              }
+            />
+          </div>
+        )}
 
-        <p className="text-white/60 font-body text-[15px] leading-relaxed">
-          Ground sessions like Evening Decompression, Deep Decompression, and Travel Reset live in the āera app, whenever you're ready to close your day.
+        <p className="text-white/40 font-body text-[13px] leading-relaxed">
+          Next: set up the Chrome extension for calendar-triggered sessions.
         </p>
       </div>
 
@@ -65,7 +110,7 @@ const ClosingMessage = ({ data, saving, onFinish }: Props) => {
             Setting up…
           </span>
         ) : (
-          "Enter āera →"
+          "Get the Chrome Extension →"
         )}
       </button>
     </div>
