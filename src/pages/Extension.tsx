@@ -135,7 +135,30 @@ const Extension = () => {
           </p>
         </div>
 
-        {/* Trigger keywords from onboarding */}
+        {/* Steps */}
+        <div className="px-6 space-y-5 mb-10">
+          {STEPS.map((step) => (
+            <div
+              key={step.number}
+              className="flex gap-4 items-start p-4 rounded-xl"
+              style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(8px)" }}
+            >
+              <span className="text-white/20 font-body font-light text-[13px] tracking-widest mt-0.5">
+                {step.number}
+              </span>
+              <div>
+                <p className="text-white/90 text-[15px] font-body font-semibold mb-1">
+                  {step.title}
+                </p>
+                <p className="text-white/40 text-[13px] leading-relaxed font-body font-medium">
+                  {step.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Trigger keywords from onboarding — shown after steps */}
         {keywords.length > 0 && (
           <div className="px-6 mb-6">
             <div
@@ -163,29 +186,6 @@ const Extension = () => {
             </div>
           </div>
         )}
-
-        {/* Steps */}
-        <div className="px-6 space-y-5 mb-10">
-          {STEPS.map((step) => (
-            <div
-              key={step.number}
-              className="flex gap-4 items-start p-4 rounded-xl"
-              style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(8px)" }}
-            >
-              <span className="text-white/20 font-body font-light text-[13px] tracking-widest mt-0.5">
-                {step.number}
-              </span>
-              <div>
-                <p className="text-white/90 text-[15px] font-body font-semibold mb-1">
-                  {step.title}
-                </p>
-                <p className="text-white/40 text-[13px] leading-relaxed font-body font-medium">
-                  {step.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
 
         {/* Download CTA */}
         <div className="px-6 pb-8">
