@@ -20,7 +20,7 @@ const SCREEN_DELAYS: Partial<Record<Screen, number>> = {
   intro: 3000,
 };
 
-const ALL_IMAGES = [waveBgLogo, waveBgIntro, waveBgDescription, waveBgInhale];
+const ALL_IMAGES = [waveBgLogo, waveBgIntro, waveBgDescription, waveBgInhale, lightbulbIcon];
 
 const SCREEN_BG: Partial<Record<Screen, string>> = {
   logo: waveBgLogo,
