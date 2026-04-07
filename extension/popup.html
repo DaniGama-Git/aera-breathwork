@@ -125,10 +125,22 @@ body{
 }
 
 .phase-label{
-  padding-bottom:28px;
+  padding-bottom:6px;
   font-size:14px;letter-spacing:0.25em;font-weight:500;
   color:rgba(80,80,80,0.6);
   transition:opacity 400ms ease;
+}
+
+.session-progress-wrap{
+  width:80px;height:3px;border-radius:2px;
+  background:rgba(0,0,0,0.08);overflow:hidden;
+  margin-bottom:24px;
+  transition:opacity 400ms ease;
+}
+.session-progress-fill{
+  height:100%;width:0%;border-radius:2px;
+  background:rgba(60,60,60,0.45);
+  transition:width 0.4s ease;
 }
 
 /* Transition text overlay */
@@ -161,7 +173,7 @@ body{
   text-align:left;max-width:250px;
 }
 .science-content img{
-  width:28px;height:38px;opacity:0.9;flex-shrink:0;margin-top:2px;
+  width:24px;height:auto;opacity:0.9;flex-shrink:0;margin-top:2px;
 }
 .science-content p{
   font-size:12px;line-height:1.6;font-weight:500;
@@ -279,6 +291,9 @@ Let your mind open up.</p>
         <div class="breathing-ui" id="breathing-ui">
           <div class="progress-line" id="progress-line" style="top:92%"></div>
           <span class="phase-label" id="phase-label">INHALE</span>
+          <div class="session-progress-wrap" id="session-progress-wrap">
+            <div class="session-progress-fill" id="session-progress-fill"></div>
+          </div>
         </div>
 
         <!-- Transition text overlay -->
@@ -363,7 +378,7 @@ Let your mind open up.</p>
     </div>
     <div class="field">
       <label>Lead time (minutes before event)</label>
-      <input id="lead-minutes" type="number" value="2" min="0" max="30"/>
+      <input id="lead-minutes" type="number" value="15" min="0" max="30"/>
     </div>
     <button class="save-btn" id="save-btn">Save & Connect</button>
     <div class="status" id="status"></div>

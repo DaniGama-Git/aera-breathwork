@@ -84,6 +84,8 @@ const screenDone = document.getElementById("screen-done");
 const breathingUI = document.getElementById("breathing-ui");
 const progressLine = document.getElementById("progress-line");
 const phaseLabel = document.getElementById("phase-label");
+const sessionProgressWrap = document.getElementById("session-progress-wrap");
+const sessionProgressFill = document.getElementById("session-progress-fill");
 const transitionOverlay = document.getElementById("transition-overlay");
 const transitionTextEl = document.getElementById("transition-text");
 const scienceOverlay = document.getElementById("science-overlay");
@@ -322,6 +324,11 @@ function animate() {
   const hideBar = isOverlay || (!hasStartedBreathing && startsWithOverlay);
   progressLine.style.opacity = hideBar ? "0" : "1";
   phaseLabel.style.opacity = hideBar ? "0" : "1";
+  sessionProgressWrap.style.opacity = hideBar ? "0" : "1";
+
+  // Update session progress bar
+  const pct = Math.min(100, (elapsed / activeTotalMs) * 100);
+  sessionProgressFill.style.width = pct.toFixed(1) + "%";
 
   prevEntryType = entry.type;
   raf = requestAnimationFrame(animate);
@@ -335,6 +342,7 @@ function startSession() {
   showScreen("breathing");
   gradientMask.style.background = buildMask(BAR_BOTTOM);
   progressLine.style.top = BAR_BOTTOM + "%";
+  sessionProgressFill.style.width = "0%";
   raf = requestAnimationFrame(animate);
 }
 
