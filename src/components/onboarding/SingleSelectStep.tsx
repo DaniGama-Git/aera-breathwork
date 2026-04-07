@@ -14,7 +14,7 @@ interface Props {
 
 const SingleSelectStep = ({ question, note, options, selected, onChange }: Props) => (
   <div className="flex flex-col">
-    <h1 className="text-white font-body font-semibold text-[28px] leading-tight mb-3">
+    <h1 className="text-white font-body font-semibold text-[22px] leading-tight mb-3">
       {question}
     </h1>
     {note && (
