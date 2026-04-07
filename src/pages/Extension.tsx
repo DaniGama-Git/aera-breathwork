@@ -34,7 +34,10 @@ const STEPS = [
     number: "05",
     title: "Connect Calendar",
     description:
-      "Open the āera extension, go to Settings, and connect your Google Calendar to trigger sessions before key moments.",
+      "Open the āera extension, go to Settings, and ",
+    linkText: "connect your Google Calendar",
+    linkTo: "/calendar-setup",
+    descriptionAfter: " to trigger sessions before key moments.",
   },
 ];
 
@@ -102,7 +105,7 @@ const Extension = () => {
 
       <div className="relative z-10 flex flex-col min-h-screen max-w-[800px] mx-auto w-full overflow-y-auto">
         {/* Back */}
-        <div className="pt-14 px-6">
+        <div className="pt-10 px-6">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-white/40 hover:text-white/70 transition text-sm font-body font-medium tracking-wide"
@@ -113,7 +116,7 @@ const Extension = () => {
         </div>
 
         {/* Hero */}
-        <div className="flex flex-col items-center text-center px-6 pt-12 pb-10">
+        <div className="flex flex-col items-center text-center px-6 pt-6 pb-8">
           <img
             src={areaLogo}
             alt="āera"
@@ -152,6 +155,15 @@ const Extension = () => {
                 </p>
                 <p className="text-white/40 text-[13px] leading-relaxed font-body font-medium">
                   {step.description}
+                  {"linkText" in step && step.linkText && (
+                    <button
+                      onClick={() => navigate((step as any).linkTo)}
+                      className="text-white/60 underline underline-offset-2 decoration-white/30 hover:text-white/80 transition-colors"
+                    >
+                      {step.linkText}
+                    </button>
+                  )}
+                  {"descriptionAfter" in step && (step as any).descriptionAfter}
                 </p>
               </div>
             </div>
@@ -204,16 +216,6 @@ const Extension = () => {
           <p className="text-center text-[11px] text-white/25 mt-3 font-body font-medium tracking-wide">
             Works in Chrome, Edge, Brave, and Arc
           </p>
-          <button
-            onClick={() => navigate("/calendar-setup")}
-            className="w-full mt-4 py-3 rounded-xl text-white/60 font-body font-medium text-[13px] tracking-wide flex items-center justify-center gap-2 transition-all hover:text-white/80"
-            style={{
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-          >
-            How to connect your calendar
-          </button>
         </div>
 
         <BottomNavBar />
