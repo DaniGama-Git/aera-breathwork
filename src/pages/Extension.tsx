@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, Download, Copy, Check } from "lucide-react";
+import { useState, useEffect } from "react";
 import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import areaLogo from "@/assets/aera-logo.svg";
 import BottomNavBar from "@/components/BottomNavBar";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 const STEPS = [
   {
@@ -37,6 +40,23 @@ const STEPS = [
 
 const Extension = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from("onboarding_preferences")
+      .select("calendar_keywords")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.calendar_keywords?.length) {
+          setKeywords(data.calendar_keywords);
+        }
+      });
+  }, [user]);
 
   const handleDownload = () => {
     fetch("/aera-extension.zip")
@@ -52,6 +72,12 @@ const Extension = () => {
         URL.revokeObjectURL(a.href);
       })
       .catch((err) => alert(err.message));
+  };
+
+  const handleCopyKeywords = () => {
+    navigator.clipboard.writeText(keywords.join(", "));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -108,6 +134,35 @@ const Extension = () => {
             meetings so you show up sharp.
           </p>
         </div>
+
+        {/* Trigger keywords from onboarding */}
+        {keywords.length > 0 && (
+          <div className="px-6 mb-6">
+            <div
+              className="p-4 rounded-xl"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-white/30 text-[11px] font-body font-medium tracking-wide uppercase">
+                  Your trigger words
+                </p>
+                <button
+                  onClick={handleCopyKeywords}
+                  className="flex items-center gap-1.5 text-white/30 hover:text-white/60 transition text-[11px] font-body font-medium tracking-wide"
+                >
+                  {copied ? <Check size={12} /> : <Copy size={12} />}
+                  {copied ? "Copied" : "Copy"}
+                </button>
+              </div>
+              <p className="text-white/60 text-[13px] font-body font-medium leading-relaxed">
+                {keywords.join(", ")}
+              </p>
+              <p className="text-white/20 text-[11px] font-body font-medium mt-2">
+                Paste these into the extension's Keywords field after connecting your calendar.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Steps */}
         <div className="px-6 space-y-5 mb-10">
