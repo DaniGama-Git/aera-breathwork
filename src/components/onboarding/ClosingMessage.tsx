@@ -51,7 +51,8 @@ const TIME_MAP: Record<string, string> = {
 const ClosingMessage = ({ data, saving, onFinish }: Props) => {
   const practiceLabel = PRACTICE_LABELS[data.scheduledPractice] || data.scheduledPractice;
   const durationMinutes = LENGTH_MINUTES[data.scheduledLength] || 5;
-  const frequency = FREQUENCY_COUNT[data.scheduledFrequency] || 1;
+  // Always schedule across all 5 weekdays for a proper daily recurring event
+  const frequency = 5;
   const recommendedTime = data.scheduledTimes.length > 0 ? TIME_MAP[data.scheduledTimes[0]] : "start_of_day";
 
   const scheduleDescription = data.scheduledEnabled
