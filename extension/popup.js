@@ -324,6 +324,11 @@ function animate() {
   const hideBar = isOverlay || (!hasStartedBreathing && startsWithOverlay);
   progressLine.style.opacity = hideBar ? "0" : "1";
   phaseLabel.style.opacity = hideBar ? "0" : "1";
+  sessionProgressWrap.style.opacity = hideBar ? "0" : "1";
+
+  // Update session progress bar
+  const pct = Math.min(100, (elapsed / activeTotalMs) * 100);
+  sessionProgressFill.style.width = pct.toFixed(1) + "%";
 
   prevEntryType = entry.type;
   raf = requestAnimationFrame(animate);
