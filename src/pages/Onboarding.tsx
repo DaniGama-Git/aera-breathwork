@@ -112,7 +112,7 @@ const Onboarding = () => {
     }
   };
 
-  const saveAndFinish = async () => {
+  const saveAndFinish = async (destination: string = "/extension") => {
     if (!user || saving) return;
     setSaving(true);
 
@@ -148,11 +148,10 @@ const Onboarding = () => {
         if (error) console.error("Profile insert error:", error);
       }
 
-      navigate("/menu", { replace: true });
+      navigate(destination, { replace: true });
     } catch (err) {
       console.error("Failed to save onboarding:", err);
-      // Still try to navigate on skip
-      navigate("/menu", { replace: true });
+      navigate(destination, { replace: true });
     } finally {
       setSaving(false);
     }
@@ -256,9 +255,12 @@ const Onboarding = () => {
                 onChange={(val) => {
                   const enabled = val === "yes";
                   setData({ ...data, scheduledEnabled: enabled });
-                  setTimeout(() => {
-                    setStep(enabled ? "scheduled_practice" : "closing");
-                  }, 300);
+                  if (enabled) {
+                    setTimeout(() => setStep("scheduled_practice"), 300);
+                  } else {
+                    // Save and go directly to extension download
+                    setTimeout(() => saveAndFinish("/extension"), 300);
+                  }
                 }}
                 autoAdvance
               />
