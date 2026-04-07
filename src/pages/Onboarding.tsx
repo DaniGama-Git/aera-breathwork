@@ -117,7 +117,8 @@ const Onboarding = () => {
     setSaving(true);
 
     try {
-      const { error: prefError } = await supabase
+      // Save preferences (non-blocking for skip)
+      await supabase
         .from("onboarding_preferences")
         .upsert({
           user_id: user.id,
@@ -129,11 +130,10 @@ const Onboarding = () => {
           scheduled_length: data.scheduledLength || null,
           scheduled_times: data.scheduledTimes,
           scheduled_frequency: data.scheduledFrequency || null,
-        }, { onConflict: "user_id" });
+        }, { onConflict: "user_id" })
+        .then(({ error }) => { if (error) console.warn("Prefs save:", error); });
 
-      if (prefError) throw prefError;
-
-      // Mark onboarding complete
+      // Mark onboarding complete — this is critical
       const { data: existing } = await supabase
         .from("profiles")
         .select("user_id")
@@ -141,14 +141,19 @@ const Onboarding = () => {
         .maybeSingle();
 
       if (existing) {
-        await supabase.from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
+        const { error } = await supabase.from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
+        if (error) console.error("Profile update error:", error);
       } else {
-        await supabase.from("profiles").insert({ user_id: user.id, onboarding_completed: true });
+        const { error } = await supabase.from("profiles").insert({ user_id: user.id, onboarding_completed: true });
+        if (error) console.error("Profile insert error:", error);
       }
 
       navigate("/menu", { replace: true });
     } catch (err) {
       console.error("Failed to save onboarding:", err);
+      // Still try to navigate on skip
+      navigate("/menu", { replace: true });
+    } finally {
       setSaving(false);
     }
   };
