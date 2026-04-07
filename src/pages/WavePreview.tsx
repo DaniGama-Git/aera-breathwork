@@ -350,7 +350,7 @@ const WavePreview = () => {
               </div>
 
               <div
-                className="pb-7 flex flex-col items-center gap-2"
+                className="pb-7 flex flex-col items-center gap-3"
                 style={{
                   opacity: (!hasStartedBreathing && startsWithOverlay) || showOverlay ? 0 : 1,
                   transition: showOverlay ? "opacity 400ms ease-out" : "opacity 400ms ease-in 300ms",
@@ -363,6 +363,13 @@ const WavePreview = () => {
                 >
                   {phase}
                 </span>
+                {/* Session progress bar */}
+                <div style={{ width: 80, height: 3, background: "rgba(0,0,0,0.08)", borderRadius: 2, overflow: "hidden" }}>
+                  <div
+                    ref={progressBarRef}
+                    style={{ height: "100%", width: "0%", background: "rgba(60,60,60,0.45)", borderRadius: 2, transition: "width 0.4s ease" }}
+                  />
+                </div>
               </div>
             </div>
           )}
