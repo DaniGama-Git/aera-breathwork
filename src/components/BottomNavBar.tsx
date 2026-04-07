@@ -24,7 +24,6 @@ const tabConfig = [
   { label: "Home", icon: homeIcon, paths: ["/menu"] },
   { label: "Breathe", icon: breatheIcon, paths: ["/session"] },
   { label: "Search", icon: searchIcon, paths: ["/search"] },
-  { label: "Science", icon: scienceIcon, paths: ["/hrv"] },
 ];
 
 const BottomNavBar = ({ activeTab }: { activeTab?: string }) => {
