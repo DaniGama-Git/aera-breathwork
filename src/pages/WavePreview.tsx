@@ -5,6 +5,14 @@ import waveBgIntro from "@/assets/wave-bg-intro.png";
 import waveBgDescription from "@/assets/wave-bg-description.png";
 import waveBgInhale from "@/assets/wave-bg-inhale.png";
 import lightbulbIcon from "@/assets/lightbulb-icon.svg";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import waveBgLogo from "@/assets/wave-bg-logo.png";
+import waveBgIntro from "@/assets/wave-bg-intro.png";
+import waveBgDescription from "@/assets/wave-bg-description.png";
+import waveBgInhale from "@/assets/wave-bg-inhale.png";
+import lightbulbIcon from "@/assets/lightbulb-icon.svg";
+import BreatheDots from "@/components/BreatheDots";
 import {
   creativeFlowProtocol,
   buildTimeline,
