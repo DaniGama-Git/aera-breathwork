@@ -211,9 +211,7 @@ const WavePreview = () => {
             className="relative w-full overflow-hidden flex items-center justify-center"
             style={{ aspectRatio: "1 / 1.1", borderRadius: 22, background: "#1a1a1a" }}
           >
-            <span className="text-white/30 text-[11px] tracking-[0.15em] font-medium animate-pulse">
-              loading
-            </span>
+            <BreatheDots className="w-12 h-12" />
           </div>
         </div>
       </div>
