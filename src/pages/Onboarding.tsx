@@ -329,7 +329,7 @@ const Onboarding = () => {
             <ClosingMessage
               data={data}
               saving={saving}
-              onFinish={saveAndFinish}
+              onFinish={() => saveAndFinish("/extension")}
             />
           )}
 
