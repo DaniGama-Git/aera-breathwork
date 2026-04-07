@@ -342,6 +342,7 @@ function startSession() {
   showScreen("breathing");
   gradientMask.style.background = buildMask(BAR_BOTTOM);
   progressLine.style.top = BAR_BOTTOM + "%";
+  sessionProgressFill.style.width = "0%";
   raf = requestAnimationFrame(animate);
 }
 
