@@ -65,6 +65,7 @@ const WavePreview = () => {
   const barRef = useRef<HTMLDivElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
   const phaseLabelRef = useRef<HTMLSpanElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   const timeline = useMemo(() => buildTimeline(protocol), []);
   const totalDuration = timeline.length > 0 ? timeline[timeline.length - 1].endMs : 0;
@@ -175,6 +176,12 @@ const WavePreview = () => {
         if (phaseLabelRef.current)
           phaseLabelRef.current.textContent = entry.displayLabel;
         setPhase(entry.displayLabel);
+      }
+
+      // Update session progress bar
+      if (progressBarRef.current) {
+        const pct = Math.min(100, (elapsed / totalDuration) * 100);
+        progressBarRef.current.style.width = `${pct.toFixed(1)}%`;
       }
 
       prevEntryType = entry.type;
@@ -315,20 +322,18 @@ const WavePreview = () => {
                 </p>
               </div>
 
-              {/* Science overlay with lightbulb — only render when there's actual text */}
+              {/* Science overlay with lightbulb — always rendered, visibility via parent opacity */}
               <div
                 className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-700"
                 style={{ opacity: showScience ? 1 : 0, pointerEvents: "none" }}
               >
-                {scienceText && (
-                  <div className="flex items-start gap-3 text-left max-w-[240px]">
-                    <img src={lightbulbIcon} alt="" style={{ width: 40, height: 54 }} className="mt-0.5 opacity-70 shrink-0" />
-                    <p className="text-white/70 text-[12px] leading-relaxed font-medium"
-                       style={{ textShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>
-                      {scienceText}
-                    </p>
-                  </div>
-                )}
+                <div className="flex items-start gap-3 text-left max-w-[240px]">
+                  <img src={lightbulbIcon} alt="" style={{ width: 40, height: 54 }} className="mt-0.5 opacity-70 shrink-0" />
+                  <p className="text-white/70 text-[12px] leading-relaxed font-medium"
+                     style={{ textShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>
+                    {scienceText || "\u00A0"}
+                  </p>
+                </div>
               </div>
 
               {/* Traveling progress bar */}
@@ -345,7 +350,7 @@ const WavePreview = () => {
               </div>
 
               <div
-                className="pb-7 flex flex-col items-center gap-2"
+                className="pb-7 flex flex-col items-center gap-3"
                 style={{
                   opacity: (!hasStartedBreathing && startsWithOverlay) || showOverlay ? 0 : 1,
                   transition: showOverlay ? "opacity 400ms ease-out" : "opacity 400ms ease-in 300ms",
@@ -358,6 +363,13 @@ const WavePreview = () => {
                 >
                   {phase}
                 </span>
+                {/* Session progress bar */}
+                <div style={{ width: 80, height: 3, background: "rgba(0,0,0,0.08)", borderRadius: 2, overflow: "hidden" }}>
+                  <div
+                    ref={progressBarRef}
+                    style={{ height: "100%", width: "0%", background: "rgba(60,60,60,0.45)", borderRadius: 2, transition: "width 0.4s ease" }}
+                  />
+                </div>
               </div>
             </div>
           )}
