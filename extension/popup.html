@@ -194,6 +194,26 @@ body{
 }
 .done-btn:hover{border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.1)}
 
+/* ─── Session Controls (top bar) ─── */
+.session-controls{
+  position:absolute;top:12px;left:12px;right:12px;z-index:20;
+  display:flex;justify-content:space-between;align-items:center;
+  opacity:0;pointer-events:none;transition:opacity 400ms ease;
+}
+.session-controls.active{opacity:1;pointer-events:auto}
+
+.ctrl-btn{
+  width:32px;height:32px;border-radius:50%;border:none;
+  background:rgba(0,0,0,0.35);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.25s ease;
+  color:rgba(255,255,255,0.7);
+}
+.ctrl-btn:hover{background:rgba(0,0,0,0.55);color:rgba(255,255,255,0.95)}
+.ctrl-btn svg{width:14px;height:14px}
+
+.ctrl-right{display:flex;gap:6px;align-items:center}
+
 /* Loading dots */
 .loading-dots{
   display:flex;gap:6px;
@@ -285,6 +305,22 @@ body{
           <span class="intro-subtitle" id="intro-subtitle">~3.5 MINS</span>
           <p class="intro-text" id="intro-text">Let go of control.
 Let your mind open up.</p>
+        </div>
+
+        <!-- Session controls (close, sound, stop) -->
+        <div class="session-controls" id="session-controls">
+          <button class="ctrl-btn" id="ctrl-stop" title="Stop & dismiss">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <div class="ctrl-right">
+            <button class="ctrl-btn" id="ctrl-sound" title="Toggle sound">
+              <svg id="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              <svg id="icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+            </button>
+            <button class="ctrl-btn" id="ctrl-close" title="Close window">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </button>
+          </div>
         </div>
 
         <!-- Breathing UI -->
