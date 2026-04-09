@@ -157,7 +157,7 @@ const Onboarding = () => {
             <OnboardingStep>
               <MultiSelectStep
                 question="When do you want āera to show up?"
-                hint="Choose as many as feel right. If you don't select a moment, no sessions from that category will fire."
+                hint="Choose as many as feel right."
                 options={MOMENT_OPTIONS}
                 selected={data.moments}
                 onChange={(moments) => setData({ ...data, moments })}
