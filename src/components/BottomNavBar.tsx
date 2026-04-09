@@ -22,7 +22,7 @@ const getTimeBasedRoute = () => {
 
 const tabConfig = [
   { label: "Home", icon: homeIcon, paths: ["/menu"] },
-  { label: "Breathe", icon: breatheIcon, paths: ["/session"] },
+  { label: "Breathe", icon: breatheIcon, paths: ["/session/"] },
   { label: "Search", icon: searchIcon, paths: ["/search"] },
 ];
 
