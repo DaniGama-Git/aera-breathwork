@@ -26,7 +26,7 @@ const Auth = () => {
           className="font-body font-normal text-[#F7F6F5] mb-16"
           style={{ fontSize: "clamp(16px, 4.3vw, 18px)", lineHeight: 1.35 }}
         >
-          Emotional Performance Infrastructure
+          Breathe. Recover. Perform.
         </p>
 
         <button
