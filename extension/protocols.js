@@ -324,7 +324,7 @@ const PROTOCOLS = {
         science: "Double inhale activates alveolar sacs and rapidly lowers CO₂, breaking the stress loop in seconds.",
         cycle: [
           { phase: "inhale", duration: 3000 },
-          { phase: "inhale", duration: 1000, label: "SNIFF" },
+          { phase: "sniff", duration: 1000, label: "SNIFF" },
           { phase: "exhale", duration: 5000, label: "NATURALLY EXHALE" },
         ],
         cycles: 2,
