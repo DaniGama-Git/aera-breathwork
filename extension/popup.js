@@ -399,6 +399,10 @@ function restart() {
 againBtn.addEventListener("click", restart);
 
 // ─── Init ───
+// Show loading immediately so Chrome sizes the popup correctly
+setProtocol("back-to-back");
+showScreen("loading");
+
 chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
   if (data.autoStart) {
     // Calendar-triggered: borderless standalone mode
@@ -407,24 +411,13 @@ chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
     chrome.storage.local.remove(["autoStart", "activeProtocol"]);
     setProtocol(data.activeProtocol || "back-to-back");
     sessionControls.classList.add("active");
-    showScreen("loading");
-    preloadImages(ALL_IMAGES).then(() => {
-      showScreen("logo");
-      setTimeout(() => {
-        showScreen("intro");
-        setTimeout(() => startSession(), 3000);
-      }, 2200);
-    });
-  } else {
-    // Normal toolbar popup
-    setProtocol("back-to-back");
-    showScreen("loading");
-    preloadImages(ALL_IMAGES).then(() => {
-      showScreen("logo");
-      setTimeout(() => {
-        showScreen("intro");
-        setTimeout(() => startSession(), 3000);
-      }, 2200);
-    });
   }
+
+  preloadImages(ALL_IMAGES).then(() => {
+    showScreen("logo");
+    setTimeout(() => {
+      showScreen("intro");
+      setTimeout(() => startSession(), 3000);
+    }, 2200);
+  });
 });
