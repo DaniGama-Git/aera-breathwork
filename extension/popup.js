@@ -124,7 +124,7 @@ let sessionStart = 0;
 let raf = 0;
 let activeTimeline = [];
 let activeTotalMs = 0;
-let activeProtocolId = "deep-focus";
+let activeProtocolId = "back-to-back";
 let hasStartedBreathing = false;
 let startsWithOverlay = false;
 
@@ -398,7 +398,7 @@ function restart() {
 againBtn.addEventListener("click", restart);
 
 // ─── Init ───
-setProtocol("deep-focus");
+setProtocol("back-to-back");
 showScreen("loading");
 
 preloadImages(ALL_IMAGES).then(() => {

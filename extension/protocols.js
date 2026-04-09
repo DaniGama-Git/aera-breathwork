@@ -351,4 +351,40 @@ const PROTOCOLS = {
       { phase: "exhale", duration: 7000, label: "FULL EXHALE" },
     ],
   },
+
+  "back-to-back": {
+    title: "Back-to-Back",
+    introText: "Let go of what just happened.\nReset before what's next.",
+    stages: [
+      {
+        name: "Flush",
+        science: "Extended exhales activate the vagus nerve, clearing residual cortisol and adrenaline from the previous demand.",
+        cycle: [
+          { phase: "inhale", duration: 3000 },
+          { phase: "exhale", duration: 6000 },
+        ],
+        cycles: 5,
+      },
+      {
+        name: "Reset",
+        transition: "Good. Now even out the breath.\nSmooth and steady.",
+        science: "Equal-ratio breathing at ~6 breaths/min maximises HRV and resets the autonomic baseline.",
+        cycle: [
+          { phase: "inhale", duration: 5000 },
+          { phase: "exhale", duration: 5000 },
+        ],
+        cycles: 8,
+      },
+      {
+        name: "Ready",
+        transition: "One final breath. Deep inhale, long full exhale. You're ready.",
+        cycle: [],
+        cycles: 0,
+      },
+    ],
+    finalSequence: [
+      { phase: "inhale", duration: 5000 },
+      { phase: "exhale", duration: 7000, label: "FULL EXHALE" },
+    ],
+  },
 };
