@@ -22,14 +22,10 @@ const GOAL_OPTIONS = [
 ];
 
 const MOMENT_OPTIONS = [
-  { label: "Before important meetings", value: "before_meetings" },
-  { label: "Before a pitch, board, or negotiation", value: "before_pitch" },
-  { label: "Before deep work or creative blocks", value: "before_deep_work" },
+  { label: "Before high-stakes moments", value: "before_meetings" },
+  { label: "Before deep work", value: "before_deep_work" },
   { label: "Morning activation", value: "morning_activation" },
-  { label: "After back-to-back meetings", value: "after_back_to_back" },
-  { label: "Afternoon energy dip", value: "afternoon_energy" },
-  { label: "On travel days", value: "travel_days" },
-  { label: "End of day", value: "end_of_day" },
+  { label: "Recovery & wind-down", value: "after_back_to_back" },
 ];
 
 const SUGGESTED_KEYWORDS = [
