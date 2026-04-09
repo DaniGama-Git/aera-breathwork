@@ -1,23 +1,35 @@
 
 
-## Allow Logged-In Users to Access Onboarding
+## Reduce Text, Add Visuals to Extension Page
 
-**Problem:** The `ProtectedRoute` component blocks access to `/onboarding` if the user didn't arrive via the "Add to Chrome" flow (`sessionStorage` flag). A logged-in user navigating directly to `/onboarding` gets redirected to `/menu`.
+**Problem:** The extension download page is a wall of 5 numbered text steps. It reads like documentation, not a product experience.
 
-**Fix in `src/App.tsx`:**
+**Approach:** Replace the step-by-step text list with a visual-first layout — a product mockup hero, condensed instructions, and a cleaner flow.
 
-Update the `ProtectedRoute` logic so that if the user is already on `/onboarding`, allow it regardless of the flow flag. Only block navigation *to* onboarding if there's no chrome flow — but don't redirect *away* from it if the user explicitly navigated there.
+### Changes to `src/pages/Extension.tsx`
 
-Specifically, change lines 47-52: instead of immediately setting `needsOnboarding = false` when there's no chrome flow, also check if the user is currently on `/onboarding`. If they are, allow it through.
+1. **Add a product mockup image** below the hero subtitle — use the existing `mockup-extension.png` asset (already in `src/assets/`) showing the extension in action. This immediately communicates what the user is getting.
 
-```text
-Current logic:
-  no chrome flow → needsOnboarding = false → redirects away from /onboarding
+2. **Collapse 5 steps into 3** — merge related instructions:
+   - **Step 1: Download & unzip** (combines current steps 01 + 02)
+   - **Step 2: Add to Chrome** — "Open `chrome://extensions`, enable Developer mode, click Load unpacked" (combines 03 + 04)
+   - **Step 3: Connect calendar** (current step 05)
+   
+   Each step becomes a single line with a number badge — no paragraph descriptions.
 
-New logic:
-  no chrome flow AND not on /onboarding → needsOnboarding = false
-  no chrome flow AND on /onboarding → allow (don't redirect away)
-```
+3. **Visual layout restructure:**
+   - Hero: logo + title + one-line subtitle + mockup image (centered, ~200px tall)
+   - Below mockup: 3 compact instruction lines (icon + short text, no cards/boxes)
+   - Download CTA button stays as-is
+   - Keywords section stays as-is
 
-This is a single change in `src/App.tsx` (~3 lines modified).
+4. **Remove verbose descriptions** — each step becomes ~8 words max. Example:
+   - ~~"Click the button below to download the āera extension."~~ → just the download button itself
+   - ~~'Go to chrome://extensions and enable "Developer mode" (top-right toggle).'~~ → "Enable Developer mode at chrome://extensions"
+
+### Files to change
+- `src/pages/Extension.tsx` — restructure layout, add mockup image, condense steps
+
+### Result
+The page goes from ~60% text to ~30% text with a prominent product visual. Feels like a product page, not a README.
 
