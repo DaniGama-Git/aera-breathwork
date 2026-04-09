@@ -211,8 +211,7 @@ const Extension = () => {
           </div>
         )}
 
-        <BottomNavBar />
-        <div className="h-24" />
+        <div className="h-8" />
       </div>
     </div>
   );
