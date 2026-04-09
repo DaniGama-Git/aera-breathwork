@@ -607,3 +607,48 @@ export const preMeetingProtocol: Protocol = {
   ],
   finalMethod: "mouth",
 };
+
+export const backToBackProtocol: Protocol = {
+  id: "back-to-back",
+  title: "Back-to-Back",
+  subtitle: "~3 mins",
+  duration: "~3 mins",
+  introText: "Let go of what just happened.\nReset before what's next.",
+  descriptionPrimary: "Extended exhales to flush residual stress and lower sympathetic tone.",
+  descriptionSecondary: "Coherence breathing to restore autonomic balance between demands.",
+  stages: [
+    {
+      name: "Flush",
+      method: "nose",
+      science: "Extended exhales activate the vagus nerve, clearing residual cortisol and adrenaline from the previous demand.",
+      cycle: [
+        { type: "INHALE", duration: 3000 },
+        { type: "EXHALE", duration: 6000 },
+      ],
+      cycles: 5,
+    },
+    {
+      name: "Reset",
+      method: "nose",
+      transition: "Good. Now even out the breath.\nSmooth and steady.",
+      science: "Equal-ratio breathing at ~6 breaths/min maximises HRV and resets the autonomic baseline.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 8,
+    },
+    {
+      name: "Ready",
+      method: "nose",
+      transition: "One final breath. Deep inhale, long full exhale. You're ready.",
+      cycle: [],
+      cycles: 0,
+    },
+  ],
+  finalSequence: [
+    { type: "INHALE", duration: 5000 },
+    { type: "EXHALE", duration: 7000, label: "FULL EXHALE" },
+  ],
+  finalMethod: "mouth",
+};

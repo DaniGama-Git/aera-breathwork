@@ -7,7 +7,7 @@ import waveBgInhale from "@/assets/wave-bg-inhale.png";
 import lightbulbIcon from "@/assets/lightbulb-icon.svg";
 import BreatheDots from "@/components/BreatheDots";
 import {
-  creativeFlowProtocol,
+  backToBackProtocol,
   buildTimeline,
   getBarPosition,
   type TimelineEntry,
