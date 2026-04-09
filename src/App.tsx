@@ -32,52 +32,52 @@ const LoadingSpinner = () => (
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
-  const location = useLocation();
-  const [onboardingChecked, setOnboardingChecked] = useState(false);
-  const [needsOnboarding, setNeedsOnboarding] = useState(false);
 
+  // Save pending onboarding data from chrome flow after auth
   useEffect(() => {
-    if (!user) {
-      setNeedsOnboarding(false);
-      setOnboardingChecked(true);
-      return;
-    }
+    if (!user) return;
+    const pendingData = sessionStorage.getItem("aera_onboarding_data");
+    if (!pendingData) return;
 
-    // Only trigger onboarding if user came through the "Add to Chrome" flow
-    const isChromeFlow = sessionStorage.getItem("aera_flow") === "chrome";
-    if (!isChromeFlow && location.pathname !== "/onboarding") {
-      setNeedsOnboarding(false);
-      setOnboardingChecked(true);
-      return;
-    }
+    const savePending = async () => {
+      try {
+        const parsed = JSON.parse(pendingData);
+        await supabase.from("onboarding_preferences").upsert({
+          user_id: user.id,
+          goals: parsed.goals || [],
+          moments: parsed.moments || [],
+          calendar_keywords: parsed.calendarKeywords || [],
+          scheduled_enabled: false,
+          scheduled_practice: null,
+          scheduled_length: null,
+          scheduled_times: [],
+          scheduled_frequency: null,
+        }, { onConflict: "user_id" });
 
-    let active = true;
-    setOnboardingChecked(false);
+        const { data: existing } = await supabase
+          .from("profiles")
+          .select("user_id")
+          .eq("user_id", user.id)
+          .maybeSingle();
 
-    supabase
-      .from("profiles")
-      .select("onboarding_completed")
-      .eq("user_id", user.id)
-      .maybeSingle()
-      .then(({ data, error }) => {
-        if (!active) return;
-        setNeedsOnboarding(!error && !data?.onboarding_completed);
-        setOnboardingChecked(true);
-      });
+        if (existing) {
+          await supabase.from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
+        } else {
+          await supabase.from("profiles").insert({ user_id: user.id, onboarding_completed: true });
+        }
 
-    return () => { active = false; };
-  }, [user, location.pathname]);
+        sessionStorage.removeItem("aera_onboarding_data");
+        sessionStorage.removeItem("aera_flow");
+      } catch (err) {
+        console.error("Failed to save pending onboarding:", err);
+      }
+    };
 
-  if (loading || !onboardingChecked) return <LoadingSpinner />;
+    savePending();
+  }, [user]);
+
+  if (loading) return <LoadingSpinner />;
   if (!user) return <Navigate to="/auth" replace />;
-
-  if (needsOnboarding && location.pathname !== "/onboarding") {
-    return <Navigate to="/onboarding" replace />;
-  }
-  if (!needsOnboarding && location.pathname === "/onboarding" && sessionStorage.getItem("aera_flow") === "chrome") {
-    sessionStorage.removeItem("aera_flow");
-    return <Navigate to="/menu" replace />;
-  }
 
   return <>{children}</>;
 };
@@ -89,11 +89,12 @@ const AuthRoute = ({ children }: { children: React.ReactNode }) => {
   if (loading) return <LoadingSpinner />;
   
   if (user) {
-    // If user arrived via "Add to Chrome" flow, send to onboarding
+    // If user arrived via "Add to Chrome" flow, save pending onboarding data then go to menu
     const params = new URLSearchParams(location.search);
     if (params.get("flow") === "chrome") {
       sessionStorage.setItem("aera_flow", "chrome");
-      return <Navigate to="/onboarding" replace />;
+      // Pending onboarding data will be saved by the post-auth effect
+      return <Navigate to="/menu" replace />;
     }
     return <Navigate to="/menu" replace />;
   }
@@ -112,7 +113,7 @@ const App = () => (
           <Route path="/wave" element={<WavePreview />} />
           <Route path="/home" element={<MobileFrame><HomeScreen /></MobileFrame>} />
           <Route path="/auth" element={<MobileFrame><AuthRoute><Auth /></AuthRoute></MobileFrame>} />
-          <Route path="/onboarding" element={<MobileFrame><ProtectedRoute><Onboarding /></ProtectedRoute></MobileFrame>} />
+          <Route path="/onboarding" element={<MobileFrame><Onboarding /></MobileFrame>} />
           <Route path="/menu" element={<MobileFrame><ProtectedRoute><BreathworkMenu /></ProtectedRoute></MobileFrame>} />
           <Route path="/session/:category/:slug" element={<MobileFrame><ProtectedRoute><DynamicSession /></ProtectedRoute></MobileFrame>} />
           {/* Legacy redirects */}

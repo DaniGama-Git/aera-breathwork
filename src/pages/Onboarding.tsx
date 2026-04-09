@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import areaLogo from "@/assets/aera-logo.svg";
@@ -37,7 +37,9 @@ type Step = "goals" | "moments" | "keywords";
 
 const Onboarding = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
+  const isChromeFlow = searchParams.get("flow") === "chrome" || sessionStorage.getItem("aera_flow") === "chrome";
   const [step, setStep] = useState<Step>("goals");
   const [saving, setSaving] = useState(false);
   const [data, setData] = useState<OnboardingData>({
@@ -57,44 +59,55 @@ const Onboarding = () => {
   };
 
   const saveAndFinish = async () => {
-    if (!user || saving) return;
+    if (saving) return;
     setSaving(true);
 
     try {
-      const { error: prefError } = await supabase
-        .from("onboarding_preferences")
-        .upsert({
-          user_id: user.id,
-          goals: data.goals,
-          moments: data.moments,
-          calendar_keywords: data.calendarKeywords,
-          scheduled_enabled: false,
-          scheduled_practice: null,
-          scheduled_length: null,
-          scheduled_times: [],
-          scheduled_frequency: null,
-        }, { onConflict: "user_id" });
-      if (prefError) console.warn("Prefs save:", prefError);
+      // If user is logged in, save to DB directly
+      if (user) {
+        const { error: prefError } = await supabase
+          .from("onboarding_preferences")
+          .upsert({
+            user_id: user.id,
+            goals: data.goals,
+            moments: data.moments,
+            calendar_keywords: data.calendarKeywords,
+            scheduled_enabled: false,
+            scheduled_practice: null,
+            scheduled_length: null,
+            scheduled_times: [],
+            scheduled_frequency: null,
+          }, { onConflict: "user_id" });
+        if (prefError) console.warn("Prefs save:", prefError);
 
-      const { data: existing } = await supabase
-        .from("profiles")
-        .select("user_id")
-        .eq("user_id", user.id)
-        .maybeSingle();
+        const { data: existing } = await supabase
+          .from("profiles")
+          .select("user_id")
+          .eq("user_id", user.id)
+          .maybeSingle();
 
-      if (existing) {
-        const { error } = await supabase.from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
-        if (error) console.error("Profile update error:", error);
+        if (existing) {
+          const { error } = await supabase.from("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
+          if (error) console.error("Profile update error:", error);
+        } else {
+          const { error } = await supabase.from("profiles").insert({ user_id: user.id, onboarding_completed: true });
+          if (error) console.error("Profile insert error:", error);
+        }
+
+        sessionStorage.removeItem("aera_flow");
+        navigate("/extension", { replace: true });
       } else {
-        const { error } = await supabase.from("profiles").insert({ user_id: user.id, onboarding_completed: true });
-        if (error) console.error("Profile insert error:", error);
+        // Not logged in (chrome flow before auth) — store locally, move to extension
+        sessionStorage.setItem("aera_onboarding_data", JSON.stringify(data));
+        sessionStorage.setItem("aera_flow", "chrome");
+        navigate("/extension?flow=chrome", { replace: true });
       }
-
-      sessionStorage.removeItem("aera_flow");
-      navigate("/extension", { replace: true });
     } catch (err) {
       console.error("Failed to save onboarding:", err);
-      navigate("/extension", { replace: true });
+      // Fallback: store locally and continue
+      sessionStorage.setItem("aera_onboarding_data", JSON.stringify(data));
+      sessionStorage.setItem("aera_flow", "chrome");
+      navigate("/extension?flow=chrome", { replace: true });
     } finally {
       setSaving(false);
     }

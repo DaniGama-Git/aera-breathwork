@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Download, Copy, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 import JSZip from "jszip";
@@ -46,11 +46,26 @@ const STEPS = [
 
 const Extension = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
+  const isChromeFlow = searchParams.get("flow") === "chrome" || sessionStorage.getItem("aera_flow") === "chrome";
   const [keywords, setKeywords] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
+  const [downloaded, setDownloaded] = useState(false);
 
   useEffect(() => {
+    // Try loading keywords from sessionStorage first (pre-auth chrome flow)
+    const pendingData = sessionStorage.getItem("aera_onboarding_data");
+    if (pendingData) {
+      try {
+        const parsed = JSON.parse(pendingData);
+        if (parsed.calendarKeywords?.length) {
+          setKeywords(parsed.calendarKeywords);
+          return;
+        }
+      } catch {}
+    }
+    // Fallback: load from DB if logged in
     if (!user) return;
     supabase
       .from("onboarding_preferences")
@@ -83,6 +98,7 @@ const Extension = () => {
       a.download = "aera-extension.zip";
       a.click();
       URL.revokeObjectURL(a.href);
+      setDownloaded(true);
     } catch (err: any) {
       alert(err.message);
     }
@@ -222,7 +238,7 @@ const Extension = () => {
         )}
 
         {/* Download CTA */}
-        <div className="px-6 pb-8">
+        <div className="px-6 pb-4">
           <button
             onClick={handleDownload}
             className="w-full py-4 rounded-xl text-white font-body font-semibold text-[15px] tracking-wide flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-[0.98]"
@@ -239,6 +255,23 @@ const Extension = () => {
             Works in Chrome, Edge, Brave, and Arc
           </p>
         </div>
+
+        {/* Chrome flow: prompt to create account after download */}
+        {isChromeFlow && !user && downloaded && (
+          <div className="px-6 pb-8">
+            <button
+              onClick={() => navigate("/auth?flow=chrome")}
+              className="w-full py-4 rounded-xl text-white font-body font-semibold text-[15px] tracking-wide flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-[0.98]"
+              style={{
+                background: "rgba(255,255,255,0.20)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255,255,255,0.25)",
+              }}
+            >
+              Create your account →
+            </button>
+          </div>
+        )}
 
         <BottomNavBar />
         <div className="h-24" />
