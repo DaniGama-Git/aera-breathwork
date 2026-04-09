@@ -88,7 +88,7 @@ const LandingPage = () => {
                 <img
                   src={mockupApp}
                   alt="āera app on mobile"
-                  className="w-[140px] md:w-[180px] h-auto"
+                  className="w-[120px] md:w-[150px] h-auto"
                   loading="lazy"
                 />
                 <img
