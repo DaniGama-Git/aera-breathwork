@@ -194,6 +194,17 @@ const WavePreview = () => {
     return () => cancelAnimationFrame(rafId);
   }, [screen, sessionStart, timeline, totalDuration]);
 
+  const stopSession = () => {
+    setFadeIn(false);
+    setTimeout(() => {
+      setScreen("done");
+      setPhase("");
+      setTransitionText("");
+      setScienceText("");
+      setFadeIn(true);
+    }, 300);
+  };
+
   const restart = () => {
     setFadeIn(false);
     setTimeout(() => {
