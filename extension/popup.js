@@ -407,12 +407,16 @@ function animate() {
 
 function startSession() {
   running = true;
+  paused = false;
+  pausedElapsed = 0;
   sessionStart = Date.now();
   hasStartedBreathing = false;
   prevEntryType = undefined;
+  pauseIcon.style.display = "";
+  playIcon.style.display = "none";
+  pausedOverlay.classList.remove("active");
   showScreen("breathing");
   gradientMask.style.background = buildMask(BAR_BOTTOM);
-  progressLine.style.top = BAR_BOTTOM + "%";
   sessionProgressFill.style.width = "0%";
   raf = requestAnimationFrame(animate);
 }
