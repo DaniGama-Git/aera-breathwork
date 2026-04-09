@@ -390,12 +390,10 @@ function animate() {
   }
 
   const barTop = getBarPosition(entry.type, progress, prevEntryType);
-  progressLine.style.top = barTop + "%";
   gradientMask.style.background = buildMask(barTop);
 
-  // Hide bar/label during overlays or before first breath
+  // Hide label during overlays or before first breath
   const hideBar = isOverlay || (!hasStartedBreathing && startsWithOverlay);
-  progressLine.style.opacity = hideBar ? "0" : "1";
   phaseLabel.style.opacity = hideBar ? "0" : "1";
   sessionProgressWrap.style.opacity = hideBar ? "0" : "1";
 
