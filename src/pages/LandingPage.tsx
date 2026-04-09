@@ -53,6 +53,22 @@ const LandingPage = () => {
           >
             Breathe
           </button>
+
+          {/* Scroll hint arrow */}
+          <svg
+            onClick={scrollToProducts}
+            className="mt-6 animate-bounce cursor-pointer"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="rgba(255,255,255,0.12)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="4,7 10,13 16,7" />
+          </svg>
         </div>
       </section>
 
