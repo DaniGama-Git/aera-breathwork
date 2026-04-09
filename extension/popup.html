@@ -325,7 +325,8 @@ Let your mind open up.</p>
         <!-- Session controls (close, sound, stop) -->
         <div class="session-controls" id="session-controls">
           <button class="ctrl-btn" id="ctrl-stop" title="Pause">
-            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="6,4 20,12 6,20"/></svg>
           </button>
           <button class="ctrl-btn" id="ctrl-close" title="Close">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -334,7 +335,7 @@ Let your mind open up.</p>
 
         <!-- Breathing UI -->
         <div class="breathing-ui" id="breathing-ui">
-          <div class="progress-line" id="progress-line" style="top:92%"></div>
+          
           <span class="phase-label" id="phase-label">INHALE</span>
           <div class="session-progress-wrap" id="session-progress-wrap">
             <div class="session-progress-fill" id="session-progress-fill"></div>
