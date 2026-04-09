@@ -127,6 +127,7 @@ let activeTotalMs = 0;
 let activeProtocolId = "back-to-back";
 let hasStartedBreathing = false;
 let startsWithOverlay = false;
+let triggeredMode = false;
 
 const BAR_TOP = 10;
 const BAR_BOTTOM = 92;
@@ -277,7 +278,7 @@ function showScreen(name) {
   gradientMask.classList.remove("active");
   transitionOverlay.classList.remove("active");
   scienceOverlay.classList.remove("active");
-  sessionControls.classList.remove("active");
+  if (!triggeredMode) sessionControls.classList.remove("active");
 
   if (name === "loading") {
     screenLoading.classList.add("active");
@@ -398,24 +399,26 @@ function restart() {
 againBtn.addEventListener("click", restart);
 
 // ─── Init ───
-setProtocol("back-to-back");
-showScreen("loading");
-
-preloadImages(ALL_IMAGES).then(() => {
-  showScreen("logo");
-  setTimeout(() => {
-    showScreen("intro");
-    setTimeout(() => {
-      startSession();
-    }, 3000);
-  }, 2200);
-});
-
-// Auto-start if triggered by calendar
 chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
   if (data.autoStart) {
+    // Calendar-triggered: borderless standalone mode
+    triggeredMode = true;
+    document.body.classList.add("triggered-mode");
     chrome.storage.local.remove(["autoStart", "activeProtocol"]);
     setProtocol(data.activeProtocol || "back-to-back");
+    sessionControls.classList.add("active");
+    showScreen("loading");
+    preloadImages(ALL_IMAGES).then(() => {
+      showScreen("logo");
+      setTimeout(() => {
+        showScreen("intro");
+        setTimeout(() => startSession(), 3000);
+      }, 2200);
+    });
+  } else {
+    // Normal toolbar popup
+    setProtocol("back-to-back");
+    showScreen("loading");
     preloadImages(ALL_IMAGES).then(() => {
       showScreen("logo");
       setTimeout(() => {
