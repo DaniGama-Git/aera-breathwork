@@ -94,7 +94,7 @@ const LandingPage = () => {
                 <img
                   src={sessionCards}
                   alt="āera session cards"
-                  className="w-[140px] md:w-[180px] h-auto mt-4"
+                  className="w-[140px] md:w-[180px] h-auto mt-16 md:mt-20"
                   loading="lazy"
                 />
               </div>
