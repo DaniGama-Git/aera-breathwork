@@ -118,11 +118,6 @@ const introText = document.getElementById("intro-text");
 const sessionControls = document.getElementById("session-controls");
 const ctrlStop = document.getElementById("ctrl-stop");
 const ctrlClose = document.getElementById("ctrl-close");
-const ctrlSound = document.getElementById("ctrl-sound");
-const iconSoundOn = document.getElementById("icon-sound-on");
-const iconSoundOff = document.getElementById("icon-sound-off");
-
-let soundEnabled = true;
 
 let running = false;
 let sessionStart = 0;
@@ -316,12 +311,6 @@ ctrlClose.addEventListener("click", () => {
   window.close();
 });
 
-ctrlSound.addEventListener("click", () => {
-  soundEnabled = !soundEnabled;
-  iconSoundOn.style.display = soundEnabled ? "block" : "none";
-  iconSoundOff.style.display = soundEnabled ? "none" : "block";
-  // Future: mute/unmute audio here
-});
 
 function fadeTransition(from, to, delay) {
   setTimeout(() => {
