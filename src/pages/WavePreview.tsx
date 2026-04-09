@@ -52,7 +52,7 @@ function buildBreathingMask(barTop: number): string {
     rgba(255,255,255,0.9) 100%)`;
 }
 
-const protocol = creativeFlowProtocol;
+const protocol = backToBackProtocol;
 
 const WavePreview = () => {
   const navigate = useNavigate();
