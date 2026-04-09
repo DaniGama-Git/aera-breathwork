@@ -53,8 +53,6 @@ const LandingPage = () => {
             Breathe
           </button>
         </div>
-          </svg>
-        </div>
       </section>
 
       {/* ——— SECTION 2: Product Overview ——— */}
