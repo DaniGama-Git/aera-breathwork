@@ -118,6 +118,9 @@ const introText = document.getElementById("intro-text");
 const sessionControls = document.getElementById("session-controls");
 const ctrlStop = document.getElementById("ctrl-stop");
 const ctrlClose = document.getElementById("ctrl-close");
+const pauseIcon = document.getElementById("pause-icon");
+const playIcon = document.getElementById("play-icon");
+const pausedOverlay = document.getElementById("paused-overlay");
 
 let running = false;
 let sessionStart = 0;
