@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import waveBgLogo from "@/assets/wave-bg-logo.png";
 import waveBgIntro from "@/assets/wave-bg-intro.png";
@@ -62,16 +62,17 @@ const WavePreview = () => {
   const [sessionStart, setSessionStart] = useState(0);
   const [transitionText, setTransitionText] = useState("");
   const [scienceText, setScienceText] = useState("");
+  const [paused, setPaused] = useState(false);
+  const [showPausedOverlay, setShowPausedOverlay] = useState(false);
+  const pausedElapsedRef = useRef(0);
   const transitionTextRef = useRef("");
   const scienceTextRef = useRef("");
-  const barRef = useRef<HTMLDivElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
   const phaseLabelRef = useRef<HTMLSpanElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   const timeline = useMemo(() => buildTimeline(protocol), []);
   const totalDuration = timeline.length > 0 ? timeline[timeline.length - 1].endMs : 0;
-  // Check if session starts with an overlay (science/transition) — hide bar until first real breath phase
   const startsWithOverlay = timeline.length > 0 && (timeline[0].type === "SCIENCE" || timeline[0].type === "TRANSITION");
   const [hasStartedBreathing, setHasStartedBreathing] = useState(false);
 
@@ -94,6 +95,9 @@ const WavePreview = () => {
           setSessionStart(Date.now());
           setPhase("INHALE");
           setTransitionText("");
+          setPaused(false);
+          setShowPausedOverlay(false);
+          pausedElapsedRef.current = 0;
         }
         setFadeIn(true);
       }, 600);
@@ -103,7 +107,7 @@ const WavePreview = () => {
 
   /* ── Timeline-driven breathing engine ── */
   useEffect(() => {
-    if (screen !== "breathing") return;
+    if (screen !== "breathing" || paused) return;
 
     let prevEntryType: TimelineEntry["type"] | undefined;
 
@@ -121,7 +125,6 @@ const WavePreview = () => {
         return;
       }
 
-      // Find current timeline entry
       const entry = timeline.find((e) => elapsed >= e.startMs && elapsed < e.endMs);
       if (!entry) {
         rafId = requestAnimationFrame(tick);
@@ -139,10 +142,6 @@ const WavePreview = () => {
           scienceTextRef.current = "";
           setScienceText("");
         }
-        const barTop = getBarPosition("TRANSITION", 0, prevEntryType);
-        if (barRef.current) barRef.current.style.top = `${barTop}%`;
-        if (gradientRef.current)
-          gradientRef.current.style.background = buildBreathingMask(barTop);
         if (phaseLabelRef.current) phaseLabelRef.current.textContent = "";
         setPhase("");
       } else if (entry.type === "SCIENCE") {
@@ -154,10 +153,6 @@ const WavePreview = () => {
           transitionTextRef.current = "";
           setTransitionText("");
         }
-        const barTop = getBarPosition("SCIENCE", 0, prevEntryType);
-        if (barRef.current) barRef.current.style.top = `${barTop}%`;
-        if (gradientRef.current)
-          gradientRef.current.style.background = buildBreathingMask(barTop);
         if (phaseLabelRef.current) phaseLabelRef.current.textContent = "";
         setPhase("");
       } else {
@@ -170,17 +165,15 @@ const WavePreview = () => {
           scienceTextRef.current = "";
           setScienceText("");
         }
-        const barTop = getBarPosition(entry.type, progress, prevEntryType);
-
-        if (barRef.current) barRef.current.style.top = `${barTop}%`;
-        if (gradientRef.current)
-          gradientRef.current.style.background = buildBreathingMask(barTop);
         if (phaseLabelRef.current)
           phaseLabelRef.current.textContent = entry.displayLabel;
         setPhase(entry.displayLabel);
       }
 
-      // Update session progress bar
+      const barTop = getBarPosition(entry.type, progress, prevEntryType);
+      if (gradientRef.current)
+        gradientRef.current.style.background = buildBreathingMask(barTop);
+
       if (progressBarRef.current) {
         const pct = Math.min(100, (elapsed / totalDuration) * 100);
         progressBarRef.current.style.width = `${pct.toFixed(1)}%`;
@@ -192,18 +185,19 @@ const WavePreview = () => {
 
     let rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [screen, sessionStart, timeline, totalDuration]);
+  }, [screen, sessionStart, timeline, totalDuration, paused, hasStartedBreathing]);
 
-  const stopSession = () => {
-    setFadeIn(false);
-    setTimeout(() => {
-      setScreen("done");
-      setPhase("");
-      setTransitionText("");
-      setScienceText("");
-      setFadeIn(true);
-    }, 300);
-  };
+  const togglePause = useCallback(() => {
+    if (paused) {
+      setSessionStart(Date.now() - pausedElapsedRef.current);
+      setPaused(false);
+      setShowPausedOverlay(false);
+    } else {
+      pausedElapsedRef.current = Date.now() - sessionStart;
+      setPaused(true);
+      setShowPausedOverlay(true);
+    }
+  }, [paused, sessionStart]);
 
   const restart = () => {
     setFadeIn(false);
@@ -212,6 +206,9 @@ const WavePreview = () => {
       setTransitionText("");
       setScienceText("");
       setHasStartedBreathing(false);
+      setPaused(false);
+      setShowPausedOverlay(false);
+      pausedElapsedRef.current = 0;
       setFadeIn(true);
     }, 300);
   };
@@ -245,7 +242,6 @@ const WavePreview = () => {
           className="relative w-full overflow-hidden"
           style={{ aspectRatio: "1 / 1.1", borderRadius: 22 }}
         >
-          {/* Static backgrounds — crossfade */}
           {(Object.entries(SCREEN_BG) as [Screen, string][]).map(([key, src]) => (
             <div
               key={key}
@@ -259,7 +255,6 @@ const WavePreview = () => {
             />
           ))}
 
-          {/* Breathing background image */}
           <div
             className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
             style={{
@@ -270,7 +265,6 @@ const WavePreview = () => {
             }}
           />
 
-          {/* White mask overlay */}
           <div
             ref={gradientRef}
             className="absolute inset-0"
@@ -281,7 +275,6 @@ const WavePreview = () => {
             }}
           />
 
-          {/* Screen overlays */}
           {screen === "logo" && (
             <div className={contentBase}>
               <span
@@ -319,99 +312,100 @@ const WavePreview = () => {
             </div>
           )}
 
-
           {screen === "breathing" && (
             <>
-            {/* Session controls */}
-            <div
-              className="absolute top-3 left-3 right-3 z-20 flex justify-between items-center"
-              style={{ opacity: 1, transition: "opacity 400ms ease" }}
-            >
-              <button
-                onClick={stopSession}
-                className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all"
-                style={{ background: "rgba(0,0,0,0.35)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)" }}
-                title="Pause"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>
-                </svg>
-              </button>
-              <button
-                onClick={() => navigate("/")}
-                className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all"
-                style={{ background: "rgba(0,0,0,0.35)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)" }}
-                title="Close"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-              </button>
-            </div>
-            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
-              <div className="flex-1" />
-
-              {/* Transition text overlay */}
               <div
-                className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-700"
-                style={{ opacity: showTransition ? 1 : 0 }}
+                className="absolute top-3 left-3 right-3 z-20 flex justify-between items-center"
+                style={{ opacity: 1, transition: "opacity 400ms ease" }}
               >
-                <p className="text-white/80 text-[14px] leading-relaxed font-medium text-center max-w-[230px]"
-                   style={{ textShadow: "0 1px 8px rgba(0,0,0,0.15)" }}>
-                  {transitionText}
-                </p>
-              </div>
-
-              {/* Science overlay with lightbulb */}
-              <div
-                className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-700"
-                style={{ opacity: showScience ? 1 : 0, pointerEvents: "none" }}
-              >
-                <div className="flex items-start gap-4 text-left max-w-[250px]">
-                  <img src={lightbulbIcon} alt="" style={{ width: 28, height: 38 }} className="mt-0.5 opacity-90 shrink-0" />
-                  <p className="text-white/70 text-[12px] leading-relaxed font-medium"
-                     style={{ textShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>
-                    {scienceText || "\u00A0"}
-                  </p>
-                </div>
-              </div>
-
-              {/* Traveling progress bar */}
-              <div
-                ref={barRef}
-                className="absolute left-0 right-0"
-                style={{
-                  top: "92%",
-                  opacity: (!hasStartedBreathing && startsWithOverlay) || showOverlay ? 0 : 1,
-                  transition: showOverlay ? "opacity 400ms ease-out" : "opacity 400ms ease-in 300ms",
-                }}
-              >
-                <div style={{ height: 1.5, background: "hsla(0, 0%, 100%, 0.62)", width: "100%", boxShadow: "0 0 4px 1px hsla(0, 0%, 100%, 0.08)" }} />
+                <button
+                  onClick={togglePause}
+                  className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all"
+                  style={{ background: "rgba(0,0,0,0.35)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)" }}
+                  title={paused ? "Resume" : "Pause"}
+                >
+                  {paused ? (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="6,4 20,12 6,20" />
+                    </svg>
+                  ) : (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <rect x="6" y="4" width="4" height="16" rx="1" /><rect x="14" y="4" width="4" height="16" rx="1" />
+                    </svg>
+                  )}
+                </button>
+                <button
+                  onClick={() => navigate("/")}
+                  className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all"
+                  style={{ background: "rgba(0,0,0,0.35)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)" }}
+                  title="Close"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
               </div>
 
               <div
-                className="pb-7 flex flex-col items-center gap-3"
-                style={{
-                  opacity: (!hasStartedBreathing && startsWithOverlay) || showOverlay ? 0 : 1,
-                  transition: showOverlay ? "opacity 400ms ease-out" : "opacity 400ms ease-in 300ms",
-                }}
+                className="absolute inset-0 z-15 flex items-center justify-center transition-opacity duration-500"
+                style={{ opacity: showPausedOverlay ? 1 : 0, pointerEvents: "none" }}
               >
                 <span
-                  ref={phaseLabelRef}
-                  className="tracking-[0.25em] font-medium"
-                  style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
+                  className="tracking-[0.25em] font-medium uppercase"
+                  style={{ fontSize: 16, color: "rgba(255,255,255,0.6)" }}
                 >
-                  {phase}
+                  Paused
                 </span>
-                {/* Session progress bar */}
-                <div style={{ width: 80, height: 3, background: "rgba(0,0,0,0.08)", borderRadius: 2, overflow: "hidden" }}>
-                  <div
-                    ref={progressBarRef}
-                    style={{ height: "100%", width: "0%", background: "rgba(60,60,60,0.45)", borderRadius: 2, transition: "width 0.4s ease" }}
-                  />
+              </div>
+
+              <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
+                <div className="flex-1" />
+
+                <div
+                  className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-700"
+                  style={{ opacity: showTransition ? 1 : 0 }}
+                >
+                  <p className="text-white/80 text-[14px] leading-relaxed font-medium text-center max-w-[230px]"
+                     style={{ textShadow: "0 1px 8px rgba(0,0,0,0.15)" }}>
+                    {transitionText}
+                  </p>
+                </div>
+
+                <div
+                  className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-700"
+                  style={{ opacity: showScience ? 1 : 0, pointerEvents: "none" }}
+                >
+                  <div className="flex items-start gap-4 text-left max-w-[250px]">
+                    <img src={lightbulbIcon} alt="" style={{ width: 28, height: 38 }} className="mt-0.5 opacity-90 shrink-0" />
+                    <p className="text-white/70 text-[12px] leading-relaxed font-medium"
+                       style={{ textShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>
+                      {scienceText || "\u00A0"}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  className="pb-7 flex flex-col items-center gap-3"
+                  style={{
+                    opacity: showPausedOverlay || (!hasStartedBreathing && startsWithOverlay) || showOverlay ? 0 : 1,
+                    transition: showOverlay ? "opacity 400ms ease-out" : "opacity 400ms ease-in 300ms",
+                  }}
+                >
+                  <span
+                    ref={phaseLabelRef}
+                    className="tracking-[0.25em] font-medium"
+                    style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
+                  >
+                    {phase}
+                  </span>
+                  <div style={{ width: 80, height: 3, background: "rgba(0,0,0,0.08)", borderRadius: 2, overflow: "hidden" }}>
+                    <div
+                      ref={progressBarRef}
+                      style={{ height: "100%", width: "0%", background: "rgba(60,60,60,0.45)", borderRadius: 2, transition: "width 0.4s ease" }}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
             </>
           )}
 
