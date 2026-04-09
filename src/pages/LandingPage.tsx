@@ -5,7 +5,7 @@
  */
 
 import aeraLogo from "@/assets/aera-logo.svg";
-import homeBg from "@/assets/home-bg.webp";
+import landingBg from "@/assets/landing-bg.svg";
 import mockupApp from "@/assets/mockup-app.png";
 import mockupExtension from "@/assets/mockup-extension.png";
 
