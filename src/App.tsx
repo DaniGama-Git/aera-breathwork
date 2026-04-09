@@ -84,8 +84,20 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const AuthRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
+  const location = useLocation();
+  
   if (loading) return <LoadingSpinner />;
-  if (user) return <Navigate to="/menu" replace />;
+  
+  if (user) {
+    // If user arrived via "Add to Chrome" flow, send to onboarding
+    const params = new URLSearchParams(location.search);
+    if (params.get("flow") === "chrome") {
+      sessionStorage.setItem("aera_flow", "chrome");
+      return <Navigate to="/onboarding" replace />;
+    }
+    return <Navigate to="/menu" replace />;
+  }
+  
   return <>{children}</>;
 };
 
