@@ -6,7 +6,7 @@
 
 import aeraLogo from "@/assets/aera-logo.svg";
 import landingBg from "@/assets/landing-bg.svg";
-import mockupApp from "@/assets/mockup-app.png";
+import mockupApp from "@/assets/mockup-app-screens.svg";
 import mockupExtension from "@/assets/mockup-extension.png";
 
 const LandingPage = () => {
@@ -87,7 +87,7 @@ const LandingPage = () => {
                 <img
                   src={mockupApp}
                   alt="āera app on mobile"
-                  className="w-[220px] md:w-[260px] h-auto"
+                  className="w-full max-w-[320px] h-auto"
                   loading="lazy"
                 />
               </div>
