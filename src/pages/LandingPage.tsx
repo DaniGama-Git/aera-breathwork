@@ -106,7 +106,7 @@ const LandingPage = () => {
 
               <a
                 href="/auth"
-                className="inline-flex items-center justify-center h-[44px] px-8 rounded-full bg-[#E8A88C] text-white font-body font-medium text-[15px] hover:opacity-90 transition-opacity mt-auto"
+                className="inline-flex items-center justify-center h-[44px] px-8 rounded-full bg-[#1D1D1C] text-[#F7F6F5] font-body font-medium text-[15px] hover:opacity-90 transition-opacity mt-auto"
               >
                 Open App
               </a>
@@ -149,7 +149,7 @@ const LandingPage = () => {
                 href="https://chromewebstore.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center h-[44px] px-8 rounded-full bg-[#E8A88C] text-white font-body font-medium text-[15px] hover:opacity-90 transition-opacity mt-auto"
+                className="inline-flex items-center justify-center h-[44px] px-8 rounded-full bg-[#1D1D1C] text-[#F7F6F5] font-body font-medium text-[15px] hover:opacity-90 transition-opacity mt-auto"
               >
                 Add to Chrome
               </a>
