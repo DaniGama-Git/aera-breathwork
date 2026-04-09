@@ -238,7 +238,7 @@ const Extension = () => {
         )}
 
         {/* Download CTA */}
-        <div className="px-6 pb-8">
+        <div className="px-6 pb-4">
           <button
             onClick={handleDownload}
             className="w-full py-4 rounded-xl text-white font-body font-semibold text-[15px] tracking-wide flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-[0.98]"
@@ -255,6 +255,23 @@ const Extension = () => {
             Works in Chrome, Edge, Brave, and Arc
           </p>
         </div>
+
+        {/* Chrome flow: prompt to create account after download */}
+        {isChromeFlow && !user && downloaded && (
+          <div className="px-6 pb-8">
+            <button
+              onClick={() => navigate("/auth?flow=chrome")}
+              className="w-full py-4 rounded-xl text-white font-body font-semibold text-[15px] tracking-wide flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-[0.98]"
+              style={{
+                background: "rgba(255,255,255,0.20)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255,255,255,0.25)",
+              }}
+            >
+              Create your account →
+            </button>
+          </div>
+        )}
 
         <BottomNavBar />
         <div className="h-24" />

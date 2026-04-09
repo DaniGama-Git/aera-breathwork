@@ -89,11 +89,12 @@ const AuthRoute = ({ children }: { children: React.ReactNode }) => {
   if (loading) return <LoadingSpinner />;
   
   if (user) {
-    // If user arrived via "Add to Chrome" flow, send to onboarding
+    // If user arrived via "Add to Chrome" flow, save pending onboarding data then go to menu
     const params = new URLSearchParams(location.search);
     if (params.get("flow") === "chrome") {
       sessionStorage.setItem("aera_flow", "chrome");
-      return <Navigate to="/onboarding" replace />;
+      // Pending onboarding data will be saved by the post-auth effect
+      return <Navigate to="/menu" replace />;
     }
     return <Navigate to="/menu" replace />;
   }
@@ -112,7 +113,7 @@ const App = () => (
           <Route path="/wave" element={<WavePreview />} />
           <Route path="/home" element={<MobileFrame><HomeScreen /></MobileFrame>} />
           <Route path="/auth" element={<MobileFrame><AuthRoute><Auth /></AuthRoute></MobileFrame>} />
-          <Route path="/onboarding" element={<MobileFrame><ProtectedRoute><Onboarding /></ProtectedRoute></MobileFrame>} />
+          <Route path="/onboarding" element={<MobileFrame><Onboarding /></MobileFrame>} />
           <Route path="/menu" element={<MobileFrame><ProtectedRoute><BreathworkMenu /></ProtectedRoute></MobileFrame>} />
           <Route path="/session/:category/:slug" element={<MobileFrame><ProtectedRoute><DynamicSession /></ProtectedRoute></MobileFrame>} />
           {/* Legacy redirects */}
