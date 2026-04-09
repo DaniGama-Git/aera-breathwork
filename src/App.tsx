@@ -43,6 +43,14 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       return;
     }
 
+    // Only trigger onboarding if user came through the "Add to Chrome" flow
+    const isChromeFlow = sessionStorage.getItem("aera_flow") === "chrome";
+    if (!isChromeFlow) {
+      setNeedsOnboarding(false);
+      setOnboardingChecked(true);
+      return;
+    }
+
     let active = true;
     setOnboardingChecked(false);
 
@@ -67,6 +75,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/onboarding" replace />;
   }
   if (!needsOnboarding && location.pathname === "/onboarding") {
+    // Clear the flow flag once onboarding is done or skipped
+    sessionStorage.removeItem("aera_flow");
     return <Navigate to="/menu" replace />;
   }
 

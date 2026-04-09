@@ -94,6 +94,7 @@ const Onboarding = () => {
         if (error) console.error("Profile insert error:", error);
       }
 
+      sessionStorage.removeItem("aera_flow");
       navigate("/extension", { replace: true });
     } catch (err) {
       console.error("Failed to save onboarding:", err);
