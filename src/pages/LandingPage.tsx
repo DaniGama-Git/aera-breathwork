@@ -75,11 +75,11 @@ const LandingPage = () => {
       {/* ——— SECTION 2: Product Overview ——— */}
       <section
         id="products"
-        className="relative w-full h-screen flex flex-col items-center justify-center bg-[#F0EEEB] overflow-hidden"
+        className="relative w-full h-screen flex flex-col items-center justify-center bg-[#F0EEEB] overflow-hidden pt-4 md:pt-6"
       >
         <div className="w-full max-w-[1100px] px-6 md:px-12 flex flex-col items-center">
           {/* Logo + tagline */}
-          <img src={aeraLogo} alt="āera" className="w-[60px] md:w-[70px] mb-3 opacity-80 invert" loading="lazy" />
+          <img src={aeraLogo} alt="āera" className="w-[90px] md:w-[110px] mb-4 py-2 opacity-80 invert" loading="lazy" />
           <p
             className="font-body font-semibold text-[#1D1D1C] text-center mb-8 md:mb-10"
             style={{ fontSize: "clamp(13px, 3vw, 16px)" }}
@@ -89,8 +89,8 @@ const LandingPage = () => {
             In under 5 minutes.
           </p>
 
-          {/* Product cards */}
-          <div className="w-full flex flex-col md:flex-row items-stretch md:items-start gap-4 md:gap-0">
+          {/* Product cards — use items-end on the row so buttons align */}
+          <div className="w-full flex flex-col md:flex-row md:items-end items-stretch gap-4 md:gap-0">
             {/* Card 1 — The App */}
             <div className="flex-1 max-w-[600px] w-full flex flex-col items-center text-center">
               <h2 className="font-body font-semibold text-[#1D1D1C] text-[26px] md:text-[30px] tracking-[-0.02em] mb-1.5">
@@ -115,21 +115,21 @@ const LandingPage = () => {
                 />
               </div>
 
-              <p className="font-body font-normal text-[#1D1D1C]/70 text-[13px] leading-[1.5] mb-5 max-w-[380px] flex-1">
+              <p className="font-body font-normal text-[#1D1D1C]/70 text-[13px] leading-[1.5] mb-5 max-w-[380px]">
                 Your full session library. Includes longer on-demand sessions across all four categories.
                 Built for the space between meetings and on-the-go.
               </p>
 
               <a
                 href="/auth"
-                className="inline-flex items-center justify-center h-[40px] px-7 rounded-full bg-[#1D1D1C] text-[#F7F6F5] font-body font-medium text-[14px] hover:opacity-90 transition-opacity mt-auto"
+                className="inline-flex items-center justify-center h-[40px] px-7 rounded-full bg-[#1D1D1C] text-[#F7F6F5] font-body font-medium text-[14px] hover:opacity-90 transition-opacity"
               >
                 Open App
               </a>
             </div>
 
             {/* Plus symbol */}
-            <div className="flex items-center justify-center px-3 md:px-5 md:mt-[150px]">
+            <div className="flex items-center justify-center px-3 md:px-5 md:pb-[20px]">
               <span
                 className="font-body font-light text-[#1D1D1C]/25"
                 style={{ fontSize: "clamp(24px, 3.5vw, 36px)" }}
@@ -156,7 +156,7 @@ const LandingPage = () => {
                 />
               </div>
 
-              <p className="font-body font-normal text-[#1D1D1C]/70 text-[13px] leading-[1.5] mb-5 max-w-[340px] flex-1">
+              <p className="font-body font-normal text-[#1D1D1C]/70 text-[13px] leading-[1.5] mb-5 max-w-[340px]">
                 Reads your calendar. Pulls the right āera session. Pops up before your pitch,
                 your board meeting, or your creative block. You just breathe.
               </p>
@@ -165,7 +165,7 @@ const LandingPage = () => {
                 href="https://chromewebstore.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center h-[40px] px-7 rounded-full bg-[#1D1D1C] text-[#F7F6F5] font-body font-medium text-[14px] hover:opacity-90 transition-opacity mt-auto"
+                className="inline-flex items-center justify-center h-[40px] px-7 rounded-full bg-[#1D1D1C] text-[#F7F6F5] font-body font-medium text-[14px] hover:opacity-90 transition-opacity"
               >
                 Add to Chrome
               </a>
