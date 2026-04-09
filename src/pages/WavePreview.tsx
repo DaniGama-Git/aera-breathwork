@@ -347,8 +347,13 @@ const WavePreview = () => {
               </div>
 
               <div
-                className="absolute inset-0 z-15 flex items-center justify-center transition-opacity duration-500"
-                style={{ opacity: showPausedOverlay ? 1 : 0, pointerEvents: "none" }}
+                className="absolute inset-0 z-20 flex items-center justify-center transition-opacity duration-500"
+                style={{
+                  opacity: showPausedOverlay ? 1 : 0,
+                  pointerEvents: "none",
+                  background: showPausedOverlay ? "rgba(0,0,0,0.55)" : "transparent",
+                  backdropFilter: showPausedOverlay ? "blur(6px)" : "none",
+                }}
               >
                 <span
                   className="tracking-[0.25em] font-medium uppercase"

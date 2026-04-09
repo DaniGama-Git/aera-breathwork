@@ -253,7 +253,7 @@ export const preNegotiationProtocol: Protocol = {
         "Now, three slow deep inhales to activate your system. Exhale naturally after each.",
       cycle: [
         { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+        { type: "EXHALE", duration: 3000 },
       ],
       cycles: 3,
     },
@@ -303,7 +303,7 @@ export const creativeFlowProtocol: Protocol = {
       science: "Opens mental space without re-introducing control.",
       cycle: [
         { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+        { type: "EXHALE", duration: 3000 },
       ],
       cycles: 3,
     },
@@ -406,7 +406,7 @@ export const wakeMeUpProtocol: Protocol = {
       science: "Expands lung capacity and restores full oxygenation before starting the day.",
       cycle: [
         { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+        { type: "EXHALE", duration: 3000 },
       ],
       cycles: 3,
     },
@@ -488,7 +488,7 @@ export const reboundProtocol: Protocol = {
       cycle: [
         { type: "INHALE", duration: 3000 },
         { type: "INHALE", duration: 1000, label: "TOP UP" },
-        { type: "EXHALE", duration: 6000, label: "NATURALLY EXHALE" },
+        { type: "EXHALE", duration: 3000 },
       ],
       cycles: 3,
     },
@@ -512,7 +512,7 @@ export const reboundProtocol: Protocol = {
       science: "Restores alertness and prevents flat post-regulation state.",
       cycle: [
         { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+        { type: "EXHALE", duration: 3000 },
       ],
       cycles: 3,
     },
@@ -535,7 +535,7 @@ export const contextSwitchProtocol: Protocol = {
       cycle: [
         { type: "INHALE", duration: 4000 },
         { type: "INHALE", duration: 1500, label: "TOP UP" },
-        { type: "EXHALE", duration: 7000, label: "NATURALLY EXHALE" },
+        { type: "EXHALE", duration: 3500 },
       ],
       cycles: 2,
     },
@@ -582,7 +582,7 @@ export const preMeetingProtocol: Protocol = {
       cycle: [
         { type: "INHALE", duration: 3000 },
         { type: "SNIFF", duration: 1000, label: "SNIFF" },
-        { type: "EXHALE", duration: 5000, label: "NATURALLY EXHALE" },
+        { type: "EXHALE", duration: 3000 },
       ],
       cycles: 2,
     },
