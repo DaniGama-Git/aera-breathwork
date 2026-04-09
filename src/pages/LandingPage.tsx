@@ -9,7 +9,6 @@ import landingBg from "@/assets/landing-bg.svg";
 import mockupApp from "@/assets/mockup-iphone.png";
 import sessionCards from "@/assets/app-session-cards.png";
 import mockupExtension from "@/assets/mockup-extension.png";
-import mockupExtension from "@/assets/mockup-extension.png";
 
 const LandingPage = () => {
   const scrollToProducts = () => {
