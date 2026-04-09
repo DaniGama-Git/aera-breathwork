@@ -1,13 +1,19 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { lovable } from "@/integrations/lovable/index";
 import areaLogo from "@/assets/aera-logo.svg";
 import homeBg from "@/assets/home-bg.webp";
 
 const Auth = () => {
   const [error, setError] = useState("");
+  const [searchParams] = useSearchParams();
 
   const handleGoogleSignIn = async () => {
     setError("");
+    // Persist chrome flow intent through OAuth redirect
+    if (searchParams.get("flow") === "chrome") {
+      sessionStorage.setItem("aera_flow", "chrome");
+    }
     const { error } = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin,
     });
