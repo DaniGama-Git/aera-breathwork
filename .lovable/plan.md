@@ -1,31 +1,42 @@
 
 
-## Fix "The App" layout — bottom-align cards with phone
+## Plan: Calendar-triggered mode — borderless, full-bleed popup with controls from start
 
-### File: `src/pages/LandingPage.tsx` (line 87-99)
+### Context
 
-Three changes to the image container:
+Currently, whether opened manually (toolbar click) or triggered by calendar, the extension shows the same UI: tabs at top, a rounded card inside padding, and session controls only appear during the breathing phase.
 
-1. **`items-start` → `items-end`** — bottom-aligns both images so session cards line up with the bottom of the phone
-2. **Remove `mt-12 md:mt-16`** from session cards — no longer needed with bottom alignment
-3. **Increase session cards width** from `w-[120px] md:w-[150px]` to `w-[160px] md:w-[200px]`
+The user wants **two distinct modes**:
+1. **Manual open** (toolbar click): Keep current behavior — tabs, card, settings, etc.
+2. **Calendar-triggered** (autoStart): A clean, independent popup showing ONLY the breathing visuals edge-to-edge — no tabs, no card border/rounded corners, no padding. The stop/close controls should be visible from the very first screen (logo).
 
-iPhone stays unchanged at `w-[140px] md:w-[170px]`.
+### Changes
 
-```tsx
-<div className="flex items-end justify-center gap-3 mb-6">
-  <img
-    src={mockupApp}
-    alt="āera app on mobile"
-    className="w-[140px] md:w-[170px] h-auto"
-    loading="lazy"
-  />
-  <img
-    src={sessionCards}
-    alt="āera session cards"
-    className="w-[160px] md:w-[200px] h-auto"
-    loading="lazy"
-  />
-</div>
+#### 1. `extension/popup.js` — Detect autoStart mode and apply a body class
+
+At init, check `autoStart` from storage. If true, add a CSS class (e.g., `body.triggered-mode`) that hides the tabs and makes the card fill the entire window borderlessly. Also show session controls immediately on every screen (not just breathing).
+
+- Move the `autoStart` check to run **before** the default init sequence so only one flow executes
+- When in triggered mode: hide `.tabs`, remove card padding/border-radius, make card fill viewport
+- Show `#session-controls` as `.active` from the first screen onward (logo, intro, breathing, done)
+- Modify `showScreen()` to keep controls visible in triggered mode
+
+#### 2. `extension/popup.html` — Add CSS for `.triggered-mode`
+
+```css
+body.triggered-mode .tabs { display: none; }
+body.triggered-mode .card-wrap { padding: 0; }
+body.triggered-mode .card { border-radius: 0; aspect-ratio: auto; height: 100vh; width: 100vw; }
+body.triggered-mode .session-controls { opacity: 1; }
 ```
+
+#### 3. `extension/popup.js` — Refactor init flow
+
+- Wrap the default init (lines 400-412) in an `else` branch so it only runs when NOT autoStart
+- In the autoStart branch, add `document.body.classList.add("triggered-mode")` before preloading
+- In `showScreen()`, add: if triggered mode, always keep `sessionControls.classList.add("active")`
+
+### Files modified
+- `extension/popup.html` — new CSS rules for `.triggered-mode`
+- `extension/popup.js` — detect mode, apply class, keep controls visible across all screens
 
