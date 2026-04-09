@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import LandingPage from "./pages/LandingPage.tsx";
 import HomeScreen from "./pages/HomeScreen.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import WavePreview from "./pages/WavePreview.tsx";
@@ -85,7 +86,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomeScreen />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={<HomeScreen />} />
           <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
           <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
           <Route path="/menu" element={<ProtectedRoute><BreathworkMenu /></ProtectedRoute>} />
