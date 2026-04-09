@@ -20,7 +20,7 @@ const LandingPage = () => {
       <section className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
         {/* BG */}
         <img
-          src={homeBg}
+          src={landingBg}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           aria-hidden="true"
@@ -64,7 +64,7 @@ const LandingPage = () => {
       >
         {/* Atmospheric BG — darker continuation */}
         <img
-          src={homeBg}
+          src={landingBg}
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-40"
           aria-hidden="true"
