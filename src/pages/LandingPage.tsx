@@ -76,30 +76,32 @@ const LandingPage = () => {
           {/* Product cards */}
           <div className="w-full flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-0">
             {/* Card 1 — The App */}
-            <div className="flex-1 max-w-[480px] w-full flex flex-col items-center text-center">
+            <div className="flex-1 max-w-[600px] w-full flex flex-col items-center text-center">
               <h2 className="font-body font-semibold text-[#1D1D1C] text-[24px] tracking-[-0.01em] mb-2">
                 The App
               </h2>
-              <p className="font-body font-semibold text-[#1D1D1C]/80 text-[15px] mb-6">
+              <p className="font-body font-semibold text-[#1D1D1C]/80 text-[15px] mb-8">
                 Breathe wherever you are.
               </p>
 
-              <div className="flex items-center justify-center gap-4 mb-6">
+              <div className="relative flex items-start justify-center mb-8 w-full" style={{ minHeight: '480px' }}>
+                {/* iPhone mockup — left, large */}
                 <img
                   src={mockupApp}
                   alt="āera app on mobile"
-                  className="w-[160px] md:w-[200px] h-auto"
+                  className="w-[240px] md:w-[280px] h-auto relative z-10"
                   loading="lazy"
                 />
+                {/* Session cards — right, offset down */}
                 <img
                   src={sessionCards}
                   alt="āera session cards"
-                  className="w-[180px] md:w-[220px] h-auto mix-blend-multiply"
+                  className="w-[240px] md:w-[300px] h-auto -ml-4 mt-8 md:mt-12"
                   loading="lazy"
                 />
               </div>
 
-              <p className="font-body font-normal text-[#1D1D1C]/70 text-[14px] leading-[1.55] mb-8 max-w-[360px]">
+              <p className="font-body font-normal text-[#1D1D1C]/70 text-[14px] leading-[1.55] mb-8 max-w-[420px]">
                 Your full session library. Includes longer on-demand sessions across all four categories.
                 Built for the space between meetings and on-the-go.
               </p>
