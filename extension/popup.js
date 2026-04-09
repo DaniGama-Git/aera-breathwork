@@ -311,9 +311,29 @@ function showScreen(name) {
 
 // ─── Session controls ───
 ctrlStop.addEventListener("click", () => {
-  running = false;
-  cancelAnimationFrame(raf);
-  showScreen("done");
+  if (paused) {
+    // Resume
+    paused = false;
+    running = true;
+    sessionStart = Date.now() - pausedElapsed;
+    pauseIcon.style.display = "";
+    playIcon.style.display = "none";
+    pausedOverlay.classList.remove("active");
+    phaseLabel.style.opacity = "1";
+    sessionProgressWrap.style.opacity = "1";
+    raf = requestAnimationFrame(animate);
+  } else if (running) {
+    // Pause
+    pausedElapsed = Date.now() - sessionStart;
+    paused = true;
+    running = false;
+    cancelAnimationFrame(raf);
+    pauseIcon.style.display = "none";
+    playIcon.style.display = "";
+    phaseLabel.style.opacity = "0";
+    sessionProgressWrap.style.opacity = "0";
+    pausedOverlay.classList.add("active");
+  }
 });
 
 ctrlClose.addEventListener("click", () => {
