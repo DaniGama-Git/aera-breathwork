@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import JSZip from "jszip";
 import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import areaLogo from "@/assets/aera-logo.svg";
-import mockupExtension from "@/assets/mockup-extension.png";
+import mockupExtension from "@/assets/mockup-extension-breathe.svg";
 import BottomNavBar from "@/components/BottomNavBar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
