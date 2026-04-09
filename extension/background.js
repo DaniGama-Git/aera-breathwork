@@ -120,13 +120,8 @@ async function checkCalendar() {
             activeEventName: evt.summary,
           });
 
-          chrome.action.openPopup?.() ||
-            chrome.notifications.create(evt.uid, {
-              type: "basic",
-              iconUrl: "icon.png",
-              title: "āera",
-              message: `"${evt.summary}" is starting — take a breath.`,
-            });
+          // Open as standalone floating window
+          openStandalonePopup();
         }
       }
     }
