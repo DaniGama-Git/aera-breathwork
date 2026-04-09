@@ -77,10 +77,10 @@ const LandingPage = () => {
           <div className="w-full flex flex-col md:flex-row items-stretch md:items-start gap-6 md:gap-0">
             {/* Card 1 — The App */}
             <div className="flex-1 max-w-[600px] w-full flex flex-col items-center text-center">
-              <h2 className="font-body font-semibold text-[#1D1D1C] text-[24px] tracking-[-0.01em] mb-2">
+              <h2 className="font-body font-semibold text-[#1D1D1C] text-[32px] md:text-[38px] tracking-[-0.02em] mb-3">
                 The App
               </h2>
-              <p className="font-body font-semibold text-[#1D1D1C]/80 text-[15px] mb-8">
+              <p className="font-body font-semibold text-[#1D1D1C]/80 text-[17px] md:text-[19px] mb-8">
                 Breathe wherever you are.
               </p>
 
@@ -124,10 +124,10 @@ const LandingPage = () => {
 
             {/* Card 2 — The Moment */}
             <div className="flex-1 max-w-[480px] w-full flex flex-col items-center text-center">
-              <h2 className="font-body font-semibold text-[#1D1D1C] text-[24px] tracking-[-0.01em] mb-2">
+              <h2 className="font-body font-semibold text-[#1D1D1C] text-[32px] md:text-[38px] tracking-[-0.02em] mb-3">
                 The Moment
               </h2>
-              <p className="font-body font-semibold text-[#1D1D1C]/80 text-[15px] mb-8">
+              <p className="font-body font-semibold text-[#1D1D1C]/80 text-[17px] md:text-[19px] mb-8">
                 Breathe in the moments that matter most.
               </p>
 
