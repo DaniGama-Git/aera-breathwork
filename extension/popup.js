@@ -115,6 +115,14 @@ const againBtn = document.getElementById("again-btn");
 const introTitle = document.getElementById("intro-title");
 const introSubtitle = document.getElementById("intro-subtitle");
 const introText = document.getElementById("intro-text");
+const sessionControls = document.getElementById("session-controls");
+const ctrlStop = document.getElementById("ctrl-stop");
+const ctrlClose = document.getElementById("ctrl-close");
+const ctrlSound = document.getElementById("ctrl-sound");
+const iconSoundOn = document.getElementById("icon-sound-on");
+const iconSoundOff = document.getElementById("icon-sound-off");
+
+let soundEnabled = true;
 
 let running = false;
 let sessionStart = 0;
