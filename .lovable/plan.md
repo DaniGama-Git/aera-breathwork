@@ -1,27 +1,31 @@
 
 
-## Plan: iPhone mockup with uploaded screenshot + existing 3-screen visual
+## Fix "The App" layout — bottom-align cards with phone
 
-### What changes
+### File: `src/pages/LandingPage.tsx` (line 87-99)
 
-Under "The App" card, show two visuals:
-1. A new iPhone mockup frame containing the uploaded home screen image (`Aera_Brand_Guidelines_Home_Screen-2.jpg`)
-2. The existing 3-screen mockup SVG (`mockup-app-screens.svg`) below or beside it
+Three changes to the image container:
 
-### Steps
+1. **`items-start` → `items-end`** — bottom-aligns both images so session cards line up with the bottom of the phone
+2. **Remove `mt-12 md:mt-16`** from session cards — no longer needed with bottom alignment
+3. **Increase session cards width** from `w-[120px] md:w-[150px]` to `w-[160px] md:w-[200px]`
 
-1. **Copy the uploaded image** to `src/assets/aera-home-screen-2.jpg`
+iPhone stays unchanged at `w-[140px] md:w-[170px]`.
 
-2. **Generate an iPhone mockup PNG** using a script — render the uploaded screenshot inside a realistic iPhone 15 Pro frame (dark bezel, rounded corners, notch). Save as `src/assets/mockup-iphone.png` (overwrite the existing one).
-
-3. **Update `LandingPage.tsx`** — in The App card's visual area, show both:
-   - The new iPhone mockup (centered, primary)
-   - The existing `mockup-app-screens.svg` below it (the 3 side-by-side screens)
-
-### Technical details
-
-- Use Python with Pillow to composite the screenshot into an iPhone frame
-- iPhone frame: dark rounded rectangle with appropriate aspect ratio, notch cutout, inner screen area
-- The 3-screen SVG import (`mockupAppScreens`) will be added back alongside the phone mockup
-- Layout: iPhone centered on top, 3-screen SVG below with appropriate spacing
+```tsx
+<div className="flex items-end justify-center gap-3 mb-6">
+  <img
+    src={mockupApp}
+    alt="āera app on mobile"
+    className="w-[140px] md:w-[170px] h-auto"
+    loading="lazy"
+  />
+  <img
+    src={sessionCards}
+    alt="āera session cards"
+    className="w-[160px] md:w-[200px] h-auto"
+    loading="lazy"
+  />
+</div>
+```
 
