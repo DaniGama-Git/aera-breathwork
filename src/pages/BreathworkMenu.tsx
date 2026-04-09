@@ -62,7 +62,7 @@ const BreathworkMenu = () => {
     <div className="relative w-full mx-auto min-h-screen flex flex-col bg-[#F7F6F5]">
       <div className="flex-1 overflow-y-auto pb-28 w-full">
         {/* Header */}
-        <div className="px-5 md:px-8 pt-10 pb-4 flex items-start justify-between">
+        <div className="px-5 pt-10 pb-4 flex items-start justify-between">
           <div>
             <p className="font-body font-normal text-[16px] text-[#BDBDBD]">{getGreeting()}</p>
             <h1 className="font-body font-semibold text-[32px] leading-[100%] text-[#1D1D1C] mt-1">{displayName}</h1>
@@ -83,9 +83,9 @@ const BreathworkMenu = () => {
         </div>
 
         {/* Categories */}
-        <div className="px-5 md:px-8 mt-2">
+        <div className="px-5 mt-2">
           <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Categories</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {categories.map((cat) => (
               <Link key={cat.label} to={cat.to} className="relative overflow-hidden no-underline group" style={{ height: 136, borderRadius: 18.11 }}>
                 <img src={cat.image} alt={cat.label} decoding="async" className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
@@ -98,9 +98,9 @@ const BreathworkMenu = () => {
 
         {/* Favorites */}
         {favoriteSessions.length > 0 && (
-          <div className="px-5 md:px-8 mt-8">
+          <div className="px-5 mt-8">
             <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Favorites</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               {favoriteSessions.map((fav) => (
                 <Link key={fav.title} to={fav.to} className="flex items-center gap-3 no-underline">
                   <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 relative">
@@ -121,9 +121,9 @@ const BreathworkMenu = () => {
         )}
 
         {/* Recommendations */}
-        <div className="px-5 md:px-8 mt-8">
+        <div className="px-5 mt-8">
           <h2 className="font-body font-semibold text-[18px] text-[#1D1D1C] mb-3">Recommendations</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {recommendations.map((rec) => (
               <Link key={rec.title} to={rec.to} className="relative overflow-hidden no-underline group" style={{ height: 102, borderRadius: 12 }}>
                 <img src={rec.image} alt={rec.title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
@@ -143,7 +143,7 @@ const BreathworkMenu = () => {
       </div>
 
       {/* Fixed bottom nav */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] md:max-w-[600px] z-20">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-20">
         <BottomNavBar activeTab="Home" />
         <div className="flex justify-center pb-2 pt-1 bg-[#F7F6F5]">
           <img src={homeIndicator} alt="" className="h-[5px] w-36 opacity-40" aria-hidden="true" />
