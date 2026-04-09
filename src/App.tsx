@@ -74,8 +74,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   if (needsOnboarding && location.pathname !== "/onboarding") {
     return <Navigate to="/onboarding" replace />;
   }
-  if (!needsOnboarding && location.pathname === "/onboarding") {
-    // Clear the flow flag once onboarding is done or skipped
+  if (!needsOnboarding && location.pathname === "/onboarding" && sessionStorage.getItem("aera_flow") === "chrome") {
     sessionStorage.removeItem("aera_flow");
     return <Navigate to="/menu" replace />;
   }
