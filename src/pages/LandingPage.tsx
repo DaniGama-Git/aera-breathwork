@@ -84,19 +84,17 @@ const LandingPage = () => {
                 Breathe wherever you are.
               </p>
 
-              <div className="relative flex items-start justify-center mb-8 w-full" style={{ minHeight: '480px' }}>
-                {/* iPhone mockup — left, large */}
+              <div className="flex flex-col items-center gap-4 mb-6">
                 <img
                   src={mockupApp}
                   alt="āera app on mobile"
-                  className="w-[240px] md:w-[280px] h-auto relative z-10"
+                  className="w-[180px] md:w-[200px] h-auto"
                   loading="lazy"
                 />
-                {/* Session cards — right, offset down */}
                 <img
                   src={sessionCards}
                   alt="āera session cards"
-                  className="w-[240px] md:w-[300px] h-auto -ml-4 mt-8 md:mt-12"
+                  className="w-[280px] md:w-[320px] h-auto"
                   loading="lazy"
                 />
               </div>
