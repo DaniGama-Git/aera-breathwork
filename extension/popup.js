@@ -155,7 +155,7 @@ function preloadImages(srcs) {
 
 // ─── Build full timeline from protocol (with TRANSITION/SCIENCE entries) ───
 function buildFullTimeline(protocolId) {
-  const proto = PROTOCOLS[protocolId] || PROTOCOLS["deep-focus"];
+  const proto = PROTOCOLS[protocolId] || PROTOCOLS["back-to-back"];
   const entries = [];
   let cursor = 0;
 
@@ -231,11 +231,11 @@ function buildFullTimeline(protocolId) {
 }
 
 function setProtocol(protocolId) {
-  activeProtocolId = protocolId || "deep-focus";
+  activeProtocolId = protocolId || "back-to-back";
   activeTimeline = buildFullTimeline(activeProtocolId);
   activeTotalMs = activeTimeline.length > 0 ? activeTimeline[activeTimeline.length - 1].endMs : 0;
 
-  const proto = PROTOCOLS[activeProtocolId] || PROTOCOLS["deep-focus"];
+  const proto = PROTOCOLS[activeProtocolId] || PROTOCOLS["back-to-back"];
   const mins = Math.round(activeTotalMs / 60000);
   introTitle.textContent = proto.title.toUpperCase();
   introSubtitle.textContent = `~${mins} MINS`;
@@ -415,7 +415,7 @@ preloadImages(ALL_IMAGES).then(() => {
 chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
   if (data.autoStart) {
     chrome.storage.local.remove(["autoStart", "activeProtocol"]);
-    setProtocol(data.activeProtocol || "deep-focus");
+    setProtocol(data.activeProtocol || "back-to-back");
     preloadImages(ALL_IMAGES).then(() => {
       showScreen("logo");
       setTimeout(() => {
