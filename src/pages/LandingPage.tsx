@@ -8,7 +8,7 @@ import aeraLogo from "@/assets/aera-logo.svg";
 import landingBg from "@/assets/landing-bg.svg";
 import mockupApp from "@/assets/mockup-iphone.png";
 import sessionCards from "@/assets/app-session-cards.png";
-import mockupExtension from "@/assets/mockup-extension.png";
+import mockupExtension from "@/assets/mockup-extension-breathe.svg";
 
 const LandingPage = () => {
   const scrollToProducts = () => {
@@ -74,7 +74,7 @@ const LandingPage = () => {
           </p>
 
           {/* Product cards */}
-          <div className="w-full flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-0">
+          <div className="w-full flex flex-col md:flex-row items-stretch md:items-start gap-6 md:gap-0">
             {/* Card 1 — The App */}
             <div className="flex-1 max-w-[600px] w-full flex flex-col items-center text-center">
               <h2 className="font-body font-semibold text-[#1D1D1C] text-[24px] tracking-[-0.01em] mb-2">
@@ -84,29 +84,29 @@ const LandingPage = () => {
                 Breathe wherever you are.
               </p>
 
-              <div className="flex items-end justify-center gap-4 mb-6">
+              <div className="flex items-end justify-center gap-4 mb-6 h-[200px] md:h-[240px]">
                 <img
                   src={mockupApp}
                   alt="āera app on mobile"
-                  className="w-[110px] md:w-[130px] h-auto"
+                  className="w-[110px] md:w-[130px] h-auto max-h-full object-contain"
                   loading="lazy"
                 />
                 <img
                   src={sessionCards}
                   alt="āera session cards"
-                  className="w-[200px] md:w-[260px] h-auto"
+                  className="w-[200px] md:w-[260px] h-auto max-h-full object-contain"
                   loading="lazy"
                 />
               </div>
 
-              <p className="font-body font-normal text-[#1D1D1C]/70 text-[14px] leading-[1.55] mb-8 max-w-[420px]">
+              <p className="font-body font-normal text-[#1D1D1C]/70 text-[14px] leading-[1.55] mb-8 max-w-[420px] flex-1">
                 Your full session library. Includes longer on-demand sessions across all four categories.
                 Built for the space between meetings and on-the-go.
               </p>
 
               <a
                 href="/auth"
-                className="inline-flex items-center justify-center h-[44px] px-8 rounded-full bg-[#E8A88C] text-white font-body font-medium text-[15px] hover:opacity-90 transition-opacity"
+                className="inline-flex items-center justify-center h-[44px] px-8 rounded-full bg-[#E8A88C] text-white font-body font-medium text-[15px] hover:opacity-90 transition-opacity mt-auto"
               >
                 Open App
               </a>
@@ -127,20 +127,20 @@ const LandingPage = () => {
               <h2 className="font-body font-semibold text-[#1D1D1C] text-[24px] tracking-[-0.01em] mb-2">
                 The Moment
               </h2>
-              <p className="font-body font-semibold text-[#1D1D1C]/80 text-[15px] mb-6">
+              <p className="font-body font-semibold text-[#1D1D1C]/80 text-[15px] mb-8">
                 Breathe in the moments that matter most.
               </p>
 
-              <div className="flex justify-center mb-6">
+              <div className="flex justify-center mb-6 h-[200px] md:h-[240px] items-center">
                 <img
                   src={mockupExtension}
                   alt="āera Chrome extension with calendar integration"
-                  className="w-[280px] md:w-[320px] h-auto"
+                  className="h-auto max-h-full w-auto max-w-full object-contain"
                   loading="lazy"
                 />
               </div>
 
-              <p className="font-body font-normal text-[#1D1D1C]/70 text-[14px] leading-[1.55] mb-8 max-w-[360px]">
+              <p className="font-body font-normal text-[#1D1D1C]/70 text-[14px] leading-[1.55] mb-8 max-w-[360px] flex-1">
                 Reads your calendar. Pulls the right āera session. Pops up before your pitch,
                 your board meeting, or your creative block. You just breathe.
               </p>
@@ -149,7 +149,7 @@ const LandingPage = () => {
                 href="https://chromewebstore.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center h-[44px] px-8 rounded-full bg-[#E8A88C] text-white font-body font-medium text-[15px] hover:opacity-90 transition-opacity"
+                className="inline-flex items-center justify-center h-[44px] px-8 rounded-full bg-[#E8A88C] text-white font-body font-medium text-[15px] hover:opacity-90 transition-opacity mt-auto"
               >
                 Add to Chrome
               </a>
