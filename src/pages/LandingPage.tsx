@@ -75,7 +75,7 @@ const LandingPage = () => {
       {/* ——— SECTION 2: Product Overview ——— */}
       <section
         id="products"
-        className="relative w-full h-screen flex flex-col items-center justify-center bg-[#F0EEEB] overflow-hidden pt-4 md:pt-6"
+        className="relative w-full min-h-screen flex flex-col items-center justify-center bg-[#F0EEEB] py-10 md:py-6"
       >
         <div className="w-full max-w-[1100px] px-6 md:px-12 flex flex-col items-center">
           {/* Logo + tagline */}
