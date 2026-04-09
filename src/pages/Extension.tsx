@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Download, Copy, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 import JSZip from "jszip";
@@ -46,11 +46,26 @@ const STEPS = [
 
 const Extension = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
+  const isChromeFlow = searchParams.get("flow") === "chrome" || sessionStorage.getItem("aera_flow") === "chrome";
   const [keywords, setKeywords] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
+  const [downloaded, setDownloaded] = useState(false);
 
   useEffect(() => {
+    // Try loading keywords from sessionStorage first (pre-auth chrome flow)
+    const pendingData = sessionStorage.getItem("aera_onboarding_data");
+    if (pendingData) {
+      try {
+        const parsed = JSON.parse(pendingData);
+        if (parsed.calendarKeywords?.length) {
+          setKeywords(parsed.calendarKeywords);
+          return;
+        }
+      } catch {}
+    }
+    // Fallback: load from DB if logged in
     if (!user) return;
     supabase
       .from("onboarding_preferences")
@@ -83,6 +98,7 @@ const Extension = () => {
       a.download = "aera-extension.zip";
       a.click();
       URL.revokeObjectURL(a.href);
+      setDownloaded(true);
     } catch (err: any) {
       alert(err.message);
     }
