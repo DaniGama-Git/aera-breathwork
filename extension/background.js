@@ -177,5 +177,36 @@ function parseIcalDate(str) {
 chrome.notifications.onClicked.addListener((notificationId) => {
   chrome.notifications.clear(notificationId);
   chrome.storage.local.set({ autoStart: true });
-  chrome.action.openPopup?.();
+  openStandalonePopup();
 });
+
+// Open a standalone floating popup window (not attached to toolbar)
+async function openStandalonePopup() {
+  const popupUrl = chrome.runtime.getURL("popup.html");
+
+  // Check if one is already open
+  const allWindows = await chrome.windows.getAll({ populate: true });
+  for (const w of allWindows) {
+    if (w.type === "popup" && w.tabs?.some(t => t.url?.includes("popup.html"))) {
+      chrome.windows.update(w.id, { focused: true });
+      return;
+    }
+  }
+
+  // Get the current display work area to position top-right
+  const currentWindow = await chrome.windows.getCurrent();
+  const width = 360;
+  const height = 520;
+  const left = (currentWindow.left + currentWindow.width) - width - 24;
+  const top = currentWindow.top + 60;
+
+  chrome.windows.create({
+    url: popupUrl,
+    type: "popup",
+    width,
+    height,
+    left,
+    top,
+    focused: true,
+  });
+}
