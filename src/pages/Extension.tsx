@@ -123,18 +123,12 @@ const Extension = () => {
         </div>
 
         {/* Product mockup */}
-        <div className="px-6 flex justify-center pb-6 overflow-hidden" style={{ maxHeight: 220 }}>
+        <div className="px-6 flex justify-center pb-6">
           <img
             src={mockupExtension}
             alt="āera Chrome extension preview"
-            className="w-auto"
-            style={{
-              maxHeight: 260,
-              objectFit: "cover",
-              objectPosition: "top",
-              filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.3))",
-              mixBlendMode: "screen",
-            }}
+            className="max-h-[200px] w-auto rounded-xl"
+            style={{ filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.3))" }}
           />
         </div>
 
