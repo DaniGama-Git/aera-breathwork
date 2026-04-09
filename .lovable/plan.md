@@ -1,44 +1,28 @@
 
 
-## Three Fixes for Wave Preview
+## Fix Extension Page Alignment & Remove Nav Bar
 
-### Fix 1: Paused overlay hides everything underneath
-**File:** `src/pages/WavePreview.tsx` (lines 349-359)
+### Problems identified from the screenshot
 
-Add a dark semi-transparent background with backdrop blur to the paused overlay div. Bump z-index to `z-20` (same level as controls but rendered before them). Keep `pointerEvents: none`.
+1. **Nav bar still showing** — `BottomNavBar` is imported on line 8 but not used in the JSX. However, the route at line 127 wraps Extension in `<MobileFrame>`, which doesn't add a nav bar. The nav bar might be appearing from a different source — need to check if `BottomNavBar` was removed from the JSX but the import lingers. Looking at the current code, the nav bar component is NOT rendered in the JSX, so if it's still showing, another component may be injecting it. Will verify during implementation.
 
-```tsx
-// Current: z-15, no background
-// New: z-20, dark background + blur
-<div
-  className="absolute inset-0 z-20 flex items-center justify-center transition-opacity duration-500"
-  style={{
-    opacity: showPausedOverlay ? 1 : 0,
-    pointerEvents: "none",
-    background: showPausedOverlay ? "rgba(0,0,0,0.55)" : "transparent",
-    backdropFilter: showPausedOverlay ? "blur(6px)" : "none",
-  }}
->
-```
+2. **Visual misalignment** — the page mixes centered content (logo, title, subtitle, mockup) with left-aligned content (steps, CTA). This creates an unbalanced feel:
+   - The 3 steps are left-aligned with number labels, while everything above is centered
+   - The download button is full-width but text inside is centered — yet steps above it aren't
+   - The mockup image has `max-h-[200px]` which may be too small and feel disconnected
 
-Control buttons div (line 318) stays at `z-20` but will render after the overlay, keeping them clickable.
+### Fixes in `src/pages/Extension.tsx`
 
-### Fix 2: macOS controls
-No code change — these are native browser/OS window controls, not rendered by the app.
+1. **Center the steps section** — change from left-aligned `flex items-center` to centered text layout matching the hero section above. Remove step numbers (01/02/03) and use a simple centered list with subtle separators or bullet dots.
 
-### Fix 3: Shorten "NATURALLY EXHALE" durations and labels
-**File:** `src/data/breathingProtocols.ts`
+2. **Increase mockup prominence** — bump `max-h-[200px]` to `max-h-[260px]` to give the product image more visual weight and better fill the horizontal space.
 
-All 7 occurrences of `label: "NATURALLY EXHALE"` → remove the label entirely (defaults to `"EXHALE"`). Duration changes for outliers:
+3. **Tighten vertical spacing** — reduce `mb-8` on steps to `mb-6`, and adjust `pb-6` on mockup to `pb-4` so the page feels more cohesive.
 
-| Location | Current | New |
-|---|---|---|
-| Line 491 (Deep Focus stage 1) | 6000ms | 3000ms |
-| Line 538 (Wake Me Up stage 1) | 7000ms | 3500ms |
-| Line 585 (Pre-Meeting stage 1) | 5000ms | 3000ms |
-| Lines 256, 306, 409, 515 | 3000ms | 3000ms (no change) |
+4. **Remove unused import** — clean up the `BottomNavBar` import on line 8.
+
+5. **Ensure no nav bar renders** — confirm no `<BottomNavBar />` exists in the JSX (it doesn't in current code, but will double-check during implementation).
 
 ### Files to change
-- `src/pages/WavePreview.tsx` — paused overlay background + z-index
-- `src/data/breathingProtocols.ts` — remove "NATURALLY EXHALE" labels, reduce 3 outlier durations
+- `src/pages/Extension.tsx` — center steps, enlarge mockup, tighten spacing, remove unused import
 
