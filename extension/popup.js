@@ -118,8 +118,13 @@ const introText = document.getElementById("intro-text");
 const sessionControls = document.getElementById("session-controls");
 const ctrlStop = document.getElementById("ctrl-stop");
 const ctrlClose = document.getElementById("ctrl-close");
+const pauseIcon = document.getElementById("pause-icon");
+const playIcon = document.getElementById("play-icon");
+const pausedOverlay = document.getElementById("paused-overlay");
 
 let running = false;
+let paused = false;
+let pausedElapsed = 0;
 let sessionStart = 0;
 let raf = 0;
 let activeTimeline = [];
@@ -306,9 +311,29 @@ function showScreen(name) {
 
 // ─── Session controls ───
 ctrlStop.addEventListener("click", () => {
-  running = false;
-  cancelAnimationFrame(raf);
-  showScreen("done");
+  if (paused) {
+    // Resume
+    paused = false;
+    running = true;
+    sessionStart = Date.now() - pausedElapsed;
+    pauseIcon.style.display = "";
+    playIcon.style.display = "none";
+    pausedOverlay.classList.remove("active");
+    phaseLabel.style.opacity = "1";
+    sessionProgressWrap.style.opacity = "1";
+    raf = requestAnimationFrame(animate);
+  } else if (running) {
+    // Pause
+    pausedElapsed = Date.now() - sessionStart;
+    paused = true;
+    running = false;
+    cancelAnimationFrame(raf);
+    pauseIcon.style.display = "none";
+    playIcon.style.display = "";
+    phaseLabel.style.opacity = "0";
+    sessionProgressWrap.style.opacity = "0";
+    pausedOverlay.classList.add("active");
+  }
 });
 
 ctrlClose.addEventListener("click", () => {
@@ -365,12 +390,10 @@ function animate() {
   }
 
   const barTop = getBarPosition(entry.type, progress, prevEntryType);
-  progressLine.style.top = barTop + "%";
   gradientMask.style.background = buildMask(barTop);
 
-  // Hide bar/label during overlays or before first breath
+  // Hide label during overlays or before first breath
   const hideBar = isOverlay || (!hasStartedBreathing && startsWithOverlay);
-  progressLine.style.opacity = hideBar ? "0" : "1";
   phaseLabel.style.opacity = hideBar ? "0" : "1";
   sessionProgressWrap.style.opacity = hideBar ? "0" : "1";
 
@@ -384,12 +407,16 @@ function animate() {
 
 function startSession() {
   running = true;
+  paused = false;
+  pausedElapsed = 0;
   sessionStart = Date.now();
   hasStartedBreathing = false;
   prevEntryType = undefined;
+  pauseIcon.style.display = "";
+  playIcon.style.display = "none";
+  pausedOverlay.classList.remove("active");
   showScreen("breathing");
   gradientMask.style.background = buildMask(BAR_BOTTOM);
-  progressLine.style.top = BAR_BOTTOM + "%";
   sessionProgressFill.style.width = "0%";
   raf = requestAnimationFrame(animate);
 }

@@ -124,12 +124,18 @@ body{
 }
 .breathing-ui.active{opacity:1}
 
-.progress-line{
-  position:absolute;left:0;right:0;
-  height:1.5px;
-  background:hsla(0,0%,100%,0.62);
-  box-shadow:0 0 4px 1px hsla(0,0%,100%,0.08);
-  transition:opacity 400ms ease;
+.progress-line{display:none}
+
+/* Paused overlay */
+.paused-overlay{
+  position:absolute;inset:0;z-index:15;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity 500ms ease;pointer-events:none;
+}
+.paused-overlay.active{opacity:1}
+.paused-text{
+  font-size:16px;letter-spacing:0.25em;font-weight:500;
+  color:rgba(255,255,255,0.6);text-transform:uppercase;
 }
 
 .phase-label{
@@ -325,7 +331,8 @@ Let your mind open up.</p>
         <!-- Session controls (close, sound, stop) -->
         <div class="session-controls" id="session-controls">
           <button class="ctrl-btn" id="ctrl-stop" title="Pause">
-            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="6,4 20,12 6,20"/></svg>
           </button>
           <button class="ctrl-btn" id="ctrl-close" title="Close">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -334,7 +341,7 @@ Let your mind open up.</p>
 
         <!-- Breathing UI -->
         <div class="breathing-ui" id="breathing-ui">
-          <div class="progress-line" id="progress-line" style="top:92%"></div>
+          
           <span class="phase-label" id="phase-label">INHALE</span>
           <div class="session-progress-wrap" id="session-progress-wrap">
             <div class="session-progress-fill" id="session-progress-fill"></div>
@@ -352,6 +359,11 @@ Let your mind open up.</p>
             <img src="lightbulb.png" alt="" id="lightbulb-img"/>
             <p id="science-text"></p>
           </div>
+        </div>
+
+        <!-- Paused overlay -->
+        <div class="paused-overlay" id="paused-overlay">
+          <span class="paused-text">Paused</span>
         </div>
 
         <!-- Done screen -->
