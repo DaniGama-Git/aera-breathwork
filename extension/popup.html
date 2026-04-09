@@ -7,8 +7,16 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
+html{
+  width:360px;
+  height:520px;
+}
+
 body{
-  width:100%;
+  width:360px;
+  min-width:360px;
+  height:520px;
+  min-height:520px;
   font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',system-ui,sans-serif;
   background:#111;
   color:#f0ece8;
@@ -274,6 +282,7 @@ body.triggered-mode .tabs{display:none}
 body.triggered-mode .card-wrap{padding:0;margin:0}
 body.triggered-mode .card{border-radius:0;aspect-ratio:auto;height:100vh;width:100vw;max-height:none}
 body.triggered-mode .session-controls{opacity:1}
+body.triggered-mode .breathe-tab{height:100%}
 </style>
 </head>
 <body>
