@@ -17,7 +17,7 @@ const LandingPage = () => {
   return (
     <div className="w-full min-h-screen bg-[#0e0e0d] text-[#F7F6F5] font-body">
       {/* ——— SECTION 1: Hero ——— */}
-      <section className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative w-full h-screen flex flex-col items-end overflow-hidden">
         {/* BG */}
         <img
           src={landingBg}
@@ -25,34 +25,34 @@ const LandingPage = () => {
           className="absolute inset-0 w-full h-full object-cover"
           aria-hidden="true"
         />
-        <div className="absolute inset-0 bg-black/30" aria-hidden="true" />
 
-        <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-[680px]">
-          <img src={aeraLogo} alt="āera" className="w-[clamp(100px,22vw,160px)] mb-10" />
+        {/* Content — anchored to bottom center */}
+        <div className="relative z-10 w-full mt-auto flex flex-col items-center text-center px-6 pb-16 md:pb-20">
+          <img src={aeraLogo} alt="āera" className="w-[90px] md:w-[110px] mb-8" />
 
-          <h1
-            className="font-body font-light text-[#F7F6F5] leading-[1.25] tracking-[-0.01em]"
-            style={{ fontSize: "clamp(22px, 4.5vw, 36px)" }}
+          <p
+            className="font-body font-normal text-[#F7F6F5]/85 uppercase tracking-[0.15em] leading-[1.6]"
+            style={{ fontSize: "clamp(11px, 2.2vw, 14px)" }}
           >
             Every athlete has a recovery coach.
             <br />
             High performers don't.
-            <br />
-            <span className="opacity-70">Until now.</span>
-          </h1>
+          </p>
+
+          <p
+            className="font-body font-semibold text-[#F7F6F5] uppercase tracking-[0.15em] mt-4"
+            style={{ fontSize: "clamp(13px, 2.5vw, 16px)" }}
+          >
+            Until now.
+          </p>
 
           <button
             onClick={scrollToProducts}
-            className="mt-12 inline-flex items-center gap-2 px-6 h-[44px] border border-[#F7F6F5]/40 rounded-full font-body font-normal text-[15px] text-[#F7F6F5] hover:bg-[#F7F6F5]/10 transition-colors"
+            className="mt-8 inline-flex items-center justify-center px-8 h-[44px] rounded-full bg-[#F7F6F5] text-[#1D1D1C] font-body font-medium text-[15px] hover:opacity-90 transition-opacity"
           >
-            See how it works
+            Breathe
           </button>
         </div>
-
-        {/* Scroll hint */}
-        <div className="absolute bottom-8 z-10 flex flex-col items-center gap-2 opacity-50 animate-pulse">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M10 4v12M4 10l6 6 6-6" stroke="#F7F6F5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
       </section>
