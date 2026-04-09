@@ -135,7 +135,7 @@ const LandingPage = () => {
                 <img
                   src={mockupExtension}
                   alt="āera Chrome extension with calendar integration"
-                  className="h-auto max-h-full w-auto max-w-full object-contain"
+                  className="h-auto max-h-full w-auto max-w-full object-contain mix-blend-multiply"
                   loading="lazy"
                 />
               </div>
