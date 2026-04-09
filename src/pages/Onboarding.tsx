@@ -4,22 +4,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import areaLogo from "@/assets/aera-logo.svg";
 import homeBg from "@/assets/home-bg.webp";
-import BreatheDots from "@/components/BreatheDots";
 import OnboardingStep from "@/components/onboarding/OnboardingStep";
 import MultiSelectStep from "@/components/onboarding/MultiSelectStep";
 import KeywordStep from "@/components/onboarding/KeywordStep";
-import SingleSelectStep from "@/components/onboarding/SingleSelectStep";
-import ClosingMessage from "@/components/onboarding/ClosingMessage";
 
 interface OnboardingData {
   goals: string[];
   moments: string[];
   calendarKeywords: string[];
-  scheduledEnabled: boolean;
-  scheduledPractice: string;
-  scheduledLength: string;
-  scheduledTimes: string[];
-  scheduledFrequency: string;
 }
 
 const GOAL_OPTIONS = [
@@ -45,31 +37,7 @@ const SUGGESTED_KEYWORDS = [
   "deep work", "focus block", "strategy", "1:1", "standup",
 ];
 
-const PRACTICE_OPTIONS = [
-  { label: "Perform", value: "perform" },
-  { label: "Energize", value: "energize" },
-  { label: "Recover", value: "recover" },
-];
-
-const LENGTH_OPTIONS = [
-  { label: "Under 3 min", value: "under_3" },
-  { label: "3–5 min", value: "3_to_5" },
-  { label: "Up to 10 min", value: "up_to_10" },
-];
-
-const TIME_OPTIONS = [
-  { label: "Morning", value: "morning" },
-  { label: "Midday", value: "midday" },
-  { label: "Evening", value: "evening" },
-];
-
-const FREQUENCY_OPTIONS = [
-  { label: "1x per day", value: "1x" },
-  { label: "2x per day", value: "2x" },
-  { label: "3x per day", value: "3x" },
-];
-
-type Step = "goals" | "moments" | "keywords" | "scheduled_ask" | "scheduled_practice" | "scheduled_length" | "scheduled_times" | "scheduled_frequency" | "closing";
+type Step = "goals" | "moments" | "keywords";
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -80,44 +48,23 @@ const Onboarding = () => {
     goals: [],
     moments: [],
     calendarKeywords: [],
-    scheduledEnabled: false,
-    scheduledPractice: "",
-    scheduledLength: "",
-    scheduledTimes: [],
-    scheduledFrequency: "",
   });
 
-  const stepOrder: Step[] = [
-    "goals", "moments", "keywords", "scheduled_ask",
-    "scheduled_practice", "scheduled_length", "scheduled_times", "scheduled_frequency",
-    "closing",
-  ];
-
+  const stepOrder: Step[] = ["goals", "moments", "keywords"];
   const currentIndex = stepOrder.indexOf(step);
-  const totalVisualSteps = data.scheduledEnabled ? 8 : 4;
-  const visualIndex = (() => {
-    const map: Record<Step, number> = {
-      goals: 1, moments: 2, keywords: 3, scheduled_ask: 4,
-      scheduled_practice: 5, scheduled_length: 6, scheduled_times: 7, scheduled_frequency: 8,
-      closing: totalVisualSteps,
-    };
-    return map[step] || 1;
-  })();
+  const totalVisualSteps = 3;
 
   const goBack = () => {
-    if (step === "closing" && !data.scheduledEnabled) {
-      setStep("scheduled_ask");
-    } else if (currentIndex > 0) {
+    if (currentIndex > 0) {
       setStep(stepOrder[currentIndex - 1]);
     }
   };
 
-  const saveAndFinish = async (destination: string = "/extension") => {
+  const saveAndFinish = async () => {
     if (!user || saving) return;
     setSaving(true);
 
     try {
-      // Save preferences
       const { error: prefError } = await supabase
         .from("onboarding_preferences")
         .upsert({
@@ -125,15 +72,14 @@ const Onboarding = () => {
           goals: data.goals,
           moments: data.moments,
           calendar_keywords: data.calendarKeywords,
-          scheduled_enabled: data.scheduledEnabled,
-          scheduled_practice: data.scheduledPractice || null,
-          scheduled_length: data.scheduledLength || null,
-          scheduled_times: data.scheduledTimes,
-          scheduled_frequency: data.scheduledFrequency || null,
+          scheduled_enabled: false,
+          scheduled_practice: null,
+          scheduled_length: null,
+          scheduled_times: [],
+          scheduled_frequency: null,
         }, { onConflict: "user_id" });
       if (prefError) console.warn("Prefs save:", prefError);
 
-      // Mark onboarding complete — this is critical
       const { data: existing } = await supabase
         .from("profiles")
         .select("user_id")
@@ -148,16 +94,16 @@ const Onboarding = () => {
         if (error) console.error("Profile insert error:", error);
       }
 
-      navigate(destination, { replace: true });
+      navigate("/extension", { replace: true });
     } catch (err) {
       console.error("Failed to save onboarding:", err);
-      navigate(destination, { replace: true });
+      navigate("/extension", { replace: true });
     } finally {
       setSaving(false);
     }
   };
 
-  const canGoBack = step !== "goals" && step !== "closing";
+  const canGoBack = step !== "goals";
 
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
@@ -169,34 +115,28 @@ const Onboarding = () => {
         <div className="px-6 pt-14 pb-4 flex items-center justify-between">
           <img src={areaLogo} alt="Aera" className="h-6" />
           <div className="flex items-center gap-4">
-            {step !== "closing" && (
-              <span className="text-white/30 font-body text-xs">
-                {visualIndex} / {totalVisualSteps}
-              </span>
-            )}
-            {step !== "closing" && (
-              <button
-                onClick={() => saveAndFinish()}
-                disabled={saving}
-                className="text-white/30 font-body text-xs hover:text-white/50 transition-colors"
-              >
-                Skip
-              </button>
-            )}
+            <span className="text-white/30 font-body text-xs">
+              {currentIndex + 1} / {totalVisualSteps}
+            </span>
+            <button
+              onClick={() => saveAndFinish()}
+              disabled={saving}
+              className="text-white/30 font-body text-xs hover:text-white/50 transition-colors"
+            >
+              Skip
+            </button>
           </div>
         </div>
 
         {/* Progress bar */}
-        {step !== "closing" && (
-          <div className="px-6 mb-8">
-            <div className="h-[2px] bg-white/10 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-white rounded-full transition-all duration-500 ease-out"
-                style={{ width: `${(visualIndex / totalVisualSteps) * 100}%` }}
-              />
-            </div>
+        <div className="px-6 mb-8">
+          <div className="h-[2px] bg-white/10 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-white rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${((currentIndex + 1) / totalVisualSteps) * 100}%` }}
+            />
           </div>
-        )}
+        </div>
 
         {/* Content */}
         <div className="flex-1 px-6 flex flex-col">
@@ -235,102 +175,9 @@ const Onboarding = () => {
                 selected={data.calendarKeywords}
                 suggestions={SUGGESTED_KEYWORDS}
                 onChange={(kw) => setData({ ...data, calendarKeywords: kw })}
-                onContinue={() => setStep("scheduled_ask")}
+                onContinue={() => saveAndFinish()}
               />
             </OnboardingStep>
-          )}
-
-          {step === "scheduled_ask" && (
-            <OnboardingStep
-              title="Part 2 — Scheduled Sessions"
-              subtitle="āera works best in the moment. But if you'd like a gentle nudge, you can set one here."
-            >
-              <SingleSelectStep
-                question="Would you like scheduled sessions throughout your day as well?"
-                options={[
-                  { label: "Yes", value: "yes" },
-                  { label: "No — moment-based only", value: "no" },
-                ]}
-                selected={data.scheduledEnabled ? "yes" : "no"}
-                onChange={(val) => {
-                  const enabled = val === "yes";
-                  setData({ ...data, scheduledEnabled: enabled });
-                  if (enabled) {
-                    setTimeout(() => setStep("scheduled_practice"), 300);
-                  } else {
-                    // Save and go directly to extension download
-                    setTimeout(() => saveAndFinish("/extension"), 300);
-                  }
-                }}
-                autoAdvance
-              />
-            </OnboardingStep>
-          )}
-
-          {step === "scheduled_practice" && (
-            <OnboardingStep>
-              <SingleSelectStep
-                question="Which practice would you like for your scheduled sessions?"
-                note="Ground sessions are available in the āera app only and are not part of the scheduled extension experience."
-                options={PRACTICE_OPTIONS}
-                selected={data.scheduledPractice}
-                onChange={(val) => {
-                  setData({ ...data, scheduledPractice: val });
-                  setTimeout(() => setStep("scheduled_length"), 300);
-                }}
-                autoAdvance
-              />
-            </OnboardingStep>
-          )}
-
-          {step === "scheduled_length" && (
-            <OnboardingStep>
-              <SingleSelectStep
-                question="What's your preferred session length?"
-                options={LENGTH_OPTIONS}
-                selected={data.scheduledLength}
-                onChange={(val) => {
-                  setData({ ...data, scheduledLength: val });
-                  setTimeout(() => setStep("scheduled_times"), 300);
-                }}
-                autoAdvance
-              />
-            </OnboardingStep>
-          )}
-
-          {step === "scheduled_times" && (
-            <OnboardingStep>
-              <MultiSelectStep
-                question="When would you like them?"
-                options={TIME_OPTIONS}
-                selected={data.scheduledTimes}
-                onChange={(times) => setData({ ...data, scheduledTimes: times })}
-                onContinue={() => setStep("scheduled_frequency")}
-              />
-            </OnboardingStep>
-          )}
-
-          {step === "scheduled_frequency" && (
-            <OnboardingStep>
-              <SingleSelectStep
-                question="How often?"
-                options={FREQUENCY_OPTIONS}
-                selected={data.scheduledFrequency}
-                onChange={(val) => {
-                  setData({ ...data, scheduledFrequency: val });
-                  setTimeout(() => setStep("closing"), 300);
-                }}
-                autoAdvance
-              />
-            </OnboardingStep>
-          )}
-
-          {step === "closing" && (
-            <ClosingMessage
-              data={data}
-              saving={saving}
-              onFinish={() => saveAndFinish("/extension")}
-            />
           )}
 
           {/* Back button */}
