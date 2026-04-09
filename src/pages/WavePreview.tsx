@@ -321,7 +321,33 @@ const WavePreview = () => {
 
 
           {screen === "breathing" && (
-            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
+            <>
+            {/* Session controls */}
+            <div
+              className="absolute top-3 left-3 right-3 z-20 flex justify-between items-center"
+              style={{ opacity: 1, transition: "opacity 400ms ease" }}
+            >
+              <button
+                onClick={stopSession}
+                className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all"
+                style={{ background: "rgba(0,0,0,0.35)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)" }}
+                title="Stop & dismiss"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+              <button
+                onClick={() => navigate("/")}
+                className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all"
+                style={{ background: "rgba(0,0,0,0.35)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)" }}
+                title="Close"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+              </button>
+            </div>
               <div className="flex-1" />
 
               {/* Transition text overlay */}
