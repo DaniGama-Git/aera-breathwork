@@ -348,6 +348,7 @@ const WavePreview = () => {
                 </svg>
               </button>
             </div>
+            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
               <div className="flex-1" />
 
               {/* Transition text overlay */}
@@ -361,7 +362,7 @@ const WavePreview = () => {
                 </p>
               </div>
 
-              {/* Science overlay with lightbulb — always rendered, visibility via parent opacity */}
+              {/* Science overlay with lightbulb */}
               <div
                 className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-700"
                 style={{ opacity: showScience ? 1 : 0, pointerEvents: "none" }}
