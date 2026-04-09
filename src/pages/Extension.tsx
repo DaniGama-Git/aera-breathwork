@@ -4,44 +4,15 @@ import { useState, useEffect } from "react";
 import JSZip from "jszip";
 import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import areaLogo from "@/assets/aera-logo.svg";
+import mockupExtension from "@/assets/mockup-extension.png";
 import BottomNavBar from "@/components/BottomNavBar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
 const STEPS = [
-  {
-    number: "01",
-    title: "Download",
-    description: "Click the button below to download the āera extension.",
-  },
-  {
-    number: "02",
-    title: "Unzip",
-    description: "Unzip the downloaded file to a folder on your computer.",
-  },
-  {
-    number: "03",
-    title: "Open Extensions",
-    description: "Go to ",
-    linkText: "chrome://extensions",
-    linkHref: "chrome://extensions",
-    descriptionAfter: ' and enable "Developer mode" (top-right toggle).',
-  },
-  {
-    number: "04",
-    title: "Load Unpacked",
-    description:
-      'Click "Load unpacked" and select the unzipped folder. āera will appear in your toolbar.',
-  },
-  {
-    number: "05",
-    title: "Connect Calendar",
-    description:
-      "Open the āera extension, go to Settings, and ",
-    linkText: "connect your Google Calendar",
-    linkTo: "/calendar-setup",
-    descriptionAfter: " to trigger sessions before key moments.",
-  },
+  { number: "01", text: "Download & unzip the extension" },
+  { number: "02", text: "Enable Developer mode at chrome://extensions, click Load unpacked" },
+  { number: "03", text: "Open the extension & connect your calendar" },
 ];
 
 const Extension = () => {
@@ -54,7 +25,6 @@ const Extension = () => {
   const [downloaded, setDownloaded] = useState(false);
 
   useEffect(() => {
-    // Try loading keywords from sessionStorage first (pre-auth chrome flow)
     const pendingData = sessionStorage.getItem("aera_onboarding_data");
     if (pendingData) {
       try {
@@ -65,7 +35,6 @@ const Extension = () => {
         }
       } catch {}
     }
-    // Fallback: load from DB if logged in
     if (!user) return;
     supabase
       .from("onboarding_preferences")
@@ -85,7 +54,6 @@ const Extension = () => {
       if (!res.ok) throw new Error(`Download failed: ${res.status}`);
       const blob = await res.blob();
 
-      // If user has keywords, inject defaults.json into the zip
       let finalBlob = blob;
       if (keywords.length > 0) {
         const zip = await JSZip.loadAsync(blob);
@@ -112,14 +80,12 @@ const Extension = () => {
 
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
-      {/* Same gradient background as session screens */}
       <img
         src={activateGradientBg}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"
       />
-      {/* Noise overlay */}
       <div
         className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
         aria-hidden="true"
@@ -130,7 +96,7 @@ const Extension = () => {
         }}
       />
 
-      <div className="relative z-10 flex flex-col min-h-screen max-w-[800px] mx-auto w-full overflow-y-auto">
+      <div className="relative z-10 flex flex-col min-h-screen max-w-[430px] mx-auto w-full overflow-y-auto">
         {/* Back */}
         <div className="pt-10 px-6">
           <button
@@ -143,74 +109,46 @@ const Extension = () => {
         </div>
 
         {/* Hero */}
-        <div className="flex flex-col items-center text-center px-6 pt-6 pb-8">
-          <img
-            src={areaLogo}
-            alt="āera"
-            className="h-8 mb-6 opacity-90"
-          />
+        <div className="flex flex-col items-center text-center px-6 pt-6 pb-4">
+          <img src={areaLogo} alt="āera" className="h-8 mb-5 opacity-90" />
           <h1
-            className="text-white font-body font-semibold mb-3"
-            style={{
-              fontSize: "26px",
-              lineHeight: "100%",
-              letterSpacing: "-0.01em",
-            }}
+            className="text-white font-body font-semibold mb-2"
+            style={{ fontSize: "24px", lineHeight: "110%", letterSpacing: "-0.01em" }}
           >
             Chrome Extension
           </h1>
-          <p className="text-white/50 text-[16px] leading-[140%] font-body font-medium max-w-xs">
-            Calendar-triggered breathwork. Get a gentle prompt before key
-            meetings so you show up sharp.
+          <p className="text-white/50 text-[14px] leading-[140%] font-body font-medium max-w-[260px]">
+            Breathwork prompts before your key meetings.
           </p>
         </div>
 
-        {/* Steps */}
-        <div className="px-6 space-y-5 mb-10">
+        {/* Product mockup */}
+        <div className="px-6 flex justify-center pb-6">
+          <img
+            src={mockupExtension}
+            alt="āera Chrome extension preview"
+            className="max-h-[200px] w-auto rounded-xl"
+            style={{ filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.3))" }}
+          />
+        </div>
+
+        {/* 3 compact steps */}
+        <div className="px-6 space-y-3 mb-8">
           {STEPS.map((step) => (
-            <div
-              key={step.number}
-              className="flex gap-4 items-start p-4 rounded-xl"
-              style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(8px)" }}
-            >
-              <span className="text-white/20 font-body font-light text-[13px] tracking-widest mt-0.5">
+            <div key={step.number} className="flex items-center gap-3">
+              <span className="text-white/20 font-body font-light text-[12px] tracking-widest shrink-0">
                 {step.number}
               </span>
-              <div>
-                <p className="text-white/90 text-[15px] font-body font-semibold mb-1">
-                  {step.title}
-                </p>
-                <p className="text-white/40 text-[13px] leading-relaxed font-body font-medium">
-                  {step.description}
-                  {"linkText" in step && step.linkText && (
-                    "linkHref" in step ? (
-                      <a
-                        href={(step as any).linkHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-white/60 underline underline-offset-2 decoration-white/30 hover:text-white/80 transition-colors"
-                      >
-                        {step.linkText}
-                      </a>
-                    ) : (
-                      <button
-                        onClick={() => navigate((step as any).linkTo)}
-                        className="text-white/60 underline underline-offset-2 decoration-white/30 hover:text-white/80 transition-colors"
-                      >
-                        {step.linkText}
-                      </button>
-                    )
-                  )}
-                  {"descriptionAfter" in step && (step as any).descriptionAfter}
-                </p>
-              </div>
+              <p className="text-white/50 text-[13px] font-body font-medium leading-snug">
+                {step.text}
+              </p>
             </div>
           ))}
         </div>
 
-        {/* Trigger keywords from onboarding — shown after steps */}
+        {/* Trigger keywords */}
         {keywords.length > 0 && (
-          <div className="px-6 mb-6">
+          <div className="px-6 mb-5">
             <div
               className="p-4 rounded-xl"
               style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
@@ -231,7 +169,7 @@ const Extension = () => {
                 {keywords.join(", ")}
               </p>
               <p className="text-white/20 text-[11px] font-body font-medium mt-2">
-                Paste these into the extension's Keywords field after connecting your calendar.
+                Paste these into the extension after connecting your calendar.
               </p>
             </div>
           </div>
