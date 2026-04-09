@@ -411,6 +411,7 @@ const WavePreview = () => {
                 </div>
               </div>
             </div>
+            </>
           )}
 
           {screen === "done" && (
