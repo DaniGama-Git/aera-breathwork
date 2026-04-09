@@ -45,7 +45,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
     // Only trigger onboarding if user came through the "Add to Chrome" flow
     const isChromeFlow = sessionStorage.getItem("aera_flow") === "chrome";
-    if (!isChromeFlow) {
+    if (!isChromeFlow && location.pathname !== "/onboarding") {
       setNeedsOnboarding(false);
       setOnboardingChecked(true);
       return;
