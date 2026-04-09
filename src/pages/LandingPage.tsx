@@ -6,7 +6,7 @@
 
 import aeraLogo from "@/assets/aera-logo.svg";
 import landingBg from "@/assets/landing-bg.svg";
-import mockupApp from "@/assets/mockup-app.png";
+import mockupApp from "@/assets/mockup-app-screens.svg";
 import mockupExtension from "@/assets/mockup-extension.png";
 
 const LandingPage = () => {
