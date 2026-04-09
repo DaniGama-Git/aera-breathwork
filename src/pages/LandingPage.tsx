@@ -84,11 +84,17 @@ const LandingPage = () => {
                 Breathe wherever you are.
               </p>
 
-              <div className="flex justify-center mb-6">
+              <div className="flex flex-col items-center gap-6 mb-6">
                 <img
                   src={mockupApp}
                   alt="āera app on mobile"
                   className="w-[200px] md:w-[240px] h-auto"
+                  loading="lazy"
+                />
+                <img
+                  src={mockupAppScreens}
+                  alt="āera app screens overview"
+                  className="w-full max-w-[400px] h-auto mix-blend-multiply"
                   loading="lazy"
                 />
               </div>
