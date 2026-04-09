@@ -20,6 +20,7 @@ import Onboarding from "./pages/Onboarding.tsx";
 import Extension from "./pages/Extension.tsx";
 import CalendarSetup from "./pages/CalendarSetup.tsx";
 import BreatheDots from "@/components/BreatheDots";
+import MobileFrame from "@/components/MobileFrame";
 
 const queryClient = new QueryClient();
 
@@ -87,23 +88,23 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/home" element={<HomeScreen />} />
-          <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
-          <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
-          <Route path="/menu" element={<ProtectedRoute><BreathworkMenu /></ProtectedRoute>} />
-          <Route path="/session/:category/:slug" element={<ProtectedRoute><DynamicSession /></ProtectedRoute>} />
+          <Route path="/wave" element={<WavePreview />} />
+          <Route path="/home" element={<MobileFrame><HomeScreen /></MobileFrame>} />
+          <Route path="/auth" element={<MobileFrame><AuthRoute><Auth /></AuthRoute></MobileFrame>} />
+          <Route path="/onboarding" element={<MobileFrame><ProtectedRoute><Onboarding /></ProtectedRoute></MobileFrame>} />
+          <Route path="/menu" element={<MobileFrame><ProtectedRoute><BreathworkMenu /></ProtectedRoute></MobileFrame>} />
+          <Route path="/session/:category/:slug" element={<MobileFrame><ProtectedRoute><DynamicSession /></ProtectedRoute></MobileFrame>} />
           {/* Legacy redirects */}
           <Route path="/breathwork-session-activate" element={<Navigate to="/session/activate/wake-me-up" replace />} />
           <Route path="/breathwork-session-recover" element={<Navigate to="/session/recover/back-to-back" replace />} />
           <Route path="/breathwork-session-focus" element={<Navigate to="/session/perform/deep-focus" replace />} />
           <Route path="/breathwork-session-reset" element={<Navigate to="/session/ground/wind-down" replace />} />
-          <Route path="/hrv" element={<ProtectedRoute><HrvDemo /></ProtectedRoute>} />
-          <Route path="/category/:slug" element={<ProtectedRoute><CategoryLibrary /></ProtectedRoute>} />
-          <Route path="/search" element={<ProtectedRoute><SearchScreen /></ProtectedRoute>} />
-          <Route path="/extension" element={<Extension />} />
-          <Route path="/calendar-setup" element={<CalendarSetup />} />
-          <Route path="/wave" element={<WavePreview />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/hrv" element={<MobileFrame><ProtectedRoute><HrvDemo /></ProtectedRoute></MobileFrame>} />
+          <Route path="/category/:slug" element={<MobileFrame><ProtectedRoute><CategoryLibrary /></ProtectedRoute></MobileFrame>} />
+          <Route path="/search" element={<MobileFrame><ProtectedRoute><SearchScreen /></ProtectedRoute></MobileFrame>} />
+          <Route path="/extension" element={<MobileFrame><Extension /></MobileFrame>} />
+          <Route path="/calendar-setup" element={<MobileFrame><CalendarSetup /></MobileFrame>} />
+          <Route path="*" element={<MobileFrame><NotFound /></MobileFrame>} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
