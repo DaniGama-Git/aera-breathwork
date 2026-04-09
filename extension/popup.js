@@ -282,6 +282,7 @@ function showScreen(name) {
   gradientMask.classList.remove("active");
   transitionOverlay.classList.remove("active");
   scienceOverlay.classList.remove("active");
+  sessionControls.classList.remove("active");
 
   if (name === "loading") {
     screenLoading.classList.add("active");
@@ -295,11 +296,32 @@ function showScreen(name) {
     bgBreathing.classList.add("active");
     breathingUI.classList.add("active");
     gradientMask.classList.add("active");
+    sessionControls.classList.add("active");
   } else if (name === "done") {
     screenDone.classList.add("active");
     bgLogo.classList.add("active");
   }
 }
+
+// ─── Session controls ───
+ctrlStop.addEventListener("click", () => {
+  running = false;
+  cancelAnimationFrame(raf);
+  showScreen("done");
+});
+
+ctrlClose.addEventListener("click", () => {
+  running = false;
+  cancelAnimationFrame(raf);
+  window.close();
+});
+
+ctrlSound.addEventListener("click", () => {
+  soundEnabled = !soundEnabled;
+  iconSoundOn.style.display = soundEnabled ? "block" : "none";
+  iconSoundOff.style.display = soundEnabled ? "none" : "block";
+  // Future: mute/unmute audio here
+});
 
 function fadeTransition(from, to, delay) {
   setTimeout(() => {
