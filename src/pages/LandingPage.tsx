@@ -162,7 +162,7 @@ const LandingPage = () => {
               </p>
 
               <a
-                href="/auth?flow=chrome"
+                href="/onboarding?flow=chrome"
                 className="inline-flex items-center justify-center h-[40px] px-7 rounded-full bg-[#1D1D1C] text-[#F7F6F5] font-body font-medium text-[14px] hover:opacity-90 transition-opacity"
               >
                 Add to Chrome
