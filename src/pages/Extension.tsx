@@ -4,14 +4,15 @@ import { useState, useEffect } from "react";
 import JSZip from "jszip";
 import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import areaLogo from "@/assets/aera-logo.svg";
-import mockupExtension from "@/assets/extension-mockup.svg";
+import mockupExtension from "@/assets/mockup-extension-breathe.svg";
+import BottomNavBar from "@/components/BottomNavBar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
 const STEPS = [
-  "Download & unzip the extension",
-  "Enable Developer mode at chrome://extensions, click Load unpacked",
-  "Open the extension & connect your calendar",
+  { number: "01", text: "Download & unzip the extension" },
+  { number: "02", text: "Enable Developer mode at chrome://extensions, click Load unpacked" },
+  { number: "03", text: "Open the extension & connect your calendar" },
 ];
 
 const Extension = () => {
@@ -122,21 +123,26 @@ const Extension = () => {
         </div>
 
         {/* Product mockup */}
-        <div className="px-6 flex justify-center pb-4">
+        <div className="px-6 flex justify-center pb-6">
           <img
             src={mockupExtension}
             alt="āera Chrome extension preview"
-            className="max-h-[260px] w-auto rounded-xl"
+            className="max-h-[200px] w-auto rounded-xl"
             style={{ filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.3))" }}
           />
         </div>
 
-        {/* 3 compact steps — centered */}
-        <div className="px-6 flex flex-col items-center gap-3 mb-6">
-          {STEPS.map((step, i) => (
-            <p key={i} className="text-white/45 text-[13px] font-body font-medium leading-snug text-center max-w-[280px]">
-              {step}
-            </p>
+        {/* 3 compact steps */}
+        <div className="px-6 space-y-3 mb-8">
+          {STEPS.map((step) => (
+            <div key={step.number} className="flex items-center gap-3">
+              <span className="text-white/20 font-body font-light text-[12px] tracking-widest shrink-0">
+                {step.number}
+              </span>
+              <p className="text-white/50 text-[13px] font-body font-medium leading-snug">
+                {step.text}
+              </p>
+            </div>
           ))}
         </div>
 
