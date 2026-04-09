@@ -263,9 +263,14 @@ function getBarPosition(type, progress, prevType) {
     case "EXHALE": return BAR_BOTTOM - (1 - progress) * (BAR_BOTTOM - BAR_TOP);
     case "HOLD": return BAR_TOP;
     case "HOLD_EMPTY": return BAR_BOTTOM;
+    case "SNIFF": {
+      // Sniff starts where inhale left off (top) and moves just a tiny bit higher
+      const sniffRange = (BAR_BOTTOM - BAR_TOP) * 0.08; // 8% of total range
+      return BAR_TOP - progress * sniffRange;
+    }
     case "TRANSITION":
     case "SCIENCE":
-      return (prevType === "INHALE" || prevType === "HOLD") ? BAR_TOP : BAR_BOTTOM;
+      return (prevType === "INHALE" || prevType === "HOLD" || prevType === "SNIFF") ? BAR_TOP : BAR_BOTTOM;
     default: return BAR_BOTTOM;
   }
 }

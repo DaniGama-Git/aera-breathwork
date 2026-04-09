@@ -1,6 +1,6 @@
 /* ── Breathing Protocol Engine ── */
 
-export type PhaseType = "INHALE" | "HOLD" | "EXHALE" | "HOLD_EMPTY";
+export type PhaseType = "INHALE" | "HOLD" | "EXHALE" | "HOLD_EMPTY" | "SNIFF";
 
 export interface BreathPhase {
   type: PhaseType;
@@ -151,9 +151,13 @@ export function getBarPosition(
       return BAR_TOP;
     case "HOLD_EMPTY":
       return BAR_BOTTOM;
+    case "SNIFF": {
+      const sniffRange = (BAR_BOTTOM - BAR_TOP) * 0.08;
+      return BAR_TOP - progress * sniffRange;
+    }
     case "TRANSITION":
     case "SCIENCE":
-      return prevType === "INHALE" || prevType === "HOLD" ? BAR_TOP : BAR_BOTTOM;
+      return prevType === "INHALE" || prevType === "HOLD" || prevType === "SNIFF" ? BAR_TOP : BAR_BOTTOM;
     default:
       return BAR_BOTTOM;
   }
@@ -577,7 +581,7 @@ export const preMeetingProtocol: Protocol = {
       science: "Double inhale activates alveolar sacs and rapidly lowers CO₂, breaking the stress loop in seconds.",
       cycle: [
         { type: "INHALE", duration: 3000 },
-        { type: "INHALE", duration: 1000, label: "SNIFF" },
+        { type: "SNIFF", duration: 1000, label: "SNIFF" },
         { type: "EXHALE", duration: 5000, label: "NATURALLY EXHALE" },
       ],
       cycles: 2,

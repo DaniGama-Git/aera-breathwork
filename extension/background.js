@@ -195,8 +195,8 @@ async function openStandalonePopup() {
 
   // Get the current display work area to position top-right
   const currentWindow = await chrome.windows.getCurrent();
-  const width = 360;
-  const height = 520;
+  const width = 636;
+  const height = 654;
   const left = (currentWindow.left + currentWindow.width) - width - 24;
   const top = currentWindow.top + 60;
 
