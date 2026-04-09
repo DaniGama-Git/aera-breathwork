@@ -123,6 +123,8 @@ const playIcon = document.getElementById("play-icon");
 const pausedOverlay = document.getElementById("paused-overlay");
 
 let running = false;
+let paused = false;
+let pausedElapsed = 0;
 let sessionStart = 0;
 let raf = 0;
 let activeTimeline = [];
