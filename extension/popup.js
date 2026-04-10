@@ -99,7 +99,13 @@ chrome.storage.local.get(["icalUrl"], data => updateConnectionStatus(!!data.ical
 
 // ─── Persistent close button ───
 const cardClose = document.getElementById("card-close");
-cardClose.addEventListener("click", () => window.close());
+cardClose.addEventListener("click", () => {
+  running = false;
+  cancelAnimationFrame(raf);
+  breathAudio.stop();
+  if (bgAudio) { bgAudio.pause(); bgAudio = null; }
+  window.close();
+});
 
 // ─── Wave-style Breathing (Image + Gradient Mask) ───
 const card = document.getElementById("card");
@@ -127,7 +133,7 @@ const introText = document.getElementById("intro-text");
 const startBtn = document.getElementById("start-btn");
 const sessionControls = document.getElementById("session-controls");
 const ctrlStop = document.getElementById("ctrl-stop");
-const ctrlClose = document.getElementById("ctrl-close");
+
 const ctrlMute = document.getElementById("ctrl-mute");
 const muteOffIcon = document.getElementById("mute-off-icon");
 const muteOnIcon = document.getElementById("mute-on-icon");
@@ -359,13 +365,6 @@ ctrlStop.addEventListener("click", () => {
   }
 });
 
-ctrlClose.addEventListener("click", () => {
-  running = false;
-  cancelAnimationFrame(raf);
-  breathAudio.stop();
-  if (bgAudio) { bgAudio.pause(); bgAudio = null; }
-  window.close();
-});
 
 // ─── Mute toggle ───
 ctrlMute.addEventListener("click", () => {
