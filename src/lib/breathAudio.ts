@@ -24,21 +24,23 @@ export class BreathAudio {
   playExhale(durationMs: number) { this.playBreath(durationMs, "exhale"); }
   playSniff(durationMs: number) { this.playBreath(durationMs, "sniff"); }
 
-  private createPinkNoise(ctx: AudioContext, length: number): AudioBuffer {
+  private createBreathNoise(ctx: AudioContext, length: number): AudioBuffer {
     const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
     const data = buffer.getChannelData(0);
-    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+
+    let slow = 0;
+    let fast = 0;
+    let edge = 0;
+
     for (let i = 0; i < length; i++) {
       const white = Math.random() * 2 - 1;
-      b0 = 0.99886 * b0 + white * 0.0555179;
-      b1 = 0.99332 * b1 + white * 0.0750759;
-      b2 = 0.96900 * b2 + white * 0.1538520;
-      b3 = 0.86650 * b3 + white * 0.3104856;
-      b4 = 0.55000 * b4 + white * 0.5329522;
-      b5 = -0.7616 * b5 - white * 0.0168980;
-      data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.11;
-      b6 = white * 0.115926;
+      slow = slow * 0.992 + white * 0.008;
+      fast = fast * 0.82 + white * 0.18;
+      const aspirated = white - fast * 0.72 - slow * 0.18;
+      edge = edge * 0.75 + aspirated * 0.25;
+      data[i] = Math.tanh((aspirated * 1.9 + edge * 0.35) * 0.9) * 0.34;
     }
+
     return buffer;
   }
 
@@ -49,103 +51,120 @@ export class BreathAudio {
     const now = ctx.currentTime;
 
     const bufferLen = ctx.sampleRate * Math.ceil(dur + 0.5);
-    const buffer = this.createPinkNoise(ctx, bufferLen);
+    const buffer = this.createBreathNoise(ctx, bufferLen);
 
     const noise = ctx.createBufferSource();
     noise.buffer = buffer;
 
-    // Highpass to remove rumble — breathing doesn't have deep bass
     const hp = ctx.createBiquadFilter();
     hp.type = "highpass";
-    hp.frequency.value = type === "sniff" ? 600 : 300;
-    hp.Q.value = 0.5;
+    hp.Q.value = 0.8;
 
-    // Primary formant — simulates airway resonance
+    const airy = ctx.createBiquadFilter();
+    airy.type = "highpass";
+    airy.Q.value = 0.9;
+
     const formant1 = ctx.createBiquadFilter();
     formant1.type = "bandpass";
 
-    // Secondary formant — adds breathiness
     const formant2 = ctx.createBiquadFilter();
     formant2.type = "bandpass";
 
-    // Gentle lowpass to soften harshness
     const lp = ctx.createBiquadFilter();
     lp.type = "lowpass";
 
+    const airGain = ctx.createGain();
+    const formant1Gain = ctx.createGain();
+    const formant2Gain = ctx.createGain();
+    const merge = ctx.createGain();
     const gain = ctx.createGain();
+    const compressor = ctx.createDynamicsCompressor();
+
+    compressor.threshold.value = -26;
+    compressor.knee.value = 10;
+    compressor.ratio.value = 3;
+    compressor.attack.value = 0.003;
+    compressor.release.value = 0.12;
 
     if (type === "inhale") {
-      // Inhale: narrower, slightly higher pitch, "sipping air" quality
-      formant1.frequency.value = 1400;
-      formant1.Q.value = 1.8;
-      formant2.frequency.value = 2800;
-      formant2.Q.value = 1.2;
-      lp.frequency.value = 4000;
+      hp.frequency.value = 720;
+      airy.frequency.value = 1700;
+      formant1.frequency.value = 1450;
+      formant1.Q.value = 2.4;
+      formant2.frequency.value = 2650;
+      formant2.Q.value = 1.6;
+      lp.frequency.value = 5400;
+      airGain.gain.value = 0.95;
+      formant1Gain.gain.value = 0.22;
+      formant2Gain.gain.value = 0.1;
 
-      // Smooth onset, sustained, gentle taper
       gain.gain.setValueAtTime(0.0, now);
-      gain.gain.exponentialRampToValueAtTime(0.08, now + dur * 0.15);
-      gain.gain.linearRampToValueAtTime(0.10, now + dur * 0.5);
-      gain.gain.linearRampToValueAtTime(0.07, now + dur * 0.85);
+      gain.gain.exponentialRampToValueAtTime(0.03, now + dur * 0.12);
+      gain.gain.linearRampToValueAtTime(0.048, now + dur * 0.45);
+      gain.gain.linearRampToValueAtTime(0.04, now + dur * 0.82);
       gain.gain.linearRampToValueAtTime(0.001, now + dur);
 
-      // Subtle pitch rise during inhale
-      formant1.frequency.setValueAtTime(1200, now);
-      formant1.frequency.linearRampToValueAtTime(1600, now + dur);
+      formant1.frequency.setValueAtTime(1320, now);
+      formant1.frequency.linearRampToValueAtTime(1680, now + dur);
+      airy.frequency.setValueAtTime(1550, now);
+      airy.frequency.linearRampToValueAtTime(1900, now + dur);
     } else if (type === "exhale") {
-      // Exhale: wider, softer, "hushing" quality
-      formant1.frequency.value = 900;
-      formant1.Q.value = 1.0;
-      formant2.frequency.value = 2200;
-      formant2.Q.value = 0.8;
-      lp.frequency.value = 3200;
+      hp.frequency.value = 520;
+      airy.frequency.value = 1320;
+      formant1.frequency.value = 980;
+      formant1.Q.value = 1.8;
+      formant2.frequency.value = 1850;
+      formant2.Q.value = 1.1;
+      lp.frequency.value = 4200;
+      airGain.gain.value = 0.8;
+      formant1Gain.gain.value = 0.18;
+      formant2Gain.gain.value = 0.08;
 
-      // Starts with gentle onset, long decay
       gain.gain.setValueAtTime(0.0, now);
-      gain.gain.exponentialRampToValueAtTime(0.09, now + dur * 0.08);
-      gain.gain.linearRampToValueAtTime(0.07, now + dur * 0.3);
-      gain.gain.linearRampToValueAtTime(0.04, now + dur * 0.7);
+      gain.gain.exponentialRampToValueAtTime(0.034, now + dur * 0.1);
+      gain.gain.linearRampToValueAtTime(0.042, now + dur * 0.28);
+      gain.gain.linearRampToValueAtTime(0.028, now + dur * 0.72);
       gain.gain.linearRampToValueAtTime(0.001, now + dur);
 
-      // Subtle pitch drop during exhale
-      formant1.frequency.setValueAtTime(1000, now);
-      formant1.frequency.linearRampToValueAtTime(700, now + dur);
+      formant1.frequency.setValueAtTime(1080, now);
+      formant1.frequency.linearRampToValueAtTime(760, now + dur);
+      airy.frequency.setValueAtTime(1450, now);
+      airy.frequency.linearRampToValueAtTime(1180, now + dur);
     } else if (type === "sniff") {
-      // Sniff: sharp, nasal, brief burst
-      formant1.frequency.value = 2000;
-      formant1.Q.value = 2.5;
-      formant2.frequency.value = 3500;
-      formant2.Q.value = 1.8;
-      lp.frequency.value = 5000;
+      hp.frequency.value = 1250;
+      airy.frequency.value = 2600;
+      formant1.frequency.value = 2300;
+      formant1.Q.value = 3.3;
+      formant2.frequency.value = 3600;
+      formant2.Q.value = 2.1;
+      lp.frequency.value = 6500;
+      airGain.gain.value = 1.05;
+      formant1Gain.gain.value = 0.16;
+      formant2Gain.gain.value = 0.07;
 
       gain.gain.setValueAtTime(0.0, now);
-      gain.gain.exponentialRampToValueAtTime(0.12, now + dur * 0.08);
-      gain.gain.linearRampToValueAtTime(0.06, now + dur * 0.4);
+      gain.gain.exponentialRampToValueAtTime(0.05, now + dur * 0.06);
+      gain.gain.linearRampToValueAtTime(0.028, now + dur * 0.32);
       gain.gain.linearRampToValueAtTime(0.001, now + dur);
     }
 
-    // Parallel formant routing for richer sound
-    const merge = ctx.createGain();
-    merge.gain.value = 1.0;
-
     noise.connect(hp);
+    hp.connect(airy);
+    hp.connect(formant1);
+    hp.connect(formant2);
 
-    // Split into two formant paths
-    const split1 = ctx.createGain();
-    split1.gain.value = 0.7;
-    const split2 = ctx.createGain();
-    split2.gain.value = 0.3;
+    airy.connect(airGain);
+    formant1.connect(formant1Gain);
+    formant2.connect(formant2Gain);
+    airGain.connect(merge);
+    formant1Gain.connect(merge);
+    formant2Gain.connect(merge);
 
-    hp.connect(split1);
-    hp.connect(split2);
-    split1.connect(formant1);
-    split2.connect(formant2);
-    formant1.connect(merge);
-    formant2.connect(merge);
-
+    merge.gain.value = 1.0;
     merge.connect(lp);
     lp.connect(gain);
-    gain.connect(ctx.destination);
+    gain.connect(compressor);
+    compressor.connect(ctx.destination);
 
     noise.start(now);
     noise.stop(now + dur + 0.1);
