@@ -361,6 +361,8 @@ function animate() {
 
   if (elapsed >= activeTotalMs) {
     running = false;
+    breathAudio.stop();
+    currentAudioPhase = null;
     showScreen("done");
     return;
   }
@@ -389,6 +391,21 @@ function animate() {
     transitionOverlay.classList.remove("active");
     scienceOverlay.classList.remove("active");
     phaseLabel.textContent = entry.displayLabel;
+
+    // Trigger breath audio on phase change
+    const phaseKey = entry.startMs + "_" + entry.type;
+    if (phaseKey !== currentAudioPhase) {
+      currentAudioPhase = phaseKey;
+      if (entry.type === "INHALE") {
+        breathAudio.playInhale(entry.duration);
+      } else if (entry.type === "EXHALE") {
+        breathAudio.playExhale(entry.duration);
+      } else if (entry.type === "SNIFF") {
+        breathAudio.playSniff(entry.duration);
+      } else {
+        breathAudio.stop();
+      }
+    }
   }
 
   const barTop = getBarPosition(entry.type, progress, prevEntryType);
