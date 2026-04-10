@@ -304,6 +304,14 @@ body{
 .validated-badge.visible{display:flex}
 .validated-badge svg{width:12px;height:12px}
 
+/* Breathe on demand */
+.breathe-on-demand-section{margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,0,0,0.06);text-align:center}
+.demand-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:20px;border:none;background:rgba(0,0,0,0.85);color:#fff;font-size:12px;font-weight:600;letter-spacing:0.8px;cursor:pointer;transition:all 0.3s;font-family:inherit}
+.demand-btn:hover{background:rgba(0,0,0,0.95);transform:scale(1.02)}
+.demand-btn:active{transform:scale(0.98)}
+.demand-btn svg{opacity:0.8}
+.demand-hint{font-size:10px;color:rgba(0,0,0,0.35);margin-top:8px;line-height:1.5}
+
 /* ─── Triggered / standalone mode (235x235) ─── */
 body.triggered-mode{width:100vw;height:100vh;min-width:0;min-height:0;overflow:hidden}
 body.triggered-mode .tabs{display:none}
