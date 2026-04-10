@@ -91,39 +91,45 @@ const WavePreview = () => {
     };
   }, []);
 
-  /* ── Screen auto-advance ── */
+  /* ── Screen auto-advance (logo only) ── */
   useEffect(() => {
+    if (screen !== "logo") return;
     const delay = SCREEN_DELAYS[screen];
     if (!delay) return;
 
     const timer = setTimeout(() => {
       setFadeIn(false);
       setTimeout(() => {
-        if (screen === "logo") setScreen("intro");
-        else if (screen === "intro") {
-          setScreen("breathing");
-          setSessionStart(Date.now());
-          setPhase("INHALE");
-          setTransitionText("");
-          setPaused(false);
-          setShowPausedOverlay(false);
-          pausedElapsedRef.current = 0;
-
-          // Start background audio
-          if (protocol.audioSrc) {
-            if (bgAudioRef.current) { bgAudioRef.current.pause(); }
-            const audio = new Audio(protocol.audioSrc);
-            audio.loop = true;
-            audio.volume = 0.5;
-            audio.play().catch(() => {});
-            bgAudioRef.current = audio;
-          }
-        }
+        setScreen("intro");
         setFadeIn(true);
       }, 600);
     }, delay);
     return () => clearTimeout(timer);
   }, [screen]);
+
+  const startSession = useCallback(() => {
+    setFadeIn(false);
+    setTimeout(() => {
+      setScreen("breathing");
+      setSessionStart(Date.now());
+      setPhase("INHALE");
+      setTransitionText("");
+      setPaused(false);
+      setShowPausedOverlay(false);
+      pausedElapsedRef.current = 0;
+
+      // Start background audio
+      if (protocol.audioSrc) {
+        if (bgAudioRef.current) { bgAudioRef.current.pause(); }
+        const audio = new Audio(protocol.audioSrc);
+        audio.loop = true;
+        audio.volume = 0.5;
+        audio.play().catch(() => {});
+        bgAudioRef.current = audio;
+      }
+      setFadeIn(true);
+    }, 600);
+  }, []);
 
   /* ── Timeline-driven breathing engine ── */
   useEffect(() => {
@@ -354,6 +360,17 @@ const WavePreview = () => {
               >
                 {protocol.introText}
               </p>
+              <button
+                onClick={startSession}
+                className="mt-8 px-7 py-2.5 rounded-full text-[10px] tracking-[0.2em] uppercase font-medium cursor-pointer transition-all hover:brightness-110"
+                style={{
+                  background: "rgba(255,255,255,0.15)",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  color: "rgba(255,255,255,0.75)",
+                }}
+              >
+                Start
+              </button>
             </div>
           )}
 
@@ -462,10 +479,10 @@ const WavePreview = () => {
                 </div>
 
                 <div
-                  className="absolute inset-0 flex items-center justify-center px-8 transition-opacity duration-700"
-                  style={{ opacity: showScience ? 1 : 0, pointerEvents: "none" }}
+                  className="absolute inset-0 flex items-center justify-center transition-opacity duration-700"
+                  style={{ opacity: showScience ? 1 : 0, pointerEvents: "none", padding: 36 }}
                 >
-                  <div className="flex items-start gap-4 text-left max-w-[250px]">
+                  <div className="flex items-start gap-3.5 text-left max-w-[280px]">
                     <img src={lightbulbIcon} alt="" style={{ width: 28, height: 38 }} className="mt-0.5 opacity-90 shrink-0" />
                     <p className="text-white/70 text-[12px] leading-relaxed font-medium"
                        style={{ textShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>
