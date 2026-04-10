@@ -305,12 +305,14 @@ body{
 .validated-badge svg{width:13px;height:13px}
 
 /* Breathe on demand */
-.breathe-on-demand-section{margin-top:24px;padding-top:18px;border-top:1px solid rgba(0,0,0,0.06);text-align:center}
-.demand-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:20px;border:none;background:rgba(0,0,0,0.85);color:#fff;font-size:13px;font-weight:600;letter-spacing:0.6px;cursor:pointer;transition:all 0.3s;font-family:inherit}
-.demand-btn:hover{background:rgba(0,0,0,0.95);transform:scale(1.02)}
-.demand-btn:active{transform:scale(0.98)}
-.demand-btn svg{opacity:0.8}
-.demand-hint{font-size:11px;color:rgba(0,0,0,0.4);margin-top:10px;line-height:1.5}
+.breathe-on-demand-section{margin-top:28px;padding-top:22px;border-top:1px solid rgba(0,0,0,0.06);text-align:center}
+.demand-btn{display:inline-flex;align-items:center;gap:10px;padding:15px 36px;border-radius:50px;border:none;background:linear-gradient(135deg,#1a1a1a 0%,#2a2a2a 50%,#1a1a1a 100%);color:#fff;font-size:14px;font-weight:600;letter-spacing:0.8px;cursor:pointer;transition:all 0.35s cubic-bezier(0.4,0,0.2,1);font-family:inherit;box-shadow:0 4px 20px rgba(0,0,0,0.25),0 1px 4px rgba(0,0,0,0.15);position:relative;overflow:hidden}
+.demand-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent);transition:left 0.6s ease}
+.demand-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 30px rgba(0,0,0,0.3),0 2px 8px rgba(0,0,0,0.2)}
+.demand-btn:hover::before{left:100%}
+.demand-btn:active{transform:translateY(0) scale(0.98);box-shadow:0 2px 10px rgba(0,0,0,0.2)}
+.demand-btn svg{opacity:0.85;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))}
+.demand-hint{font-size:11px;color:rgba(0,0,0,0.35);margin-top:12px;line-height:1.5;letter-spacing:0.3px}
 
 /* ─── Triggered / standalone mode (235x235) ─── */
 body.triggered-mode{width:100vw;height:100vh;min-width:0;min-height:0;overflow:hidden;background:#111;color:#f0ece8}
