@@ -386,7 +386,7 @@ const WavePreview = () => {
                 </span>
                 <button
                   onClick={togglePause}
-                  className="px-8 py-3 rounded-full text-sm font-medium tracking-[0.15em] uppercase transition-all"
+                  className="px-5 py-2 rounded-full text-xs font-medium tracking-[0.15em] uppercase transition-all"
                   style={{
                     background: "rgba(255,255,255,0.15)",
                     backdropFilter: "blur(8px)",
