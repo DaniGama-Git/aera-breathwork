@@ -186,7 +186,7 @@ chrome.notifications.onClicked.addListener((notificationId) => {
 
 // Open a standalone floating popup window (not attached to toolbar)
 async function openStandalonePopup() {
-  const popupUrl = chrome.runtime.getURL("popup.html");
+  const popupUrl = chrome.runtime.getURL("popup.html?triggered=true");
 
   // Check if one is already open
   const allWindows = await chrome.windows.getAll({ populate: true });
@@ -197,20 +197,30 @@ async function openStandalonePopup() {
     }
   }
 
-  // Get the current display work area to position top-right
-  const currentWindow = await chrome.windows.getCurrent();
-    const width = 290;
-    const height = 320;
-  const left = (currentWindow.left + currentWindow.width) - width - 24;
-  const top = currentWindow.top + 60;
+  const width = 290;
+  const height = 320;
 
-  chrome.windows.create({
+  // Position top-right of current window if available
+  let left, top;
+  try {
+    const currentWindow = await chrome.windows.getCurrent();
+    if (currentWindow && currentWindow.width) {
+      left = (currentWindow.left + currentWindow.width) - width - 24;
+      top = currentWindow.top + 60;
+    }
+  } catch (_) {}
+
+  const createOpts = {
     url: popupUrl,
     type: "popup",
     width,
     height,
-    left,
-    top,
     focused: true,
+  };
+  if (left !== undefined) createOpts.left = left;
+  if (top !== undefined) createOpts.top = top;
+
+  chrome.windows.create(createOpts);
+}
   });
 }
