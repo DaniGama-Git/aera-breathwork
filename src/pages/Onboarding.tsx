@@ -118,7 +118,7 @@ const Onboarding = () => {
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       <img src={homeBg} alt="" className="absolute inset-0 w-full h-full object-cover" aria-hidden="true" />
-      <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
+      <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
 
       <div className="relative z-10 flex flex-col min-h-screen max-w-[560px] mx-auto w-full">
         {/* Header */}
