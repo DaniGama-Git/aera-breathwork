@@ -52,8 +52,8 @@ const KeywordStep = ({ selected, suggestions, onChange, onContinue }: Props) => 
               onClick={() => toggle(kw)}
               className={`px-4 py-2 rounded-full border transition-all duration-200 font-body text-[14px] ${
                 isSelected
-                  ? "border-white bg-white/10 text-white"
-                  : "border-white/15 bg-white/[0.05] text-white/60 hover:border-white/25 hover:text-white/80"
+                  ? "border-white bg-white/20 text-white"
+                  : "border-white/30 bg-white/10 text-white/80 hover:border-white/50 hover:text-white"
               }`}
             >
               {kw}
@@ -70,7 +70,7 @@ const KeywordStep = ({ selected, suggestions, onChange, onContinue }: Props) => 
           onChange={(e) => setCustom(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Add a custom keyword"
-          className="flex-1 px-4 py-3 rounded-2xl border border-white/10 bg-white/[0.03] text-white font-body text-[14px] placeholder:text-white/30 focus:outline-none focus:border-white/30 transition-colors"
+          className="flex-1 px-4 py-3 rounded-2xl border border-white/25 bg-white/10 text-white font-body text-[14px] placeholder:text-white/50 focus:outline-none focus:border-white/50 transition-colors"
         />
         {custom.trim() && (
           <button
