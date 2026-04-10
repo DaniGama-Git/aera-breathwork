@@ -1,29 +1,30 @@
 
 
-## Simplify Extension Settings Panel
+## Fix Extension Download: Add Loading State + Overlay
 
-The current settings panel has lengthy instructional text across 3 steps plus form fields. The goal is to reduce text weight and friction while keeping the flow clear.
+### Problem
+The download button has no loading state, so users can click multiple times while the fetch + JSZip repackaging runs silently. No visual feedback makes it feel broken.
 
 ### Changes
 
-**extension/popup.html** — Streamline the settings panel:
+**src/pages/Extension.tsx**:
 
-1. **Shorten the header description** — Replace the subtitle with a single concise line: "Scans your calendar and triggers sessions before key moments."
+1. **Add `downloading` state** — `const [downloading, setDownloading] = useState(false)`
 
-2. **Condense the 3 guide steps** into shorter, scannable instructions:
-   - Step 1: **"Open Google Calendar Settings"** → hint: "Find your calendar → Integrate calendar"
-   - Step 2: **"Copy secret iCal address"** → hint: "Copy the URL under 'Secret address in iCal format'"
-   - Remove step 3 entirely — paste action is self-evident from the input below
+2. **Guard `handleDownload`** — Early return if already downloading. Set `downloading = true` at start, `false` in finally block.
 
-3. **Simplify form labels**:
-   - "Paste your iCal URL" → "iCal URL" (the paste action is obvious)
-   - "Trigger keywords" stays, but shorten hint to "Comma-separated event title keywords"
-   - "Lead time (minutes before event)" → "Lead time (mins)"
+3. **Add loading overlay** — When `downloading` is true, render a full-screen overlay with the BreatheDots animation and "Preparing download…" text, matching the app's dark aesthetic:
+   ```tsx
+   {downloading && (
+     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm">
+       <BreatheDots className="w-16 h-16 mb-4" />
+       <p className="text-white/70 font-body text-[14px]">Preparing download…</p>
+     </div>
+   )}
+   ```
 
-4. **Remove the section dividers** between steps and form to reduce visual clutter
+4. **Disable button while downloading** — Add `disabled={downloading}` and visual disabled state to the download button.
 
-**extension/popup.js** + **public/aera-extension.zip** — Repackage with updated HTML.
-
-### Parity
-The `/wave` route and web preview are unaffected — this is extension-only UI.
+### Files
+- `src/pages/Extension.tsx` — add state, guard, overlay, button disable
 
