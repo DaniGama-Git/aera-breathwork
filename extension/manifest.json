@@ -18,7 +18,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["defaults.json"],
+      "resources": ["defaults.json", "audio/*"],
       "matches": ["<all_urls>"]
     }
   ]
