@@ -383,6 +383,7 @@ const WavePreview = () => {
                     onClick={() => {
                       const next = !muted;
                       setMuted(next);
+                      mutedRef.current = next;
                       if (bgAudioRef.current) bgAudioRef.current.muted = next;
                       if (next) breathAudioRef.current.stop();
                     }}
