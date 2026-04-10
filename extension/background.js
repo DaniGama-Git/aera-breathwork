@@ -111,7 +111,7 @@ async function checkCalendar() {
 
     for (const evt of events) {
       const timeDiff = evt.start - now;
-      if (timeDiff > -60000 && timeDiff <= windowMs) {
+      if (timeDiff > -120000 && timeDiff <= windowMs) {
         const matchesKeyword = keywords.some((kw) =>
           evt.summary.toLowerCase().includes(kw.toLowerCase())
         );
