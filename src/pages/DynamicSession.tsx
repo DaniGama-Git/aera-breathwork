@@ -123,13 +123,6 @@ const DynamicSession = () => {
           </div>
         </div>
 
-        <SessionList
-          sessions={config.sessions}
-          categoryImage={config.image}
-          categoryLabel={config.label}
-          sessionRoute={`/session/${category}`}
-          currentTitle={session.title}
-        />
 
         <BottomNavBar />
         <div className="h-24" />
