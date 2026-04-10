@@ -9,12 +9,12 @@ interface Props {
 const OnboardingStep = ({ title, subtitle, children }: Props) => (
   <div className="flex flex-col animate-in fade-in slide-in-from-right-4 duration-300">
     {title && (
-      <p className="text-white/50 font-body text-[12px] uppercase tracking-widest mb-4">
+      <p className="text-white font-body text-[12px] uppercase tracking-widest mb-4">
         {title}
       </p>
     )}
     {subtitle && (
-      <p className="text-white/60 font-body text-[14px] leading-relaxed mb-6">
+      <p className="text-white font-body text-[14px] leading-relaxed mb-6">
         {subtitle}
       </p>
     )}
