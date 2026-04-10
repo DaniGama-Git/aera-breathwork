@@ -4,6 +4,7 @@
 const PROTOCOLS = {
   "pre-pitch": {
     title: "Pre-Pitch",
+    audioSrc: "audio/pre-pitch.mp3",
     introText: "You're about to step in.\nLet's get you sharp.",
     stages: [
       {
@@ -43,6 +44,7 @@ const PROTOCOLS = {
 
   "pre-negotiation": {
     title: "Pre-Negotiation",
+    audioSrc: "audio/pre-negotiation.mp3",
     introText: "Time to lock in.\nLet's sharpen your edge.",
     stages: [
       {
@@ -79,6 +81,7 @@ const PROTOCOLS = {
 
   "creative-flow": {
     title: "Creative Flow",
+    audioSrc: "audio/decision-clarity.mp3",
     introText: "Let go of control.\nLet your mind open up.",
     stages: [
       {
@@ -115,6 +118,7 @@ const PROTOCOLS = {
 
   "deep-focus": {
     title: "Deep Focus",
+    audioSrc: "audio/deep-focus.mp3",
     introText: "Settle in.\nLet's lock your attention.",
     stages: [
       {
@@ -150,6 +154,7 @@ const PROTOCOLS = {
 
   "wake-me-up": {
     title: "Wake Me Up",
+    audioSrc: "audio/wake-me-up.mp3",
     introText: "Time to wake up.\nLet's build some clean energy.",
     stages: [
       {
@@ -196,6 +201,7 @@ const PROTOCOLS = {
 
   "energy-reset": {
     title: "Energy Reset",
+    audioSrc: "audio/energy-reset.mp3",
     introText: "Feeling the dip?\nLet's bring you back online.",
     stages: [
       {
@@ -243,6 +249,7 @@ const PROTOCOLS = {
 
   "rebound": {
     title: "Rebound",
+    audioSrc: "audio/rebound.mp3",
     introText: "That was tough.\nLet's reset your system.",
     stages: [
       {
@@ -280,6 +287,7 @@ const PROTOCOLS = {
 
   "context-switch": {
     title: "Context Switch",
+    audioSrc: "audio/context-switch.mp3",
     introText: "New task, new state.\nLet's clear the slate.",
     stages: [
       {
@@ -317,6 +325,7 @@ const PROTOCOLS = {
 
   "pre-meeting": {
     title: "Pre-Meeting",
+    audioSrc: "audio/pre-meeting.mp3",
     introText: "Meeting coming up.\nLet's get you centered.",
     stages: [
       {
@@ -354,6 +363,7 @@ const PROTOCOLS = {
 
   "back-to-back": {
     title: "Back-to-Back",
+    audioSrc: "audio/evening-decompression.mp3",
     introText: "Let go of what just happened.\nReset before what's next.",
     stages: [
       {
