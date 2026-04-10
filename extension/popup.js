@@ -366,6 +366,11 @@ ctrlMute.addEventListener("click", () => {
   if (muted) breathAudio.stop();
 });
 
+// Continue button in paused overlay
+continueBtn.addEventListener("click", () => {
+  ctrlStop.click();
+});
+
 function fadeTransition(from, to, delay) {
   setTimeout(() => {
     showScreen(to);
