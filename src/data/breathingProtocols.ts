@@ -625,7 +625,7 @@ export const preMeetingProtocol: Protocol = {
 export const backToBackProtocol: Protocol = {
   id: "back-to-back",
   title: "Back-to-Back",
-  audioSrc: "/audio/evening-decompression.mp3",
+  audioSrc: "/audio/back-to-back.mp3",
   subtitle: "~3 mins",
   duration: "~3 mins",
   introText: "Let go of what just happened.\nReset before what's next.",
