@@ -31,14 +31,12 @@ class BreathAudio {
     const data = buffer.getChannelData(0);
     let slow = 0;
     let fast = 0;
-    let edge = 0;
     for (let i = 0; i < length; i++) {
       const white = Math.random() * 2 - 1;
-      slow = slow * 0.992 + white * 0.008;
-      fast = fast * 0.82 + white * 0.18;
-      const aspirated = white - fast * 0.72 - slow * 0.18;
-      edge = edge * 0.75 + aspirated * 0.25;
-      data[i] = Math.tanh((aspirated * 1.9 + edge * 0.35) * 0.9) * 0.34;
+      slow = slow * 0.996 + white * 0.004;
+      fast = fast * 0.88 + white * 0.12;
+      const shaped = white - fast * 0.8 - slow * 0.15;
+      data[i] = Math.tanh(shaped * 1.2) * 0.18;
     }
     return buffer;
   }
@@ -86,64 +84,64 @@ class BreathAudio {
     compressor.release.value = 0.12;
 
     if (type === "inhale") {
-      hp.frequency.value = 720;
-      airy.frequency.value = 1700;
-      formant1.frequency.value = 1450;
-      formant1.Q.value = 2.4;
-      formant2.frequency.value = 2650;
-      formant2.Q.value = 1.6;
-      lp.frequency.value = 5400;
-      airGain.gain.value = 0.95;
-      formant1Gain.gain.value = 0.22;
-      formant2Gain.gain.value = 0.1;
+      hp.frequency.value = 1100;
+      airy.frequency.value = 2200;
+      formant1.frequency.value = 1800;
+      formant1.Q.value = 3.2;
+      formant2.frequency.value = 3200;
+      formant2.Q.value = 2.0;
+      lp.frequency.value = 4800;
+      airGain.gain.value = 0.45;
+      formant1Gain.gain.value = 0.12;
+      formant2Gain.gain.value = 0.05;
 
       gain.gain.setValueAtTime(0.0, now);
-      gain.gain.exponentialRampToValueAtTime(0.03, now + dur * 0.12);
-      gain.gain.linearRampToValueAtTime(0.048, now + dur * 0.45);
-      gain.gain.linearRampToValueAtTime(0.04, now + dur * 0.82);
+      gain.gain.exponentialRampToValueAtTime(0.015, now + dur * 0.15);
+      gain.gain.linearRampToValueAtTime(0.028, now + dur * 0.5);
+      gain.gain.linearRampToValueAtTime(0.02, now + dur * 0.82);
       gain.gain.linearRampToValueAtTime(0.001, now + dur);
 
-      formant1.frequency.setValueAtTime(1320, now);
-      formant1.frequency.linearRampToValueAtTime(1680, now + dur);
-      airy.frequency.setValueAtTime(1550, now);
-      airy.frequency.linearRampToValueAtTime(1900, now + dur);
+      formant1.frequency.setValueAtTime(1650, now);
+      formant1.frequency.linearRampToValueAtTime(2050, now + dur);
+      airy.frequency.setValueAtTime(2000, now);
+      airy.frequency.linearRampToValueAtTime(2500, now + dur);
     } else if (type === "exhale") {
-      hp.frequency.value = 520;
-      airy.frequency.value = 1320;
-      formant1.frequency.value = 980;
-      formant1.Q.value = 1.8;
-      formant2.frequency.value = 1850;
-      formant2.Q.value = 1.1;
-      lp.frequency.value = 4200;
-      airGain.gain.value = 0.8;
-      formant1Gain.gain.value = 0.18;
-      formant2Gain.gain.value = 0.08;
+      hp.frequency.value = 800;
+      airy.frequency.value = 1600;
+      formant1.frequency.value = 1200;
+      formant1.Q.value = 2.2;
+      formant2.frequency.value = 2100;
+      formant2.Q.value = 1.4;
+      lp.frequency.value = 3800;
+      airGain.gain.value = 0.5;
+      formant1Gain.gain.value = 0.1;
+      formant2Gain.gain.value = 0.04;
 
       gain.gain.setValueAtTime(0.0, now);
-      gain.gain.exponentialRampToValueAtTime(0.034, now + dur * 0.1);
-      gain.gain.linearRampToValueAtTime(0.042, now + dur * 0.28);
-      gain.gain.linearRampToValueAtTime(0.028, now + dur * 0.72);
+      gain.gain.exponentialRampToValueAtTime(0.02, now + dur * 0.1);
+      gain.gain.linearRampToValueAtTime(0.025, now + dur * 0.3);
+      gain.gain.linearRampToValueAtTime(0.015, now + dur * 0.72);
       gain.gain.linearRampToValueAtTime(0.001, now + dur);
 
-      formant1.frequency.setValueAtTime(1080, now);
-      formant1.frequency.linearRampToValueAtTime(760, now + dur);
-      airy.frequency.setValueAtTime(1450, now);
-      airy.frequency.linearRampToValueAtTime(1180, now + dur);
+      formant1.frequency.setValueAtTime(1300, now);
+      formant1.frequency.linearRampToValueAtTime(900, now + dur);
+      airy.frequency.setValueAtTime(1700, now);
+      airy.frequency.linearRampToValueAtTime(1400, now + dur);
     } else if (type === "sniff") {
-      hp.frequency.value = 1250;
-      airy.frequency.value = 2600;
-      formant1.frequency.value = 2300;
-      formant1.Q.value = 3.3;
-      formant2.frequency.value = 3600;
-      formant2.Q.value = 2.1;
-      lp.frequency.value = 6500;
-      airGain.gain.value = 1.05;
-      formant1Gain.gain.value = 0.16;
-      formant2Gain.gain.value = 0.07;
+      hp.frequency.value = 1600;
+      airy.frequency.value = 3000;
+      formant1.frequency.value = 2800;
+      formant1.Q.value = 3.8;
+      formant2.frequency.value = 4200;
+      formant2.Q.value = 2.5;
+      lp.frequency.value = 6000;
+      airGain.gain.value = 0.5;
+      formant1Gain.gain.value = 0.1;
+      formant2Gain.gain.value = 0.04;
 
       gain.gain.setValueAtTime(0.0, now);
-      gain.gain.exponentialRampToValueAtTime(0.05, now + dur * 0.06);
-      gain.gain.linearRampToValueAtTime(0.028, now + dur * 0.32);
+      gain.gain.exponentialRampToValueAtTime(0.03, now + dur * 0.08);
+      gain.gain.linearRampToValueAtTime(0.018, now + dur * 0.35);
       gain.gain.linearRampToValueAtTime(0.001, now + dur);
     }
 
