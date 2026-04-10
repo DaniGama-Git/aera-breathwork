@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { BreathAudio } from "@/lib/breathAudio";
 import { useNavigate } from "react-router-dom";
 import waveBgLogo from "@/assets/wave-bg-logo.png";
 import waveBgIntro from "@/assets/wave-bg-intro.png";
@@ -70,6 +71,8 @@ const WavePreview = () => {
   const gradientRef = useRef<HTMLDivElement>(null);
   const phaseLabelRef = useRef<HTMLSpanElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
+  const breathAudioRef = useRef(new BreathAudio());
+  const currentAudioPhaseRef = useRef<string | null>(null);
 
   const timeline = useMemo(() => buildTimeline(protocol), []);
   const totalDuration = timeline.length > 0 ? timeline[timeline.length - 1].endMs : 0;
@@ -115,6 +118,8 @@ const WavePreview = () => {
       const elapsed = Date.now() - sessionStart;
 
       if (elapsed >= totalDuration) {
+        breathAudioRef.current.stop();
+        currentAudioPhaseRef.current = null;
         setFadeIn(false);
         setTimeout(() => {
           setScreen("done");
@@ -168,6 +173,22 @@ const WavePreview = () => {
         if (phaseLabelRef.current)
           phaseLabelRef.current.textContent = entry.displayLabel;
         setPhase(entry.displayLabel);
+
+        // Trigger breath audio on phase change
+        const phaseKey = `${entry.startMs}_${entry.type}`;
+        if (phaseKey !== currentAudioPhaseRef.current) {
+          currentAudioPhaseRef.current = phaseKey;
+          const audio = breathAudioRef.current;
+          if (entry.type === "INHALE") {
+            audio.playInhale(entry.duration);
+          } else if (entry.type === "EXHALE") {
+            audio.playExhale(entry.duration);
+          } else if (entry.type === "SNIFF") {
+            audio.playSniff(entry.duration);
+          } else {
+            audio.stop();
+          }
+        }
       }
 
       const barTop = getBarPosition(entry.type, progress, prevEntryType);
@@ -194,6 +215,8 @@ const WavePreview = () => {
       setShowPausedOverlay(false);
     } else {
       pausedElapsedRef.current = Date.now() - sessionStart;
+      breathAudioRef.current.stop();
+      currentAudioPhaseRef.current = null;
       setPaused(true);
       setShowPausedOverlay(true);
     }
