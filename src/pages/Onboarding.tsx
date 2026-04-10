@@ -15,22 +15,24 @@ interface OnboardingData {
 }
 
 const GOAL_OPTIONS = [
-  { label: "To focus", value: "focus" },
-  { label: "To perform better", value: "performance" },
-  { label: "To recover", value: "recovery" },
-  { label: "To boost my energy", value: "energy" },
+  { label: "Staying sharp before critical moments", value: "sharp_before_critical" },
+  { label: "Recovering fast between meetings", value: "recovering_fast" },
+  { label: "Sustaining energy through the day", value: "sustaining_energy" },
+  { label: "Maintaining focus during deep work", value: "focus_deep_work" },
 ];
 
 const MOMENT_OPTIONS = [
-  { label: "Before high-stakes moments", value: "before_meetings" },
+  { label: "First thing in the morning", value: "morning" },
+  { label: "Before critical moments", value: "before_critical" },
+  { label: "Mid-afternoon when energy drops", value: "mid_afternoon" },
   { label: "Before deep work", value: "before_deep_work" },
-  { label: "Morning activation", value: "morning_activation" },
-  { label: "Recovery & wind-down", value: "after_back_to_back" },
+  { label: "After intense back-to-back day", value: "after_back_to_back" },
 ];
 
 const SUGGESTED_KEYWORDS = [
-  "pitch", "board", "negotiation", "interview", "creative",
-  "deep work", "focus block", "strategy", "1:1", "standup",
+  "pitch", "board", "all hands",
+  "decision", "strategy", "creative", "focus block", "deep work",
+  "1:1", "standup",
 ];
 
 type Step = "goals" | "moments" | "keywords";
@@ -151,13 +153,10 @@ const Onboarding = () => {
         {/* Content */}
         <div className="flex-1 px-6 flex flex-col">
           {step === "goals" && (
-            <OnboardingStep
-              title="Part 1 — Your Moments"
-              subtitle="This section shapes when āera shows up for you throughout your day."
-            >
+            <OnboardingStep>
               <MultiSelectStep
-                question="What is your primary goal when you take an intentional moment of breathwork?"
-                hint="You can choose more than one."
+                question="What does performing at your best look like?"
+                hint="Select everything that applies."
                 options={GOAL_OPTIONS}
                 selected={data.goals}
                 onChange={(goals) => setData({ ...data, goals })}
@@ -169,8 +168,8 @@ const Onboarding = () => {
           {step === "moments" && (
             <OnboardingStep>
               <MultiSelectStep
-                question="When do you want āera to show up?"
-                hint="Choose as many as feel right."
+                question="When do you need a quick reset the most?"
+                hint="Select everything that applies."
                 options={MOMENT_OPTIONS}
                 selected={data.moments}
                 onChange={(moments) => setData({ ...data, moments })}
