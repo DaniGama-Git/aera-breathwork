@@ -480,11 +480,11 @@ const WavePreview = () => {
 
                 <div
                   className="absolute inset-0 flex items-center justify-center transition-opacity duration-700"
-                  style={{ opacity: showScience ? 1 : 0, pointerEvents: "none", padding: 36 }}
+                  style={{ opacity: showScience ? 1 : 0, pointerEvents: "none", padding: "36px 48px" }}
                 >
-                  <div className="flex items-start gap-3.5 text-left max-w-[280px]">
-                    <img src={lightbulbIcon} alt="" style={{ width: 28, height: 38 }} className="mt-0.5 opacity-90 shrink-0" />
-                    <p className="text-white/70 text-[12px] leading-relaxed font-medium"
+                  <div className="flex items-start gap-3.5 text-left max-w-[220px]">
+                    <img src={lightbulbIcon} alt="" style={{ width: 26, height: 34 }} className="mt-0.5 opacity-90 shrink-0" />
+                    <p className="text-white/70 text-[11px] leading-relaxed font-medium"
                        style={{ textShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>
                       {scienceText || "\u00A0"}
                     </p>
