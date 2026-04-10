@@ -510,7 +510,6 @@ function restart() {
 againBtn.addEventListener("click", restart);
 startBtn.addEventListener("click", () => startSession());
 // ─── Init ───
-// Show loading immediately so Chrome sizes the popup correctly
 setProtocol("back-to-back");
 showScreen("loading");
 
@@ -528,10 +527,9 @@ chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
       setTimeout(() => startSession(), 2200);
     });
   } else {
-    // Manual mode (toolbar popup) — start session directly
-    preloadImages(ALL_IMAGES).then(() => {
-      showScreen("logo");
-      setTimeout(() => startSession(), 2200);
-    });
+    // Manual mode (toolbar popup) — show Settings tab, no auto-start
+    document.getElementById("tab-settings").click();
+  }
+});
   }
 });
