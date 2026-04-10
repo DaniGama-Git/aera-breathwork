@@ -330,6 +330,8 @@ ctrlStop.addEventListener("click", () => {
     paused = true;
     running = false;
     cancelAnimationFrame(raf);
+    breathAudio.stop();
+    currentAudioPhase = null;
     pauseIcon.style.display = "none";
     playIcon.style.display = "";
     phaseLabel.style.opacity = "0";
@@ -341,6 +343,7 @@ ctrlStop.addEventListener("click", () => {
 ctrlClose.addEventListener("click", () => {
   running = false;
   cancelAnimationFrame(raf);
+  breathAudio.stop();
   window.close();
 });
 
