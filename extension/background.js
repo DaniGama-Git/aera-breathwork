@@ -44,16 +44,22 @@ function resolveProtocol(matchedKeyword) {
   }
   return "deep-focus"; // default fallback
 }
-const ALARM_NAME = "check-calendar";
+// Use setTimeout chain for tighter polling (chrome.alarms is imprecise)
+function scheduleCheck() {
+  setTimeout(async () => {
+    await checkCalendar();
+    scheduleCheck();
+  }, CHECK_INTERVAL_MS);
+}
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.alarms.create(ALARM_NAME, { periodInMinutes: CHECK_INTERVAL_MINUTES });
+  checkCalendar();
+  scheduleCheck();
 });
 
-chrome.alarms.onAlarm.addListener(async (alarm) => {
-  if (alarm.name !== ALARM_NAME) return;
-  await checkCalendar();
-});
+// Also restart polling when service worker wakes up
+checkCalendar();
+scheduleCheck();
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message?.type !== "validate-calendar-url") return;
