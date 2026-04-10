@@ -296,6 +296,19 @@ body{
 .status{font-size:11px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5);display:none;margin-top:8px}
 .status.visible{display:block}
 .status.error{background:rgba(220,38,38,0.1);color:#f87171}
+.status.success{background:rgba(34,197,94,0.1);color:rgba(130,220,130,0.9)}
+
+/* Persistent close button (always visible on card) */
+.card-close{
+  position:absolute;top:10px;right:10px;z-index:25;
+  width:28px;height:28px;border-radius:50%;border:none;
+  background:rgba(0,0,0,0.25);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.25s ease;
+  color:rgba(255,255,255,0.5);
+}
+.card-close:hover{background:rgba(0,0,0,0.45);color:rgba(255,255,255,0.9)}
+.card-close svg{width:12px;height:12px}
 .connection-status{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.4px;margin-bottom:16px}
 .connection-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.12)}
 .connection-dot.connected{background:rgba(255,255,255,0.6)}
@@ -332,6 +345,7 @@ body.triggered-mode .paused-text{font-size:10px}
 body.triggered-mode .paused-overlay{gap:14px}
 body.triggered-mode .continue-btn{padding:5px 14px;font-size:8px;border-radius:14px}
 body.triggered-mode .start-btn{padding:6px 16px;font-size:8px;border-radius:14px}
+body.triggered-mode .card-close{display:none}
 </style>
 </head>
 <body>
@@ -347,6 +361,11 @@ body.triggered-mode .start-btn{padding:6px 16px;font-size:8px;border-radius:14px
         <div class="bg-layer" id="bg-logo" style="background-image:url(wave-bg-logo.png)"></div>
         <div class="bg-layer" id="bg-intro" style="background-image:url(wave-bg-intro.png)"></div>
         <div class="bg-layer" id="bg-breathing" style="background-image:url(wave-bg-description.png)"></div>
+
+        <!-- Persistent close button -->
+        <button class="card-close" id="card-close" title="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
 
         <!-- Gradient mask for breathing -->
         <div class="gradient-mask" id="gradient-mask"></div>
