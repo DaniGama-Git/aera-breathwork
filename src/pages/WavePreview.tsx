@@ -83,6 +83,9 @@ const WavePreview = () => {
   /* ── Preload ── */
   useEffect(() => {
     preloadImages(ALL_IMAGES).then(() => setScreen("logo"));
+    return () => {
+      if (bgAudioRef.current) { bgAudioRef.current.pause(); bgAudioRef.current = null; }
+    };
   }, []);
 
   /* ── Screen auto-advance ── */
