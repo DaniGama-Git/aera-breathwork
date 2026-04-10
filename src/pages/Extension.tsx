@@ -81,7 +81,7 @@ const Extension = () => {
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       <img
-        src={activateGradientBg}
+        src={extensionBg}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"
