@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Download, Copy, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 import JSZip from "jszip";
-import activateGradientBg from "@/assets/activate-gradient-v2.webp";
+import extensionBg from "@/assets/extension-bg.png";
 import areaLogo from "@/assets/aera-logo.svg";
 import mockupExtension from "@/assets/mockup-extension-breathe.svg";
 import BottomNavBar from "@/components/BottomNavBar";
