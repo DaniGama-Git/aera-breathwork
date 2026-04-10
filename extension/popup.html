@@ -231,7 +231,7 @@ body{
 /* ─── Session Controls (top bar) ─── */
 .session-controls{
   position:absolute;top:12px;left:12px;right:12px;z-index:20;
-  display:flex;justify-content:space-between;align-items:center;
+  display:flex;justify-content:flex-start;align-items:center;gap:6px;
   opacity:0;pointer-events:none;transition:opacity 400ms ease;
 }
 .session-controls.active{opacity:1;pointer-events:auto}
@@ -245,8 +245,6 @@ body{
 }
 .ctrl-btn:hover{background:rgba(0,0,0,0.55);color:rgba(255,255,255,0.95)}
 .ctrl-btn svg{width:14px;height:14px}
-
-.ctrl-right{display:flex;gap:6px;align-items:center}
 
 /* Loading dots */
 .loading-dots{
@@ -300,14 +298,15 @@ body{
 
 /* Persistent close button (hidden in manual, shown in triggered) */
 .card-close{
-  position:absolute;top:10px;right:10px;z-index:25;
-  width:28px;height:28px;border-radius:50%;border:none;
-  background:rgba(0,0,0,0.25);backdrop-filter:blur(8px);
+  position:absolute;top:12px;right:12px;z-index:25;
+  width:32px;height:32px;border-radius:50%;border:none;
+  background:rgba(0,0,0,0.35);backdrop-filter:blur(8px);
   display:none;align-items:center;justify-content:center;
   cursor:pointer;transition:all 0.25s ease;
-  color:rgba(255,255,255,0.5);
+  color:rgba(255,255,255,0.7);
 }
-.card-close:hover{background:rgba(0,0,0,0.45);color:rgba(255,255,255,0.9)}
+.card-close:hover{background:rgba(0,0,0,0.55);color:rgba(255,255,255,0.95)}
+.card-close svg{width:14px;height:14px}
 .card-close svg{width:12px;height:12px}
 .connection-status{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:0.4px;margin-bottom:16px}
 .connection-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15)}
@@ -399,12 +398,10 @@ Let your mind open up.</p>
             <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
             <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="6,4 20,12 6,20"/></svg>
           </button>
-          <div class="ctrl-right">
-            <button class="ctrl-btn" id="ctrl-mute" title="Mute">
-              <svg id="mute-off-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19.07 4.93a10 10 0 010 14.14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <svg id="mute-on-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </button>
-          </div>
+          <button class="ctrl-btn" id="ctrl-mute" title="Mute">
+            <svg id="mute-off-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19.07 4.93a10 10 0 010 14.14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg id="mute-on-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
         </div>
 
         <!-- Breathing UI -->
