@@ -6,6 +6,7 @@ import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import areaLogo from "@/assets/aera-logo.svg";
 import mockupExtension from "@/assets/mockup-extension-breathe.svg";
 import BottomNavBar from "@/components/BottomNavBar";
+import BreatheDots from "@/components/BreatheDots";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -23,6 +24,7 @@ const Extension = () => {
   const [keywords, setKeywords] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     const pendingData = sessionStorage.getItem("aera_onboarding_data");
@@ -49,6 +51,8 @@ const Extension = () => {
   }, [user]);
 
   const handleDownload = async () => {
+    if (downloading) return;
+    setDownloading(true);
     try {
       const res = await fetch("/aera-extension.zip");
       if (!res.ok) throw new Error(`Download failed: ${res.status}`);
@@ -69,6 +73,8 @@ const Extension = () => {
       setDownloaded(true);
     } catch (err: any) {
       alert(err.message);
+    } finally {
+      setDownloading(false);
     }
   };
 
@@ -80,6 +86,12 @@ const Extension = () => {
 
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
+      {downloading && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm">
+          <BreatheDots className="w-16 h-16 mb-4" />
+          <p className="text-white/70 font-body text-[14px]">Preparing download…</p>
+        </div>
+      )}
       <img
         src={activateGradientBg}
         alt=""
@@ -179,7 +191,8 @@ const Extension = () => {
         <div className="px-6 pb-4">
           <button
             onClick={handleDownload}
-            className="w-full py-4 rounded-xl text-white font-body font-semibold text-[15px] tracking-wide flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-[0.98]"
+            disabled={downloading}
+            className="w-full py-4 rounded-xl text-white font-body font-semibold text-[15px] tracking-wide flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
             style={{
               background: "rgba(255,255,255,0.12)",
               backdropFilter: "blur(12px)",
