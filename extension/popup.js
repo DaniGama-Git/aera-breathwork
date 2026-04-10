@@ -105,15 +105,6 @@ function showStatus(msg, isError = false, isSuccess = false) {
 
 chrome.storage.local.get(["icalUrl"], data => updateConnectionStatus(!!data.icalUrl));
 
-// ─── Persistent close button ───
-const cardClose = document.getElementById("card-close");
-cardClose.addEventListener("click", () => {
-  running = false;
-  cancelAnimationFrame(raf);
-  breathAudio.stop();
-  if (bgAudio) { bgAudio.pause(); bgAudio = null; }
-  window.close();
-});
 
 // ─── Wave-style Breathing (Image + Gradient Mask) ───
 const card = document.getElementById("card");
