@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Download, Copy, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 import JSZip from "jszip";
-import extensionBg from "@/assets/extension-bg.png";
+import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import areaLogo from "@/assets/aera-logo.svg";
 import mockupExtension from "@/assets/mockup-extension-breathe.svg";
 import BottomNavBar from "@/components/BottomNavBar";
@@ -81,7 +81,7 @@ const Extension = () => {
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       <img
-        src={extensionBg}
+        src={activateGradientBg}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"
