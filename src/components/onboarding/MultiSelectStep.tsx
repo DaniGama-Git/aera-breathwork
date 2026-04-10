@@ -27,7 +27,7 @@ const MultiSelectStep = ({ question, hint, options, selected, onChange, onContin
         {question}
       </h1>
       {hint && (
-        <p className="text-white/40 font-body text-[14px] leading-relaxed mb-8">
+        <p className="text-white/60 font-body text-[14px] leading-relaxed mb-8">
           {hint}
         </p>
       )}
@@ -43,10 +43,10 @@ const MultiSelectStep = ({ question, hint, options, selected, onChange, onContin
               className={`w-full text-left px-5 py-4 rounded-2xl border transition-all duration-200 font-body text-[15px] ${
                 isSelected
                   ? "border-white bg-white/10 text-white"
-                  : "border-white/10 bg-white/[0.03] text-white/70 hover:border-white/20 hover:bg-white/[0.06]"
+                  : "border-white/15 bg-white/[0.05] text-white/80 hover:border-white/25 hover:bg-white/[0.08]"
               }`}
             >
-              <span className="text-white/30 mr-3">{i + 1}.</span>
+              <span className="text-white/40 mr-3">{i + 1}.</span>
               {option.label}
             </button>
           );

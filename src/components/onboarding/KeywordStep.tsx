@@ -38,7 +38,7 @@ const KeywordStep = ({ selected, suggestions, onChange, onContinue }: Props) => 
       <h1 className="text-white font-body font-semibold text-[22px] leading-tight mb-3">
         What words typically appear in your most important calendar events?
       </h1>
-      <p className="text-white/40 font-body text-[14px] leading-relaxed mb-8">
+      <p className="text-white/60 font-body text-[14px] leading-relaxed mb-8">
         This is the precision layer — āera will watch for these exact words in your calendar. Select as many as feel right, or add your own.
       </p>
 
@@ -53,7 +53,7 @@ const KeywordStep = ({ selected, suggestions, onChange, onContinue }: Props) => 
               className={`px-4 py-2 rounded-full border transition-all duration-200 font-body text-[14px] ${
                 isSelected
                   ? "border-white bg-white/10 text-white"
-                  : "border-white/10 bg-white/[0.03] text-white/50 hover:border-white/20 hover:text-white/70"
+                  : "border-white/15 bg-white/[0.05] text-white/60 hover:border-white/25 hover:text-white/80"
               }`}
             >
               {kw}
