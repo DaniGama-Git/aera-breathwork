@@ -36,9 +36,9 @@ export const categoryConfig: Record<string, CategoryConfig> = {
     icon: focusIcon,
     sessions: [
       { title: "Pre-Pitch", description: "Ground yourself before the big moment.", duration: "5 mins", slug: "pre-pitch", audioSrc: "/audio/pre-pitch-grounding.mp3" },
-      { title: "Pre-Negotiation", description: "Settle your nerves before a tough conversation.", duration: "5 mins", slug: "pre-negotiation", audioSrc: "/audio/pre-negotiation.mp3" },
-      { title: "Decision Clarity", description: "Cut through the noise to decide clearly.", duration: "5 mins", slug: "decision-clarity", audioSrc: "/audio/decision-clarity.mp3" },
-      { title: "Pre-Meeting", description: "Arrive centered and fully present.", duration: "5 mins", slug: "pre-meeting", audioSrc: "/audio/pre-meeting.mp3" },
+      { title: "Pre-Negotiation", description: "Settle your nerves before a tough conversation.", duration: "5 mins", slug: "pre-negotiation", audioSrc: "/audio/pre-negotiation-voiced.mp3" },
+      { title: "Decision Clarity", description: "Cut through the noise to decide clearly.", duration: "5 mins", slug: "decision-clarity", audioSrc: "/audio/decision-clarity-voiced.mp3" },
+      { title: "Pre-Meeting", description: "Arrive centered and fully present.", duration: "5 mins", slug: "pre-meeting", audioSrc: "/audio/pre-meeting-voiced.mp3" },
       { title: "Creative Flow", description: "Open up before creative deep work.", duration: "5 mins", slug: "creative-flow" },
       { title: "Deep Focus", description: "Drop into deep concentration.", duration: "5 mins", slug: "deep-focus", audioSrc: "/audio/focus-activation.mp3" },
     ],
@@ -73,7 +73,7 @@ export const categoryConfig: Record<string, CategoryConfig> = {
     gradient: resetGradient,
     icon: resetIcon,
     sessions: [
-      { title: "Wind Down", description: "Wind down after an intense day.", duration: "10 mins", slug: "wind-down", audioSrc: "/audio/evening-decompression.mp3" },
+      { title: "Wind Down", description: "Wind down after an intense day.", duration: "10 mins", slug: "wind-down", audioSrc: "/audio/wind-down.mp3" },
       { title: "Travel Reset", description: "Recalibrate after long commutes or flights.", duration: "7 mins", slug: "travel-reset" },
       { title: "Deep Decompression", description: "Deep nervous system restoration.", duration: "12 mins", slug: "deep-decompression" },
     ],
