@@ -484,7 +484,7 @@ const WavePreview = () => {
                   <span
                     ref={phaseLabelRef}
                     className="tracking-[0.25em] font-medium"
-                    style={{ fontSize: 18, color: "rgba(80,80,80,0.6)" }}
+                    style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
                   >
                     {phase}
                   </span>
