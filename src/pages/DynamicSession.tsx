@@ -22,7 +22,7 @@ const DynamicSession = () => {
   const session = sessionMatch?.session;
 
   const audioSrc = session?.audioSrc || "";
-  const { isPlaying, toggle, progress, getFrequencyData } = useAudioPlayer(audioSrc);
+  const { isPlaying, toggle, timeDisplay, progress, getFrequencyData } = useAudioPlayer(audioSrc);
   const { isFavorite, toggleFavorite } = useFavorites();
 
   if (!config || !session) {
@@ -54,6 +54,7 @@ const DynamicSession = () => {
       />
 
       <div className="relative z-10 flex flex-col min-h-screen max-w-[800px] mx-auto w-full overflow-y-auto">
+        {/* Top content */}
         <div className="pt-20 px-6 flex flex-col items-start text-left">
           <div className="flex items-center gap-3 mb-5">
             <div className="inline-flex items-center gap-2 px-2.5 h-[25px] border border-white rounded-full">
@@ -82,29 +83,41 @@ const DynamicSession = () => {
           >
             {session.title}
           </h1>
-          <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
+          <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium mb-2">
             {session.description}
           </p>
+          <div>
+            <span className="text-white font-body font-semibold text-lg">Jamie</span>
+            <span className="text-white/50 text-sm font-body font-normal ml-2">
+              {!session.audioSrc ? "Coming soon" : isPlaying ? "Guiding..." : "Tap play to begin"}
+            </span>
+          </div>
         </div>
 
-        <div className="flex-1 min-h-[200px]" />
+        <div className="flex-1" />
 
-        <div className="px-6 pb-3">
-          {/* Progress bar */}
-          <div className="w-full h-[6px] rounded-full overflow-hidden mb-6"
-            style={{ background: "rgba(255,255,255,0.2)" }}
-          >
-            <div
-              className="h-full rounded-full transition-all duration-300"
-              style={{
-                width: `${progress * 100}%`,
-                background: isPlaying ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0.5)",
-              }}
-            />
+        {/* Bottom: progress bar + play button */}
+        <div className="px-6 pb-6">
+          {/* Progress bar with time */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className="flex-1 h-[6px] rounded-full overflow-hidden"
+              style={{ background: "rgba(255,255,255,0.2)" }}
+            >
+              <div
+                className="h-full rounded-full transition-all duration-300"
+                style={{
+                  width: `${progress * 100}%`,
+                  background: "rgba(0,0,0,0.6)",
+                }}
+              />
+            </div>
+            <span className="text-white/50 text-xs font-display font-light tabular-nums shrink-0">
+              {timeDisplay}
+            </span>
           </div>
 
           {/* Play button centered */}
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center">
             {session.audioSrc ? (
               <button
                 className="transition-transform hover:scale-105 active:scale-95"
@@ -112,25 +125,18 @@ const DynamicSession = () => {
                 onClick={toggle}
               >
                 {isPlaying ? (
-                  <div className="w-[72px] h-[72px] rounded-full bg-white flex items-center justify-center">
-                    <Pause className="w-8 h-8 text-black fill-black" />
+                  <div className="w-[56px] h-[56px] rounded-full bg-white flex items-center justify-center">
+                    <Pause className="w-6 h-6 text-black fill-black" />
                   </div>
                 ) : (
-                  <img src={playButton} alt="Play" className="w-[72px] h-[72px]" />
+                  <img src={playButton} alt="Play" className="w-[56px] h-[56px]" />
                 )}
               </button>
             ) : (
-              <div className="w-[72px] h-[72px] rounded-full bg-white/20 flex items-center justify-center">
+              <div className="w-[56px] h-[56px] rounded-full bg-white/20 flex items-center justify-center">
                 <span className="text-white/60 text-[10px] font-body font-medium">Soon</span>
               </div>
             )}
-          </div>
-
-          <div className="mb-5">
-            <span className="text-white font-body font-semibold text-xl block mb-1">Jamie</span>
-            <span className="text-white/50 text-sm font-body font-normal">
-              {!session.audioSrc ? "Coming soon" : isPlaying ? "Guiding..." : "Tap play to begin"}
-            </span>
           </div>
         </div>
 
