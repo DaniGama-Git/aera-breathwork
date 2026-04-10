@@ -71,6 +71,8 @@ const WavePreview = () => {
   const gradientRef = useRef<HTMLDivElement>(null);
   const phaseLabelRef = useRef<HTMLSpanElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
+  const breathAudioRef = useRef(new BreathAudio());
+  const currentAudioPhaseRef = useRef<string | null>(null);
 
   const timeline = useMemo(() => buildTimeline(protocol), []);
   const totalDuration = timeline.length > 0 ? timeline[timeline.length - 1].endMs : 0;
