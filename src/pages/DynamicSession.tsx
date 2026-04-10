@@ -88,9 +88,7 @@ const DynamicSession = () => {
           </p>
         </div>
 
-        <div className="flex-1 flex items-center justify-center overflow-hidden px-0 min-h-[200px]">
-          <AnimatedWaveform isPlaying={isPlaying} getFrequencyData={getFrequencyData} />
-        </div>
+        <div className="flex-1 min-h-[200px]" />
 
         <div className="px-6 pb-3">
           <div className="flex justify-end mb-4">
