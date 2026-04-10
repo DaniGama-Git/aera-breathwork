@@ -22,10 +22,27 @@ class BreathAudio {
     this.activeNodes = [];
   }
 
-  // Play a breath sound for the given duration in ms
   playInhale(durationMs) { this._playBreath(durationMs, "inhale"); }
   playExhale(durationMs) { this._playBreath(durationMs, "exhale"); }
   playSniff(durationMs) { this._playBreath(durationMs, "sniff"); }
+
+  _createPinkNoise(ctx, length) {
+    const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+    for (let i = 0; i < length; i++) {
+      const white = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + white * 0.0555179;
+      b1 = 0.99332 * b1 + white * 0.0750759;
+      b2 = 0.96900 * b2 + white * 0.1538520;
+      b3 = 0.86650 * b3 + white * 0.3104856;
+      b4 = 0.55000 * b4 + white * 0.5329522;
+      b5 = -0.7616 * b5 - white * 0.0168980;
+      data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.11;
+      b6 = white * 0.115926;
+    }
+    return buffer;
+  }
 
   _playBreath(durationMs, type) {
     this.stop();
@@ -33,54 +50,93 @@ class BreathAudio {
     const dur = durationMs / 1000;
     const now = ctx.currentTime;
 
-    // White noise source
-    const bufferSize = ctx.sampleRate * Math.ceil(dur + 0.5);
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = Math.random() * 2 - 1;
-    }
+    const bufferLen = ctx.sampleRate * Math.ceil(dur + 0.5);
+    const buffer = this._createPinkNoise(ctx, bufferLen);
 
     const noise = ctx.createBufferSource();
     noise.buffer = buffer;
 
-    // Bandpass filter for breath character
-    const filter = ctx.createBiquadFilter();
-    filter.type = "bandpass";
+    // Highpass to remove rumble
+    const hp = ctx.createBiquadFilter();
+    hp.type = "highpass";
+    hp.frequency.value = type === "sniff" ? 600 : 300;
+    hp.Q.value = 0.5;
 
-    // Gain envelope
+    // Primary formant — airway resonance
+    const formant1 = ctx.createBiquadFilter();
+    formant1.type = "bandpass";
+
+    // Secondary formant — breathiness
+    const formant2 = ctx.createBiquadFilter();
+    formant2.type = "bandpass";
+
+    // Gentle lowpass to soften harshness
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+
     const gain = ctx.createGain();
 
     if (type === "inhale") {
-      filter.frequency.value = 800;
-      filter.Q.value = 0.7;
+      formant1.frequency.value = 1400;
+      formant1.Q.value = 1.8;
+      formant2.frequency.value = 2800;
+      formant2.Q.value = 1.2;
+      lp.frequency.value = 4000;
+
       gain.gain.setValueAtTime(0.0, now);
-      gain.gain.linearRampToValueAtTime(0.18, now + dur * 0.3);
-      gain.gain.linearRampToValueAtTime(0.22, now + dur * 0.7);
-      gain.gain.linearRampToValueAtTime(0.05, now + dur);
+      gain.gain.exponentialRampToValueAtTime(0.08, now + dur * 0.15);
+      gain.gain.linearRampToValueAtTime(0.10, now + dur * 0.5);
+      gain.gain.linearRampToValueAtTime(0.07, now + dur * 0.85);
+      gain.gain.linearRampToValueAtTime(0.001, now + dur);
+
+      formant1.frequency.setValueAtTime(1200, now);
+      formant1.frequency.linearRampToValueAtTime(1600, now + dur);
     } else if (type === "exhale") {
-      filter.frequency.value = 600;
-      filter.Q.value = 0.5;
-      gain.gain.setValueAtTime(0.18, now);
-      gain.gain.linearRampToValueAtTime(0.15, now + dur * 0.4);
-      gain.gain.linearRampToValueAtTime(0.08, now + dur * 0.75);
-      gain.gain.linearRampToValueAtTime(0.0, now + dur);
-    } else if (type === "sniff") {
-      filter.frequency.value = 1200;
-      filter.Q.value = 1.2;
+      formant1.frequency.value = 900;
+      formant1.Q.value = 1.0;
+      formant2.frequency.value = 2200;
+      formant2.Q.value = 0.8;
+      lp.frequency.value = 3200;
+
       gain.gain.setValueAtTime(0.0, now);
-      gain.gain.linearRampToValueAtTime(0.25, now + dur * 0.15);
-      gain.gain.linearRampToValueAtTime(0.12, now + dur * 0.5);
-      gain.gain.linearRampToValueAtTime(0.0, now + dur);
+      gain.gain.exponentialRampToValueAtTime(0.09, now + dur * 0.08);
+      gain.gain.linearRampToValueAtTime(0.07, now + dur * 0.3);
+      gain.gain.linearRampToValueAtTime(0.04, now + dur * 0.7);
+      gain.gain.linearRampToValueAtTime(0.001, now + dur);
+
+      formant1.frequency.setValueAtTime(1000, now);
+      formant1.frequency.linearRampToValueAtTime(700, now + dur);
+    } else if (type === "sniff") {
+      formant1.frequency.value = 2000;
+      formant1.Q.value = 2.5;
+      formant2.frequency.value = 3500;
+      formant2.Q.value = 1.8;
+      lp.frequency.value = 5000;
+
+      gain.gain.setValueAtTime(0.0, now);
+      gain.gain.exponentialRampToValueAtTime(0.12, now + dur * 0.08);
+      gain.gain.linearRampToValueAtTime(0.06, now + dur * 0.4);
+      gain.gain.linearRampToValueAtTime(0.001, now + dur);
     }
 
-    // Secondary filter for warmth
-    const lp = ctx.createBiquadFilter();
-    lp.type = "lowpass";
-    lp.frequency.value = type === "sniff" ? 3000 : 2000;
+    // Parallel formant routing for richer sound
+    const merge = ctx.createGain();
+    merge.gain.value = 1.0;
 
-    noise.connect(filter);
-    filter.connect(lp);
+    const split1 = ctx.createGain();
+    split1.gain.value = 0.7;
+    const split2 = ctx.createGain();
+    split2.gain.value = 0.3;
+
+    noise.connect(hp);
+    hp.connect(split1);
+    hp.connect(split2);
+    split1.connect(formant1);
+    split2.connect(formant2);
+    formant1.connect(merge);
+    formant2.connect(merge);
+
+    merge.connect(lp);
     lp.connect(gain);
     gain.connect(ctx.destination);
 
