@@ -91,6 +91,7 @@ saveBtn.addEventListener("click", async () => {
 function showStatus(msg, isError = false, isSuccess = false) {
   statusEl.textContent = msg;
   statusEl.className = "status visible" + (isError ? " error" : "") + (isSuccess ? " success" : "");
+  statusEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   setTimeout(() => (statusEl.className = "status"), 4000);
 }
 
