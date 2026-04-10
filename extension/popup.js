@@ -115,6 +115,7 @@ const againBtn = document.getElementById("again-btn");
 const introTitle = document.getElementById("intro-title");
 const introSubtitle = document.getElementById("intro-subtitle");
 const introText = document.getElementById("intro-text");
+const startBtn = document.getElementById("start-btn");
 const sessionControls = document.getElementById("session-controls");
 const ctrlStop = document.getElementById("ctrl-stop");
 const ctrlClose = document.getElementById("ctrl-close");
