@@ -115,6 +115,7 @@ const againBtn = document.getElementById("again-btn");
 const introTitle = document.getElementById("intro-title");
 const introSubtitle = document.getElementById("intro-subtitle");
 const introText = document.getElementById("intro-text");
+const startBtn = document.getElementById("start-btn");
 const sessionControls = document.getElementById("session-controls");
 const ctrlStop = document.getElementById("ctrl-stop");
 const ctrlClose = document.getElementById("ctrl-close");
@@ -481,7 +482,7 @@ function restart() {
 }
 
 againBtn.addEventListener("click", restart);
-
+startBtn.addEventListener("click", () => startSession());
 // ─── Init ───
 // Show loading immediately so Chrome sizes the popup correctly
 setProtocol("back-to-back");
@@ -489,19 +490,27 @@ showScreen("loading");
 
 chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
   if (data.autoStart) {
-    // Calendar-triggered: borderless standalone mode
+    // Calendar-triggered: borderless standalone mode — auto-start
     triggeredMode = true;
     document.body.classList.add("triggered-mode");
     chrome.storage.local.remove(["autoStart", "activeProtocol"]);
     setProtocol(data.activeProtocol || "back-to-back");
     sessionControls.classList.add("active");
-  }
 
-  preloadImages(ALL_IMAGES).then(() => {
-    showScreen("logo");
-    setTimeout(() => {
-      showScreen("intro");
-      setTimeout(() => startSession(), 3000);
-    }, 2200);
-  });
+    preloadImages(ALL_IMAGES).then(() => {
+      showScreen("logo");
+      setTimeout(() => {
+        showScreen("intro");
+        setTimeout(() => startSession(), 3000);
+      }, 2200);
+    });
+  } else {
+    // Manual mode (toolbar popup) — show intro, wait for user click
+    preloadImages(ALL_IMAGES).then(() => {
+      showScreen("logo");
+      setTimeout(() => {
+        showScreen("intro");
+      }, 2200);
+    });
+  }
 });

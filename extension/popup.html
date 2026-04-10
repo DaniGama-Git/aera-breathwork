@@ -110,8 +110,18 @@ body{
 .intro-text{
   font-size:18px;font-weight:500;line-height:1.15;
   letter-spacing:-0.01em;color:#fff;
-  white-space:pre-line;
+  white-space:pre-line;margin-bottom:20px;
 }
+.start-btn{
+  padding:10px 28px;border-radius:20px;
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.25);
+  backdrop-filter:blur(8px);
+  color:rgba(255,255,255,0.85);font-size:11px;font-weight:500;
+  letter-spacing:0.15em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.3s ease;
+}
+.start-btn:hover{background:rgba(255,255,255,0.22);color:#fff}
 
 /* Breathing UI */
 .breathing-ui{
@@ -326,6 +336,7 @@ body.triggered-mode .breathe-tab{height:100%}
           <span class="intro-subtitle" id="intro-subtitle">~3.5 MINS</span>
           <p class="intro-text" id="intro-text">Let go of control.
 Let your mind open up.</p>
+          <button class="start-btn" id="start-btn">Breathe Now</button>
         </div>
 
         <!-- Session controls (close, sound, stop) -->
