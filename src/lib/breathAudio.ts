@@ -97,9 +97,9 @@ export class BreathAudio {
       formant2Gain.gain.value = 0.05;
 
       gain.gain.setValueAtTime(0.0, now);
-      gain.gain.exponentialRampToValueAtTime(0.015, now + dur * 0.15);
-      gain.gain.linearRampToValueAtTime(0.028, now + dur * 0.5);
-      gain.gain.linearRampToValueAtTime(0.02, now + dur * 0.82);
+      gain.gain.exponentialRampToValueAtTime(0.03, now + dur * 0.15);
+      gain.gain.linearRampToValueAtTime(0.05, now + dur * 0.5);
+      gain.gain.linearRampToValueAtTime(0.038, now + dur * 0.82);
       gain.gain.linearRampToValueAtTime(0.001, now + dur);
 
       formant1.frequency.setValueAtTime(1650, now);
@@ -119,9 +119,9 @@ export class BreathAudio {
       formant2Gain.gain.value = 0.04;
 
       gain.gain.setValueAtTime(0.0, now);
-      gain.gain.exponentialRampToValueAtTime(0.02, now + dur * 0.1);
-      gain.gain.linearRampToValueAtTime(0.025, now + dur * 0.3);
-      gain.gain.linearRampToValueAtTime(0.015, now + dur * 0.72);
+      gain.gain.exponentialRampToValueAtTime(0.035, now + dur * 0.1);
+      gain.gain.linearRampToValueAtTime(0.045, now + dur * 0.3);
+      gain.gain.linearRampToValueAtTime(0.028, now + dur * 0.72);
       gain.gain.linearRampToValueAtTime(0.001, now + dur);
 
       formant1.frequency.setValueAtTime(1300, now);
