@@ -100,6 +100,23 @@ function showStatus(msg, isError = false, isSuccess = false) {
 
 chrome.storage.local.get(["icalUrl"], data => updateConnectionStatus(!!data.icalUrl));
 
+// ─── Breathe on demand ───
+const demandBtn = document.getElementById("demand-btn");
+if (demandBtn) {
+  demandBtn.addEventListener("click", () => {
+    const protocolIds = Object.keys(PROTOCOLS);
+    const randomId = protocolIds[Math.floor(Math.random() * protocolIds.length)];
+    // Switch to breathe tab, set random protocol, and start
+    document.getElementById("tab-breathe").click();
+    setProtocol(randomId);
+    showScreen("loading");
+    preloadImages(ALL_IMAGES).then(() => {
+      showScreen("logo");
+      setTimeout(() => startSession(), 1800);
+    });
+  });
+}
+
 
 // ─── Wave-style Breathing (Image + Gradient Mask) ───
 const card = document.getElementById("card");
