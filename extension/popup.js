@@ -57,9 +57,17 @@ async function loadSettings() {
   updateConnectionStatus(!!data.icalUrl);
 }
 
+const checkSvg = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
 function updateConnectionStatus(connected) {
-  connectionDot.classList.toggle("connected", connected);
-  connectionText.textContent = connected ? "Calendar connected" : "Not configured";
+  const statusEl = document.getElementById("connection-status");
+  if (connected) {
+    statusEl.innerHTML = checkSvg + '<span>Calendar connected</span>';
+    statusEl.classList.add("connected");
+  } else {
+    statusEl.innerHTML = '<span>Not configured</span>';
+    statusEl.classList.remove("connected");
+  }
 }
 
 saveBtn.addEventListener("click", async () => {
@@ -89,7 +97,7 @@ saveBtn.addEventListener("click", async () => {
 });
 
 function showStatus(msg, isError = false, isSuccess = false) {
-  statusEl.textContent = msg;
+  statusEl.innerHTML = (isSuccess ? checkSvg : '') + '<span>' + msg.replace(' ✓','') + '</span>';
   statusEl.className = "status visible" + (isError ? " error" : "") + (isSuccess ? " success" : "");
   statusEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   setTimeout(() => (statusEl.className = "status"), 4000);
