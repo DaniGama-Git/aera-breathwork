@@ -75,6 +75,7 @@ const WavePreview = () => {
   const breathAudioRef = useRef(new BreathAudio());
   const currentAudioPhaseRef = useRef<string | null>(null);
   const bgAudioRef = useRef<HTMLAudioElement | null>(null);
+  const mutedRef = useRef(false);
 
   const timeline = useMemo(() => buildTimeline(protocol), []);
   const totalDuration = timeline.length > 0 ? timeline[timeline.length - 1].endMs : 0;
@@ -194,15 +195,17 @@ const WavePreview = () => {
         const phaseKey = `${entry.startMs}_${entry.type}`;
         if (phaseKey !== currentAudioPhaseRef.current) {
           currentAudioPhaseRef.current = phaseKey;
-          const audio = breathAudioRef.current;
-          if (entry.type === "INHALE") {
-            audio.playInhale(entry.duration);
-          } else if (entry.type === "EXHALE") {
-            audio.playExhale(entry.duration);
-          } else if (entry.type === "SNIFF") {
-            audio.playSniff(entry.duration);
-          } else {
-            audio.stop();
+          if (!mutedRef.current) {
+            const audio = breathAudioRef.current;
+            if (entry.type === "INHALE") {
+              audio.playInhale(entry.duration);
+            } else if (entry.type === "EXHALE") {
+              audio.playExhale(entry.duration);
+            } else if (entry.type === "SNIFF") {
+              audio.playSniff(entry.duration);
+            } else {
+              audio.stop();
+            }
           }
         }
       }
