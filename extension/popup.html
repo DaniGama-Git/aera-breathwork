@@ -18,8 +18,8 @@ body{
   height:520px;
   min-height:520px;
   font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',system-ui,sans-serif;
-  background:#111;
-  color:#f0ece8;
+  background:#f7f6f4;
+  color:#1a1a1a;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -31,14 +31,14 @@ body{
 /* Tabs */
 .tabs{
   display:flex;width:calc(100% - 32px);margin:14px 16px 0;
-  border-radius:20px;background:rgba(255,255,255,0.06);padding:3px;gap:2px;
+  border-radius:20px;background:rgba(0,0,0,0.06);padding:3px;gap:2px;
 }
 .tab{
   flex:1;padding:10px 12px;text-align:center;font-size:11px;font-weight:500;
   letter-spacing:1.2px;text-transform:uppercase;background:none;border:none;
-  border-radius:18px;cursor:pointer;color:rgba(255,255,255,0.3);transition:all 0.3s ease;
+  border-radius:18px;cursor:pointer;color:rgba(0,0,0,0.35);transition:all 0.3s ease;
 }
-.tab.active{color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.1)}
+.tab.active{color:rgba(0,0,0,0.85);background:rgba(0,0,0,0.08)}
 
 /* ─── Card ─── */
 .card-wrap{
@@ -266,51 +266,51 @@ body{
 .breathe-tab{display:flex;flex-direction:column;align-items:center;width:100%}
 .breathe-tab.hidden{display:none}
 .settings-tab{
-  padding:20px;width:100%;display:none;flex-direction:column;gap:0;
-  max-height:420px;overflow-y:auto;
+  padding:24px;width:100%;display:none;flex-direction:column;gap:0;
+  flex:1;overflow-y:auto;
   background:#f7f6f4;color:#1a1a1a;
 }
 .settings-tab.visible{display:flex}
 
-.setup-header{text-align:center;margin-bottom:16px}
-.setup-header h3{font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(0,0,0,0.8);margin-bottom:4px}
-.setup-header p{font-size:11px;color:rgba(0,0,0,0.45);line-height:1.5}
-.guide-step{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,0.03);margin-bottom:8px}
-.step-num{width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:rgba(0,0,0,0.55);flex-shrink:0;margin-top:1px}
+.setup-header{text-align:center;margin-bottom:20px}
+.setup-header h3{font-size:15px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(0,0,0,0.85);margin-bottom:6px}
+.setup-header p{font-size:13px;color:rgba(0,0,0,0.55);line-height:1.5}
+.guide-step{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:rgba(0,0,0,0.03);margin-bottom:8px}
+.step-num{width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(0,0,0,0.6);flex-shrink:0;margin-top:1px}
 .step-content{flex:1}
-.step-content strong{font-size:11px;font-weight:600;color:rgba(0,0,0,0.85);display:block;margin-bottom:2px}
-.step-content span{font-size:10px;color:rgba(0,0,0,0.45);line-height:1.5}
-.guide-link{display:inline-flex;align-items:center;gap:4px;padding:7px 14px;border-radius:12px;background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.1);color:rgba(0,0,0,0.65);font-size:10px;font-weight:500;letter-spacing:0.5px;text-decoration:none;cursor:pointer;transition:all 0.3s;margin:4px 0 12px}
+.step-content strong{font-size:13px;font-weight:600;color:rgba(0,0,0,0.85);display:block;margin-bottom:3px}
+.step-content span{font-size:12px;color:rgba(0,0,0,0.5);line-height:1.5}
+.guide-link{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:12px;background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.1);color:rgba(0,0,0,0.7);font-size:12px;font-weight:500;letter-spacing:0.4px;text-decoration:none;cursor:pointer;transition:all 0.3s;margin:6px 0 14px}
 .guide-link:hover{border-color:rgba(0,0,0,0.2);color:rgba(0,0,0,0.85);background:rgba(0,0,0,0.06)}
-.guide-link svg{width:12px;height:12px;opacity:0.5}
-.section-divider{height:1px;background:rgba(0,0,0,0.06);margin:12px 0}
-.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.field label{font-size:11px;font-weight:500;letter-spacing:0.6px;color:rgba(0,0,0,0.7)}
-.field .hint{font-size:10px;color:rgba(0,0,0,0.35);line-height:1.5}
-.field input,.field textarea{padding:10px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.12);background:#fff;font-size:12px;font-family:inherit;color:#1a1a1a;outline:none;transition:border 0.3s,background 0.3s}
+.guide-link svg{width:14px;height:14px;opacity:0.5}
+.section-divider{height:1px;background:rgba(0,0,0,0.06);margin:14px 0}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:13px;font-weight:500;letter-spacing:0.4px;color:rgba(0,0,0,0.75)}
+.field .hint{font-size:11px;color:rgba(0,0,0,0.4);line-height:1.5}
+.field input,.field textarea{padding:11px 14px;border-radius:14px;border:1px solid rgba(0,0,0,0.12);background:#fff;font-size:13px;font-family:inherit;color:#1a1a1a;outline:none;transition:border 0.3s,background 0.3s}
 .field input:focus,.field textarea:focus{border-color:rgba(0,0,0,0.25);background:#fff}
-.field textarea{resize:vertical;min-height:52px}
-.save-btn{padding:10px 24px;border-radius:20px;border:1px solid rgba(0,0,0,0.12);background:rgba(0,0,0,0.06);color:rgba(0,0,0,0.75);font-size:11px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;align-self:flex-start}
+.field textarea{resize:vertical;min-height:56px}
+.save-btn{padding:11px 24px;border-radius:20px;border:1px solid rgba(0,0,0,0.12);background:rgba(0,0,0,0.06);color:rgba(0,0,0,0.8);font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;align-self:flex-start}
 .save-btn:hover{border-color:rgba(0,0,0,0.25);color:rgba(0,0,0,0.9);background:rgba(0,0,0,0.1)}
-.status{font-size:10px;letter-spacing:0.4px;color:rgba(0,0,0,0.45);display:none;margin-top:8px;align-items:center;gap:6px}
+.status{font-size:12px;letter-spacing:0.3px;color:rgba(0,0,0,0.5);display:none;margin-top:8px;align-items:center;gap:6px}
 .status.visible{display:flex}
 .status.error{color:#dc2626}
 .status.success{color:#16a34a}
 
-.connection-status{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(0,0,0,0.45);letter-spacing:0.4px;margin-bottom:16px}
-.connection-dot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,0.12)}
+.connection-status{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(0,0,0,0.5);letter-spacing:0.3px;margin-bottom:18px}
+.connection-dot{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,0.12)}
 .connection-dot.connected{background:#22c55e}
-.validated-badge{display:none;align-items:center;gap:4px;font-size:10px;color:#16a34a;margin-top:4px}
+.validated-badge{display:none;align-items:center;gap:5px;font-size:12px;color:#16a34a;margin-top:4px}
 .validated-badge.visible{display:flex}
-.validated-badge svg{width:12px;height:12px}
+.validated-badge svg{width:13px;height:13px}
 
 /* Breathe on demand */
-.breathe-on-demand-section{margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,0,0,0.06);text-align:center}
-.demand-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:20px;border:none;background:rgba(0,0,0,0.85);color:#fff;font-size:12px;font-weight:600;letter-spacing:0.8px;cursor:pointer;transition:all 0.3s;font-family:inherit}
+.breathe-on-demand-section{margin-top:24px;padding-top:18px;border-top:1px solid rgba(0,0,0,0.06);text-align:center}
+.demand-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:20px;border:none;background:rgba(0,0,0,0.85);color:#fff;font-size:13px;font-weight:600;letter-spacing:0.6px;cursor:pointer;transition:all 0.3s;font-family:inherit}
 .demand-btn:hover{background:rgba(0,0,0,0.95);transform:scale(1.02)}
 .demand-btn:active{transform:scale(0.98)}
 .demand-btn svg{opacity:0.8}
-.demand-hint{font-size:10px;color:rgba(0,0,0,0.35);margin-top:8px;line-height:1.5}
+.demand-hint{font-size:11px;color:rgba(0,0,0,0.4);margin-top:10px;line-height:1.5}
 
 /* ─── Triggered / standalone mode (235x235) ─── */
 body.triggered-mode{width:100vw;height:100vh;min-width:0;min-height:0;overflow:hidden}
