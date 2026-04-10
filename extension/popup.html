@@ -291,10 +291,10 @@ body{
 .field textarea{resize:vertical;min-height:52px}
 .save-btn{padding:10px 24px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-size:11px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;align-self:flex-start;backdrop-filter:blur(8px)}
 .save-btn:hover{border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.95);background:rgba(255,255,255,0.12)}
-.status{font-size:11px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5);display:none;margin-top:8px}
-.status.visible{display:block}
-.status.error{background:none;color:#f87171}
-.status.success{background:none;color:rgba(130,220,130,0.9)}
+.status{font-size:10px;letter-spacing:0.4px;color:rgba(255,255,255,0.5);display:none;margin-top:8px;align-items:center;gap:6px}
+.status.visible{display:flex}
+.status.error{color:#f87171}
+.status.success{color:rgba(130,220,130,0.9)}
 
 /* Persistent close button (hidden in manual, shown in triggered) */
 .card-close{
@@ -309,8 +309,8 @@ body{
 .card-close svg{width:14px;height:14px}
 .card-close svg{width:12px;height:12px}
 .connection-status{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:0.4px;margin-bottom:16px}
-.connection-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15)}
-.connection-dot.connected{background:rgba(74,222,128,0.9)}
+.connection-status.connected{color:rgba(130,220,130,0.9)}
+.connection-dot{display:none}
 .validated-badge{display:none;align-items:center;gap:4px;font-size:10px;color:rgba(130,200,130,0.8);margin-top:4px}
 .validated-badge.visible{display:flex}
 .validated-badge svg{width:12px;height:12px}
