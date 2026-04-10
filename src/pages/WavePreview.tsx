@@ -484,11 +484,11 @@ const WavePreview = () => {
                   <span
                     ref={phaseLabelRef}
                     className="tracking-[0.25em] font-medium"
-                    style={{ fontSize: 14, color: "rgba(80,80,80,0.6)" }}
+                    style={{ fontSize: 18, color: "rgba(80,80,80,0.6)" }}
                   >
                     {phase}
                   </span>
-                  <div style={{ width: 80, height: 3, background: "rgba(0,0,0,0.08)", borderRadius: 2, overflow: "hidden" }}>
+                  <div style={{ width: 160, height: 3, background: "rgba(0,0,0,0.08)", borderRadius: 2, overflow: "hidden" }}>
                     <div
                       ref={progressBarRef}
                       style={{ height: "100%", width: "0%", background: "rgba(60,60,60,0.45)", borderRadius: 2, transition: "width 0.4s ease" }}
