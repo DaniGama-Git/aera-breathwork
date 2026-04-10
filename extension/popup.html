@@ -303,29 +303,35 @@ body{
 .validated-badge.visible{display:flex}
 .validated-badge svg{width:12px;height:12px}
 
-/* ─── Triggered / standalone mode ─── */
-body.triggered-mode{width:100%;height:100vh;min-width:100%;min-height:100vh}
+/* ─── Triggered / standalone mode (235x235) ─── */
+body.triggered-mode .tabs{display:none}
 body.triggered-mode .card-wrap{padding:0;margin:0}
 body.triggered-mode .card{border-radius:0;width:100%;height:100vh}
-body.triggered-mode .session-controls{display:flex;opacity:1;pointer-events:auto;top:12px;left:12px;right:12px}
+body.triggered-mode .session-controls{top:6px;left:6px;right:6px}
 body.triggered-mode .breathe-tab{height:100%}
-body.triggered-mode .logo-text{font-size:26px}
-body.triggered-mode .intro-pill{padding:6px 20px;border-radius:20px}
-body.triggered-mode .intro-pill span{font-size:11px}
-body.triggered-mode .intro-subtitle{font-size:10px;margin-bottom:20px}
-body.triggered-mode .intro-text{font-size:18px;margin-bottom:20px}
-body.triggered-mode .phase-label{font-size:18px;padding-bottom:8px}
-body.triggered-mode .session-progress-wrap{width:160px;height:3px;margin-bottom:32px}
-body.triggered-mode .transition-text{font-size:14px;max-width:230px}
-body.triggered-mode .science-content{max-width:250px;gap:16px}
-body.triggered-mode .science-content img{width:24px}
-body.triggered-mode .science-content p{font-size:12px}
-body.triggered-mode .done-subtitle{font-size:13px;margin-top:12px}
-body.triggered-mode .done-btn{margin-top:32px;padding:10px 28px;font-size:10px}
-body.triggered-mode .ctrl-btn{width:32px;height:32px}
-body.triggered-mode .ctrl-btn svg{width:14px;height:14px}
-body.triggered-mode .paused-text{font-size:16px}
-body.triggered-mode .continue-btn{padding:8px 20px;font-size:12px}
+body.triggered-mode .logo-text{font-size:16px}
+body.triggered-mode .intro-pill{padding:4px 12px;border-radius:14px}
+body.triggered-mode .intro-pill span{font-size:8px}
+body.triggered-mode .intro-subtitle{font-size:7px;margin-bottom:10px}
+body.triggered-mode .intro-text{font-size:11px;margin-bottom:12px}
+body.triggered-mode .screen-overlay{padding:14px}
+body.triggered-mode .phase-label{font-size:9px;padding-bottom:4px;letter-spacing:0.2em}
+body.triggered-mode .session-progress-wrap{width:50px;height:2px;margin-bottom:14px}
+body.triggered-mode .transition-overlay{padding:14px}
+body.triggered-mode .transition-text{font-size:9px;max-width:170px;line-height:1.5}
+body.triggered-mode .science-overlay{padding:14px}
+body.triggered-mode .science-content{max-width:170px;gap:8px}
+body.triggered-mode .science-content img{width:16px}
+body.triggered-mode .science-content p{font-size:8px;line-height:1.5}
+body.triggered-mode .done-subtitle{font-size:9px;margin-top:6px}
+body.triggered-mode .done-btn{margin-top:14px;padding:6px 16px;font-size:7px;border-radius:14px}
+body.triggered-mode .ctrl-btn{width:22px;height:22px}
+body.triggered-mode .ctrl-btn svg{width:10px;height:10px}
+body.triggered-mode .ctrl-right{gap:4px}
+body.triggered-mode .paused-text{font-size:10px}
+body.triggered-mode .paused-overlay{gap:14px}
+body.triggered-mode .continue-btn{padding:5px 14px;font-size:8px;border-radius:14px}
+body.triggered-mode .start-btn{padding:6px 16px;font-size:8px;border-radius:14px}
 </style>
 </head>
 <body>
