@@ -135,6 +135,7 @@ let startsWithOverlay = false;
 let triggeredMode = false;
 const breathAudio = new BreathAudio();
 let currentAudioPhase = null;
+let bgAudio = null;
 
 const BAR_TOP = 10;
 const BAR_BOTTOM = 92;
@@ -323,6 +324,7 @@ ctrlStop.addEventListener("click", () => {
     pausedOverlay.classList.remove("active");
     phaseLabel.style.opacity = "1";
     sessionProgressWrap.style.opacity = "1";
+    if (bgAudio) bgAudio.play().catch(() => {});
     raf = requestAnimationFrame(animate);
   } else if (running) {
     // Pause
@@ -332,6 +334,7 @@ ctrlStop.addEventListener("click", () => {
     cancelAnimationFrame(raf);
     breathAudio.stop();
     currentAudioPhase = null;
+    if (bgAudio) bgAudio.pause();
     pauseIcon.style.display = "none";
     playIcon.style.display = "";
     phaseLabel.style.opacity = "0";
@@ -344,6 +347,7 @@ ctrlClose.addEventListener("click", () => {
   running = false;
   cancelAnimationFrame(raf);
   breathAudio.stop();
+  if (bgAudio) { bgAudio.pause(); bgAudio = null; }
   window.close();
 });
 
@@ -366,6 +370,7 @@ function animate() {
     running = false;
     breathAudio.stop();
     currentAudioPhase = null;
+    if (bgAudio) { bgAudio.pause(); bgAudio = null; }
     showScreen("done");
     return;
   }
@@ -440,6 +445,17 @@ function startSession() {
   showScreen("breathing");
   gradientMask.style.background = buildMask(BAR_BOTTOM);
   sessionProgressFill.style.width = "0%";
+
+  // Start background audio
+  const proto = PROTOCOLS[activeProtocolId] || PROTOCOLS["back-to-back"];
+  if (proto.audioSrc) {
+    if (bgAudio) { bgAudio.pause(); bgAudio = null; }
+    bgAudio = new Audio(proto.audioSrc);
+    bgAudio.loop = true;
+    bgAudio.volume = 0.5;
+    bgAudio.play().catch(() => {});
+  }
+
   raf = requestAnimationFrame(animate);
 }
 
