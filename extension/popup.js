@@ -125,6 +125,7 @@ const muteOnIcon = document.getElementById("mute-on-icon");
 const pauseIcon = document.getElementById("pause-icon");
 const playIcon = document.getElementById("play-icon");
 const pausedOverlay = document.getElementById("paused-overlay");
+const continueBtn = document.getElementById("continue-btn");
 
 let running = false;
 let paused = false;
@@ -363,6 +364,11 @@ ctrlMute.addEventListener("click", () => {
   muteOnIcon.style.display = muted ? "" : "none";
   if (bgAudio) bgAudio.muted = muted;
   if (muted) breathAudio.stop();
+});
+
+// Continue button in paused overlay
+continueBtn.addEventListener("click", () => {
+  ctrlStop.click();
 });
 
 function fadeTransition(from, to, delay) {
