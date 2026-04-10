@@ -1,6 +1,6 @@
 // background.js — polls Google Calendar iCal feed and triggers popup
 
-const CHECK_INTERVAL_MINUTES = 1;
+const CHECK_INTERVAL_MS = 30_000; // 30-second polling for tighter timing
 
 // Keyword-stem → protocol-ID mapping
 const KEYWORD_PROTOCOL_MAP = {
