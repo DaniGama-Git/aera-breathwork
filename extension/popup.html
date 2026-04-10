@@ -18,8 +18,8 @@ body{
   height:520px;
   min-height:520px;
   font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',system-ui,sans-serif;
-  background:#f7f6f4;
-  color:#1a1a1a;
+  background:#111;
+  color:#f0ece8;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -27,6 +27,18 @@ body{
   -webkit-font-smoothing:antialiased;
   overflow:hidden;
 }
+
+/* Tabs */
+.tabs{
+  display:flex;width:calc(100% - 32px);margin:14px 16px 0;
+  border-radius:20px;background:rgba(255,255,255,0.06);padding:3px;gap:2px;
+}
+.tab{
+  flex:1;padding:10px 12px;text-align:center;font-size:11px;font-weight:500;
+  letter-spacing:1.2px;text-transform:uppercase;background:none;border:none;
+  border-radius:18px;cursor:pointer;color:rgba(255,255,255,0.3);transition:all 0.3s ease;
+}
+.tab.active{color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.1)}
 
 /* ─── Card ─── */
 .card-wrap{
@@ -250,28 +262,15 @@ body{
   40%{opacity:1;transform:scale(1.2)}
 }
 
-/* ─── Settings Panel (default view) ─── */
-.breathe-tab{display:none;flex-direction:column;align-items:center;width:100%;height:100%}
-.breathe-tab.visible{display:flex}
-
+/* ─── Settings Tab ─── */
+.breathe-tab{display:flex;flex-direction:column;align-items:center;width:100%}
+.breathe-tab.hidden{display:none}
 .settings-tab{
-  padding:24px 20px;width:100%;display:flex;flex-direction:column;gap:0;
-  max-height:520px;overflow-y:auto;
+  padding:20px;width:100%;display:none;flex-direction:column;gap:0;
+  max-height:420px;overflow-y:auto;
   background:#f7f6f4;color:#1a1a1a;
 }
-.settings-tab.hidden{display:none}
-
-/* āera brand header */
-.brand-header{
-  text-align:center;margin-bottom:20px;
-}
-.brand-logo{
-  font-size:22px;font-weight:300;letter-spacing:0.18em;
-  color:#1a1a1a;margin-bottom:4px;
-}
-.brand-tagline{
-  font-size:11px;color:rgba(0,0,0,0.4);letter-spacing:0.3px;font-weight:500;
-}
+.settings-tab.visible{display:flex}
 
 .setup-header{text-align:center;margin-bottom:16px}
 .setup-header h3{font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(0,0,0,0.8);margin-bottom:4px}
@@ -305,13 +304,9 @@ body{
 .validated-badge.visible{display:flex}
 .validated-badge svg{width:12px;height:12px}
 
-/* ─── Triggered / standalone mode ─── */
-body.triggered-mode{
-  width:100vw;height:100vh;min-width:0;min-height:0;overflow:hidden;
-  background:#111;color:#f0ece8;
-}
-body.triggered-mode .settings-tab{display:none!important}
-body.triggered-mode .breathe-tab{display:flex!important}
+/* ─── Triggered / standalone mode (235x235) ─── */
+body.triggered-mode{width:100vw;height:100vh;min-width:0;min-height:0;overflow:hidden}
+body.triggered-mode .tabs{display:none}
 body.triggered-mode .card-wrap{padding:0;margin:0;width:100%;height:100%}
 body.triggered-mode .card{border-radius:0;width:100%;height:100%;overflow:hidden}
 body.triggered-mode .session-controls{display:flex;top:6px;left:6px;right:12px}
@@ -343,17 +338,103 @@ body.triggered-mode .start-btn{display:none}
 </style>
 </head>
 <body>
+  <div class="tabs">
+    <button class="tab active" id="tab-breathe">Breathe</button>
+    <button class="tab" id="tab-settings">Settings</button>
+  </div>
 
-  <!-- Settings panel (default view for manual opens) -->
-  <div class="settings-tab" id="settings-panel">
-    <div class="brand-header">
-      <div class="brand-logo">āera</div>
-      <div class="brand-tagline">Breathwork before your key moments</div>
+  <div class="breathe-tab" id="breathe-panel">
+    <div class="card-wrap">
+      <div class="card" id="card">
+        <!-- Background image layers -->
+        <div class="bg-layer" id="bg-logo" style="background-image:url(wave-bg-logo.png)"></div>
+        <div class="bg-layer" id="bg-intro" style="background-image:url(wave-bg-intro.png)"></div>
+        <div class="bg-layer" id="bg-breathing" style="background-image:url(wave-bg-description.png)"></div>
+
+
+        <!-- Gradient mask for breathing -->
+        <div class="gradient-mask" id="gradient-mask"></div>
+
+        <!-- Loading screen -->
+        <div class="screen-overlay active" id="screen-loading">
+          <div class="loading-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <!-- Logo screen -->
+        <div class="screen-overlay" id="screen-logo">
+          <span class="logo-text">āera</span>
+        </div>
+
+        <!-- Intro screen -->
+        <div class="screen-overlay" id="screen-intro">
+          <div class="intro-pill"><span id="intro-title">CREATIVE FLOW</span></div>
+          <span class="intro-subtitle" id="intro-subtitle">~3.5 MINS</span>
+          <p class="intro-text" id="intro-text">Let go of control.
+Let your mind open up.</p>
+          <button class="start-btn" id="start-btn">Breathe Now</button>
+        </div>
+
+        <!-- Session controls (close, sound, stop) -->
+        <div class="session-controls" id="session-controls">
+          <button class="ctrl-btn" id="ctrl-stop" title="Pause">
+            <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="6,4 20,12 6,20"/></svg>
+          </button>
+          <button class="ctrl-btn" id="ctrl-mute" title="Mute">
+            <svg id="mute-off-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19.07 4.93a10 10 0 010 14.14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg id="mute-on-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <!-- Breathing UI -->
+        <div class="breathing-ui" id="breathing-ui">
+          
+          <span class="phase-label" id="phase-label">INHALE</span>
+          <div class="session-progress-wrap" id="session-progress-wrap">
+            <div class="session-progress-fill" id="session-progress-fill"></div>
+          </div>
+        </div>
+
+        <!-- Transition text overlay -->
+        <div class="transition-overlay" id="transition-overlay">
+          <p class="transition-text" id="transition-text"></p>
+        </div>
+
+        <!-- Science overlay -->
+        <div class="science-overlay" id="science-overlay">
+          <div class="science-content">
+            <img src="lightbulb.png" alt="" id="lightbulb-img"/>
+            <p id="science-text"></p>
+          </div>
+        </div>
+
+        <!-- Paused overlay -->
+        <div class="paused-overlay" id="paused-overlay">
+          <span class="paused-text">Paused</span>
+          <button class="continue-btn" id="continue-btn">Continue</button>
+        </div>
+
+        <!-- Done screen -->
+        <div class="screen-overlay" id="screen-done">
+          <span class="logo-text">āera</span>
+          <p class="done-subtitle">You're ready.</p>
+          <button class="done-btn" id="again-btn">Again</button>
+        </div>
+      </div>
     </div>
+  </div>
 
+  <div class="settings-tab" id="settings-panel">
     <div class="connection-status" id="connection-status">
       <span class="connection-dot" id="connection-dot"></span>
       <span id="connection-text">Not configured</span>
+    </div>
+
+    <div class="setup-header">
+      <h3>Connect Calendar</h3>
+      <p>Scans your calendar and triggers sessions before key moments.</p>
     </div>
 
     <div class="guide-step">
@@ -396,77 +477,6 @@ body.triggered-mode .start-btn{display:none}
     </div>
     <button class="save-btn" id="save-btn">Save & Connect</button>
     <div class="status" id="status"></div>
-  </div>
-
-  <!-- Breathing panel (hidden by default, shown only in triggered mode) -->
-  <div class="breathe-tab" id="breathe-panel">
-    <div class="card-wrap">
-      <div class="card" id="card">
-        <div class="bg-layer" id="bg-logo" style="background-image:url(wave-bg-logo.png)"></div>
-        <div class="bg-layer" id="bg-intro" style="background-image:url(wave-bg-intro.png)"></div>
-        <div class="bg-layer" id="bg-breathing" style="background-image:url(wave-bg-description.png)"></div>
-
-        <div class="gradient-mask" id="gradient-mask"></div>
-
-        <div class="screen-overlay active" id="screen-loading">
-          <div class="loading-dots">
-            <span></span><span></span><span></span>
-          </div>
-        </div>
-
-        <div class="screen-overlay" id="screen-logo">
-          <span class="logo-text">āera</span>
-        </div>
-
-        <div class="screen-overlay" id="screen-intro">
-          <div class="intro-pill"><span id="intro-title">CREATIVE FLOW</span></div>
-          <span class="intro-subtitle" id="intro-subtitle">~3.5 MINS</span>
-          <p class="intro-text" id="intro-text">Let go of control.
-Let your mind open up.</p>
-          <button class="start-btn" id="start-btn">Breathe Now</button>
-        </div>
-
-        <div class="session-controls" id="session-controls">
-          <button class="ctrl-btn" id="ctrl-stop" title="Pause">
-            <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
-            <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="6,4 20,12 6,20"/></svg>
-          </button>
-          <button class="ctrl-btn" id="ctrl-mute" title="Mute">
-            <svg id="mute-off-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19.07 4.93a10 10 0 010 14.14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            <svg id="mute-on-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-        </div>
-
-        <div class="breathing-ui" id="breathing-ui">
-          <span class="phase-label" id="phase-label">INHALE</span>
-          <div class="session-progress-wrap" id="session-progress-wrap">
-            <div class="session-progress-fill" id="session-progress-fill"></div>
-          </div>
-        </div>
-
-        <div class="transition-overlay" id="transition-overlay">
-          <p class="transition-text" id="transition-text"></p>
-        </div>
-
-        <div class="science-overlay" id="science-overlay">
-          <div class="science-content">
-            <img src="lightbulb.png" alt="" id="lightbulb-img"/>
-            <p id="science-text"></p>
-          </div>
-        </div>
-
-        <div class="paused-overlay" id="paused-overlay">
-          <span class="paused-text">Paused</span>
-          <button class="continue-btn" id="continue-btn">Continue</button>
-        </div>
-
-        <div class="screen-overlay" id="screen-done">
-          <span class="logo-text">āera</span>
-          <p class="done-subtitle">You're ready.</p>
-          <button class="done-btn" id="again-btn">Again</button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script src="protocols.js"></script>

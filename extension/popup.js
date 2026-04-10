@@ -1,6 +1,24 @@
-// ─── Settings ───
+// ─── Tabs ───
+const tabBreathe = document.getElementById("tab-breathe");
+const tabSettings = document.getElementById("tab-settings");
 const breathePanel = document.getElementById("breathe-panel");
 const settingsPanel = document.getElementById("settings-panel");
+
+tabBreathe.addEventListener("click", () => {
+  tabBreathe.classList.add("active");
+  tabSettings.classList.remove("active");
+  breathePanel.classList.remove("hidden");
+  settingsPanel.classList.remove("visible");
+});
+tabSettings.addEventListener("click", () => {
+  tabSettings.classList.add("active");
+  tabBreathe.classList.remove("active");
+  breathePanel.classList.add("hidden");
+  settingsPanel.classList.add("visible");
+  loadSettings();
+});
+
+// ─── Settings ───
 const icalInput = document.getElementById("ical-url");
 const keywordsInput = document.getElementById("keywords");
 const leadInput = document.getElementById("lead-minutes");
@@ -44,7 +62,7 @@ const checkSvg = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" st
 function updateConnectionStatus(connected) {
   connectionDot.classList.toggle("connected", connected);
   connectionText.textContent = connected ? 'Calendar connected' : 'Not configured';
-  connectionText.style.color = connected ? '#16a34a' : '';
+  connectionText.style.color = connected ? 'rgba(130,220,130,0.9)' : '';
 }
 
 saveBtn.addEventListener("click", async () => {
@@ -269,7 +287,8 @@ function getBarPosition(type, progress, prevType) {
     case "HOLD": return BAR_TOP;
     case "HOLD_EMPTY": return BAR_BOTTOM;
     case "SNIFF": {
-      const sniffRange = (BAR_BOTTOM - BAR_TOP) * 0.08;
+      // Sniff starts where inhale left off (top) and moves just a tiny bit higher
+      const sniffRange = (BAR_BOTTOM - BAR_TOP) * 0.08; // 8% of total range
       return BAR_TOP - progress * sniffRange;
     }
     case "TRANSITION":
@@ -312,6 +331,7 @@ function showScreen(name) {
 // ─── Session controls ───
 ctrlStop.addEventListener("click", () => {
   if (paused) {
+    // Resume
     paused = false;
     running = true;
     sessionStart = Date.now() - pausedElapsed;
@@ -323,6 +343,7 @@ ctrlStop.addEventListener("click", () => {
     if (bgAudio) bgAudio.play().catch(() => {});
     raf = requestAnimationFrame(animate);
   } else if (running) {
+    // Pause
     pausedElapsed = Date.now() - sessionStart;
     paused = true;
     running = false;
@@ -338,6 +359,7 @@ ctrlStop.addEventListener("click", () => {
   }
 });
 
+
 // ─── Mute toggle ───
 ctrlMute.addEventListener("click", () => {
   muted = !muted;
@@ -347,6 +369,7 @@ ctrlMute.addEventListener("click", () => {
   if (muted) breathAudio.stop();
 });
 
+// Continue button in paused overlay
 continueBtn.addEventListener("click", () => {
   ctrlStop.click();
 });
@@ -399,6 +422,7 @@ function animate() {
     scienceOverlay.classList.remove("active");
     phaseLabel.textContent = entry.displayLabel;
 
+    // Trigger breath audio on phase change
     const phaseKey = entry.startMs + "_" + entry.type;
     if (phaseKey !== currentAudioPhase) {
       currentAudioPhase = phaseKey;
@@ -419,10 +443,12 @@ function animate() {
   const barTop = getBarPosition(entry.type, progress, prevEntryType);
   gradientMask.style.background = buildMask(barTop);
 
+  // Hide label during overlays or before first breath
   const hideBar = isOverlay || (!hasStartedBreathing && startsWithOverlay);
   phaseLabel.style.opacity = hideBar ? "0" : "1";
   sessionProgressWrap.style.opacity = hideBar ? "0" : "1";
 
+  // Update session progress bar
   const pct = Math.min(100, (elapsed / activeTotalMs) * 100);
   sessionProgressFill.style.width = pct.toFixed(1) + "%";
 
@@ -444,6 +470,7 @@ function startSession() {
   gradientMask.style.background = buildMask(BAR_BOTTOM);
   sessionProgressFill.style.width = "0%";
 
+  // Start background audio
   const proto = PROTOCOLS[activeProtocolId] || PROTOCOLS["back-to-back"];
   if (proto.audioSrc) {
     if (bgAudio) { bgAudio.pause(); bgAudio = null; }
@@ -465,13 +492,14 @@ function restart() {
 
 againBtn.addEventListener("click", restart);
 startBtn.addEventListener("click", () => startSession());
-
 // ─── Init ───
+// Show loading immediately so Chrome sizes the popup correctly
 setProtocol("back-to-back");
+showScreen("loading");
 
 chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
   if (data.autoStart) {
-    // Calendar-triggered: borderless standalone mode — auto-start breathing
+    // Calendar-triggered: borderless standalone mode — auto-start
     triggeredMode = true;
     document.body.classList.add("triggered-mode");
     chrome.storage.local.remove(["autoStart", "activeProtocol"]);
@@ -483,7 +511,10 @@ chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
       setTimeout(() => startSession(), 2200);
     });
   } else {
-    // Manual mode (toolbar click) — show settings, load them
-    loadSettings();
+    // Manual mode (toolbar popup) — start session directly
+    preloadImages(ALL_IMAGES).then(() => {
+      showScreen("logo");
+      setTimeout(() => startSession(), 2200);
+    });
   }
 });
