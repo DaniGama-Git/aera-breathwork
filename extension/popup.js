@@ -484,10 +484,10 @@ function startSession() {
 }
 
 function restart() {
-  showScreen("intro");
+  showScreen("logo");
   setTimeout(() => {
     startSession();
-  }, 3000);
+  }, 1500);
 }
 
 againBtn.addEventListener("click", restart);
