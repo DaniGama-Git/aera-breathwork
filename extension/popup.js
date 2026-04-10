@@ -531,5 +531,3 @@ chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
     document.getElementById("tab-settings").click();
   }
 });
-  }
-});
