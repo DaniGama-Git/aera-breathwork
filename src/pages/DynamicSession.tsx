@@ -5,7 +5,7 @@
 
 import { useParams, useNavigate } from "react-router-dom";
 import playButton from "@/assets/play-button.svg";
-import AnimatedWaveform from "@/components/AnimatedWaveform";
+
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
 import SessionList from "@/components/SessionList";
