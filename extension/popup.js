@@ -482,7 +482,7 @@ function restart() {
 }
 
 againBtn.addEventListener("click", restart);
-
+startBtn.addEventListener("click", () => startSession());
 // ─── Init ───
 // Show loading immediately so Chrome sizes the popup correctly
 setProtocol("back-to-back");
