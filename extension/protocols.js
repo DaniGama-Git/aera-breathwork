@@ -363,7 +363,7 @@ const PROTOCOLS = {
 
   "back-to-back": {
     title: "Back-to-Back",
-    audioSrc: "audio/back-to-back.mp3",
+    audioSrc: "audio/deep-focus.mp3",
     introText: "Let go of what just happened.\nReset before what's next.",
     stages: [
       {
