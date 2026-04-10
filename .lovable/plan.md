@@ -1,44 +1,32 @@
 
 
-## Three Fixes for Wave Preview
+## Plan
 
-### Fix 1: Paused overlay hides everything underneath
-**File:** `src/pages/WavePreview.tsx` (lines 349-359)
+### Issue 1: Extension popup size (triggered mode)
+The standalone popup opens at 235x235 but the CSS for `body.triggered-mode` sets `width:100vw; height:100vh` which should fill whatever window size Chrome gives. The problem is the content inside (card, overlays, padding) may not fit well at 235x235. The triggered-mode CSS already scales down fonts/buttons for small sizes.
 
-Add a dark semi-transparent background with backdrop blur to the paused overlay div. Bump z-index to `z-20` (same level as controls but rendered before them). Keep `pointerEvents: none`.
+**Changes:**
+- Keep `background.js` at 235x235 (already correct)
+- Ensure `body.triggered-mode` CSS has no minimum dimensions forcing overflow — already looks fine
+- The content should already fit at 235x235 given the scaled-down triggered-mode styles. If the user is seeing clipping, it's likely from the `screen-overlay` padding (24px → already overridden to 16px). May need to tighten further.
 
-```tsx
-// Current: z-15, no background
-// New: z-20, dark background + blur
-<div
-  className="absolute inset-0 z-20 flex items-center justify-center transition-opacity duration-500"
-  style={{
-    opacity: showPausedOverlay ? 1 : 0,
-    pointerEvents: "none",
-    background: showPausedOverlay ? "rgba(0,0,0,0.55)" : "transparent",
-    backdropFilter: showPausedOverlay ? "blur(6px)" : "none",
-  }}
->
-```
+Actually, re-reading the user's message: "or use 290 x 320 like in the /wave route" — they're okay with a slightly larger size. Let's change `background.js` to 290x320 to give breathing room.
 
-Control buttons div (line 318) stays at `z-20` but will render after the overlay, keeping them clickable.
+### Issue 2: Settings "saved" confirmation placement
+Currently `<div class="status" id="status">` is at the bottom of the settings panel, after the save button. The user has to scroll down to see it. Additionally it has a green background (`rgba(34,197,94,0.1)`) which the user wants removed — just green text on black.
 
-### Fix 2: macOS controls
-No code change — these are native browser/OS window controls, not rendered by the app.
+**Changes in `extension/popup.html`:**
+- Move the `<div class="status" id="status"></div>` to right after the save button (it's already there, but the issue is scrolling). Instead, we should show inline status messages near each field, or simply ensure the status appears right below the last changed field. Simplest fix: move the status div to right after the save button AND auto-scroll it into view.
 
-### Fix 3: Shorten "NATURALLY EXHALE" durations and labels
-**File:** `src/data/breathingProtocols.ts`
+- Remove `background` from `.status.success` and `.status.error` — just colored text on transparent background.
 
-All 7 occurrences of `label: "NATURALLY EXHALE"` → remove the label entirely (defaults to `"EXHALE"`). Duration changes for outliers:
+**Changes in `extension/popup.js`:**
+- In `showStatus()`, add `statusEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' })` so users see it.
 
-| Location | Current | New |
-|---|---|---|
-| Line 491 (Deep Focus stage 1) | 6000ms | 3000ms |
-| Line 538 (Wake Me Up stage 1) | 7000ms | 3500ms |
-| Line 585 (Pre-Meeting stage 1) | 5000ms | 3000ms |
-| Lines 256, 306, 409, 515 | 3000ms | 3000ms (no change) |
+### Summary of file changes:
 
-### Files to change
-- `src/pages/WavePreview.tsx` — paused overlay background + z-index
-- `src/data/breathingProtocols.ts` — remove "NATURALLY EXHALE" labels, reduce 3 outlier durations
+1. **`extension/background.js`** — Change popup dimensions from 235x235 to 290x320
+2. **`extension/popup.html`** — Remove background color from `.status.success` and `.status.error` CSS classes (just keep colored text). Optionally tighten triggered-mode padding if needed.
+3. **`extension/popup.js`** — Add `scrollIntoView` call in `showStatus()` so the confirmation is visible without manual scrolling.
+4. **Repackage** the extension zip.
 
