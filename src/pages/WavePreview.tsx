@@ -171,6 +171,22 @@ const WavePreview = () => {
         if (phaseLabelRef.current)
           phaseLabelRef.current.textContent = entry.displayLabel;
         setPhase(entry.displayLabel);
+
+        // Trigger breath audio on phase change
+        const phaseKey = `${entry.startMs}_${entry.type}`;
+        if (phaseKey !== currentAudioPhaseRef.current) {
+          currentAudioPhaseRef.current = phaseKey;
+          const audio = breathAudioRef.current;
+          if (entry.type === "INHALE") {
+            audio.playInhale(entry.duration);
+          } else if (entry.type === "EXHALE") {
+            audio.playExhale(entry.duration);
+          } else if (entry.type === "SNIFF") {
+            audio.playSniff(entry.duration);
+          } else {
+            audio.stop();
+          }
+        }
       }
 
       const barTop = getBarPosition(entry.type, progress, prevEntryType);
