@@ -301,12 +301,13 @@ function showScreen(name) {
 
   if (name === "loading") {
     screenLoading.classList.add("active");
+    bgLogo.classList.add("active");
   } else if (name === "logo") {
     screenLogo.classList.add("active");
     bgLogo.classList.add("active");
   } else if (name === "intro") {
     screenIntro.classList.add("active");
-    bgIntro.classList.add("active");
+    bgLogo.classList.add("active");
   } else if (name === "breathing") {
     bgBreathing.classList.add("active");
     breathingUI.classList.add("active");
