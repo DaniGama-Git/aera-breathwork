@@ -370,10 +370,10 @@ const WavePreview = () => {
               </div>
 
               <div
-                className="absolute inset-0 z-20 flex items-center justify-center transition-opacity duration-500"
+                className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 transition-opacity duration-500"
                 style={{
                   opacity: showPausedOverlay ? 1 : 0,
-                  pointerEvents: "none",
+                  pointerEvents: showPausedOverlay ? "auto" : "none",
                   background: showPausedOverlay ? "rgba(0,0,0,0.55)" : "transparent",
                   backdropFilter: showPausedOverlay ? "blur(6px)" : "none",
                 }}
@@ -384,6 +384,18 @@ const WavePreview = () => {
                 >
                   Paused
                 </span>
+                <button
+                  onClick={togglePause}
+                  className="px-8 py-3 rounded-full text-sm font-medium tracking-[0.15em] uppercase transition-all"
+                  style={{
+                    background: "rgba(255,255,255,0.15)",
+                    backdropFilter: "blur(8px)",
+                    border: "1px solid rgba(255,255,255,0.25)",
+                    color: "rgba(255,255,255,0.85)",
+                  }}
+                >
+                  Continue
+                </button>
               </div>
 
               <div className={`absolute inset-0 z-10 flex flex-col items-center justify-between pointer-events-none transition-opacity duration-[400ms] ${fadeClass}`}>
