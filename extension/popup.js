@@ -508,18 +508,13 @@ chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
 
     preloadImages(ALL_IMAGES).then(() => {
       showScreen("logo");
-      setTimeout(() => {
-        showScreen("intro");
-        setTimeout(() => startSession(), 3000);
-      }, 2200);
+      setTimeout(() => startSession(), 2200);
     });
   } else {
-    // Manual mode (toolbar popup) — show intro, wait for user click
+    // Manual mode (toolbar popup) — start session directly
     preloadImages(ALL_IMAGES).then(() => {
       showScreen("logo");
-      setTimeout(() => {
-        showScreen("intro");
-      }, 2200);
+      setTimeout(() => startSession(), 2200);
     });
   }
 });
