@@ -53,6 +53,8 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name !== ALARM_NAME) return;
   await checkCalendar();
+  // Follow-up check 30s later to reduce jitter (alarms only fire every 60s)
+  setTimeout(() => checkCalendar(), 30000);
 });
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
