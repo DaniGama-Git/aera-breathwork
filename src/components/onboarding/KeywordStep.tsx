@@ -36,10 +36,10 @@ const KeywordStep = ({ selected, suggestions, onChange, onContinue }: Props) => 
   return (
     <div className="flex flex-col">
       <h1 className="text-white font-body font-semibold text-[22px] leading-tight mb-3">
-        What words typically appear in your most important calendar events?
+        In which specific meetings would you like to receive a quick reset?
       </h1>
       <p className="text-white font-body text-[14px] leading-relaxed mb-8">
-        This is the precision layer — āera will watch for these exact words in your calendar. Select as many as feel right, or add your own.
+        āera delivers a session timed to the moment. Select as many as you want — or add your own.
       </p>
 
       {/* Suggestion chips */}
