@@ -131,6 +131,7 @@ const WavePreview = () => {
       if (elapsed >= totalDuration) {
         breathAudioRef.current.stop();
         currentAudioPhaseRef.current = null;
+        if (bgAudioRef.current) { bgAudioRef.current.pause(); bgAudioRef.current = null; }
         setFadeIn(false);
         setTimeout(() => {
           setScreen("done");
