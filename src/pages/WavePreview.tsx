@@ -348,23 +348,11 @@ const WavePreview = () => {
                 {protocol.subtitle}
               </span>
               <p
-                className="text-white font-medium leading-[1.15] whitespace-pre-line mb-8"
+                className="text-white font-medium leading-[1.15] whitespace-pre-line"
                 style={{ fontSize: 18, letterSpacing: "-0.01em" }}
               >
                 {protocol.introText}
               </p>
-              <button
-                onClick={startSession}
-                className="px-7 py-2.5 rounded-full text-[11px] tracking-[0.15em] uppercase font-medium cursor-pointer transition-all hover:brightness-110"
-                style={{
-                  background: "rgba(255,255,255,0.15)",
-                  border: "1px solid rgba(255,255,255,0.25)",
-                  color: "rgba(255,255,255,0.85)",
-                  backdropFilter: "blur(8px)",
-                }}
-              >
-                Breathe Now
-              </button>
             </div>
           )}
 
