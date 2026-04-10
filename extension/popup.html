@@ -268,38 +268,39 @@ body{
 .settings-tab{
   padding:20px;width:100%;display:none;flex-direction:column;gap:0;
   max-height:420px;overflow-y:auto;
+  background:#f7f6f4;color:#1a1a1a;
 }
 .settings-tab.visible{display:flex}
 
 .setup-header{text-align:center;margin-bottom:16px}
-.setup-header h3{font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:4px}
-.setup-header p{font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5}
-.guide-step{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,0.03);margin-bottom:8px}
-.step-num{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:rgba(255,255,255,0.65);flex-shrink:0;margin-top:1px}
+.setup-header h3{font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(0,0,0,0.8);margin-bottom:4px}
+.setup-header p{font-size:11px;color:rgba(0,0,0,0.45);line-height:1.5}
+.guide-step{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,0.03);margin-bottom:8px}
+.step-num{width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:rgba(0,0,0,0.55);flex-shrink:0;margin-top:1px}
 .step-content{flex:1}
-.step-content strong{font-size:11px;font-weight:600;color:rgba(255,255,255,0.9);display:block;margin-bottom:2px}
-.step-content span{font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5}
-.guide-link{display:inline-flex;align-items:center;gap:4px;padding:7px 14px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);font-size:10px;font-weight:500;letter-spacing:0.5px;text-decoration:none;cursor:pointer;transition:all 0.3s;margin:4px 0 12px}
-.guide-link:hover{border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.1)}
-.guide-link svg{width:12px;height:12px;opacity:0.6}
-.section-divider{height:1px;background:rgba(255,255,255,0.06);margin:12px 0}
+.step-content strong{font-size:11px;font-weight:600;color:rgba(0,0,0,0.85);display:block;margin-bottom:2px}
+.step-content span{font-size:10px;color:rgba(0,0,0,0.45);line-height:1.5}
+.guide-link{display:inline-flex;align-items:center;gap:4px;padding:7px 14px;border-radius:12px;background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.1);color:rgba(0,0,0,0.65);font-size:10px;font-weight:500;letter-spacing:0.5px;text-decoration:none;cursor:pointer;transition:all 0.3s;margin:4px 0 12px}
+.guide-link:hover{border-color:rgba(0,0,0,0.2);color:rgba(0,0,0,0.85);background:rgba(0,0,0,0.06)}
+.guide-link svg{width:12px;height:12px;opacity:0.5}
+.section-divider{height:1px;background:rgba(0,0,0,0.06);margin:12px 0}
 .field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.field label{font-size:11px;font-weight:500;letter-spacing:0.6px;color:rgba(255,255,255,0.8)}
-.field .hint{font-size:10px;color:rgba(255,255,255,0.4);line-height:1.5}
-.field input,.field textarea{padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);font-size:12px;font-family:inherit;color:#f0ece8;outline:none;transition:border 0.3s,background 0.3s;backdrop-filter:blur(8px)}
-.field input:focus,.field textarea:focus{border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)}
+.field label{font-size:11px;font-weight:500;letter-spacing:0.6px;color:rgba(0,0,0,0.7)}
+.field .hint{font-size:10px;color:rgba(0,0,0,0.35);line-height:1.5}
+.field input,.field textarea{padding:10px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.12);background:#fff;font-size:12px;font-family:inherit;color:#1a1a1a;outline:none;transition:border 0.3s,background 0.3s}
+.field input:focus,.field textarea:focus{border-color:rgba(0,0,0,0.25);background:#fff}
 .field textarea{resize:vertical;min-height:52px}
-.save-btn{padding:10px 24px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-size:11px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;align-self:flex-start;backdrop-filter:blur(8px)}
-.save-btn:hover{border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.95);background:rgba(255,255,255,0.12)}
-.status{font-size:10px;letter-spacing:0.4px;color:rgba(255,255,255,0.5);display:none;margin-top:8px;align-items:center;gap:6px}
+.save-btn{padding:10px 24px;border-radius:20px;border:1px solid rgba(0,0,0,0.12);background:rgba(0,0,0,0.06);color:rgba(0,0,0,0.75);font-size:11px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;align-self:flex-start}
+.save-btn:hover{border-color:rgba(0,0,0,0.25);color:rgba(0,0,0,0.9);background:rgba(0,0,0,0.1)}
+.status{font-size:10px;letter-spacing:0.4px;color:rgba(0,0,0,0.45);display:none;margin-top:8px;align-items:center;gap:6px}
 .status.visible{display:flex}
-.status.error{color:#f87171}
-.status.success{color:rgba(130,220,130,0.9)}
+.status.error{color:#dc2626}
+.status.success{color:#16a34a}
 
-.connection-status{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:0.4px;margin-bottom:16px}
-.connection-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15)}
-.connection-dot.connected{background:rgba(74,222,128,0.9)}
-.validated-badge{display:none;align-items:center;gap:4px;font-size:10px;color:rgba(130,200,130,0.8);margin-top:4px}
+.connection-status{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(0,0,0,0.45);letter-spacing:0.4px;margin-bottom:16px}
+.connection-dot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,0.12)}
+.connection-dot.connected{background:#22c55e}
+.validated-badge{display:none;align-items:center;gap:4px;font-size:10px;color:#16a34a;margin-top:4px}
 .validated-badge.visible{display:flex}
 .validated-badge svg{width:12px;height:12px}
 
