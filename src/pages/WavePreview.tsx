@@ -118,6 +118,8 @@ const WavePreview = () => {
       const elapsed = Date.now() - sessionStart;
 
       if (elapsed >= totalDuration) {
+        breathAudioRef.current.stop();
+        currentAudioPhaseRef.current = null;
         setFadeIn(false);
         setTimeout(() => {
           setScreen("done");
@@ -213,6 +215,8 @@ const WavePreview = () => {
       setShowPausedOverlay(false);
     } else {
       pausedElapsedRef.current = Date.now() - sessionStart;
+      breathAudioRef.current.stop();
+      currentAudioPhaseRef.current = null;
       setPaused(true);
       setShowPausedOverlay(true);
     }
