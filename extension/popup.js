@@ -106,14 +106,8 @@ if (demandBtn) {
   demandBtn.addEventListener("click", () => {
     const protocolIds = Object.keys(PROTOCOLS);
     const randomId = protocolIds[Math.floor(Math.random() * protocolIds.length)];
-    // Switch to breathe tab, set random protocol, and start
-    document.getElementById("tab-breathe").click();
-    setProtocol(randomId);
-    showScreen("loading");
-    preloadImages(ALL_IMAGES).then(() => {
-      showScreen("logo");
-      setTimeout(() => startSession(), 1800);
-    });
+    // Ask background to open a standalone popup with this protocol
+    chrome.runtime.sendMessage({ type: "open-breathe-session", protocolId: randomId });
   });
 }
 
@@ -515,7 +509,7 @@ showScreen("loading");
 
 chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
   if (data.autoStart) {
-    // Calendar-triggered: borderless standalone mode — auto-start
+    // Calendar-triggered or on-demand: borderless standalone mode — auto-start
     triggeredMode = true;
     document.body.classList.add("triggered-mode");
     chrome.storage.local.remove(["autoStart", "activeProtocol"]);
@@ -527,7 +521,9 @@ chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
       setTimeout(() => startSession(), 2200);
     });
   } else {
-    // Manual mode (toolbar popup) — show Settings tab, no auto-start
-    document.getElementById("tab-settings").click();
+    // Manual mode (toolbar popup) — show Settings only, no breathe tab
+    breathePanel.classList.add("hidden");
+    settingsPanel.classList.add("visible");
+    loadSettings();
   }
 });
