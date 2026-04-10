@@ -8,15 +8,15 @@
 *{margin:0;padding:0;box-sizing:border-box}
 
 html{
-  width:360px;
-  height:520px;
+  width:235px;
+  height:235px;
 }
 
 body{
-  width:360px;
-  min-width:360px;
-  height:520px;
-  min-height:520px;
+  width:235px;
+  min-width:235px;
+  height:235px;
+  min-height:235px;
   font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',system-ui,sans-serif;
   background:#111;
   color:#f0ece8;
@@ -28,28 +28,22 @@ body{
   overflow:hidden;
 }
 
-/* Tabs */
+/* Tabs - hidden in manual mode too since it's tiny */
 .tabs{
-  display:flex;width:calc(100% - 32px);margin:14px 16px 0;
-  border-radius:20px;background:rgba(255,255,255,0.06);padding:3px;gap:2px;
+  display:none;
 }
-.tab{
-  flex:1;padding:10px 12px;text-align:center;font-size:11px;font-weight:500;
-  letter-spacing:1.2px;text-transform:uppercase;background:none;border:none;
-  border-radius:18px;cursor:pointer;color:rgba(255,255,255,0.3);transition:all 0.3s ease;
-}
-.tab.active{color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.1)}
 
 /* ─── Card ─── */
 .card-wrap{
-  padding:16px;
+  padding:0;
   width:100%;
+  height:100%;
 }
 .card{
   position:relative;
   width:100%;
-  aspect-ratio:1/1.1;
-  border-radius:22px;
+  height:100%;
+  border-radius:0;
   overflow:hidden;
   background:#1a1a1a;
 }
