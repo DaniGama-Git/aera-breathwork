@@ -92,6 +92,10 @@ function showStatus(msg, isError = false, isSuccess = false) {
 
 chrome.storage.local.get(["icalUrl"], data => updateConnectionStatus(!!data.icalUrl));
 
+// ─── Persistent close button ───
+const cardClose = document.getElementById("card-close");
+cardClose.addEventListener("click", () => window.close());
+
 // ─── Wave-style Breathing (Image + Gradient Mask) ───
 const card = document.getElementById("card");
 const bgLogo = document.getElementById("bg-logo");
