@@ -81,12 +81,12 @@ saveBtn.addEventListener("click", async () => {
   await chrome.storage.local.set({ icalUrl, keywords, leadMinutes });
   updateConnectionStatus(true);
   urlValidated.classList.add("visible");
-  showStatus(`Connected. Watching for: ${keywords.join(", ")}`);
+  showStatus("Settings saved ✓", false, true);
 });
 
-function showStatus(msg, isError = false) {
+function showStatus(msg, isError = false, isSuccess = false) {
   statusEl.textContent = msg;
-  statusEl.className = "status visible" + (isError ? " error" : "");
+  statusEl.className = "status visible" + (isError ? " error" : "") + (isSuccess ? " success" : "");
   setTimeout(() => (statusEl.className = "status"), 4000);
 }
 
