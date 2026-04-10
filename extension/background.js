@@ -45,6 +45,8 @@ function resolveProtocol(matchedKeyword) {
   return "deep-focus"; // default fallback
 }
 // Use setTimeout chain for tighter polling (chrome.alarms is imprecise)
+let pollingStarted = false;
+
 function scheduleCheck() {
   setTimeout(async () => {
     await checkCalendar();
@@ -52,14 +54,18 @@ function scheduleCheck() {
   }, CHECK_INTERVAL_MS);
 }
 
-chrome.runtime.onInstalled.addListener(() => {
+function startPolling() {
+  if (pollingStarted) return;
+  pollingStarted = true;
   checkCalendar();
   scheduleCheck();
-});
+}
 
-// Also restart polling when service worker wakes up
-checkCalendar();
-scheduleCheck();
+chrome.runtime.onInstalled.addListener(() => startPolling());
+chrome.runtime.onStartup.addListener(() => startPolling());
+
+// Ensure polling starts when service worker wakes for any reason
+startPolling();
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message?.type !== "validate-calendar-url") return;

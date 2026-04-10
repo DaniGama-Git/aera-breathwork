@@ -3,7 +3,7 @@
   "name": "āera — Breathwork for Performance",
   "version": "3.5.0",
   "description": "Calendar-triggered breathwork sessions to sharpen focus before key moments",
-  "permissions": ["alarms", "storage", "notifications"],
+  "permissions": ["storage", "notifications"],
   "host_permissions": ["https://calendar.google.com/*"],
   "action": {
     "default_popup": "popup.html",
