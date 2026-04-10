@@ -60,7 +60,7 @@ export const categoryConfig: Record<string, CategoryConfig> = {
     icon: recoverIcon,
     sessions: [
       { title: "Back-to-Back", description: "Reset between consecutive meetings.", duration: "5 mins", slug: "back-to-back", audioSrc: "/audio/back-to-back-recharge.mp3" },
-      { title: "Rebound", description: "Process and bounce back emotionally.", duration: "5 mins", slug: "rebound", audioSrc: "/audio/post-setback-recovery.mp3" },
+      { title: "Rebound", description: "Process and bounce back.", duration: "5 mins", slug: "rebound", audioSrc: "/audio/post-setback-recovery.mp3" },
       { title: "Context Switch", description: "Smoothly transition between work modes.", duration: "5 mins", slug: "context-switch", audioSrc: "/audio/context-switching.mp3" },
       { title: "Quick Recovery", description: "Decompress after an intense meeting.", duration: "5 mins", slug: "quick-recovery", audioSrc: "/audio/post-meeting-reset.mp3" },
       { title: "Anxiety Reset", description: "Rapid relief when stress peaks.", duration: "3 mins", slug: "anxiety-reset", audioSrc: "/audio/stress-anxiety-sos.mp3" },
