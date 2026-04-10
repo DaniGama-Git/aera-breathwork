@@ -355,6 +355,14 @@ ctrlClose.addEventListener("click", () => {
   window.close();
 });
 
+// ─── Mute toggle ───
+ctrlMute.addEventListener("click", () => {
+  muted = !muted;
+  muteOffIcon.style.display = muted ? "none" : "";
+  muteOnIcon.style.display = muted ? "" : "none";
+  if (bgAudio) bgAudio.muted = muted;
+  if (muted) breathAudio.stop();
+});
 
 function fadeTransition(from, to, delay) {
   setTimeout(() => {
