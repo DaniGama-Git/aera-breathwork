@@ -103,7 +103,7 @@ async function checkCalendar() {
 
     const events = parseIcal(text);
     const now = Date.now();
-    const windowMs = leadMinutes * 60 * 1000;
+    const windowMs = leadMinutes * 60 * 1000 + 30000; // add 30s buffer to trigger early rather than late
 
     for (const evt of events) {
       const timeDiff = evt.start - now;
