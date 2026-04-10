@@ -83,21 +83,21 @@ const DynamicSession = () => {
           >
             {session.title}
           </h1>
-          <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium mb-2">
+          <p className="text-white text-[20px] leading-[100%] tracking-[0em] font-display font-medium">
             {session.description}
           </p>
-          <div>
-            <span className="text-white font-body font-semibold text-lg">Jamie</span>
-            <span className="text-white/50 text-sm font-body font-normal ml-2">
-              {!session.audioSrc ? "Coming soon" : isPlaying ? "Guiding..." : "Tap play to begin"}
-            </span>
-          </div>
         </div>
 
         <div className="flex-1" />
 
-        {/* Bottom: progress bar + play button */}
+        {/* Bottom: Jamie + progress bar + play button */}
         <div className="px-6 pb-6">
+          <div className="mb-4">
+            <span className="text-white font-body font-semibold text-lg block mb-1">Jamie</span>
+            <span className="text-white/50 text-sm font-body font-normal">
+              {!session.audioSrc ? "Coming soon" : isPlaying ? "Guiding..." : "Tap play to begin"}
+            </span>
+          </div>
           {/* Progress bar with time */}
           <div className="flex items-center gap-3 mb-5">
             <div className="flex-1 h-[6px] rounded-full overflow-hidden"
