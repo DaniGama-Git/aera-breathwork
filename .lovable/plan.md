@@ -1,32 +1,27 @@
 
 
-## Plan
+## Problem
 
-### Issue 1: Extension popup size (triggered mode)
-The standalone popup opens at 235x235 but the CSS for `body.triggered-mode` sets `width:100vw; height:100vh` which should fill whatever window size Chrome gives. The problem is the content inside (card, overlays, padding) may not fit well at 235x235. The triggered-mode CSS already scales down fonts/buttons for small sizes.
+The previous change removed the `#ctrl-close` button from `popup.html`, but `popup.js` still references it on line 130 (`document.getElementById("ctrl-close")`) and attaches a click listener on line 362 (`ctrlClose.addEventListener("click", ...)`). This throws a null reference error that crashes the entire script before the init block runs, so the popup never advances past the loading screen.
 
-**Changes:**
-- Keep `background.js` at 235x235 (already correct)
-- Ensure `body.triggered-mode` CSS has no minimum dimensions forcing overflow — already looks fine
-- The content should already fit at 235x235 given the scaled-down triggered-mode styles. If the user is seeing clipping, it's likely from the `screen-overlay` padding (24px → already overridden to 16px). May need to tighten further.
+## Fix
 
-Actually, re-reading the user's message: "or use 290 x 320 like in the /wave route" — they're okay with a slightly larger size. Let's change `background.js` to 290x320 to give breathing room.
+Two options:
 
-### Issue 2: Settings "saved" confirmation placement
-Currently `<div class="status" id="status">` is at the bottom of the settings panel, after the save button. The user has to scroll down to see it. Additionally it has a green background (`rgba(34,197,94,0.1)`) which the user wants removed — just green text on black.
+1. **Add the button back** to the HTML (inside `.session-controls`) since it serves as the session close/stop control during breathing.
+2. **Guard the JS references** so they don't crash if the element is missing.
 
-**Changes in `extension/popup.html`:**
-- Move the `<div class="status" id="status"></div>` to right after the save button (it's already there, but the issue is scrolling). Instead, we should show inline status messages near each field, or simply ensure the status appears right below the last changed field. Simplest fix: move the status div to right after the save button AND auto-scroll it into view.
+Given the user previously said one close button should be removed to avoid redundancy, and the `.card-close` button (persistent X on the card) is still present, the best approach is to **remove the JS references to `ctrl-close`** and have the existing `.card-close` button handle stopping the session as well.
 
-- Remove `background` from `.status.success` and `.status.error` — just colored text on transparent background.
+### Changes
 
-**Changes in `extension/popup.js`:**
-- In `showStatus()`, add `statusEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' })` so users see it.
+**`extension/popup.js`:**
+- Remove line 130 (`const ctrlClose = ...`)
+- Remove the `ctrlClose.addEventListener("click", ...)` block (lines 362-370 approx)
+- Add the same stop-session logic to the existing `card-close` button click handler (or ensure it already stops the session)
 
-### Summary of file changes:
+**`extension/popup.html`:**
+- No changes needed (button already removed)
 
-1. **`extension/background.js`** — Change popup dimensions from 235x235 to 290x320
-2. **`extension/popup.html`** — Remove background color from `.status.success` and `.status.error` CSS classes (just keep colored text). Optionally tighten triggered-mode padding if needed.
-3. **`extension/popup.js`** — Add `scrollIntoView` call in `showStatus()` so the confirmation is visible without manual scrolling.
-4. **Repackage** the extension zip.
+**Repackage** `public/aera-extension.zip`
 
