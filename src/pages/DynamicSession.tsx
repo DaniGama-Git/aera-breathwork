@@ -5,7 +5,7 @@
 
 import { useParams, useNavigate } from "react-router-dom";
 import playButton from "@/assets/play-button.svg";
-import AnimatedWaveform from "@/components/AnimatedWaveform";
+
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
 import SessionList from "@/components/SessionList";
@@ -88,9 +88,7 @@ const DynamicSession = () => {
           </p>
         </div>
 
-        <div className="flex-1 flex items-center justify-center overflow-hidden px-0 min-h-[200px]">
-          <AnimatedWaveform isPlaying={isPlaying} getFrequencyData={getFrequencyData} />
-        </div>
+        <div className="flex-1 min-h-[200px]" />
 
         <div className="px-6 pb-3">
           <div className="flex justify-end mb-4">
