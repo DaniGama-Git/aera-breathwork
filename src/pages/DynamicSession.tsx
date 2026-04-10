@@ -8,7 +8,6 @@ import playButton from "@/assets/play-button.svg";
 
 import BottomNavBar from "@/components/BottomNavBar";
 import AddToCalendar from "@/components/AddToCalendar";
-import SessionList from "@/components/SessionList";
 import { categoryConfig, findSessionBySlug } from "@/data/sessionData";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -23,7 +22,7 @@ const DynamicSession = () => {
   const session = sessionMatch?.session;
 
   const audioSrc = session?.audioSrc || "";
-  const { isPlaying, toggle, timeDisplay, getFrequencyData } = useAudioPlayer(audioSrc);
+  const { isPlaying, toggle, progress, getFrequencyData } = useAudioPlayer(audioSrc);
   const { isFavorite, toggleFavorite } = useFavorites();
 
   if (!config || !session) {
@@ -91,7 +90,21 @@ const DynamicSession = () => {
         <div className="flex-1 min-h-[200px]" />
 
         <div className="px-6 pb-3">
-          <div className="flex justify-end mb-4">
+          {/* Progress bar */}
+          <div className="w-full h-[6px] rounded-full overflow-hidden mb-6"
+            style={{ background: "rgba(255,255,255,0.2)" }}
+          >
+            <div
+              className="h-full rounded-full transition-all duration-300"
+              style={{
+                width: `${progress * 100}%`,
+                background: isPlaying ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0.5)",
+              }}
+            />
+          </div>
+
+          {/* Play button centered */}
+          <div className="flex justify-center mb-6">
             {session.audioSrc ? (
               <button
                 className="transition-transform hover:scale-105 active:scale-95"
@@ -112,17 +125,14 @@ const DynamicSession = () => {
               </div>
             )}
           </div>
+
           <div className="mb-5">
             <span className="text-white font-body font-semibold text-xl block mb-1">Jamie</span>
-            <div className="flex items-center justify-between text-white/50 text-sm">
-              <span className="font-body font-normal">
-                {!session.audioSrc ? "Coming soon" : isPlaying ? "Speaking..." : "Tap play to begin"}
-              </span>
-              <span className="font-display font-light tabular-nums">{timeDisplay}</span>
-            </div>
+            <span className="text-white/50 text-sm font-body font-normal">
+              {!session.audioSrc ? "Coming soon" : isPlaying ? "Guiding..." : "Tap play to begin"}
+            </span>
           </div>
         </div>
-
 
         <BottomNavBar />
         <div className="h-24" />
