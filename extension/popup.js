@@ -118,6 +118,9 @@ const introText = document.getElementById("intro-text");
 const sessionControls = document.getElementById("session-controls");
 const ctrlStop = document.getElementById("ctrl-stop");
 const ctrlClose = document.getElementById("ctrl-close");
+const ctrlMute = document.getElementById("ctrl-mute");
+const muteOffIcon = document.getElementById("mute-off-icon");
+const muteOnIcon = document.getElementById("mute-on-icon");
 const pauseIcon = document.getElementById("pause-icon");
 const playIcon = document.getElementById("play-icon");
 const pausedOverlay = document.getElementById("paused-overlay");
@@ -133,6 +136,7 @@ let activeProtocolId = "back-to-back";
 let hasStartedBreathing = false;
 let startsWithOverlay = false;
 let triggeredMode = false;
+let muted = false;
 const breathAudio = new BreathAudio();
 let currentAudioPhase = null;
 let bgAudio = null;
@@ -351,6 +355,14 @@ ctrlClose.addEventListener("click", () => {
   window.close();
 });
 
+// ─── Mute toggle ───
+ctrlMute.addEventListener("click", () => {
+  muted = !muted;
+  muteOffIcon.style.display = muted ? "none" : "";
+  muteOnIcon.style.display = muted ? "" : "none";
+  if (bgAudio) bgAudio.muted = muted;
+  if (muted) breathAudio.stop();
+});
 
 function fadeTransition(from, to, delay) {
   setTimeout(() => {
@@ -404,14 +416,16 @@ function animate() {
     const phaseKey = entry.startMs + "_" + entry.type;
     if (phaseKey !== currentAudioPhase) {
       currentAudioPhase = phaseKey;
-      if (entry.type === "INHALE") {
-        breathAudio.playInhale(entry.duration);
-      } else if (entry.type === "EXHALE") {
-        breathAudio.playExhale(entry.duration);
-      } else if (entry.type === "SNIFF") {
-        breathAudio.playSniff(entry.duration);
-      } else {
-        breathAudio.stop();
+      if (!muted) {
+        if (entry.type === "INHALE") {
+          breathAudio.playInhale(entry.duration);
+        } else if (entry.type === "EXHALE") {
+          breathAudio.playExhale(entry.duration);
+        } else if (entry.type === "SNIFF") {
+          breathAudio.playSniff(entry.duration);
+        } else {
+          breathAudio.stop();
+        }
       }
     }
   }
