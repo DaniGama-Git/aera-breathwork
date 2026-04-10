@@ -58,18 +58,29 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 });
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  if (message?.type !== "validate-calendar-url") return;
-
-  validateCalendarUrl(message.icalUrl)
-    .then(sendResponse)
-    .catch((error) => {
-      sendResponse({
-        ok: false,
-        error: error?.message || "Could not reach calendar. Check the URL.",
+  if (message?.type === "validate-calendar-url") {
+    validateCalendarUrl(message.icalUrl)
+      .then(sendResponse)
+      .catch((error) => {
+        sendResponse({
+          ok: false,
+          error: error?.message || "Could not reach calendar. Check the URL.",
+        });
       });
-    });
+    return true;
+  }
 
-  return true;
+  if (message?.type === "open-breathe-session") {
+    const protocolId = message.protocolId || "back-to-back";
+    chrome.storage.local.set({
+      autoStart: true,
+      activeProtocol: protocolId,
+    }, () => {
+      openStandalonePopup();
+      sendResponse({ ok: true });
+    });
+    return true;
+  }
 });
 
 async function validateCalendarUrl(icalUrl) {
