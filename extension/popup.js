@@ -133,6 +133,8 @@ let activeProtocolId = "back-to-back";
 let hasStartedBreathing = false;
 let startsWithOverlay = false;
 let triggeredMode = false;
+const breathAudio = new BreathAudio();
+let currentAudioPhase = null;
 
 const BAR_TOP = 10;
 const BAR_BOTTOM = 92;
