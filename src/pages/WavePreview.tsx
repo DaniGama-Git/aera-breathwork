@@ -64,6 +64,7 @@ const WavePreview = () => {
   const [transitionText, setTransitionText] = useState("");
   const [scienceText, setScienceText] = useState("");
   const [paused, setPaused] = useState(false);
+  const [muted, setMuted] = useState(false);
   const [showPausedOverlay, setShowPausedOverlay] = useState(false);
   const pausedElapsedRef = useRef(0);
   const transitionTextRef = useRef("");
@@ -74,6 +75,7 @@ const WavePreview = () => {
   const breathAudioRef = useRef(new BreathAudio());
   const currentAudioPhaseRef = useRef<string | null>(null);
   const bgAudioRef = useRef<HTMLAudioElement | null>(null);
+  const mutedRef = useRef(false);
 
   const timeline = useMemo(() => buildTimeline(protocol), []);
   const totalDuration = timeline.length > 0 ? timeline[timeline.length - 1].endMs : 0;
@@ -193,15 +195,17 @@ const WavePreview = () => {
         const phaseKey = `${entry.startMs}_${entry.type}`;
         if (phaseKey !== currentAudioPhaseRef.current) {
           currentAudioPhaseRef.current = phaseKey;
-          const audio = breathAudioRef.current;
-          if (entry.type === "INHALE") {
-            audio.playInhale(entry.duration);
-          } else if (entry.type === "EXHALE") {
-            audio.playExhale(entry.duration);
-          } else if (entry.type === "SNIFF") {
-            audio.playSniff(entry.duration);
-          } else {
-            audio.stop();
+          if (!mutedRef.current) {
+            const audio = breathAudioRef.current;
+            if (entry.type === "INHALE") {
+              audio.playInhale(entry.duration);
+            } else if (entry.type === "EXHALE") {
+              audio.playExhale(entry.duration);
+            } else if (entry.type === "SNIFF") {
+              audio.playSniff(entry.duration);
+            } else {
+              audio.stop();
+            }
           }
         }
       }
@@ -374,16 +378,44 @@ const WavePreview = () => {
                     </svg>
                   )}
                 </button>
-                <button
-                  onClick={() => navigate("/")}
-                  className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all"
-                  style={{ background: "rgba(0,0,0,0.35)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)" }}
-                  title="Close"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      const next = !muted;
+                      setMuted(next);
+                      mutedRef.current = next;
+                      if (bgAudioRef.current) bgAudioRef.current.muted = next;
+                      if (next) breathAudioRef.current.stop();
+                    }}
+                    className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all"
+                    style={{ background: "rgba(0,0,0,0.35)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)" }}
+                    title={muted ? "Unmute" : "Mute"}
+                  >
+                    {muted ? (
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11 5L6 9H2v6h4l5 4V5z" />
+                        <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                    ) : (
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11 5L6 9H2v6h4l5 4V5z" />
+                        <path d="M15.54 8.46a5 5 0 010 7.07" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M19.07 4.93a10 10 0 010 14.14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => navigate("/")}
+                    className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all"
+                    style={{ background: "rgba(0,0,0,0.35)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)" }}
+                    title="Close"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </button>
+                </div>
               </div>
 
               <div
