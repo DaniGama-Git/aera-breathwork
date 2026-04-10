@@ -1,6 +1,6 @@
 // background.js — polls Google Calendar iCal feed and triggers popup
 
-const CHECK_INTERVAL_MINUTES = 1;
+const CHECK_INTERVAL_MS = 30_000; // 30-second polling for tighter timing
 
 // Keyword-stem → protocol-ID mapping
 const KEYWORD_PROTOCOL_MAP = {
@@ -44,16 +44,22 @@ function resolveProtocol(matchedKeyword) {
   }
   return "deep-focus"; // default fallback
 }
-const ALARM_NAME = "check-calendar";
+// Use setTimeout chain for tighter polling (chrome.alarms is imprecise)
+function scheduleCheck() {
+  setTimeout(async () => {
+    await checkCalendar();
+    scheduleCheck();
+  }, CHECK_INTERVAL_MS);
+}
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.alarms.create(ALARM_NAME, { periodInMinutes: CHECK_INTERVAL_MINUTES });
+  checkCalendar();
+  scheduleCheck();
 });
 
-chrome.alarms.onAlarm.addListener(async (alarm) => {
-  if (alarm.name !== ALARM_NAME) return;
-  await checkCalendar();
-});
+// Also restart polling when service worker wakes up
+checkCalendar();
+scheduleCheck();
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message?.type !== "validate-calendar-url") return;
@@ -105,7 +111,7 @@ async function checkCalendar() {
 
     for (const evt of events) {
       const timeDiff = evt.start - now;
-      if (timeDiff > -60000 && timeDiff <= windowMs) {
+      if (timeDiff > -120000 && timeDiff <= windowMs) {
         const matchesKeyword = keywords.some((kw) =>
           evt.summary.toLowerCase().includes(kw.toLowerCase())
         );
