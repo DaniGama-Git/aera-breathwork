@@ -27,7 +27,7 @@ const MultiSelectStep = ({ question, hint, options, selected, onChange, onContin
         {question}
       </h1>
       {hint && (
-        <p className="text-white/60 font-body text-[14px] leading-relaxed mb-8">
+        <p className="text-white font-body text-[14px] leading-relaxed mb-8">
           {hint}
         </p>
       )}
