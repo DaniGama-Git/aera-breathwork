@@ -222,5 +222,3 @@ async function openStandalonePopup() {
 
   chrome.windows.create(createOpts);
 }
-  });
-}
