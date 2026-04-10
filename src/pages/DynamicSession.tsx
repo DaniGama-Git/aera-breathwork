@@ -91,7 +91,7 @@ const DynamicSession = () => {
         <div className="flex-1" />
 
         {/* Bottom: Jamie + progress bar + play button */}
-        <div className="px-6 pb-6">
+        <div className="px-6 pb-10">
           <div className="mb-4">
             <span className="text-white font-body font-semibold text-lg block mb-1">Jamie</span>
             <span className="text-white/50 text-sm font-body font-normal">
