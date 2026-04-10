@@ -416,14 +416,16 @@ function animate() {
     const phaseKey = entry.startMs + "_" + entry.type;
     if (phaseKey !== currentAudioPhase) {
       currentAudioPhase = phaseKey;
-      if (entry.type === "INHALE") {
-        breathAudio.playInhale(entry.duration);
-      } else if (entry.type === "EXHALE") {
-        breathAudio.playExhale(entry.duration);
-      } else if (entry.type === "SNIFF") {
-        breathAudio.playSniff(entry.duration);
-      } else {
-        breathAudio.stop();
+      if (!muted) {
+        if (entry.type === "INHALE") {
+          breathAudio.playInhale(entry.duration);
+        } else if (entry.type === "EXHALE") {
+          breathAudio.playExhale(entry.duration);
+        } else if (entry.type === "SNIFF") {
+          breathAudio.playSniff(entry.duration);
+        } else {
+          breathAudio.stop();
+        }
       }
     }
   }
