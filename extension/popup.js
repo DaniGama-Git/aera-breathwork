@@ -60,14 +60,9 @@ async function loadSettings() {
 const checkSvg = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
 
 function updateConnectionStatus(connected) {
-  const statusEl = document.getElementById("connection-status");
-  if (connected) {
-    statusEl.innerHTML = checkSvg + '<span>Calendar connected</span>';
-    statusEl.classList.add("connected");
-  } else {
-    statusEl.innerHTML = '<span>Not configured</span>';
-    statusEl.classList.remove("connected");
-  }
+  connectionDot.classList.toggle("connected", connected);
+  connectionText.innerHTML = connected ? checkSvg + ' Calendar connected' : 'Not configured';
+  connectionText.style.color = connected ? 'rgba(130,220,130,0.9)' : '';
 }
 
 saveBtn.addEventListener("click", async () => {
