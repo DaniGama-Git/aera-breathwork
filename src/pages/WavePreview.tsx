@@ -90,39 +90,42 @@ const WavePreview = () => {
     };
   }, []);
 
-  /* ── Screen auto-advance ── */
+  /* ── Screen auto-advance (logo → intro only, no auto-start) ── */
   useEffect(() => {
-    const delay = SCREEN_DELAYS[screen];
-    if (!delay) return;
-
+    if (screen !== "logo") return;
     const timer = setTimeout(() => {
       setFadeIn(false);
       setTimeout(() => {
-        if (screen === "logo") setScreen("intro");
-        else if (screen === "intro") {
-          setScreen("breathing");
-          setSessionStart(Date.now());
-          setPhase("INHALE");
-          setTransitionText("");
-          setPaused(false);
-          setShowPausedOverlay(false);
-          pausedElapsedRef.current = 0;
-
-          // Start background audio
-          if (protocol.audioSrc) {
-            if (bgAudioRef.current) { bgAudioRef.current.pause(); }
-            const audio = new Audio(protocol.audioSrc);
-            audio.loop = true;
-            audio.volume = 0.5;
-            audio.play().catch(() => {});
-            bgAudioRef.current = audio;
-          }
-        }
+        setScreen("intro");
         setFadeIn(true);
       }, 600);
-    }, delay);
+    }, SCREEN_DELAYS.logo);
     return () => clearTimeout(timer);
   }, [screen]);
+
+  const startSession = useCallback(() => {
+    setFadeIn(false);
+    setTimeout(() => {
+      setScreen("breathing");
+      setSessionStart(Date.now());
+      setPhase("INHALE");
+      setTransitionText("");
+      setPaused(false);
+      setShowPausedOverlay(false);
+      pausedElapsedRef.current = 0;
+
+      // Start background audio
+      if (protocol.audioSrc) {
+        if (bgAudioRef.current) { bgAudioRef.current.pause(); }
+        const audio = new Audio(protocol.audioSrc);
+        audio.loop = true;
+        audio.volume = 0.5;
+        audio.play().catch(() => {});
+        bgAudioRef.current = audio;
+      }
+      setFadeIn(true);
+    }, 600);
+  }, []);
 
   /* ── Timeline-driven breathing engine ── */
   useEffect(() => {
@@ -348,11 +351,23 @@ const WavePreview = () => {
                 {protocol.subtitle}
               </span>
               <p
-                className="text-white font-medium leading-[1.15] whitespace-pre-line"
+                className="text-white font-medium leading-[1.15] whitespace-pre-line mb-8"
                 style={{ fontSize: 18, letterSpacing: "-0.01em" }}
               >
                 {protocol.introText}
               </p>
+              <button
+                onClick={startSession}
+                className="px-7 py-2.5 rounded-full text-[11px] tracking-[0.15em] uppercase font-medium cursor-pointer transition-all hover:brightness-110"
+                style={{
+                  background: "rgba(255,255,255,0.15)",
+                  border: "1px solid rgba(255,255,255,0.25)",
+                  color: "rgba(255,255,255,0.85)",
+                  backdropFilter: "blur(8px)",
+                }}
+              >
+                Breathe Now
+              </button>
             </div>
           )}
 
