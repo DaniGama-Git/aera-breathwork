@@ -490,19 +490,27 @@ showScreen("loading");
 
 chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
   if (data.autoStart) {
-    // Calendar-triggered: borderless standalone mode
+    // Calendar-triggered: borderless standalone mode — auto-start
     triggeredMode = true;
     document.body.classList.add("triggered-mode");
     chrome.storage.local.remove(["autoStart", "activeProtocol"]);
     setProtocol(data.activeProtocol || "back-to-back");
     sessionControls.classList.add("active");
-  }
 
-  preloadImages(ALL_IMAGES).then(() => {
-    showScreen("logo");
-    setTimeout(() => {
-      showScreen("intro");
-      setTimeout(() => startSession(), 3000);
-    }, 2200);
-  });
+    preloadImages(ALL_IMAGES).then(() => {
+      showScreen("logo");
+      setTimeout(() => {
+        showScreen("intro");
+        setTimeout(() => startSession(), 3000);
+      }, 2200);
+    });
+  } else {
+    // Manual mode (toolbar popup) — show intro, wait for user click
+    preloadImages(ALL_IMAGES).then(() => {
+      showScreen("logo");
+      setTimeout(() => {
+        showScreen("intro");
+      }, 2200);
+    });
+  }
 });
