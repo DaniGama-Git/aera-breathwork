@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { BreathAudio } from "@/lib/breathAudio";
 import { useNavigate } from "react-router-dom";
 import waveBgLogo from "@/assets/wave-bg-logo.png";
 import waveBgIntro from "@/assets/wave-bg-intro.png";
