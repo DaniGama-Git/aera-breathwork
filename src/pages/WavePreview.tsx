@@ -91,39 +91,45 @@ const WavePreview = () => {
     };
   }, []);
 
-  /* ── Screen auto-advance ── */
+  /* ── Screen auto-advance (logo only) ── */
   useEffect(() => {
+    if (screen !== "logo") return;
     const delay = SCREEN_DELAYS[screen];
     if (!delay) return;
 
     const timer = setTimeout(() => {
       setFadeIn(false);
       setTimeout(() => {
-        if (screen === "logo") setScreen("intro");
-        else if (screen === "intro") {
-          setScreen("breathing");
-          setSessionStart(Date.now());
-          setPhase("INHALE");
-          setTransitionText("");
-          setPaused(false);
-          setShowPausedOverlay(false);
-          pausedElapsedRef.current = 0;
-
-          // Start background audio
-          if (protocol.audioSrc) {
-            if (bgAudioRef.current) { bgAudioRef.current.pause(); }
-            const audio = new Audio(protocol.audioSrc);
-            audio.loop = true;
-            audio.volume = 0.5;
-            audio.play().catch(() => {});
-            bgAudioRef.current = audio;
-          }
-        }
+        setScreen("intro");
         setFadeIn(true);
       }, 600);
     }, delay);
     return () => clearTimeout(timer);
   }, [screen]);
+
+  const startSession = useCallback(() => {
+    setFadeIn(false);
+    setTimeout(() => {
+      setScreen("breathing");
+      setSessionStart(Date.now());
+      setPhase("INHALE");
+      setTransitionText("");
+      setPaused(false);
+      setShowPausedOverlay(false);
+      pausedElapsedRef.current = 0;
+
+      // Start background audio
+      if (protocol.audioSrc) {
+        if (bgAudioRef.current) { bgAudioRef.current.pause(); }
+        const audio = new Audio(protocol.audioSrc);
+        audio.loop = true;
+        audio.volume = 0.5;
+        audio.play().catch(() => {});
+        bgAudioRef.current = audio;
+      }
+      setFadeIn(true);
+    }, 600);
+  }, []);
 
   /* ── Timeline-driven breathing engine ── */
   useEffect(() => {
