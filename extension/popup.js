@@ -61,7 +61,7 @@ const checkSvg = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" st
 
 function updateConnectionStatus(connected) {
   connectionDot.classList.toggle("connected", connected);
-  connectionText.innerHTML = connected ? checkSvg + ' Calendar connected' : 'Not configured';
+  connectionText.textContent = connected ? 'Calendar connected' : 'Not configured';
   connectionText.style.color = connected ? 'rgba(130,220,130,0.9)' : '';
 }
 
