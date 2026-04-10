@@ -133,6 +133,8 @@ let activeProtocolId = "back-to-back";
 let hasStartedBreathing = false;
 let startsWithOverlay = false;
 let triggeredMode = false;
+const breathAudio = new BreathAudio();
+let currentAudioPhase = null;
 
 const BAR_TOP = 10;
 const BAR_BOTTOM = 92;
@@ -328,6 +330,8 @@ ctrlStop.addEventListener("click", () => {
     paused = true;
     running = false;
     cancelAnimationFrame(raf);
+    breathAudio.stop();
+    currentAudioPhase = null;
     pauseIcon.style.display = "none";
     playIcon.style.display = "";
     phaseLabel.style.opacity = "0";
@@ -339,6 +343,7 @@ ctrlStop.addEventListener("click", () => {
 ctrlClose.addEventListener("click", () => {
   running = false;
   cancelAnimationFrame(raf);
+  breathAudio.stop();
   window.close();
 });
 
@@ -359,6 +364,8 @@ function animate() {
 
   if (elapsed >= activeTotalMs) {
     running = false;
+    breathAudio.stop();
+    currentAudioPhase = null;
     showScreen("done");
     return;
   }
@@ -387,6 +394,21 @@ function animate() {
     transitionOverlay.classList.remove("active");
     scienceOverlay.classList.remove("active");
     phaseLabel.textContent = entry.displayLabel;
+
+    // Trigger breath audio on phase change
+    const phaseKey = entry.startMs + "_" + entry.type;
+    if (phaseKey !== currentAudioPhase) {
+      currentAudioPhase = phaseKey;
+      if (entry.type === "INHALE") {
+        breathAudio.playInhale(entry.duration);
+      } else if (entry.type === "EXHALE") {
+        breathAudio.playExhale(entry.duration);
+      } else if (entry.type === "SNIFF") {
+        breathAudio.playSniff(entry.duration);
+      } else {
+        breathAudio.stop();
+      }
+    }
   }
 
   const barTop = getBarPosition(entry.type, progress, prevEntryType);
