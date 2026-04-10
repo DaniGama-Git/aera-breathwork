@@ -73,6 +73,7 @@ const WavePreview = () => {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const breathAudioRef = useRef(new BreathAudio());
   const currentAudioPhaseRef = useRef<string | null>(null);
+  const bgAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const timeline = useMemo(() => buildTimeline(protocol), []);
   const totalDuration = timeline.length > 0 ? timeline[timeline.length - 1].endMs : 0;
@@ -82,6 +83,9 @@ const WavePreview = () => {
   /* ── Preload ── */
   useEffect(() => {
     preloadImages(ALL_IMAGES).then(() => setScreen("logo"));
+    return () => {
+      if (bgAudioRef.current) { bgAudioRef.current.pause(); bgAudioRef.current = null; }
+    };
   }, []);
 
   /* ── Screen auto-advance ── */
@@ -101,6 +105,16 @@ const WavePreview = () => {
           setPaused(false);
           setShowPausedOverlay(false);
           pausedElapsedRef.current = 0;
+
+          // Start background audio
+          if (protocol.audioSrc) {
+            if (bgAudioRef.current) { bgAudioRef.current.pause(); }
+            const audio = new Audio(protocol.audioSrc);
+            audio.loop = true;
+            audio.volume = 0.5;
+            audio.play().catch(() => {});
+            bgAudioRef.current = audio;
+          }
         }
         setFadeIn(true);
       }, 600);
@@ -120,6 +134,7 @@ const WavePreview = () => {
       if (elapsed >= totalDuration) {
         breathAudioRef.current.stop();
         currentAudioPhaseRef.current = null;
+        if (bgAudioRef.current) { bgAudioRef.current.pause(); bgAudioRef.current = null; }
         setFadeIn(false);
         setTimeout(() => {
           setScreen("done");
@@ -213,10 +228,12 @@ const WavePreview = () => {
       setSessionStart(Date.now() - pausedElapsedRef.current);
       setPaused(false);
       setShowPausedOverlay(false);
+      bgAudioRef.current?.play().catch(() => {});
     } else {
       pausedElapsedRef.current = Date.now() - sessionStart;
       breathAudioRef.current.stop();
       currentAudioPhaseRef.current = null;
+      bgAudioRef.current?.pause();
       setPaused(true);
       setShowPausedOverlay(true);
     }

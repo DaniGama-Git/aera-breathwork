@@ -29,6 +29,7 @@ export interface Protocol {
   introText: string;
   descriptionPrimary: string;
   descriptionSecondary: string;
+  audioSrc?: string; // background audio URL
   stages: ProtocolStage[];
   finalSequence?: BreathPhase[]; // optional final sequence (e.g. final exhale + hold)
   finalMethod?: "nose" | "mouth";
@@ -170,6 +171,7 @@ export function getBarPosition(
 export const prePitchProtocol: Protocol = {
   id: "pre-pitch",
   title: "Pre-Pitch",
+  audioSrc: "/audio/pre-pitch.mp3",
   subtitle: "~3 mins",
   duration: "~3 mins",
   introText: "You're about to step in,\nlet's get you sharp",
@@ -220,6 +222,7 @@ export const prePitchProtocol: Protocol = {
 export const preNegotiationProtocol: Protocol = {
   id: "pre-negotiation",
   title: "Pre-Negotiation",
+  audioSrc: "/audio/pre-negotiation.mp3",
   subtitle: "~3.5 mins",
   duration: "~3.5 mins",
   introText: "Time to lock in.\nLet's sharpen your edge.",
@@ -267,6 +270,7 @@ export const preNegotiationProtocol: Protocol = {
 export const creativeFlowProtocol: Protocol = {
   id: "creative-flow",
   title: "Creative Flow",
+  audioSrc: "/audio/decision-clarity.mp3",
   subtitle: "~3.5 mins",
   duration: "~3.5 mins",
   introText: "Let go of control.\nLet your mind open up.",
@@ -313,6 +317,7 @@ export const creativeFlowProtocol: Protocol = {
 export const deepFocusProtocol: Protocol = {
   id: "deep-focus",
   title: "Deep Focus",
+  audioSrc: "/audio/deep-focus.mp3",
   subtitle: "~3.5 mins",
   duration: "~3.5 mins",
   introText: "Settle in.\nLet's lock your attention.",
@@ -358,6 +363,7 @@ export const deepFocusProtocol: Protocol = {
 export const wakeMeUpProtocol: Protocol = {
   id: "wake-me-up",
   title: "Wake Me Up",
+  audioSrc: "/audio/wake-me-up.mp3",
   subtitle: "~4 mins",
   duration: "~4 mins",
   introText: "Time to wake up.\nLet's build some clean energy.",
@@ -416,6 +422,7 @@ export const wakeMeUpProtocol: Protocol = {
 export const energyResetProtocol: Protocol = {
   id: "energy-reset",
   title: "Energy Reset",
+  audioSrc: "/audio/energy-reset.mp3",
   subtitle: "~3.5 mins",
   duration: "~3.5 mins",
   introText: "Feeling the dip?\nLet's bring you back online.",
@@ -475,6 +482,7 @@ export const energyResetProtocol: Protocol = {
 export const reboundProtocol: Protocol = {
   id: "rebound",
   title: "Rebound",
+  audioSrc: "/audio/rebound.mp3",
   subtitle: "~3 mins",
   duration: "~3 mins",
   introText: "That was tough.\nLet's reset your system.",
@@ -522,6 +530,7 @@ export const reboundProtocol: Protocol = {
 export const contextSwitchProtocol: Protocol = {
   id: "context-switch",
   title: "Context Switch",
+  audioSrc: "/audio/context-switch.mp3",
   subtitle: "~3.5 mins",
   duration: "~3.5 mins",
   introText: "New task, new state.\nLet's clear the slate.",
@@ -569,6 +578,7 @@ export const contextSwitchProtocol: Protocol = {
 export const preMeetingProtocol: Protocol = {
   id: "pre-meeting",
   title: "Pre-Meeting",
+  audioSrc: "/audio/pre-meeting.mp3",
   subtitle: "~2 mins",
   duration: "~2 mins",
   introText: "Meeting coming up.\nLet's get you centered.",
@@ -615,6 +625,7 @@ export const preMeetingProtocol: Protocol = {
 export const backToBackProtocol: Protocol = {
   id: "back-to-back",
   title: "Back-to-Back",
+  audioSrc: "/audio/evening-decompression.mp3",
   subtitle: "~3 mins",
   duration: "~3 mins",
   introText: "Let go of what just happened.\nReset before what's next.",
