@@ -70,17 +70,21 @@ saveBtn.addEventListener("click", async () => {
   if (!icalUrl) { showStatus("Please enter your iCal URL", true); return; }
   if (keywords.length === 0) { showStatus("Please enter at least one keyword", true); return; }
 
-  try {
-    const result = await chrome.runtime.sendMessage({ type: "validate-calendar-url", icalUrl });
-    if (!result?.ok) { showStatus(result?.error || "Could not reach calendar.", true); return; }
-  } catch (e) {
-    showStatus("Could not validate calendar. Reload and try again.", true);
-    return;
+  // Only validate URL if it changed
+  const prev = await chrome.storage.local.get(["icalUrl"]);
+  if (icalUrl !== prev.icalUrl) {
+    try {
+      const result = await chrome.runtime.sendMessage({ type: "validate-calendar-url", icalUrl });
+      if (!result?.ok) { showStatus(result?.error || "Could not reach calendar.", true); return; }
+    } catch (e) {
+      showStatus("Could not validate calendar. Reload and try again.", true);
+      return;
+    }
+    urlValidated.classList.add("visible");
   }
 
   await chrome.storage.local.set({ icalUrl, keywords, leadMinutes });
   updateConnectionStatus(true);
-  urlValidated.classList.add("visible");
   showStatus("Settings saved ✓", false, true);
 });
 
