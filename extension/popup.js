@@ -113,7 +113,10 @@ if (demandBtn) {
       const tab = tabs.find(t => /^https?:\/\//.test(t.url || ""));
       if (tab) targetTabId = tab.id;
     } catch (_) {}
-    chrome.runtime.sendMessage({ type: "open-breathe-session", protocolId: randomId, targetTabId });
+    // Await the message so background has time to open the overlay before popup closes
+    try {
+      await chrome.runtime.sendMessage({ type: "open-breathe-session", protocolId: randomId, targetTabId });
+    } catch (_) {}
     window.close();
   });
 }
@@ -517,33 +520,47 @@ showScreen("loading");
 // Detect if running inside iframe overlay
 const urlParams = new URLSearchParams(window.location.search);
 const isIframeMode = urlParams.get("iframe") === "true";
+
 if (isIframeMode) {
+  // Running inside the content-script overlay — fixed dimensions, no standalone overrides
   document.body.classList.add("iframe-mode");
   document.documentElement.classList.add("overlay-mode");
   document.documentElement.style.width = "290px";
   document.documentElement.style.height = "400px";
-}
 
-chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
-  if (data.autoStart) {
-    // Calendar-triggered or on-demand: borderless standalone mode — auto-start
+  chrome.storage.local.get(["activeProtocol"], data => {
     triggeredMode = true;
     document.body.classList.add("triggered-mode");
-    document.documentElement.classList.add("triggered-mode");
-    document.documentElement.style.width = "100vw";
-    document.documentElement.style.height = "100vh";
-    chrome.storage.local.remove(["autoStart", "activeProtocol"]);
     setProtocol(data.activeProtocol || "back-to-back");
     sessionControls.classList.add("active");
-
     preloadImages(ALL_IMAGES).then(() => {
       showScreen("logo");
       setTimeout(() => startSession(), 2200);
     });
-  } else {
-    // Manual mode (toolbar popup) — show Settings only, no breathe tab
-    breathePanel.classList.add("hidden");
-    settingsPanel.classList.add("visible");
-    loadSettings();
-  }
-});
+  });
+
+} else {
+  chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
+    if (data.autoStart) {
+      // Calendar-triggered or on-demand: borderless standalone mode — auto-start
+      triggeredMode = true;
+      document.body.classList.add("triggered-mode");
+      document.documentElement.classList.add("triggered-mode");
+      document.documentElement.style.width = "100vw";
+      document.documentElement.style.height = "100vh";
+      chrome.storage.local.remove(["autoStart", "activeProtocol"]);
+      setProtocol(data.activeProtocol || "back-to-back");
+      sessionControls.classList.add("active");
+
+      preloadImages(ALL_IMAGES).then(() => {
+        showScreen("logo");
+        setTimeout(() => startSession(), 2200);
+      });
+    } else {
+      // Manual mode (toolbar popup) — show Settings only, no breathe tab
+      breathePanel.classList.add("hidden");
+      settingsPanel.classList.add("visible");
+      loadSettings();
+    }
+  });
+}

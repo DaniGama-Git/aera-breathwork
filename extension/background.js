@@ -76,9 +76,9 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     chrome.storage.local.set({
       autoStart: true,
       activeProtocol: protocolId,
-    }, () => {
-      openBreathPanel(protocolId, targetTabId);
-      sendResponse({ ok: true });
+    }, async () => {
+      await openBreathPanel(protocolId, targetTabId);
+      try { sendResponse({ ok: true }); } catch (_) {}
     });
     return true;
   }
