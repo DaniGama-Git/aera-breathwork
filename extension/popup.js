@@ -40,11 +40,11 @@ async function loadSettings() {
         if (defaults.keywords?.length && !data.keywords?.length) {
           await chrome.storage.local.set({
             keywords: defaults.keywords,
-            leadMinutes: defaults.leadMinutes ?? 15,
+            leadMinutes: defaults.leadMinutes ?? 5,
             defaultsApplied: true,
           });
           data.keywords = defaults.keywords;
-          data.leadMinutes = defaults.leadMinutes ?? 15;
+          data.leadMinutes = defaults.leadMinutes ?? 5;
         }
       }
     } catch (_) { /* no defaults.json bundled — skip */ }
@@ -53,7 +53,7 @@ async function loadSettings() {
 
   icalInput.value = data.icalUrl || "";
   keywordsInput.value = (data.keywords || []).join(", ");
-  leadInput.value = data.leadMinutes ?? 15;
+  leadInput.value = data.leadMinutes ?? 5;
   updateConnectionStatus(!!data.icalUrl);
 }
 
@@ -68,7 +68,7 @@ function updateConnectionStatus(connected) {
 saveBtn.addEventListener("click", async () => {
   const icalUrl = icalInput.value.trim();
   const keywords = keywordsInput.value.split(",").map(k => k.trim()).filter(Boolean);
-  const leadMinutes = parseInt(leadInput.value) || 15;
+  const leadMinutes = parseInt(leadInput.value) || 5;
 
   if (!icalUrl) { showStatus("Please enter your iCal URL", true); return; }
   if (keywords.length === 0) { showStatus("Please enter at least one keyword", true); return; }
