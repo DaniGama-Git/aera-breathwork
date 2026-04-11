@@ -523,6 +523,14 @@ showScreen("loading");
 const urlParams = new URLSearchParams(window.location.search);
 const isIframeMode = urlParams.get("iframe") === "true";
 
+// Close button (iframe only) — posts message to parent to remove overlay
+const ctrlClose = document.getElementById("ctrl-close");
+if (ctrlClose) {
+  ctrlClose.addEventListener("click", () => {
+    window.parent.postMessage({ type: "close-overlay" }, "*");
+  });
+}
+
 if (isIframeMode) {
   // Running inside the content-script overlay — fixed dimensions, no standalone overrides
   document.body.classList.add("iframe-mode");
@@ -532,7 +540,7 @@ if (isIframeMode) {
 
   chrome.storage.local.get(["activeProtocol"], data => {
     triggeredMode = true;
-    document.body.classList.add("triggered-mode");
+    // Do NOT add triggered-mode here — iframe-mode handles its own layout
     setProtocol(data.activeProtocol || "back-to-back");
     sessionControls.classList.add("active");
     preloadImages(ALL_IMAGES).then(() => {
