@@ -120,20 +120,20 @@ const Onboarding = () => {
   return (
     <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden bg-[#d8dce0]">
       <img src={onboardingBg} alt="" className="absolute inset-0 w-full h-full object-contain object-bottom" aria-hidden="true" />
-      <div className="absolute inset-0 bg-black/20" aria-hidden="true" />
+      <div className="absolute inset-0 bg-white/30" aria-hidden="true" />
 
       <div className="relative z-10 flex flex-col min-h-screen max-w-[560px] mx-auto w-full">
         {/* Header */}
         <div className="px-6 pt-14 pb-4 flex items-center justify-between">
-          <img src={areaLogo} alt="Aera" className="h-6" />
+          <img src={areaLogo} alt="Aera" className="h-6 brightness-0" />
           <div className="flex items-center gap-4">
-            <span className="text-white/50 font-body text-xs">
+            <span className="text-gray-500 font-body text-xs">
               {currentIndex + 1} / {totalVisualSteps}
             </span>
             <button
               onClick={() => saveAndFinish()}
               disabled={saving}
-              className="text-white/50 font-body text-xs hover:text-white/70 transition-colors"
+              className="text-gray-500 font-body text-xs hover:text-gray-700 transition-colors"
             >
               Skip
             </button>
@@ -142,9 +142,9 @@ const Onboarding = () => {
 
         {/* Progress bar */}
         <div className="px-6 mb-8">
-          <div className="h-[2px] bg-white/10 rounded-full overflow-hidden">
+          <div className="h-[2px] bg-gray-300 rounded-full overflow-hidden">
             <div
-              className="h-full bg-white rounded-full transition-all duration-500 ease-out"
+              className="h-full bg-gray-700 rounded-full transition-all duration-500 ease-out"
               style={{ width: `${((currentIndex + 1) / totalVisualSteps) * 100}%` }}
             />
           </div>
@@ -194,7 +194,7 @@ const Onboarding = () => {
             <div className="mt-auto pt-4 pb-10 flex justify-center">
               <button
                 onClick={goBack}
-                className="min-h-10 px-4 text-white/50 text-sm font-body hover:text-white/70 transition-colors disabled:opacity-30"
+                className="min-h-10 px-4 text-gray-500 text-sm font-body hover:text-gray-700 transition-colors disabled:opacity-30"
                 disabled={saving}
               >
                 Go back

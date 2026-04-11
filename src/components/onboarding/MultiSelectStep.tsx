@@ -23,11 +23,11 @@ const MultiSelectStep = ({ question, hint, options, selected, onChange, onContin
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-white font-body font-semibold text-[22px] leading-tight mb-3">
+      <h1 className="text-gray-900 font-body font-semibold text-[22px] leading-tight mb-3">
         {question}
       </h1>
       {hint && (
-        <p className="text-white font-body text-[14px] leading-relaxed mb-8">
+        <p className="text-gray-600 font-body text-[14px] leading-relaxed mb-8">
           {hint}
         </p>
       )}
@@ -42,11 +42,11 @@ const MultiSelectStep = ({ question, hint, options, selected, onChange, onContin
               onClick={() => toggle(option.value)}
               className={`w-full text-left px-5 py-4 rounded-2xl border transition-all duration-200 font-body text-[15px] ${
                 isSelected
-                  ? "border-white bg-white/10 text-white"
-                  : "border-white/15 bg-white/[0.05] text-white/80 hover:border-white/25 hover:bg-white/[0.08]"
+                  ? "border-gray-900 bg-gray-900/10 text-gray-900"
+                  : "border-gray-400/40 bg-white/40 text-gray-700 hover:border-gray-500 hover:bg-white/60"
               }`}
             >
-              <span className="text-white/40 mr-3">{i + 1}.</span>
+              <span className="text-gray-400 mr-3">{i + 1}.</span>
               {option.label}
             </button>
           );
@@ -56,7 +56,7 @@ const MultiSelectStep = ({ question, hint, options, selected, onChange, onContin
       {selected.length > 0 && (
         <button
           onClick={onContinue}
-          className="mt-8 self-center text-white/60 font-body text-[14px] underline underline-offset-4 decoration-white/30 transition-all duration-300 hover:text-white/90 hover:decoration-white/60"
+          className="mt-8 self-center text-gray-600 font-body text-[14px] underline underline-offset-4 decoration-gray-400 transition-all duration-300 hover:text-gray-900 hover:decoration-gray-600"
         >
           Continue →
         </button>
