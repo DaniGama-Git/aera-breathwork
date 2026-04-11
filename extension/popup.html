@@ -43,11 +43,16 @@ body.iframe-mode{
   height:400px !important;
   min-height:400px !important;
   background:#1a1a1a !important;
+  overflow:hidden;
 }
 body.iframe-mode .tabs{display:none}
 body.iframe-mode .card-wrap{padding:0;margin:0;width:100%;height:100%}
-body.iframe-mode .card{border-radius:16px;width:100%;height:100%}
+body.iframe-mode .card{border-radius:0;width:100%;height:100%;background:#1a1a1a}
 body.iframe-mode .breathe-tab{height:100%;width:100%}
+
+/* Close button — right-aligned in controls row */
+.ctrl-close{display:none;margin-left:auto}
+body.iframe-mode .ctrl-close{display:flex}
 
 /* Fallback popup window mode — fill whatever size Chrome gives */
 body.triggered-mode{
@@ -428,6 +433,9 @@ Let your mind open up.</p>
           <button class="ctrl-btn" id="ctrl-mute" title="Mute">
             <svg id="mute-off-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19.07 4.93a10 10 0 010 14.14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <svg id="mute-on-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <button class="ctrl-btn ctrl-close" id="ctrl-close" title="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
 
