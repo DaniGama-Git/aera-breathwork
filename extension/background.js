@@ -191,12 +191,6 @@ function parseIcalDate(str) {
   return new Date(iso).getTime();
 }
 
-chrome.notifications.onClicked.addListener((notificationId) => {
-  chrome.notifications.clear(notificationId);
-  chrome.storage.local.set({ autoStart: true });
-  openBreathPanel();
-});
-
 function isInjectableTab(tab) {
   return !!tab?.id && /^https?:\/\//.test(tab.url || "");
 }
@@ -229,8 +223,8 @@ async function showOverlayInTab(tabId, protocolId) {
   }
 }
 
-// Primary: show the shared content-script overlay in an injectable browser tab.
-// Fallback: open the standalone popup only when no injectable page is available.
+// Overlay-only: inject the breathing overlay into an active browser tab.
+// No fallback popup window — if no injectable tab exists, nothing happens.
 async function openBreathPanel(protocolId, preferredTabId) {
   // 1. Try the explicit tab passed from the popup first
   if (preferredTabId) {
@@ -274,44 +268,7 @@ async function openBreathPanel(protocolId, preferredTabId) {
     console.log("āera: tab discovery/injection failed", e.message);
   }
 
-  // 4. Last resort
-  console.log("āera: falling back to popup window");
-  await openFallbackPopup();
-}
-
-async function openFallbackPopup() {
-  const popupUrl = chrome.runtime.getURL("popup.html?triggered=true");
-
-  const allWindows = await chrome.windows.getAll({ populate: true });
-  for (const w of allWindows) {
-    if (w.type === "popup" && w.tabs?.some(t => t.url?.includes("popup.html"))) {
-      chrome.windows.update(w.id, { focused: true });
-      return;
-    }
-  }
-
-  const width = 290;
-  const height = 400;
-  let left, top;
-
-  try {
-    const currentWindow = await chrome.windows.getCurrent();
-    if (currentWindow && currentWindow.width && currentWindow.height) {
-      left = Math.round(currentWindow.left + currentWindow.width - width - 24);
-      top = Math.round(currentWindow.top + currentWindow.height - height - 24);
-    }
-  } catch (_) {}
-
-  const createOpts = {
-    url: popupUrl,
-    type: "popup",
-    width,
-    height,
-    state: "normal",
-    focused: true,
-  };
-  if (left !== undefined) createOpts.left = left;
-  if (top !== undefined) createOpts.top = top;
-
-  chrome.windows.create(createOpts);
+  // No fallback — overlay only
+  console.log("āera: no injectable tab available, doing nothing");
+  chrome.storage.local.remove(["autoStart", "activeProtocol"]);
 }
