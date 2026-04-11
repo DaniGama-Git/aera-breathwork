@@ -1,17 +1,22 @@
 
 
-## Plan: Rename "Breathe on Demand" to "Recover on Demand"
+## Plan: Fix iframe overlay sizing + race condition
 
-Update three places in the extension popup:
+### 1. `extension/popup.js` — Restructure init block (lines 517-549)
 
-1. **`extension/popup.html`**
-   - Line 522: Change button text from `Breathe on demand` to `Recover on demand`
-   - Line 337: Update CSS comment from `Breathe on demand` to `Recover on demand`
+Replace the current sequential iframe/autoStart logic with mutually exclusive branches:
 
-2. **`extension/popup.js`**
-   - Line 103: Update comment from `Breathe on demand` to `Recover on demand`
+- **Iframe path**: Sets fixed 290×400px dimensions, reads `activeProtocol` without removing `autoStart`, auto-starts the session
+- **Standalone path**: Only runs when not in iframe; handles `autoStart` with `100vw/100vh` or falls back to settings panel
 
-3. **`public/aera-extension.zip`** — Repackage with updated files
+### 2. `extension/popup.js` — Fix race condition in Recover on Demand handler (lines 106-118)
 
-No changes needed in the React app or other extension files.
+- `await` the `chrome.runtime.sendMessage()` before calling `window.close()`
+
+### 3. `extension/background.js` — Harden message handler (lines 73-84)
+
+- `await openBreathPanel()` inside the storage callback
+- Wrap `sendResponse` in try-catch to handle disconnected popup port
+
+### 4. Repackage `public/aera-extension.zip`
 
