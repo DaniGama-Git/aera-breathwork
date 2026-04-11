@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import areaLogo from "@/assets/aera-logo.svg";
-import homeBg from "@/assets/home-bg.webp";
+import onboardingBg from "@/assets/onboarding-bg.jpg";
 import OnboardingStep from "@/components/onboarding/OnboardingStep";
 import MultiSelectStep from "@/components/onboarding/MultiSelectStep";
 import KeywordStep from "@/components/onboarding/KeywordStep";
