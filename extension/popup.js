@@ -507,6 +507,13 @@ startBtn.addEventListener("click", () => startSession());
 setProtocol("back-to-back");
 showScreen("loading");
 
+// Detect if running inside iframe overlay
+const urlParams = new URLSearchParams(window.location.search);
+const isIframeMode = urlParams.get("iframe") === "true";
+if (isIframeMode) {
+  document.body.classList.add("iframe-mode");
+}
+
 chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
   if (data.autoStart) {
     // Calendar-triggered or on-demand: borderless standalone mode — auto-start
