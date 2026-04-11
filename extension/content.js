@@ -19,8 +19,6 @@ function injectOverlay(protocolId) {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    width: ${IFRAME_WIDTH}px;
-    height: ${IFRAME_HEIGHT}px;
     z-index: 2147483647;
     display: flex;
     flex-direction: column;
