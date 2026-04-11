@@ -104,7 +104,7 @@ async function validateCalendarUrl(icalUrl) {
 
 async function checkCalendar() {
   const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes", "triggeredEvents"]);
-  const { icalUrl, keywords, leadMinutes = 15, triggeredEvents = {} } = data;
+  const { icalUrl, keywords, leadMinutes = 5, triggeredEvents = {} } = data;
 
   if (!icalUrl || !keywords || keywords.length === 0) return;
 
