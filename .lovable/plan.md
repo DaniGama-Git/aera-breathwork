@@ -1,30 +1,39 @@
 
 
-## Fix Extension Download: Add Loading State + Overlay
+## Best Practice: Content Script Overlay (with Popup Window Fallback)
 
-### Problem
-The download button has no loading state, so users can click multiple times while the fetch + JSZip repackaging runs silently. No visual feedback makes it feel broken.
+The industry standard for "small floating panel inside the browser" is a **content script overlay**, not `chrome.windows.create`. Here's why:
 
-### Changes
+### Why `chrome.windows.create` is unreliable
 
-**src/pages/Extension.tsx**:
+- `width`, `height`, `left`, `top` are **hints**, not guarantees — Chrome and the OS can override them
+- macOS Stage Manager, Windows snap layouts, and display scaling all interfere
+- Chrome enforces minimum window sizes (~400px on some platforms)
+- No way to prevent users from resizing/maximizing it
+- It steals focus from the current tab and appears in the taskbar as a separate window
 
-1. **Add `downloading` state** — `const [downloading, setDownloading] = useState(false)`
+### Why content script overlay is best practice
 
-2. **Guard `handleDownload`** — Early return if already downloading. Set `downloading = true` at start, `false` in finally block.
+Extensions like Grammarly, Loom, 1Password, and Notion Web Clipper all use this approach. The overlay is:
 
-3. **Add loading overlay** — When `downloading` is true, render a full-screen overlay with the BreatheDots animation and "Preparing download…" text, matching the app's dark aesthetic:
-   ```tsx
-   {downloading && (
-     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm">
-       <BreatheDots className="w-16 h-16 mb-4" />
-       <p className="text-white/70 font-body text-[14px]">Preparing download…</p>
-     </div>
-   )}
-   ```
+- **Pixel-perfect** — CSS `position: fixed` is enforced by the rendering engine, not the OS
+- **Non-intrusive** — stays on top of the page without stealing focus or creating a taskbar entry
+- **Consistent** — works identically across all OS and Chrome versions
+- **Dismissable** — easy to animate in/out
 
-4. **Disable button while downloading** — Add `disabled={downloading}` and visual disabled state to the download button.
+### Recommended hybrid approach
 
-### Files
-- `src/pages/Extension.tsx` — add state, guard, overlay, button disable
+1. **Primary (99% of cases)**: Inject a content script overlay into the active tab — a small iframe (290x400px) anchored bottom-right with `position: fixed`
+2. **Fallback (rare edge case)**: If no browser window/tab exists, use `chrome.windows.create` with fixed CSS dimensions as a safety net
+
+### Implementation scope
+
+1. Create `extension/content.js` — injects/removes the iframe overlay
+2. Create `extension/content-overlay.css` — fixed-position styling
+3. Update `extension/manifest.json` — add `scripting` + `activeTab` permissions
+4. Update `extension/background.js` — replace `openStandalonePopup()` with inject-or-fallback logic
+5. Update `extension/popup.html` — add `iframe-mode` CSS that constrains to container size
+6. Repackage `public/aera-extension.zip`
+
+This is a clean, production-grade solution used by most major extensions.
 
