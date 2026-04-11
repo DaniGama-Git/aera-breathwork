@@ -522,6 +522,7 @@ chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
     // Calendar-triggered or on-demand: borderless standalone mode — auto-start
     triggeredMode = true;
     document.body.classList.add("triggered-mode");
+    document.documentElement.classList.add("triggered-mode");
     document.documentElement.style.width = "100vw";
     document.documentElement.style.height = "100vh";
     chrome.storage.local.remove(["autoStart", "activeProtocol"]);
