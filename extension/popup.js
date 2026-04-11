@@ -512,6 +512,9 @@ const urlParams = new URLSearchParams(window.location.search);
 const isIframeMode = urlParams.get("iframe") === "true";
 if (isIframeMode) {
   document.body.classList.add("iframe-mode");
+  document.documentElement.classList.add("overlay-mode");
+  document.documentElement.style.width = "290px";
+  document.documentElement.style.height = "400px";
 }
 
 chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
@@ -519,6 +522,9 @@ chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
     // Calendar-triggered or on-demand: borderless standalone mode — auto-start
     triggeredMode = true;
     document.body.classList.add("triggered-mode");
+    document.documentElement.classList.add("overlay-mode");
+    document.documentElement.style.width = "290px";
+    document.documentElement.style.height = "400px";
     chrome.storage.local.remove(["autoStart", "activeProtocol"]);
     setProtocol(data.activeProtocol || "back-to-back");
     sessionControls.classList.add("active");

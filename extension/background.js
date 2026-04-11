@@ -199,12 +199,17 @@ chrome.notifications.onClicked.addListener((notificationId) => {
 // Fallback: open standalone popup window if no tab is available
 async function openBreathPanel(protocolId) {
   try {
-    // Try to find an active tab to inject the overlay into
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
     const tab = tabs?.[0];
 
-    // Only inject into http/https pages (not chrome://, about:, etc.)
     if (tab?.id && /^https?:\/\//.test(tab.url || "")) {
+      // Programmatically inject content script (idempotent — safe to call multiple times)
+      await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ["content.js"],
+      });
+      // Brief delay to ensure script is registered and listening
+      await new Promise(r => setTimeout(r, 100));
       await chrome.tabs.sendMessage(tab.id, {
         type: "show-breathe-overlay",
         protocolId: protocolId,
@@ -215,7 +220,6 @@ async function openBreathPanel(protocolId) {
     console.log("āera: overlay injection failed, falling back to popup window", e);
   }
 
-  // Fallback: open a standalone popup window
   openFallbackPopup();
 }
 
