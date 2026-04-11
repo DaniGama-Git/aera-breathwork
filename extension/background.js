@@ -195,29 +195,48 @@ chrome.notifications.onClicked.addListener((notificationId) => {
   openBreathPanel();
 });
 
-// Primary: inject content script overlay into active tab
-// Fallback: open standalone popup window if no tab is available
+// Primary: inject the overlay iframe directly into the active tab
+// Fallback: open standalone popup window only when no suitable tab is available
 async function openBreathPanel(protocolId) {
   try {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
     const tab = tabs?.[0];
 
     if (tab?.id && /^https?:\/\//.test(tab.url || "")) {
-      // Programmatically inject content script (idempotent — safe to call multiple times)
       await chrome.scripting.executeScript({
         target: { tabId: tab.id },
-        files: ["content.js"],
-      });
-      // Brief delay to ensure script is registered and listening
-      await new Promise(r => setTimeout(r, 100));
-      await chrome.tabs.sendMessage(tab.id, {
-        type: "show-breathe-overlay",
-        protocolId: protocolId,
+        args: [chrome.runtime.getURL(`popup.html?triggered=true&iframe=true`)],
+        func: (popupUrl) => {
+          const IFRAME_ID = "aera-breathe-overlay";
+          const existing = document.getElementById(IFRAME_ID);
+          if (existing) {
+            existing.style.display = "block";
+            return;
+          }
+
+          const iframe = document.createElement("iframe");
+          iframe.id = IFRAME_ID;
+          iframe.src = popupUrl;
+          iframe.setAttribute("allow", "autoplay");
+          iframe.style.position = "fixed";
+          iframe.style.bottom = "24px";
+          iframe.style.right = "24px";
+          iframe.style.width = "290px";
+          iframe.style.height = "400px";
+          iframe.style.border = "none";
+          iframe.style.borderRadius = "16px";
+          iframe.style.boxShadow = "0 8px 32px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15)";
+          iframe.style.zIndex = "2147483647";
+          iframe.style.background = "transparent";
+          iframe.style.overflow = "hidden";
+
+          (document.body || document.documentElement).appendChild(iframe);
+        },
       });
       return;
     }
   } catch (e) {
-    console.log("āera: overlay injection failed, falling back to popup window", e);
+    console.log("āera: direct overlay injection failed, falling back to popup window", e);
   }
 
   openFallbackPopup();
@@ -226,7 +245,6 @@ async function openBreathPanel(protocolId) {
 async function openFallbackPopup() {
   const popupUrl = chrome.runtime.getURL("popup.html?triggered=true");
 
-  // Check if one is already open
   const allWindows = await chrome.windows.getAll({ populate: true });
   for (const w of allWindows) {
     if (w.type === "popup" && w.tabs?.some(t => t.url?.includes("popup.html"))) {
