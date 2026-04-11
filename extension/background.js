@@ -239,7 +239,10 @@ async function openBreathPanel(protocolId, preferredTabId) {
       if (isInjectableTab(tab)) {
         console.log("āera: using preferred tab", tab.id, tab.url);
         const result = await showOverlayInTab(tab.id, protocolId);
-        if (result?.ok) return;
+        if (result?.ok) {
+          chrome.storage.local.remove(["autoStart", "activeProtocol"]);
+          return;
+        }
       } else {
         console.log("āera: preferred tab not injectable", tab?.url);
       }
@@ -259,7 +262,10 @@ async function openBreathPanel(protocolId, preferredTabId) {
     if (tab?.id) {
       console.log("āera: discovered tab", tab.id, tab.url);
       const result = await showOverlayInTab(tab.id, protocolId);
-      if (result?.ok) return;
+      if (result?.ok) {
+        chrome.storage.local.remove(["autoStart", "activeProtocol"]);
+        return;
+      }
       console.log("āera: overlay inject failed on discovered tab");
     } else {
       console.log("āera: no injectable tab found");
