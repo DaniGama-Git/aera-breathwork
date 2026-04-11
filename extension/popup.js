@@ -108,6 +108,7 @@ if (demandBtn) {
     const randomId = protocolIds[Math.floor(Math.random() * protocolIds.length)];
     // Ask background to open a standalone popup with this protocol
     chrome.runtime.sendMessage({ type: "open-breathe-session", protocolId: randomId });
+    window.close();
   });
 }
 

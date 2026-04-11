@@ -195,51 +195,55 @@ chrome.notifications.onClicked.addListener((notificationId) => {
   openBreathPanel();
 });
 
-// Primary: inject the overlay iframe directly into the active tab
-// Fallback: open standalone popup window only when no suitable tab is available
+function isInjectableTab(tab) {
+  return !!tab?.id && /^https?:\/\//.test(tab.url || "");
+}
+
+async function findInjectableTab() {
+  const lastFocusedTabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+  const lastFocusedTab = lastFocusedTabs.find(isInjectableTab);
+  if (lastFocusedTab) return lastFocusedTab;
+
+  const activeTabs = await chrome.tabs.query({ active: true });
+  return activeTabs.find(isInjectableTab) || null;
+}
+
+async function showOverlayInTab(tabId, protocolId) {
+  try {
+    return await chrome.tabs.sendMessage(tabId, {
+      type: "show-breathe-overlay",
+      protocolId,
+    });
+  } catch (_error) {
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      files: ["content.js"],
+    });
+
+    return chrome.tabs.sendMessage(tabId, {
+      type: "show-breathe-overlay",
+      protocolId,
+    });
+  }
+}
+
+// Primary: show the shared content-script overlay in an injectable browser tab.
+// Fallback: open the standalone popup only when no injectable page is available.
 async function openBreathPanel(protocolId) {
   try {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    const tab = tabs?.[0];
-
-    if (tab?.id && /^https?:\/\//.test(tab.url || "")) {
-      await chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        args: [chrome.runtime.getURL(`popup.html?triggered=true&iframe=true`)],
-        func: (popupUrl) => {
-          const IFRAME_ID = "aera-breathe-overlay";
-          const existing = document.getElementById(IFRAME_ID);
-          if (existing) {
-            existing.style.display = "block";
-            return;
-          }
-
-          const iframe = document.createElement("iframe");
-          iframe.id = IFRAME_ID;
-          iframe.src = popupUrl;
-          iframe.setAttribute("allow", "autoplay");
-          iframe.style.position = "fixed";
-          iframe.style.bottom = "24px";
-          iframe.style.right = "24px";
-          iframe.style.width = "290px";
-          iframe.style.height = "400px";
-          iframe.style.border = "none";
-          iframe.style.borderRadius = "16px";
-          iframe.style.boxShadow = "0 8px 32px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15)";
-          iframe.style.zIndex = "2147483647";
-          iframe.style.background = "transparent";
-          iframe.style.overflow = "hidden";
-
-          (document.body || document.documentElement).appendChild(iframe);
-        },
-      });
+    const tab = await findInjectableTab();
+    if (!tab?.id) {
+      await openFallbackPopup();
       return;
     }
+
+    const result = await showOverlayInTab(tab.id, protocolId);
+    if (result?.ok) return;
   } catch (e) {
-    console.log("āera: direct overlay injection failed, falling back to popup window", e);
+    console.log("āera: overlay injection failed, falling back to popup window", e);
   }
 
-  openFallbackPopup();
+  await openFallbackPopup();
 }
 
 async function openFallbackPopup() {
