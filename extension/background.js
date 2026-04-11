@@ -195,8 +195,31 @@ chrome.notifications.onClicked.addListener((notificationId) => {
   openStandalonePopup();
 });
 
-// Open a standalone floating popup window (not attached to toolbar)
-async function openStandalonePopup() {
+// Primary: inject content script overlay into active tab
+// Fallback: open standalone popup window if no tab is available
+async function openBreathPanel(protocolId) {
+  try {
+    // Try to find an active tab to inject the overlay into
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    const tab = tabs?.[0];
+
+    // Only inject into http/https pages (not chrome://, about:, etc.)
+    if (tab?.id && /^https?:\/\//.test(tab.url || "")) {
+      await chrome.tabs.sendMessage(tab.id, {
+        type: "show-breathe-overlay",
+        protocolId: protocolId,
+      });
+      return;
+    }
+  } catch (e) {
+    console.log("āera: overlay injection failed, falling back to popup window", e);
+  }
+
+  // Fallback: open a standalone popup window
+  openFallbackPopup();
+}
+
+async function openFallbackPopup() {
   const popupUrl = chrome.runtime.getURL("popup.html?triggered=true");
 
   // Check if one is already open
@@ -209,15 +232,14 @@ async function openStandalonePopup() {
   }
 
   const width = 290;
-  const height = 320;
-
-  // Position top-right of current window if available
+  const height = 400;
   let left, top;
+
   try {
     const currentWindow = await chrome.windows.getCurrent();
-    if (currentWindow && currentWindow.width) {
-      left = (currentWindow.left + currentWindow.width) - width - 24;
-      top = currentWindow.top + 60;
+    if (currentWindow && currentWindow.width && currentWindow.height) {
+      left = Math.round(currentWindow.left + currentWindow.width - width - 24);
+      top = Math.round(currentWindow.top + currentWindow.height - height - 24);
     }
   } catch (_) {}
 
@@ -226,6 +248,7 @@ async function openStandalonePopup() {
     type: "popup",
     width,
     height,
+    state: "normal",
     focused: true,
   };
   if (left !== undefined) createOpts.left = left;
