@@ -40,11 +40,11 @@ async function loadSettings() {
         if (defaults.keywords?.length && !data.keywords?.length) {
           await chrome.storage.local.set({
             keywords: defaults.keywords,
-            leadMinutes: defaults.leadMinutes ?? 15,
+            leadMinutes: defaults.leadMinutes ?? 5,
             defaultsApplied: true,
           });
           data.keywords = defaults.keywords;
-          data.leadMinutes = defaults.leadMinutes ?? 15;
+          data.leadMinutes = defaults.leadMinutes ?? 5;
         }
       }
     } catch (_) { /* no defaults.json bundled — skip */ }
