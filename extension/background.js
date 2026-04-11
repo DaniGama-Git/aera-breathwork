@@ -76,7 +76,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       autoStart: true,
       activeProtocol: protocolId,
     }, () => {
-      openStandalonePopup();
+      openBreathPanel(protocolId);
       sendResponse({ ok: true });
     });
     return true;
@@ -136,7 +136,7 @@ async function checkCalendar() {
           });
 
           // Open as standalone floating window
-          openStandalonePopup();
+          openBreathPanel(protocolId);
         }
       }
     }
@@ -192,7 +192,7 @@ function parseIcalDate(str) {
 chrome.notifications.onClicked.addListener((notificationId) => {
   chrome.notifications.clear(notificationId);
   chrome.storage.local.set({ autoStart: true });
-  openStandalonePopup();
+  openBreathPanel();
 });
 
 // Primary: inject content script overlay into active tab
