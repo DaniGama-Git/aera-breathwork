@@ -113,12 +113,10 @@ if (demandBtn) {
       const tab = tabs.find(t => /^https?:\/\//.test(t.url || ""));
       if (tab) targetTabId = tab.id;
     } catch (_) {}
-    // Await the message so background has time to open the overlay before popup closes
+    // Await overlay injection (background keeps channel alive until done)
     try {
       await chrome.runtime.sendMessage({ type: "open-breathe-session", protocolId: randomId, targetTabId });
     } catch (_) {}
-    // Give the background worker time to inject the overlay before we close
-    await new Promise(r => setTimeout(r, 350));
     window.close();
   });
 }
