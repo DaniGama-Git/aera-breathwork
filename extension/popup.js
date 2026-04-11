@@ -117,6 +117,8 @@ if (demandBtn) {
     try {
       await chrome.runtime.sendMessage({ type: "open-breathe-session", protocolId: randomId, targetTabId });
     } catch (_) {}
+    // Give the background worker time to inject the overlay before we close
+    await new Promise(r => setTimeout(r, 350));
     window.close();
   });
 }
