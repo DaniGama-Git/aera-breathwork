@@ -88,8 +88,7 @@ const Extension = () => {
     <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
       {downloading && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm">
-          <BreatheDots className="w-16 h-16 mb-4" />
-          <p className="text-white/70 font-body text-[14px]">Preparing download…</p>
+          <BreatheDots className="w-14 h-14" />
         </div>
       )}
       <img
@@ -135,11 +134,12 @@ const Extension = () => {
         </div>
 
         {/* Product mockup */}
-        <div className="px-6 flex justify-center pb-6">
+        <div className="px-6 flex justify-center pb-6" style={{ minHeight: "224px" }}>
           <img
             src={mockupExtension}
             alt="āera Chrome extension preview"
             className="max-h-[200px] w-auto rounded-xl"
+            loading="eager"
             style={{ filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.3))" }}
           />
         </div>
