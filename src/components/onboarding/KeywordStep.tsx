@@ -35,10 +35,10 @@ const KeywordStep = ({ selected, suggestions, onChange, onContinue }: Props) => 
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-white font-body font-semibold text-[22px] leading-tight mb-3">
+      <h1 className="text-gray-900 font-body font-semibold text-[22px] leading-tight mb-3">
         In which specific meetings would you like to receive a quick reset?
       </h1>
-      <p className="text-white font-body text-[14px] leading-relaxed mb-8">
+      <p className="text-gray-600 font-body text-[14px] leading-relaxed mb-8">
         āera delivers a session timed to the moment. Select as many as you want — or add your own.
       </p>
 
@@ -52,8 +52,8 @@ const KeywordStep = ({ selected, suggestions, onChange, onContinue }: Props) => 
               onClick={() => toggle(kw)}
               className={`px-4 py-2 rounded-full border transition-all duration-200 font-body text-[14px] ${
                 isSelected
-                  ? "border-white bg-white/20 text-white"
-                  : "border-white/30 bg-white/10 text-white/80 hover:border-white/50 hover:text-white"
+                  ? "border-gray-900 bg-gray-900/15 text-gray-900"
+                  : "border-gray-400/50 bg-white/40 text-gray-600 hover:border-gray-500 hover:text-gray-800"
               }`}
             >
               {kw}
@@ -70,12 +70,12 @@ const KeywordStep = ({ selected, suggestions, onChange, onContinue }: Props) => 
           onChange={(e) => setCustom(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Add a custom keyword"
-          className="flex-1 px-4 py-3 rounded-2xl border border-white/25 bg-white/10 text-white font-body text-[14px] placeholder:text-white/50 focus:outline-none focus:border-white/50 transition-colors"
+          className="flex-1 px-4 py-3 rounded-2xl border border-gray-400/40 bg-white/40 text-gray-900 font-body text-[14px] placeholder:text-gray-400 focus:outline-none focus:border-gray-500 transition-colors"
         />
         {custom.trim() && (
           <button
             onClick={addCustom}
-            className="px-4 py-3 rounded-2xl border border-white/20 bg-white/[0.06] text-white/70 font-body text-[14px] hover:bg-white/10 transition-colors"
+            className="px-4 py-3 rounded-2xl border border-gray-400/40 bg-white/40 text-gray-600 font-body text-[14px] hover:bg-white/60 transition-colors"
           >
             Add
           </button>
@@ -91,7 +91,7 @@ const KeywordStep = ({ selected, suggestions, onChange, onContinue }: Props) => 
               <button
                 key={kw}
                 onClick={() => toggle(kw)}
-                className="px-4 py-2 rounded-full border border-white bg-white/10 text-white font-body text-[14px] transition-all duration-200"
+                className="px-4 py-2 rounded-full border border-gray-900 bg-gray-900/10 text-gray-900 font-body text-[14px] transition-all duration-200"
               >
                 {kw} ×
               </button>
@@ -102,7 +102,7 @@ const KeywordStep = ({ selected, suggestions, onChange, onContinue }: Props) => 
       {selected.length > 0 && (
         <button
           onClick={onContinue}
-          className="mt-6 self-center text-white/60 font-body text-[14px] underline underline-offset-4 decoration-white/30 transition-all duration-300 hover:text-white/90 hover:decoration-white/60"
+          className="mt-6 self-center text-gray-600 font-body text-[14px] underline underline-offset-4 decoration-gray-400 transition-all duration-300 hover:text-gray-900 hover:decoration-gray-600"
         >
           Continue →
         </button>
