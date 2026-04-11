@@ -28,6 +28,26 @@ body{
   overflow:hidden;
 }
 
+/* Iframe mode — constrain to overlay dimensions */
+body.iframe-mode{
+  width:290px !important;
+  min-width:290px !important;
+  height:400px !important;
+  min-height:400px !important;
+}
+body.iframe-mode html{
+  width:290px !important;
+  height:400px !important;
+}
+
+/* Fallback popup window mode */
+body.triggered-mode{
+  width:290px !important;
+  min-width:290px !important;
+  height:400px !important;
+  min-height:400px !important;
+}
+
 /* Tabs */
 .tabs{
   display:flex;width:calc(100% - 32px);margin:14px 16px 0;
