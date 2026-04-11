@@ -100,7 +100,7 @@ function showStatus(msg, isError = false, isSuccess = false) {
 
 chrome.storage.local.get(["icalUrl"], data => updateConnectionStatus(!!data.icalUrl));
 
-// ─── Breathe on demand ───
+// ─── Recover on demand ───
 const demandBtn = document.getElementById("demand-btn");
 if (demandBtn) {
   demandBtn.addEventListener("click", async () => {
