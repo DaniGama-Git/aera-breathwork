@@ -73,14 +73,15 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message?.type === "open-breathe-session") {
     const protocolId = message.protocolId || "back-to-back";
     const targetTabId = message.targetTabId || null;
+    // Respond immediately so popup can close without killing the port
+    sendResponse({ ok: true });
     chrome.storage.local.set({
       autoStart: true,
       activeProtocol: protocolId,
-    }, async () => {
-      await openBreathPanel(protocolId, targetTabId);
-      try { sendResponse({ ok: true }); } catch (_) {}
+    }, () => {
+      openBreathPanel(protocolId, targetTabId);
     });
-    return true;
+    return false;
   }
 });
 
