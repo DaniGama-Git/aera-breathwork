@@ -1,84 +1,67 @@
 
+Goal: stop “Breathe on Demand” from opening the standalone extension window unless the current page is truly non-injectable.
 
-## Why the Overlay Is Still Opening Full-Screen
+What I found
+- `extension/background.js` already uses `lastFocusedWindow` and routes both launch types through `showOverlayInTab(...)`.
+- `extension/popup.js` already calls `window.close()`.
+- `extension/content.js` already owns the single overlay UI + close button.
+- So the original issue was only partially solved. The remaining failure is most likely that the background script is still trying to discover the tab after the popup interaction, which can race or select the wrong context. There is also no diagnostic output showing which step is failing.
 
-There are **two compounding bugs**:
+Implementation plan
+1. Strengthen tab targeting in `extension/popup.js`
+- Before sending `open-breathe-session`, read the currently active browser tab from the popup context.
+- Send that `tabId` along with `protocolId`.
+- Keep `window.close()` immediately after sending.
 
-### Bug 1: `chrome.tabs.sendMessage` silently fails
-The `openBreathPanel()` function tries to message the content script via `chrome.tabs.sendMessage`. But `content.js` is registered as `document_idle` — if the tab was opened before the extension was installed/reloaded, the content script isn't loaded yet. The `sendMessage` call throws, gets caught, and falls through to `openFallbackPopup()`.
+2. Use the explicit tab first in `extension/background.js`
+- Update the message handler to accept an optional `tabId`.
+- In `openBreathPanel`, first try that exact tab:
+  - `chrome.tabs.get(tabId)`
+  - verify it is a normal `http/https` page
+  - run the existing `showOverlayInTab(...)` flow
+- Only if that fails, fall back to the current discovery logic.
 
-### Bug 2: `chrome.windows.create` dimensions are ignored
-The fallback creates a window with `width: 290, height: 400` but Chrome and the OS treat these as **hints**. macOS in particular can override with minimum sizes (~400px+) or snap/maximize behavior. The CSS inside `popup.html` has `html` hardcoded to `360px x 520px`, and `body.triggered-mode` constrains the body to `290px x 400px` — but the `html` element stays at `360x520`, causing the content to overflow or the window to expand.
+3. Add a tiny defer before fallback discovery
+- When launch comes from the popup, wait one short tick before running the fallback tab search so the popup has time to close and focus can return to the browser window.
+- No UI/CSS changes.
 
-### The Fix
-
-**1. `extension/background.js` — Use `chrome.scripting.executeScript` instead of `sendMessage`**
-
-Instead of relying on the content script being pre-loaded, programmatically inject the overlay code into the active tab. This guarantees the injection works even if the declarative content script hasn't loaded yet:
-
-```javascript
-async function openBreathPanel(protocolId) {
-  try {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    const tab = tabs?.[0];
-    
-    if (tab?.id && /^https?:\/\//.test(tab.url || "")) {
-      // Inject content script programmatically (idempotent)
-      await chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        files: ["content.js"],
-      });
-      // Small delay to ensure script is ready, then send message
-      await new Promise(r => setTimeout(r, 100));
-      await chrome.tabs.sendMessage(tab.id, {
-        type: "show-breathe-overlay",
-        protocolId,
-      });
-      return;
-    }
-  } catch (e) { /* fall through to fallback */ }
-  
-  openFallbackPopup();
-}
+4. Keep one overlay path only
+- Preserve this single path for both manual and scheduled launches:
+```text
+openBreathPanel -> showOverlayInTab -> sendMessage(content.js) -> executeScript(content.js if needed)
 ```
+- Do not add any second injection implementation.
 
-**2. `extension/popup.html` — Fix `html` element sizing for triggered/iframe modes**
+5. Restrict fallback window to real edge cases only
+- `openFallbackPopup()` should run only when:
+  - the preferred tab is missing/invalid
+  - no injectable `http/https` tab can be found
+  - or Chrome explicitly rejects injection on protected pages (`chrome://`, extension pages, Chrome Web Store, etc.)
 
-Add CSS so that in both `iframe-mode` and `triggered-mode`, the `html` element also gets constrained (currently only the `body` is constrained while `html` stays at 360x520):
+6. Add temporary failure logging
+- Add concise logs around:
+  - preferred tab received
+  - tab chosen
+  - sendMessage failure
+  - executeScript failure
+  - exact reason fallback was used
+- This will let us confirm whether the issue is target selection vs protected-page rejection.
 
-```css
-body.iframe-mode { width:290px!important; height:400px!important; }
-body.triggered-mode { width:290px!important; height:400px!important; }
+7. Optional hardening
+- If cross-window tab detection is still inconsistent, add the `tabs` permission in `extension/manifest.json` to make tab lookup more reliable across Chromium variants.
 
-/* Also constrain the html element */
-body.iframe-mode ~ html,
-html:has(body.iframe-mode) { width:290px!important; height:400px!important; }
-html:has(body.triggered-mode) { width:290px!important; height:400px!important; }
-```
+Verification
+- Test from a normal `https://` page with the popup open.
+- Click “Breathe on Demand” and confirm the overlay appears in-page, not as a separate extension window.
+- Confirm the close button still dismisses the overlay.
+- Confirm scheduled triggers use the same overlay path.
+- Confirm fallback only happens on protected/non-injectable pages.
 
-Actually, since CSS can't select the parent `html` from `body`, we'll handle this in `popup.js` by also setting `document.documentElement.style` when entering these modes.
-
-**3. `extension/popup.js` — Constrain `html` element in triggered/iframe mode**
-
-When `iframe-mode` or `triggered-mode` classes are added, also set the `html` element dimensions:
-
-```javascript
-if (isIframeMode) {
-  document.body.classList.add("iframe-mode");
-  document.documentElement.style.width = "290px";
-  document.documentElement.style.height = "400px";
-}
-
-// And in the autoStart block:
-document.documentElement.style.width = "290px";
-document.documentElement.style.height = "400px";
-```
-
-**4. `extension/manifest.json` — Ensure `scripting` permission is present** (already added in previous update — just verify).
-
-**5. Repackage `public/aera-extension.zip`**.
-
-### Summary
-
-The primary fix is using `chrome.scripting.executeScript` to guarantee the content script is injected before messaging it. The secondary fix constrains the `html` element (not just `body`) so even the fallback window renders at the correct size.
-
+Technical notes
+- No new CSS.
+- No new popup/window behavior.
+- No second overlay implementation.
+- Main code changes will be in:
+  - `extension/popup.js`
+  - `extension/background.js`
+  - possibly `extension/manifest.json` only if permission hardening is needed
