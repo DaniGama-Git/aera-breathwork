@@ -15,6 +15,10 @@ html.overlay-mode{
   width:290px !important;
   height:400px !important;
 }
+html.triggered-mode{
+  width:100vw !important;
+  height:100vh !important;
+}
 
 body{
   width:360px;
@@ -44,12 +48,14 @@ body.iframe-mode html{
   height:400px !important;
 }
 
-/* Fallback popup window mode */
+/* Fallback popup window mode — fill whatever size Chrome gives */
 body.triggered-mode{
-  width:290px !important;
-  min-width:290px !important;
-  height:400px !important;
-  min-height:400px !important;
+  width:100vw !important;
+  min-width:unset !important;
+  height:100vh !important;
+  min-height:unset !important;
+  max-width:100vw !important;
+  max-height:100vh !important;
 }
 
 /* Tabs */

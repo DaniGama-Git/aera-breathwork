@@ -522,9 +522,9 @@ chrome.storage.local.get(["autoStart", "activeProtocol"], data => {
     // Calendar-triggered or on-demand: borderless standalone mode — auto-start
     triggeredMode = true;
     document.body.classList.add("triggered-mode");
-    document.documentElement.classList.add("overlay-mode");
-    document.documentElement.style.width = "290px";
-    document.documentElement.style.height = "400px";
+    document.documentElement.classList.add("triggered-mode");
+    document.documentElement.style.width = "100vw";
+    document.documentElement.style.height = "100vh";
     chrome.storage.local.remove(["autoStart", "activeProtocol"]);
     setProtocol(data.activeProtocol || "back-to-back");
     sessionControls.classList.add("active");
