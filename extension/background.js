@@ -72,11 +72,12 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   if (message?.type === "open-breathe-session") {
     const protocolId = message.protocolId || "back-to-back";
+    const targetTabId = message.targetTabId || null;
     chrome.storage.local.set({
       autoStart: true,
       activeProtocol: protocolId,
     }, () => {
-      openBreathPanel(protocolId);
+      openBreathPanel(protocolId, targetTabId);
       sendResponse({ ok: true });
     });
     return true;
@@ -229,20 +230,45 @@ async function showOverlayInTab(tabId, protocolId) {
 
 // Primary: show the shared content-script overlay in an injectable browser tab.
 // Fallback: open the standalone popup only when no injectable page is available.
-async function openBreathPanel(protocolId) {
-  try {
-    const tab = await findInjectableTab();
-    if (!tab?.id) {
-      await openFallbackPopup();
-      return;
+async function openBreathPanel(protocolId, preferredTabId) {
+  // 1. Try the explicit tab passed from the popup first
+  if (preferredTabId) {
+    try {
+      const tab = await chrome.tabs.get(preferredTabId);
+      if (isInjectableTab(tab)) {
+        console.log("āera: using preferred tab", tab.id, tab.url);
+        const result = await showOverlayInTab(tab.id, protocolId);
+        if (result?.ok) return;
+      } else {
+        console.log("āera: preferred tab not injectable", tab?.url);
+      }
+    } catch (e) {
+      console.log("āera: preferred tab lookup failed", e.message);
     }
-
-    const result = await showOverlayInTab(tab.id, protocolId);
-    if (result?.ok) return;
-  } catch (e) {
-    console.log("āera: overlay injection failed, falling back to popup window", e);
   }
 
+  // 2. Small delay so popup can close and focus returns to browser
+  if (preferredTabId) {
+    await new Promise(r => setTimeout(r, 150));
+  }
+
+  // 3. Auto-discover an injectable tab
+  try {
+    const tab = await findInjectableTab();
+    if (tab?.id) {
+      console.log("āera: discovered tab", tab.id, tab.url);
+      const result = await showOverlayInTab(tab.id, protocolId);
+      if (result?.ok) return;
+      console.log("āera: overlay inject failed on discovered tab");
+    } else {
+      console.log("āera: no injectable tab found");
+    }
+  } catch (e) {
+    console.log("āera: tab discovery/injection failed", e.message);
+  }
+
+  // 4. Last resort
+  console.log("āera: falling back to popup window");
   await openFallbackPopup();
 }
 
