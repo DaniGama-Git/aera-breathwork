@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import JSZip from "jszip";
 import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import areaLogo from "@/assets/aera-logo.svg";
-import mockupExtension from "@/assets/mockup-extension-breathe.svg";
+import mockupExtension from "@/assets/mockup-extension-desktop.jpg";
 import BottomNavBar from "@/components/BottomNavBar";
 import BreatheDots from "@/components/BreatheDots";
 import { supabase } from "@/integrations/supabase/client";
@@ -134,13 +134,13 @@ const Extension = () => {
         </div>
 
         {/* Product mockup */}
-        <div className="px-6 flex justify-center pb-6" style={{ minHeight: "224px" }}>
+        <div className="px-6 flex justify-center pb-6">
           <img
             src={mockupExtension}
             alt="āera Chrome extension preview"
-            className="max-h-[200px] w-auto rounded-xl"
+            className="w-full max-w-[340px] h-auto rounded-lg"
             loading="eager"
-            style={{ filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.3))" }}
+            style={{ filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.4))" }}
           />
         </div>
 
