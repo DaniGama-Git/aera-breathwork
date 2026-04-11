@@ -53,7 +53,7 @@ async function loadSettings() {
 
   icalInput.value = data.icalUrl || "";
   keywordsInput.value = (data.keywords || []).join(", ");
-  leadInput.value = data.leadMinutes ?? 15;
+  leadInput.value = data.leadMinutes ?? 5;
   updateConnectionStatus(!!data.icalUrl);
 }
 
@@ -68,7 +68,7 @@ function updateConnectionStatus(connected) {
 saveBtn.addEventListener("click", async () => {
   const icalUrl = icalInput.value.trim();
   const keywords = keywordsInput.value.split(",").map(k => k.trim()).filter(Boolean);
-  const leadMinutes = parseInt(leadInput.value) || 15;
+  const leadMinutes = parseInt(leadInput.value) || 5;
 
   if (!icalUrl) { showStatus("Please enter your iCal URL", true); return; }
   if (keywords.length === 0) { showStatus("Please enter at least one keyword", true); return; }
