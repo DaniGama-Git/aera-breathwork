@@ -73,12 +73,12 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message?.type === "open-breathe-session") {
     const protocolId = message.protocolId || "back-to-back";
     const targetTabId = message.targetTabId || null;
-    // Save protocol so the iframe can read it on load
-    chrome.storage.local.set({ activeProtocol: protocolId }).then(() => {
-      openBreathPanel(protocolId, targetTabId).then(() => {
-        sendResponse({ ok: true });
-      });
-    });
+    // Save protocol so the iframe can read it on load, then inject overlay
+    (async () => {
+      await chrome.storage.local.set({ activeProtocol: protocolId });
+      await openBreathPanel(protocolId, targetTabId);
+      sendResponse({ ok: true });
+    })();
     return true;
   }
 });
