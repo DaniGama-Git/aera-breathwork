@@ -28,19 +28,19 @@ const STEPS = [
       'In the left sidebar, look for "Settings for my calendars". Click on the name of the calendar you use for work (usually your email address).',
   },
   {
-    number: "03",
+    number: "04",
     title: 'Scroll down to "Integrate calendar"',
     description:
       'Scroll past "Calendar settings" and "Event notifications" until you reach a section called "Integrate calendar". It\'s near the bottom of the page.',
   },
   {
-    number: "04",
+    number: "05",
     title: "Copy the secret iCal address",
     description:
       'Under "Secret address in iCal format", you\'ll see a long URL starting with https://calendar.google.com/calendar/ical/... — click the copy icon (📋) next to it.',
   },
   {
-    number: "05",
+    number: "06",
     title: "Paste into āera",
     description:
       "Open the āera extension, go to the Settings tab, and paste the URL into the iCal field. That's it.",
