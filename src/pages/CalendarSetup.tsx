@@ -17,6 +17,12 @@ const STEPS = [
   },
   {
     number: "02",
+    title: "Make your calendar public",
+    description:
+      'Click your calendar name in the left sidebar, then under "Access permissions for events", check "Make available to public". This allows āera to read your events via the iCal link.',
+  },
+  {
+    number: "03",
     title: "Click your calendar name",
     description:
       'In the left sidebar, look for "Settings for my calendars". Click on the name of the calendar you use for work (usually your email address).',
