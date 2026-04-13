@@ -553,6 +553,20 @@ if (ctrlClose) {
   });
 }
 
+// Fullscreen toggle (iframe only)
+const ctrlFullscreen = document.getElementById("ctrl-fullscreen");
+const expandIcon = document.getElementById("expand-icon");
+const shrinkIcon = document.getElementById("shrink-icon");
+let isFullscreen = false;
+if (ctrlFullscreen) {
+  ctrlFullscreen.addEventListener("click", () => {
+    isFullscreen = !isFullscreen;
+    window.parent.postMessage({ type: "toggle-fullscreen", fullscreen: isFullscreen }, "*");
+    expandIcon.style.display = isFullscreen ? "none" : "";
+    shrinkIcon.style.display = isFullscreen ? "" : "none";
+  });
+}
+
 if (isIframeMode) {
   // Running inside the content-script overlay — fixed dimensions, no standalone overrides
   document.body.classList.add("iframe-mode");
