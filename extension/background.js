@@ -73,9 +73,11 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message?.type === "open-breathe-session") {
     const protocolId = message.protocolId || "back-to-back";
     const targetTabId = message.targetTabId || null;
-    // Call openBreathPanel directly; return true keeps service worker alive
-    openBreathPanel(protocolId, targetTabId).then(() => {
-      sendResponse({ ok: true });
+    // Save protocol so the iframe can read it on load
+    chrome.storage.local.set({ activeProtocol: protocolId }).then(() => {
+      openBreathPanel(protocolId, targetTabId).then(() => {
+        sendResponse({ ok: true });
+      });
     });
     return true;
   }
@@ -230,7 +232,7 @@ async function openBreathPanel(protocolId, preferredTabId) {
         console.log("āera: using preferred tab", tab.id, tab.url);
         const result = await showOverlayInTab(tab.id, protocolId);
         if (result?.ok) {
-          chrome.storage.local.remove(["autoStart", "activeProtocol"]);
+          chrome.storage.local.remove(["autoStart"]);
           return;
         }
       } else {
@@ -253,7 +255,7 @@ async function openBreathPanel(protocolId, preferredTabId) {
       console.log("āera: discovered tab", tab.id, tab.url);
       const result = await showOverlayInTab(tab.id, protocolId);
       if (result?.ok) {
-        chrome.storage.local.remove(["autoStart", "activeProtocol"]);
+        chrome.storage.local.remove(["autoStart"]);
         return;
       }
       console.log("āera: overlay inject failed on discovered tab");
@@ -266,5 +268,5 @@ async function openBreathPanel(protocolId, preferredTabId) {
 
   // No fallback — overlay only
   console.log("āera: no injectable tab available, doing nothing");
-  chrome.storage.local.remove(["autoStart", "activeProtocol"]);
+  chrome.storage.local.remove(["autoStart"]);
 }

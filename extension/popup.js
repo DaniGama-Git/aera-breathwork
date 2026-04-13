@@ -578,6 +578,8 @@ if (isIframeMode) {
     triggeredMode = true;
     // Do NOT add triggered-mode here — iframe-mode handles its own layout
     setProtocol(data.activeProtocol || "back-to-back");
+    // Clear after reading so it doesn't persist
+    chrome.storage.local.remove(["activeProtocol"]);
     sessionControls.classList.add("active");
     preloadImages(ALL_IMAGES).then(() => {
       showScreen("logo");
