@@ -31,7 +31,7 @@ const soundToggle = document.getElementById("sound-toggle");
 const soundLabel = document.getElementById("sound-label");
 
 function updateSoundLabel(enabled) {
-  soundLabel.textContent = enabled ? "With sound" : "Without sound";
+  soundLabel.textContent = enabled ? "Sound" : "No sound";
 }
 
 soundToggle.addEventListener("change", () => {
