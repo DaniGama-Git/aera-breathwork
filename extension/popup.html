@@ -50,9 +50,10 @@ body.iframe-mode .card-wrap{padding:0;margin:0;width:100%;height:100%}
 body.iframe-mode .card{border-radius:0;width:100%;height:100%;background:#1a1a1a}
 body.iframe-mode .breathe-tab{height:100%;width:100%}
 
-/* Close button — right-aligned in controls row */
-.ctrl-close{display:none;margin-left:auto}
-body.iframe-mode .ctrl-close{display:flex}
+/* Close & fullscreen buttons — right-aligned in controls row */
+.ctrl-close,.ctrl-fullscreen{display:none;margin-left:auto}
+.ctrl-fullscreen{margin-left:0}
+body.iframe-mode .ctrl-close,body.iframe-mode .ctrl-fullscreen{display:flex}
 
 /* Fallback popup window mode — fill whatever size Chrome gives */
 body.triggered-mode{
@@ -433,6 +434,10 @@ Let your mind open up.</p>
           <button class="ctrl-btn" id="ctrl-mute" title="Mute">
             <svg id="mute-off-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19.07 4.93a10 10 0 010 14.14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <svg id="mute-on-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <button class="ctrl-btn ctrl-fullscreen" id="ctrl-fullscreen" title="Fullscreen">
+            <svg id="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            <svg id="shrink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
           </button>
           <button class="ctrl-btn ctrl-close" id="ctrl-close" title="Close">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>

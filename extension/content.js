@@ -51,6 +51,29 @@ function handleIframeMessage(event) {
   if (event.data?.type === "close-overlay") {
     removeOverlay();
   }
+  if (event.data?.type === "toggle-fullscreen") {
+    const wrapper = document.getElementById(WRAPPER_ID);
+    const iframe = document.getElementById(IFRAME_ID);
+    if (!wrapper || !iframe) return;
+    if (event.data.fullscreen) {
+      wrapper.style.cssText = `
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 2147483647; display: flex; align-items: center; justify-content: center;
+        background: rgba(0,0,0,0.6);
+      `;
+      iframe.style.width = "100vw";
+      iframe.style.height = "100vh";
+      iframe.style.borderRadius = "0";
+    } else {
+      wrapper.style.cssText = `
+        position: fixed; bottom: 24px; right: 24px; z-index: 2147483647;
+        display: flex; align-items: flex-end; justify-content: flex-end;
+      `;
+      iframe.style.width = IFRAME_WIDTH + "px";
+      iframe.style.height = IFRAME_HEIGHT + "px";
+      iframe.style.borderRadius = "16px";
+    }
+  }
 }
 
 function removeOverlay() {
