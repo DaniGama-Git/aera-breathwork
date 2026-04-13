@@ -531,6 +531,21 @@ Let your mind open up.</p>
       <input id="keywords" placeholder="pitch, board, negotiation"/>
       <span class="hint">Comma-separated event title keywords</span>
     </div>
+    <div class="field sound-toggle-field" style="margin-top:16px; display:flex; align-items:center; justify-content:space-between;">
+      <label style="margin:0; font-weight:500;">Sound</label>
+      <div class="sound-toggle-wrap" style="display:flex; align-items:center; gap:8px;">
+        <span id="sound-label" style="font-size:13px; color:#888;">With sound</span>
+        <label class="toggle-switch" style="position:relative;display:inline-block;width:36px;height:20px;margin:0;">
+          <input type="checkbox" id="sound-toggle" checked style="opacity:0;width:0;height:0;">
+          <span class="toggle-slider" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:20px;transition:.2s;"></span>
+        </label>
+      </div>
+    </div>
+    <style>
+      .toggle-switch input:checked + .toggle-slider { background: #1a1a1a; }
+      .toggle-switch .toggle-slider::before { content:''; position:absolute; height:14px; width:14px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.2s; }
+      .toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); }
+    </style>
     <button class="save-btn" id="save-btn">Save & Connect</button>
     <div class="status" id="status"></div>
 

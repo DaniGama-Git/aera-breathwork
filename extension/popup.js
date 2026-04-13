@@ -27,9 +27,19 @@ const statusEl = document.getElementById("status");
 const connectionDot = document.getElementById("connection-dot");
 const connectionText = document.getElementById("connection-text");
 const urlValidated = document.getElementById("url-validated");
+const soundToggle = document.getElementById("sound-toggle");
+const soundLabel = document.getElementById("sound-label");
+
+function updateSoundLabel(enabled) {
+  soundLabel.textContent = enabled ? "With sound" : "Without sound";
+}
+
+soundToggle.addEventListener("change", () => {
+  updateSoundLabel(soundToggle.checked);
+});
 
 async function loadSettings() {
-  const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes", "defaultsApplied"]);
+  const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes", "defaultsApplied", "soundEnabled"]);
 
   // On first run, check for bundled defaults.json
   if (!data.defaultsApplied) {
@@ -54,6 +64,10 @@ async function loadSettings() {
   icalInput.value = data.icalUrl || "";
   keywordsInput.value = (data.keywords || []).join(", ");
   
+  const soundEnabled = data.soundEnabled !== false; // default true
+  soundToggle.checked = soundEnabled;
+  updateSoundLabel(soundEnabled);
+
   updateConnectionStatus(!!data.icalUrl);
 }
 
@@ -86,7 +100,8 @@ saveBtn.addEventListener("click", async () => {
     urlValidated.classList.add("visible");
   }
 
-  await chrome.storage.local.set({ icalUrl, keywords, leadMinutes });
+  const soundEnabled = soundToggle.checked;
+  await chrome.storage.local.set({ icalUrl, keywords, leadMinutes, soundEnabled });
   updateConnectionStatus(true);
   showStatus("Settings saved ✓", false, true);
 });
@@ -170,6 +185,15 @@ let startsWithOverlay = false;
 let triggeredMode = false;
 let muted = false;
 const breathAudio = new BreathAudio();
+
+// Apply saved sound preference
+chrome.storage.local.get(["soundEnabled"], data => {
+  if (data.soundEnabled === false) {
+    muted = true;
+    muteOffIcon.style.display = "none";
+    muteOnIcon.style.display = "";
+  }
+});
 let currentAudioPhase = null;
 let bgAudio = null;
 
