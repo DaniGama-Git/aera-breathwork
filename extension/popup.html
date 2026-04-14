@@ -536,7 +536,24 @@ Let your mind open up.</p>
       <input id="keywords" placeholder="pitch, board, negotiation"/>
       <span class="hint">Comma-separated event title keywords</span>
     </div>
-    <div class="field" style="margin-top:16px;">
+
+    <div class="section-divider"></div>
+
+    <div class="field">
+      <label style="margin-bottom:10px;display:block;">Session triggers</label>
+      <span class="hint" style="margin-bottom:10px;display:block;">Choose when āera should prompt a session.</span>
+      <div class="trigger-checks" id="trigger-checks">
+        <label class="trigger-check"><input type="checkbox" value="before_critical" /><span>Before critical moments</span></label>
+        <label class="trigger-check"><input type="checkbox" value="back_to_back" /><span>Back-to-back meetings</span></label>
+        <label class="trigger-check"><input type="checkbox" value="high_density" /><span>High-intensity days</span></label>
+        <label class="trigger-check"><input type="checkbox" value="end_of_day" /><span>After a long day</span></label>
+        <label class="trigger-check"><input type="checkbox" value="energy_boost" /><span>Energy boost</span></label>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="field" style="margin-top:4px;">
       <label style="margin:0 0 8px 0; font-weight:500; display:block;">Default sound setting</label>
       <div style="display:flex; align-items:center; justify-content:space-between;">
         <span id="sound-label" style="font-size:14px; color:#1a1a1a;">Sound</span>
@@ -550,6 +567,10 @@ Let your mind open up.</p>
       .toggle-switch input:checked + .toggle-slider { background: #1a1a1a; }
       .toggle-switch .toggle-slider::before { content:''; position:absolute; height:14px; width:14px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.2s; }
       .toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); }
+      .trigger-checks{display:flex;flex-direction:column;gap:8px}
+      .trigger-check{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(0,0,0,0.03);cursor:pointer;transition:background 0.2s;font-size:13px;font-weight:500;color:rgba(0,0,0,0.75)}
+      .trigger-check:hover{background:rgba(0,0,0,0.06)}
+      .trigger-check input[type="checkbox"]{width:16px;height:16px;accent-color:#1a1a1a;cursor:pointer;flex-shrink:0}
     </style>
     <button class="save-btn" id="save-btn">Save & Connect</button>
     <div class="status" id="status"></div>
