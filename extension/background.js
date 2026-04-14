@@ -85,7 +85,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 async function validateCalendarUrl(icalUrl) {
   if (!icalUrl || !/^https:\/\/calendar\.google\.com\/calendar\/ical\//i.test(icalUrl)) {
-    return { ok: false, error: "Please enter a valid Google Calendar iCal URL." };
+    return { ok: false, error: "Please enter a valid Google Calendar public iCal URL." };
   }
   const res = await fetch(icalUrl, { redirect: "follow" });
   if (!res.ok) return { ok: false, error: `Calendar request failed (${res.status}).` };
