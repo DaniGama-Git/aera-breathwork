@@ -1,7 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Download, Copy, Check } from "lucide-react";
 import { useState, useEffect } from "react";
-import JSZip from "jszip";
 import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import areaLogo from "@/assets/aera-logo.svg";
 import mockupExtension from "@/assets/mockup-extension-breathe.svg";
@@ -58,35 +57,12 @@ const Extension = () => {
       if (!res.ok) throw new Error(`Download failed: ${res.status}`);
       const blob = await res.blob();
 
-      let finalBlob = blob;
-      // Inject keywords + trigger preferences into the extension bundle
-      const pendingData = sessionStorage.getItem("aera_onboarding_data");
-      let triggers: string[] = [];
-      if (pendingData) {
-        try {
-          const parsed = JSON.parse(pendingData);
-          if (parsed.moments?.length) triggers = parsed.moments;
-        } catch {}
-      }
-      if (triggers.length === 0 && user) {
-        const { data: prefs } = await supabase
-          .from("onboarding_preferences")
-          .select("moments")
-          .eq("user_id", user.id)
-          .maybeSingle();
-        if (prefs?.moments?.length) triggers = prefs.moments;
-      }
-      if (keywords.length > 0 || triggers.length > 0) {
-        const zip = await JSZip.loadAsync(blob);
-        zip.file("defaults.json", JSON.stringify({ keywords, triggers, leadMinutes: 5 }));
-        finalBlob = await zip.generateAsync({ type: "blob" });
-      }
-
       const a = document.createElement("a");
-      a.href = URL.createObjectURL(finalBlob);
+      const url = URL.createObjectURL(blob);
+      a.href = url;
       a.download = "aera-extension.zip";
       a.click();
-      URL.revokeObjectURL(a.href);
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
       setDownloaded(true);
     } catch (err: any) {
       alert(err.message);
