@@ -26,6 +26,8 @@ const Extension = () => {
   const [downloaded, setDownloaded] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
+  const [triggers, setTriggers] = useState<string[]>(["before_critical"]);
+
   useEffect(() => {
     const pendingData = sessionStorage.getItem("aera_onboarding_data");
     if (pendingData) {
@@ -33,19 +35,25 @@ const Extension = () => {
         const parsed = JSON.parse(pendingData);
         if (parsed.calendarKeywords?.length) {
           setKeywords(parsed.calendarKeywords);
-          return;
         }
+        if (parsed.moments?.length) {
+          setTriggers(parsed.moments);
+        }
+        return;
       } catch {}
     }
     if (!user) return;
     supabase
       .from("onboarding_preferences")
-      .select("calendar_keywords")
+      .select("calendar_keywords, moments")
       .eq("user_id", user.id)
       .maybeSingle()
       .then(({ data }) => {
         if (data?.calendar_keywords?.length) {
           setKeywords(data.calendar_keywords);
+        }
+        if (data?.moments?.length) {
+          setTriggers(data.moments);
         }
       });
   }, [user]);
@@ -59,9 +67,9 @@ const Extension = () => {
       const blob = await res.blob();
 
       let finalBlob = blob;
-      if (keywords.length > 0) {
+      if (keywords.length > 0 || triggers.length > 0) {
         const zip = await JSZip.loadAsync(blob);
-        zip.file("defaults.json", JSON.stringify({ keywords, leadMinutes: 15 }));
+        zip.file("defaults.json", JSON.stringify({ keywords, triggers, leadMinutes: 5 }));
         finalBlob = await zip.generateAsync({ type: "blob" });
       }
 
