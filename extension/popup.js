@@ -21,7 +21,6 @@ tabSettings.addEventListener("click", () => {
 // ─── Settings ───
 const icalInput = document.getElementById("ical-url");
 const keywordsInput = document.getElementById("keywords");
-const leadInput = document.getElementById("lead-minutes");
 const saveBtn = document.getElementById("save-btn");
 const statusEl = document.getElementById("status");
 const connectionDot = document.getElementById("connection-dot");
@@ -29,6 +28,23 @@ const connectionText = document.getElementById("connection-text");
 const urlValidated = document.getElementById("url-validated");
 const soundToggle = document.getElementById("sound-toggle");
 const soundLabel = document.getElementById("sound-label");
+const icalInlineDot = document.getElementById("ical-inline-dot");
+const guideToggleBtn = document.getElementById("guide-toggle");
+const guideBody = document.getElementById("guide-body");
+
+// ─── Accordion ───
+guideToggleBtn.addEventListener("click", () => {
+  guideToggleBtn.classList.toggle("open");
+  guideBody.classList.toggle("open");
+});
+
+// ─── Trigger pill toggles ───
+document.querySelectorAll("#trigger-checks .trigger-pill").forEach(pill => {
+  const cb = pill.querySelector("input[type=checkbox]");
+  cb.addEventListener("change", () => {
+    pill.classList.toggle("active", cb.checked);
+  });
+});
 
 function updateSoundLabel(enabled) {
   soundLabel.textContent = enabled ? "Sound" : "No sound";
