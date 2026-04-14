@@ -1,44 +1,31 @@
 
 
-# Extension Settings Panel — Design Refresh
+# Fix Fullscreen Mode for Extension Overlay
 
-## Current State
-The settings panel is a long scrollable form with: logo, connection status dot, 2-step calendar guide, iCal URL textarea, keywords input, trigger checkboxes, sound toggle, save button, and "Recover on demand" button. It feels like a setup wizard rather than a polished settings screen.
+## Problem
+When fullscreen is toggled, `content.js` expands the iframe to `100vw × 100vh`, but inside the iframe the popup's CSS keeps the body locked at `290px × 400px` (iframe-mode). The breathing UI stays small in the top-left corner instead of filling the screen.
 
-## Design Direction
-Consolidate into clean, grouped sections with a more minimal, app-like feel — fewer labels, tighter spacing, and a single-scroll layout that feels finished rather than instructional.
+## Fix
 
-## Changes (all in `extension/popup.html` + `extension/popup.js`)
+### 1. Add a `fullscreen-mode` CSS class in `extension/popup.html`
+```css
+body.fullscreen-mode {
+  width: 100vw !important;
+  min-width: unset !important;
+  height: 100vh !important;
+  min-height: unset !important;
+}
+body.fullscreen-mode .card-wrap { width: 100%; height: 100% }
+body.fullscreen-mode .card { width: 100%; height: 100%; aspect-ratio: unset }
+```
 
-### 1. Collapse the setup guide into a single accordion
-Replace the two numbered guide steps + "Open Calendar Settings" link with a collapsible "How to connect" section that starts collapsed once a calendar URL is saved. This removes ~40% of vertical space for returning users.
+### 2. Toggle this class in `extension/popup.js`
+In the fullscreen click handler (~line 607), add/remove `fullscreen-mode` on `document.body` and update `document.documentElement` styles to `100vw`/`100vh` when entering fullscreen, and back to `290px`/`400px` when exiting.
 
-### 2. Unify the calendar section
-- Merge the connection status dot into the iCal URL field as an inline indicator (green dot inside the input when connected).
-- Replace the textarea with a single-line input (URLs don't need multiline).
-- Move the "validated" badge inline with the input.
-
-### 3. Restyle trigger checkboxes as toggle pills
-Replace the checkbox list with a compact grid of pill-shaped toggles (similar to the tab bar aesthetic). Each pill shows the trigger name and highlights when active. This is more visually appealing and touch-friendly.
-
-### 4. Group sound + save into a bottom bar
-- Move the sound toggle and save button into a sticky bottom bar so they're always visible without scrolling.
-- Style save as a full-width dark button instead of the current outlined pill.
-
-### 5. Remove the "āera" logo from settings
-The logo is already in the tab bar context and the breathe panel. Remove it from settings to save space.
-
-### 6. Restyle "Recover on demand"
-Move it above the save bar as a secondary action with a subtler outline style, or place it as a floating action in the breathe tab instead.
-
-### 7. Typography and spacing cleanup
-- Reduce section gaps from 14px to 10px.
-- Use consistent 13px for all labels.
-- Remove redundant hint text where labels are self-explanatory.
+### 3. Repackage `public/aera-extension.zip`
 
 ## Files Changed
-- `extension/popup.html` — restructured settings panel HTML + updated CSS
-- `extension/popup.js` — accordion toggle logic, updated element references
-
-## No backend or React changes needed — this is purely the extension's local popup UI.
+- `extension/popup.html` — add `fullscreen-mode` CSS rules
+- `extension/popup.js` — toggle the class + html dimensions on fullscreen
+- `public/aera-extension.zip` — rebuilt
 
