@@ -43,9 +43,6 @@ document.querySelectorAll("#trigger-checks .trigger-pill").forEach(pill => {
   const cb = pill.querySelector("input[type=checkbox]");
   cb.addEventListener("change", () => {
     pill.classList.toggle("active", cb.checked);
-    const triggers = Array.from(document.querySelectorAll("#trigger-checks input[type=checkbox]:checked")).map(c => c.value);
-    chrome.storage.local.set({ triggers });
-    showStatus("Triggers updated ✓", false, true);
   });
 });
 
@@ -54,10 +51,7 @@ function updateSoundLabel(enabled) {
 }
 
 soundToggle.addEventListener("change", () => {
-  const enabled = soundToggle.checked;
-  updateSoundLabel(enabled);
-  chrome.storage.local.set({ soundEnabled: enabled });
-  showStatus(enabled ? "Sound on ✓" : "Sound off ✓", false, true);
+  updateSoundLabel(soundToggle.checked);
 });
 
 async function loadSettings() {
@@ -615,15 +609,6 @@ if (ctrlFullscreen) {
     window.parent.postMessage({ type: "toggle-fullscreen", fullscreen: isFullscreen }, "*");
     expandIcon.style.display = isFullscreen ? "none" : "";
     shrinkIcon.style.display = isFullscreen ? "" : "none";
-    if (isFullscreen) {
-      document.body.classList.add("fullscreen-mode");
-      document.documentElement.style.width = "100vw";
-      document.documentElement.style.height = "100vh";
-    } else {
-      document.body.classList.remove("fullscreen-mode");
-      document.documentElement.style.width = "290px";
-      document.documentElement.style.height = "400px";
-    }
   });
 }
 
