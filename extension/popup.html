@@ -536,7 +536,38 @@ Let your mind open up.</p>
       <input id="keywords" placeholder="pitch, board, negotiation"/>
       <span class="hint">Comma-separated event title keywords</span>
     </div>
-    <div class="field" style="margin-top:16px;">
+    <div class="section-divider"></div>
+
+    <div class="field">
+      <label>Session triggers</label>
+      <span class="hint">Choose when āera should prompt you.</span>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#1a1a1a;cursor:pointer;">
+          <input type="checkbox" class="trigger-checkbox" value="before_critical" checked style="accent-color:#1a1a1a;width:16px;height:16px;">
+          Before important meetings
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#1a1a1a;cursor:pointer;">
+          <input type="checkbox" class="trigger-checkbox" value="back_to_back" style="accent-color:#1a1a1a;width:16px;height:16px;">
+          Between back-to-back meetings
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#1a1a1a;cursor:pointer;">
+          <input type="checkbox" class="trigger-checkbox" value="high_density" style="accent-color:#1a1a1a;width:16px;height:16px;">
+          During high-intensity days
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#1a1a1a;cursor:pointer;">
+          <input type="checkbox" class="trigger-checkbox" value="end_of_day" style="accent-color:#1a1a1a;width:16px;height:16px;">
+          After a long day
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#1a1a1a;cursor:pointer;">
+          <input type="checkbox" class="trigger-checkbox" value="energy_boost" style="accent-color:#1a1a1a;width:16px;height:16px;">
+          Morning / midday energy
+        </label>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="field" style="margin-top:0;">
       <label style="margin:0 0 8px 0; font-weight:500; display:block;">Default sound setting</label>
       <div style="display:flex; align-items:center; justify-content:space-between;">
         <span id="sound-label" style="font-size:14px; color:#1a1a1a;">Sound</span>
