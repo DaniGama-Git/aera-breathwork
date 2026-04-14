@@ -1,25 +1,44 @@
 
 
-## Diagnosis — Why the Extension Stopped Triggering
+# Extension Settings Panel — Design Refresh
 
-The hardcoded 5-minute lead time change **did not** cause the breakage. The `checkCalendar` function in `background.js` already defaulted `leadMinutes` to 5, so removing the input field had no effect on trigger logic.
+## Current State
+The settings panel is a long scrollable form with: logo, connection status dot, 2-step calendar guide, iCal URL textarea, keywords input, trigger checkboxes, sound toggle, save button, and "Recover on demand" button. It feels like a setup wizard rather than a polished settings screen.
 
-### What actually broke
+## Design Direction
+Consolidate into clean, grouped sections with a more minimal, app-like feel — fewer labels, tighter spacing, and a single-scroll layout that feels finished rather than instructional.
 
-In the same batch of changes, the `open-breathe-session` message handler was refactored to persist `activeProtocol` to storage before launching the overlay. The initial implementation used a `.then()` chain that caused `sendResponse` to fire after the message channel had already closed — which silently broke the "Recover on demand" flow. This was fixed in the follow-up commit by wrapping it in an `async` IIFE with `await`.
+## Changes (all in `extension/popup.html` + `extension/popup.js`)
 
-### Current state
+### 1. Collapse the setup guide into a single accordion
+Replace the two numbered guide steps + "Open Calendar Settings" link with a collapsible "How to connect" section that starts collapsed once a calendar URL is saved. This removes ~40% of vertical space for returning users.
 
-The code in the repository is now correct. Both paths work:
-- **Calendar trigger**: polls every 60s (+ 30s follow-up), matches keywords, fires 5 minutes before events
-- **Recover on demand**: sends `open-breathe-session`, background saves protocol then injects overlay
+### 2. Unify the calendar section
+- Merge the connection status dot into the iCal URL field as an inline indicator (green dot inside the input when connected).
+- Replace the textarea with a single-line input (URLs don't need multiline).
+- Move the "validated" badge inline with the input.
 
-### What to do
+### 3. Restyle trigger checkboxes as toggle pills
+Replace the checkbox list with a compact grid of pill-shaped toggles (similar to the tab bar aesthetic). Each pill shows the trigger name and highlights when active. This is more visually appealing and touch-friendly.
 
-No code changes are needed. If the extension still isn't triggering, the fix is to:
-1. Re-download the extension zip from the app
-2. Go to `chrome://extensions`, remove the old version
-3. Load the new unpacked extension
+### 4. Group sound + save into a bottom bar
+- Move the sound toggle and save button into a sticky bottom bar so they're always visible without scrolling.
+- Style save as a full-width dark button instead of the current outlined pill.
 
-This ensures you're running the version with the race condition fix.
+### 5. Remove the "āera" logo from settings
+The logo is already in the tab bar context and the breathe panel. Remove it from settings to save space.
+
+### 6. Restyle "Recover on demand"
+Move it above the save bar as a secondary action with a subtler outline style, or place it as a floating action in the breathe tab instead.
+
+### 7. Typography and spacing cleanup
+- Reduce section gaps from 14px to 10px.
+- Use consistent 13px for all labels.
+- Remove redundant hint text where labels are self-explanatory.
+
+## Files Changed
+- `extension/popup.html` — restructured settings panel HTML + updated CSS
+- `extension/popup.js` — accordion toggle logic, updated element references
+
+## No backend or React changes needed — this is purely the extension's local popup UI.
 
