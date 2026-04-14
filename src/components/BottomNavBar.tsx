@@ -14,10 +14,9 @@ import searchIcon from "@/assets/search-nav-icon.svg";
 
 const getTimeBasedRoute = () => {
   const h = new Date().getHours();
-  if (h >= 5 && h < 11) return SESSION_ROUTES.activate;
-  if (h >= 11 && h < 17) return SESSION_ROUTES.perform;
-  if (h >= 17 && h < 21) return SESSION_ROUTES.recover;
-  return SESSION_ROUTES.ground;
+  if (h >= 5 && h < 12) return SESSION_ROUTES.activate;   // morning → Wake Me Up
+  if (h >= 12 && h < 17) return SESSION_ROUTES.recover;   // afternoon → recovery
+  return SESSION_ROUTES.ground;                            // evening/night → Wind Down
 };
 
 const tabConfig = [
