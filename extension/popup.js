@@ -83,17 +83,29 @@ async function loadSettings() {
   icalInput.value = data.icalUrl || "";
   keywordsInput.value = (data.keywords || []).join(", ");
   
-  // Load trigger checkboxes
+  // Load trigger checkboxes and sync pill active state
   const activeTriggers = data.triggers || [];
   document.querySelectorAll("#trigger-checks input[type=checkbox]").forEach(cb => {
     cb.checked = activeTriggers.includes(cb.value);
+    cb.closest(".trigger-pill").classList.toggle("active", cb.checked);
   });
 
   const soundEnabled = data.soundEnabled !== false;
   soundToggle.checked = soundEnabled;
   updateSoundLabel(soundEnabled);
 
-  updateConnectionStatus(!!data.icalUrl);
+  const connected = !!data.icalUrl;
+  updateConnectionStatus(connected);
+  icalInlineDot.classList.toggle("connected", connected);
+
+  // Auto-collapse guide if calendar is already connected
+  if (connected) {
+    guideToggleBtn.classList.remove("open");
+    guideBody.classList.remove("open");
+  } else {
+    guideToggleBtn.classList.add("open");
+    guideBody.classList.add("open");
+  }
 }
 
 const checkSvg = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
