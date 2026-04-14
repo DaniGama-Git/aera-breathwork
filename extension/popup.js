@@ -39,7 +39,7 @@ soundToggle.addEventListener("change", () => {
 });
 
 async function loadSettings() {
-  const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes", "defaultsApplied", "soundEnabled", "triggers"]);
+  const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes", "defaultsApplied", "soundEnabled"]);
 
   // On first run, check for bundled defaults.json
   if (!data.defaultsApplied) {
@@ -56,10 +56,6 @@ async function loadSettings() {
           data.keywords = defaults.keywords;
           data.leadMinutes = defaults.leadMinutes ?? 5;
         }
-        if (defaults.triggers?.length && !data.triggers?.length) {
-          await chrome.storage.local.set({ triggers: defaults.triggers });
-          data.triggers = defaults.triggers;
-        }
       }
     } catch (_) { /* no defaults.json bundled — skip */ }
     await chrome.storage.local.set({ defaultsApplied: true });
@@ -71,12 +67,6 @@ async function loadSettings() {
   const soundEnabled = data.soundEnabled !== false; // default true
   soundToggle.checked = soundEnabled;
   updateSoundLabel(soundEnabled);
-
-  // Set trigger checkboxes
-  const activeTriggers = data.triggers || ["before_critical"];
-  document.querySelectorAll(".trigger-checkbox").forEach(cb => {
-    cb.checked = activeTriggers.includes(cb.value);
-  });
 
   updateConnectionStatus(!!data.icalUrl);
 }
@@ -111,8 +101,7 @@ saveBtn.addEventListener("click", async () => {
   }
 
   const soundEnabled = soundToggle.checked;
-  const triggers = Array.from(document.querySelectorAll(".trigger-checkbox:checked")).map(cb => cb.value);
-  await chrome.storage.local.set({ icalUrl, keywords, leadMinutes, soundEnabled, triggers });
+  await chrome.storage.local.set({ icalUrl, keywords, leadMinutes, soundEnabled });
   updateConnectionStatus(true);
   showStatus("Settings saved ✓", false, true);
 });
@@ -126,6 +115,26 @@ function showStatus(msg, isError = false, isSuccess = false) {
 
 chrome.storage.local.get(["icalUrl"], data => updateConnectionStatus(!!data.icalUrl));
 
+// ─── Recover on demand ───
+const demandBtn = document.getElementById("demand-btn");
+if (demandBtn) {
+  demandBtn.addEventListener("click", async () => {
+    const protocolIds = Object.keys(PROTOCOLS);
+    const randomId = protocolIds[Math.floor(Math.random() * protocolIds.length)];
+    // Capture the real browser tab BEFORE closing the popup
+    let targetTabId = null;
+    try {
+      const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+      const tab = tabs.find(t => /^https?:\/\//.test(t.url || ""));
+      if (tab) targetTabId = tab.id;
+    } catch (_) {}
+    // Await overlay injection (background keeps channel alive until done)
+    try {
+      await chrome.runtime.sendMessage({ type: "open-breathe-session", protocolId: randomId, targetTabId });
+    } catch (_) {}
+    window.close();
+  });
+}
 
 
 // ─── Wave-style Breathing (Image + Gradient Mask) ───

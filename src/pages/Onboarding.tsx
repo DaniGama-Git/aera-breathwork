@@ -22,11 +22,11 @@ const GOAL_OPTIONS = [
 ];
 
 const MOMENT_OPTIONS = [
-  { label: "Before important meetings & key moments", value: "before_critical" },
-  { label: "Between back-to-back meetings", value: "back_to_back" },
-  { label: "During high-intensity days", value: "high_density" },
-  { label: "After a long day to decompress", value: "end_of_day" },
-  { label: "When energy drops (morning / midday)", value: "energy_boost" },
+  { label: "First thing in the morning", value: "morning" },
+  { label: "Before critical moments", value: "before_critical" },
+  { label: "Mid-afternoon when energy drops", value: "mid_afternoon" },
+  { label: "Before deep work", value: "before_deep_work" },
+  { label: "After intense back-to-back day", value: "after_back_to_back" },
 ];
 
 const SUGGESTED_KEYWORDS = [

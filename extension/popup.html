@@ -345,6 +345,13 @@ body.triggered-mode{
 .validated-badge.visible{display:flex}
 .validated-badge svg{width:13px;height:13px}
 
+/* Recover on demand */
+.breathe-on-demand-section{margin-top:28px;padding-top:22px;border-top:1px solid rgba(0,0,0,0.06);text-align:center}
+.demand-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 40px;border-radius:50px;border:1.5px solid rgba(0,0,0,0.45);background:transparent;color:rgba(0,0,0,0.75);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s ease;font-family:inherit}
+.demand-btn:hover{border-color:rgba(0,0,0,0.7);color:rgba(0,0,0,0.9);background:rgba(0,0,0,0.04)}
+.demand-btn:active{transform:scale(0.97);background:rgba(0,0,0,0.06)}
+.demand-btn svg{opacity:0.6;width:14px;height:14px}
+.demand-hint{font-size:11px;color:rgba(0,0,0,0.35);margin-top:12px;line-height:1.5;letter-spacing:0.3px}
 
 /* ─── Triggered / standalone mode (235x235) ─── */
 body.triggered-mode{width:100vw;height:100vh;min-width:0;min-height:0;overflow:hidden;background:#111;color:#f0ece8}
@@ -491,7 +498,7 @@ Let your mind open up.</p>
       <div class="step-num">1</div>
       <div class="step-content">
         <strong>Open Google Calendar Settings</strong>
-        <span>Click your calendar name in the left sidebar under "Settings for my calendars"</span>
+        <span>Find your calendar → Integrate calendar</span>
       </div>
     </div>
     <a href="https://calendar.google.com/calendar/r/settings" target="_blank" class="guide-link">
@@ -510,8 +517,8 @@ Let your mind open up.</p>
     <div class="guide-step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <strong>Copy the public iCal address</strong>
-        <span>Scroll to "Integrate calendar" and copy the URL under "Public address in iCal format"</span>
+        <strong>Copy secret iCal address</strong>
+        <span>Copy the URL under "Secret address in iCal format"</span>
       </div>
     </div>
 
@@ -529,38 +536,7 @@ Let your mind open up.</p>
       <input id="keywords" placeholder="pitch, board, negotiation"/>
       <span class="hint">Comma-separated event title keywords</span>
     </div>
-    <div class="section-divider"></div>
-
-    <div class="field">
-      <label>Session triggers</label>
-      <span class="hint">Choose when āera should prompt you.</span>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#1a1a1a;cursor:pointer;">
-          <input type="checkbox" class="trigger-checkbox" value="before_critical" checked style="accent-color:#1a1a1a;width:16px;height:16px;">
-          Before important meetings
-        </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#1a1a1a;cursor:pointer;">
-          <input type="checkbox" class="trigger-checkbox" value="back_to_back" style="accent-color:#1a1a1a;width:16px;height:16px;">
-          Between back-to-back meetings
-        </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#1a1a1a;cursor:pointer;">
-          <input type="checkbox" class="trigger-checkbox" value="high_density" style="accent-color:#1a1a1a;width:16px;height:16px;">
-          During high-intensity days
-        </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#1a1a1a;cursor:pointer;">
-          <input type="checkbox" class="trigger-checkbox" value="end_of_day" style="accent-color:#1a1a1a;width:16px;height:16px;">
-          After a long day
-        </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:#1a1a1a;cursor:pointer;">
-          <input type="checkbox" class="trigger-checkbox" value="energy_boost" style="accent-color:#1a1a1a;width:16px;height:16px;">
-          Morning / midday energy
-        </label>
-      </div>
-    </div>
-
-    <div class="section-divider"></div>
-
-    <div class="field" style="margin-top:0;">
+    <div class="field" style="margin-top:16px;">
       <label style="margin:0 0 8px 0; font-weight:500; display:block;">Default sound setting</label>
       <div style="display:flex; align-items:center; justify-content:space-between;">
         <span id="sound-label" style="font-size:14px; color:#1a1a1a;">Sound</span>
@@ -578,6 +554,13 @@ Let your mind open up.</p>
     <button class="save-btn" id="save-btn">Save & Connect</button>
     <div class="status" id="status"></div>
 
+    <div class="breathe-on-demand-section">
+      <div class="demand-divider"></div>
+      <button class="demand-btn" id="demand-btn">
+        Recover on demand
+      </button>
+      <p class="demand-hint">Start a randomised breathwork session</p>
+    </div>
   </div>
 
   <script src="protocols.js"></script>
