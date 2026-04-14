@@ -39,7 +39,7 @@ soundToggle.addEventListener("change", () => {
 });
 
 async function loadSettings() {
-  const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes", "defaultsApplied", "soundEnabled"]);
+  const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes", "defaultsApplied", "soundEnabled", "triggers"]);
 
   // On first run, check for bundled defaults.json
   if (!data.defaultsApplied) {
@@ -47,15 +47,18 @@ async function loadSettings() {
       const resp = await fetch(chrome.runtime.getURL("defaults.json"));
       if (resp.ok) {
         const defaults = await resp.json();
+        const updates = { defaultsApplied: true };
         if (defaults.keywords?.length && !data.keywords?.length) {
-          await chrome.storage.local.set({
-            keywords: defaults.keywords,
-            leadMinutes: defaults.leadMinutes ?? 5,
-            defaultsApplied: true,
-          });
-          data.keywords = defaults.keywords;
-          data.leadMinutes = defaults.leadMinutes ?? 5;
+          updates.keywords = defaults.keywords;
+          updates.leadMinutes = defaults.leadMinutes ?? 5;
+          data.keywords = updates.keywords;
+          data.leadMinutes = updates.leadMinutes;
         }
+        if (defaults.triggers?.length && !data.triggers?.length) {
+          updates.triggers = defaults.triggers;
+          data.triggers = updates.triggers;
+        }
+        await chrome.storage.local.set(updates);
       }
     } catch (_) { /* no defaults.json bundled — skip */ }
     await chrome.storage.local.set({ defaultsApplied: true });
@@ -101,7 +104,8 @@ saveBtn.addEventListener("click", async () => {
   }
 
   const soundEnabled = soundToggle.checked;
-  await chrome.storage.local.set({ icalUrl, keywords, leadMinutes, soundEnabled });
+  const existingData = await chrome.storage.local.get(["triggers"]);
+  await chrome.storage.local.set({ icalUrl, keywords, leadMinutes, soundEnabled, triggers: existingData.triggers || [] });
   updateConnectionStatus(true);
   showStatus("Settings saved ✓", false, true);
 });
