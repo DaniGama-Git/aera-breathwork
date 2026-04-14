@@ -39,7 +39,7 @@ soundToggle.addEventListener("change", () => {
 });
 
 async function loadSettings() {
-  const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes", "defaultsApplied", "soundEnabled"]);
+  const data = await chrome.storage.local.get(["icalUrl", "keywords", "leadMinutes", "defaultsApplied", "soundEnabled", "triggers"]);
 
   // On first run, check for bundled defaults.json
   if (!data.defaultsApplied) {
@@ -56,6 +56,10 @@ async function loadSettings() {
           data.keywords = defaults.keywords;
           data.leadMinutes = defaults.leadMinutes ?? 5;
         }
+        if (defaults.triggers?.length && !data.triggers?.length) {
+          await chrome.storage.local.set({ triggers: defaults.triggers });
+          data.triggers = defaults.triggers;
+        }
       }
     } catch (_) { /* no defaults.json bundled — skip */ }
     await chrome.storage.local.set({ defaultsApplied: true });
@@ -67,6 +71,12 @@ async function loadSettings() {
   const soundEnabled = data.soundEnabled !== false; // default true
   soundToggle.checked = soundEnabled;
   updateSoundLabel(soundEnabled);
+
+  // Set trigger checkboxes
+  const activeTriggers = data.triggers || ["before_critical"];
+  document.querySelectorAll(".trigger-checkbox").forEach(cb => {
+    cb.checked = activeTriggers.includes(cb.value);
+  });
 
   updateConnectionStatus(!!data.icalUrl);
 }
@@ -101,7 +111,8 @@ saveBtn.addEventListener("click", async () => {
   }
 
   const soundEnabled = soundToggle.checked;
-  await chrome.storage.local.set({ icalUrl, keywords, leadMinutes, soundEnabled });
+  const triggers = Array.from(document.querySelectorAll(".trigger-checkbox:checked")).map(cb => cb.value);
+  await chrome.storage.local.set({ icalUrl, keywords, leadMinutes, soundEnabled, triggers });
   updateConnectionStatus(true);
   showStatus("Settings saved ✓", false, true);
 });
