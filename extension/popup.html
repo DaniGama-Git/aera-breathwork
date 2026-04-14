@@ -15,6 +15,10 @@ html.overlay-mode{
   width:290px !important;
   height:400px !important;
 }
+html.overlay-mode.fullscreen-mode{
+  width:100vw !important;
+  height:100vh !important;
+}
 html.triggered-mode{
   width:100vw !important;
   height:100vh !important;
@@ -48,6 +52,16 @@ body.iframe-mode{
 body.iframe-mode .tabs{display:none}
 body.iframe-mode .card-wrap{padding:0;margin:0;width:100%;height:100%}
 body.iframe-mode .card{border-radius:0;width:100%;height:100%;background:#1a1a1a}
+
+/* Fullscreen mode — override iframe constraints */
+body.iframe-mode.fullscreen-mode{
+  width:100vw !important;
+  min-width:100vw !important;
+  height:100vh !important;
+  min-height:100vh !important;
+}
+body.iframe-mode.fullscreen-mode .card-wrap{width:100%;height:100%}
+body.iframe-mode.fullscreen-mode .card{width:100%;height:100%;aspect-ratio:unset}
 body.iframe-mode .breathe-tab{height:100%;width:100%}
 
 /* Close & fullscreen buttons — right-aligned in controls row */
