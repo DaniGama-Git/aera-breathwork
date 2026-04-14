@@ -155,7 +155,10 @@ function showStatus(msg, isError = false, isSuccess = false) {
   setTimeout(() => (statusEl.className = "status"), 4000);
 }
 
-chrome.storage.local.get(["icalUrl"], data => updateConnectionStatus(!!data.icalUrl));
+chrome.storage.local.get(["icalUrl"], data => {
+  updateConnectionStatus(!!data.icalUrl);
+  if (icalInlineDot) icalInlineDot.classList.toggle("connected", !!data.icalUrl);
+});
 
 // ─── Recover on demand ───
 const demandBtn = document.getElementById("demand-btn");
