@@ -609,6 +609,15 @@ if (ctrlFullscreen) {
     window.parent.postMessage({ type: "toggle-fullscreen", fullscreen: isFullscreen }, "*");
     expandIcon.style.display = isFullscreen ? "none" : "";
     shrinkIcon.style.display = isFullscreen ? "" : "none";
+    if (isFullscreen) {
+      document.body.classList.add("fullscreen-mode");
+      document.documentElement.style.width = "100vw";
+      document.documentElement.style.height = "100vh";
+    } else {
+      document.body.classList.remove("fullscreen-mode");
+      document.documentElement.style.width = "290px";
+      document.documentElement.style.height = "400px";
+    }
   });
 }
 
