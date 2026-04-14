@@ -303,267 +303,129 @@ body.triggered-mode{
 .breathe-tab{display:flex;flex-direction:column;align-items:center;width:100%}
 .breathe-tab.hidden{display:none}
 .settings-tab{
-  padding:24px;width:100%;display:none;flex-direction:column;gap:0;
+  padding:20px 20px 90px;width:100%;display:none;flex-direction:column;gap:0;
   flex:1;overflow-y:auto;
   background:#f7f6f4;color:#1a1a1a;
 }
 .settings-tab.visible{display:flex}
-.settings-logo{
-  text-align:center;font-size:22px;font-weight:600;letter-spacing:0.04em;
-  color:rgba(0,0,0,0.82);margin-bottom:16px;
-}
 
-.setup-header{text-align:center;margin-bottom:20px}
-.setup-header h3{font-size:15px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(0,0,0,0.85);margin-bottom:6px}
-.setup-header p{font-size:13px;color:rgba(0,0,0,0.55);line-height:1.5}
-.guide-step{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:rgba(0,0,0,0.03);margin-bottom:8px}
-.step-num{width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(0,0,0,0.6);flex-shrink:0;margin-top:1px}
+.connection-status{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(0,0,0,0.5);letter-spacing:0.3px;margin-bottom:14px}
+.connection-dot{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,0.12)}
+.connection-dot.connected{background:#16a34a}
+
+/* Accordion guide */
+.guide-accordion{margin-bottom:10px}
+.guide-toggle{
+  display:flex;align-items:center;justify-content:space-between;width:100%;
+  padding:10px 14px;border-radius:12px;background:rgba(0,0,0,0.03);
+  border:none;cursor:pointer;font-family:inherit;
+  font-size:13px;font-weight:600;color:rgba(0,0,0,0.7);
+  transition:background 0.2s;
+}
+.guide-toggle:hover{background:rgba(0,0,0,0.06)}
+.guide-toggle svg{width:14px;height:14px;opacity:0.4;transition:transform 0.3s}
+.guide-toggle.open svg{transform:rotate(180deg)}
+.guide-body{
+  max-height:0;overflow:hidden;transition:max-height 0.35s ease, opacity 0.3s ease;opacity:0;
+}
+.guide-body.open{max-height:320px;opacity:1}
+.guide-body-inner{padding:10px 0 0}
+.guide-step{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-radius:12px;background:rgba(0,0,0,0.03);margin-bottom:6px}
+.step-num{width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:rgba(0,0,0,0.6);flex-shrink:0;margin-top:1px}
 .step-content{flex:1}
-.step-content strong{font-size:13px;font-weight:600;color:rgba(0,0,0,0.85);display:block;margin-bottom:3px}
-.step-content span{font-size:12px;color:rgba(0,0,0,0.5);line-height:1.5}
-.guide-link{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:12px;background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.1);color:rgba(0,0,0,0.7);font-size:12px;font-weight:500;letter-spacing:0.4px;text-decoration:none;cursor:pointer;transition:all 0.3s;margin:6px 0 14px}
+.step-content strong{font-size:12px;font-weight:600;color:rgba(0,0,0,0.85);display:block;margin-bottom:2px}
+.step-content span{font-size:11px;color:rgba(0,0,0,0.5);line-height:1.4}
+.guide-link{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.1);color:rgba(0,0,0,0.7);font-size:11px;font-weight:500;letter-spacing:0.3px;text-decoration:none;cursor:pointer;transition:all 0.3s;margin:4px 0 0}
 .guide-link:hover{border-color:rgba(0,0,0,0.2);color:rgba(0,0,0,0.85);background:rgba(0,0,0,0.06)}
-.guide-link svg{width:14px;height:14px;opacity:0.5}
-.section-divider{height:1px;background:rgba(0,0,0,0.06);margin:14px 0}
-.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-.field label{font-size:13px;font-weight:500;letter-spacing:0.4px;color:rgba(0,0,0,0.75)}
-.field .hint{font-size:11px;color:rgba(0,0,0,0.4);line-height:1.5}
-.field input,.field textarea{padding:11px 14px;border-radius:14px;border:1px solid rgba(0,0,0,0.12);background:#fff;font-size:13px;font-family:inherit;color:#1a1a1a;outline:none;transition:border 0.3s,background 0.3s}
-.field input:focus,.field textarea:focus{border-color:rgba(0,0,0,0.25);background:#fff}
-.field textarea{resize:vertical;min-height:56px}
-.save-btn{padding:11px 24px;border-radius:20px;border:1px solid rgba(0,0,0,0.12);background:rgba(0,0,0,0.06);color:rgba(0,0,0,0.8);font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;align-self:flex-start}
-.save-btn:hover{border-color:rgba(0,0,0,0.25);color:rgba(0,0,0,0.9);background:rgba(0,0,0,0.1)}
-.status{font-size:12px;letter-spacing:0.3px;color:rgba(0,0,0,0.5);display:none;margin-top:8px;align-items:center;gap:6px}
+.guide-link svg{width:12px;height:12px;opacity:0.5}
+
+/* iCal field with inline status */
+.ical-field-wrap{position:relative;margin-bottom:10px}
+.ical-field-wrap input{
+  width:100%;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,0.12);
+  background:#fff;font-size:12px;font-family:inherit;color:#1a1a1a;outline:none;
+  transition:border 0.3s;
+}
+.ical-field-wrap input:focus{border-color:rgba(0,0,0,0.25)}
+.ical-inline-dot{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.1);
+  transition:background 0.3s;
+}
+.ical-inline-dot.connected{background:#16a34a}
+.validated-badge{display:none;align-items:center;gap:4px;font-size:11px;color:#16a34a;margin-top:3px}
+.validated-badge.visible{display:flex}
+.validated-badge svg{width:12px;height:12px}
+
+.section-divider{height:1px;background:rgba(0,0,0,0.06);margin:10px 0}
+
+/* Field */
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.field label{font-size:13px;font-weight:500;letter-spacing:0.3px;color:rgba(0,0,0,0.75)}
+.field input{padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,0.12);background:#fff;font-size:12px;font-family:inherit;color:#1a1a1a;outline:none;transition:border 0.3s}
+.field input:focus{border-color:rgba(0,0,0,0.25)}
+
+/* Trigger pills */
+.trigger-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.trigger-pill{
+  display:flex;align-items:center;gap:0;
+  padding:7px 14px;border-radius:20px;
+  border:1px solid rgba(0,0,0,0.12);background:rgba(0,0,0,0.02);
+  cursor:pointer;transition:all 0.25s;
+  font-size:12px;font-weight:500;color:rgba(0,0,0,0.55);
+  user-select:none;
+}
+.trigger-pill:hover{border-color:rgba(0,0,0,0.2);color:rgba(0,0,0,0.7)}
+.trigger-pill.active{
+  background:rgba(0,0,0,0.08);border-color:rgba(0,0,0,0.3);
+  color:rgba(0,0,0,0.85);font-weight:600;
+}
+.trigger-pill input{display:none}
+
+/* Recover on demand — secondary style */
+.demand-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:10px;border-radius:12px;
+  border:1px solid rgba(0,0,0,0.12);background:transparent;
+  color:rgba(0,0,0,0.6);font-size:12px;font-weight:500;letter-spacing:1px;
+  text-transform:uppercase;cursor:pointer;transition:all 0.25s;font-family:inherit;
+  margin-top:10px;
+}
+.demand-btn:hover{border-color:rgba(0,0,0,0.25);color:rgba(0,0,0,0.8);background:rgba(0,0,0,0.03)}
+.demand-btn:active{transform:scale(0.98)}
+
+/* Sticky bottom bar */
+.bottom-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  display:none;align-items:center;gap:10px;
+  padding:12px 20px;
+  background:rgba(247,246,244,0.95);backdrop-filter:blur(8px);
+  border-top:1px solid rgba(0,0,0,0.06);
+  z-index:30;
+}
+.settings-tab.visible ~ .bottom-bar,
+.bottom-bar.visible{display:flex}
+.bottom-bar .sound-row{
+  display:flex;align-items:center;gap:8px;
+  font-size:13px;color:rgba(0,0,0,0.6);white-space:nowrap;
+}
+.toggle-switch{position:relative;display:inline-block;width:34px;height:18px;margin:0;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-switch .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:18px;transition:.2s}
+.toggle-switch input:checked + .toggle-slider{background:#1a1a1a}
+.toggle-switch .toggle-slider::before{content:'';position:absolute;height:12px;width:12px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
+.toggle-switch input:checked + .toggle-slider::before{transform:translateX(16px)}
+.save-btn{
+  flex:1;padding:10px 0;border-radius:12px;border:none;
+  background:#1a1a1a;color:#fff;
+  font-size:13px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;
+  cursor:pointer;transition:all 0.25s;font-family:inherit;
+}
+.save-btn:hover{background:#333}
+.status{font-size:11px;letter-spacing:0.3px;color:rgba(0,0,0,0.5);display:none;margin-top:6px;align-items:center;gap:5px;padding:0 20px}
 .status.visible{display:flex}
 .status.error{color:#dc2626}
 .status.success{color:#16a34a}
-
-.connection-status{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(0,0,0,0.5);letter-spacing:0.3px;margin-bottom:18px}
-.connection-dot{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,0.12)}
-.connection-dot.connected{background:#16a34a}
-.validated-badge{display:none;align-items:center;gap:5px;font-size:12px;color:#16a34a;margin-top:4px}
-.validated-badge.visible{display:flex}
-.validated-badge svg{width:13px;height:13px}
-
-/* Recover on demand */
-.breathe-on-demand-section{margin-top:28px;padding-top:22px;border-top:1px solid rgba(0,0,0,0.06);text-align:center}
-.demand-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 40px;border-radius:50px;border:1.5px solid rgba(0,0,0,0.45);background:transparent;color:rgba(0,0,0,0.75);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s ease;font-family:inherit}
-.demand-btn:hover{border-color:rgba(0,0,0,0.7);color:rgba(0,0,0,0.9);background:rgba(0,0,0,0.04)}
-.demand-btn:active{transform:scale(0.97);background:rgba(0,0,0,0.06)}
-.demand-btn svg{opacity:0.6;width:14px;height:14px}
-.demand-hint{font-size:11px;color:rgba(0,0,0,0.35);margin-top:12px;line-height:1.5;letter-spacing:0.3px}
-
-/* ─── Triggered / standalone mode (235x235) ─── */
-body.triggered-mode{width:100vw;height:100vh;min-width:0;min-height:0;overflow:hidden;background:#111;color:#f0ece8}
-body.triggered-mode .tabs{display:none}
-body.triggered-mode .card-wrap{padding:0;margin:0;width:100%;height:100%}
-body.triggered-mode .card{border-radius:0;width:100%;height:100%;overflow:hidden}
-body.triggered-mode .session-controls{display:flex;top:6px;left:6px;right:12px}
-body.triggered-mode .breathe-tab{height:100%;width:100%}
-body.triggered-mode .screen-overlay{padding:16px;box-sizing:border-box;width:100%;overflow:hidden}
-body.triggered-mode .logo-text{font-size:16px}
-body.triggered-mode .intro-pill{padding:4px 12px;border-radius:14px}
-body.triggered-mode .intro-pill span{font-size:8px}
-body.triggered-mode .intro-subtitle{font-size:7px;margin-bottom:8px}
-body.triggered-mode .intro-text{font-size:11px;margin-bottom:10px;max-width:100%;word-wrap:break-word}
-body.triggered-mode .breathing-ui{justify-content:flex-end}
-body.triggered-mode .phase-label{font-size:14px;padding-bottom:6px;letter-spacing:0.25em}
-body.triggered-mode .session-progress-wrap{width:60px;height:2px;margin-bottom:24px}
-body.triggered-mode .transition-overlay{padding:16px}
-body.triggered-mode .transition-text{font-size:9px;max-width:100%;line-height:1.5}
-body.triggered-mode .science-overlay{padding:20px 28px}
-body.triggered-mode .science-content{max-width:100%;gap:8px}
-body.triggered-mode .science-content img{width:16px}
-body.triggered-mode .science-content p{font-size:10px;line-height:1.6;color:rgba(255,255,255,0.8)}
-body.triggered-mode .done-subtitle{font-size:9px;margin-top:6px}
-body.triggered-mode .done-btn{margin-top:14px;padding:6px 16px;font-size:7px;border-radius:14px}
-body.triggered-mode .ctrl-btn{width:22px;height:22px}
-body.triggered-mode .ctrl-btn svg{width:10px;height:10px}
-body.triggered-mode .ctrl-right{gap:3px}
-body.triggered-mode .paused-text{font-size:10px}
-body.triggered-mode .paused-overlay{gap:14px}
-body.triggered-mode .continue-btn{padding:5px 14px;font-size:8px;border-radius:14px}
-body.triggered-mode .start-btn{display:none}
-</style>
-</head>
-<body>
-  <div class="tabs" id="tabs-bar" style="display:none">
-    <button class="tab active" id="tab-breathe">Breathe</button>
-    <button class="tab" id="tab-settings">Settings</button>
-  </div>
-
-  <div class="breathe-tab" id="breathe-panel">
-    <div class="card-wrap">
-      <div class="card" id="card">
-        <!-- Background image layers -->
-        <div class="bg-layer" id="bg-logo" style="background-image:url(wave-bg-logo.png)"></div>
-        <div class="bg-layer" id="bg-intro" style="background-image:url(wave-bg-intro.png)"></div>
-        <div class="bg-layer" id="bg-breathing" style="background-image:url(wave-bg-description.png)"></div>
-
-
-        <!-- Gradient mask for breathing -->
-        <div class="gradient-mask" id="gradient-mask"></div>
-
-        <!-- Loading screen -->
-        <div class="screen-overlay active" id="screen-loading">
-          <div class="loading-dots">
-            <span></span><span></span><span></span>
-          </div>
-        </div>
-
-        <!-- Logo screen -->
-        <div class="screen-overlay" id="screen-logo">
-          <span class="logo-text">āera</span>
-        </div>
-
-        <!-- Intro screen -->
-        <div class="screen-overlay" id="screen-intro">
-          <div class="intro-pill"><span id="intro-title">CREATIVE FLOW</span></div>
-          <span class="intro-subtitle" id="intro-subtitle">~3.5 MINS</span>
-          <p class="intro-text" id="intro-text">Let go of control.
-Let your mind open up.</p>
-          <button class="start-btn" id="start-btn">Breathe Now</button>
-        </div>
-
-        <!-- Session controls (close, sound, stop) -->
-        <div class="session-controls" id="session-controls">
-          <button class="ctrl-btn" id="ctrl-stop" title="Pause">
-            <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
-            <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="6,4 20,12 6,20"/></svg>
-          </button>
-          <button class="ctrl-btn" id="ctrl-mute" title="Mute">
-            <svg id="mute-off-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19.07 4.93a10 10 0 010 14.14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            <svg id="mute-on-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-          <button class="ctrl-btn ctrl-fullscreen" id="ctrl-fullscreen" title="Fullscreen">
-            <svg id="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-            <svg id="shrink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-          </button>
-          <button class="ctrl-btn ctrl-close" id="ctrl-close" title="Close">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-        </div>
-
-        <!-- Breathing UI -->
-        <div class="breathing-ui" id="breathing-ui">
-          
-          <span class="phase-label" id="phase-label">INHALE</span>
-          <div class="session-progress-wrap" id="session-progress-wrap">
-            <div class="session-progress-fill" id="session-progress-fill"></div>
-          </div>
-        </div>
-
-        <!-- Transition text overlay -->
-        <div class="transition-overlay" id="transition-overlay">
-          <p class="transition-text" id="transition-text"></p>
-        </div>
-
-        <!-- Science overlay -->
-        <div class="science-overlay" id="science-overlay">
-          <div class="science-content">
-            <img src="lightbulb.png" alt="" id="lightbulb-img"/>
-            <p id="science-text"></p>
-          </div>
-        </div>
-
-        <!-- Paused overlay -->
-        <div class="paused-overlay" id="paused-overlay">
-          <span class="paused-text">Paused</span>
-          <button class="continue-btn" id="continue-btn">Continue</button>
-        </div>
-
-        <!-- Done screen -->
-        <div class="screen-overlay" id="screen-done">
-          <span class="logo-text">āera</span>
-          <p class="done-subtitle">You're ready.</p>
-          <button class="done-btn" id="again-btn">Again</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="settings-tab" id="settings-panel">
-    <div class="settings-logo">āera</div>
-    <div class="connection-status" id="connection-status">
-      <span class="connection-dot" id="connection-dot"></span>
-      <span id="connection-text">Not configured</span>
-    </div>
-
-    <div class="setup-header">
-      <h3>Connect Calendar</h3>
-      <p>Scans your calendar and triggers sessions before key moments.</p>
-    </div>
-
-    <div class="guide-step">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>Make your calendar public</strong>
-        <span>Google Calendar → Settings → your calendar → Access permissions → check "Make available to public"</span>
-      </div>
-    </div>
-    <a href="https://calendar.google.com/calendar/r/settings" target="_blank" class="guide-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      Open Calendar Settings
-    </a>
-
-    <div class="guide-step">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>Copy the public iCal URL</strong>
-        <span>Under "Integrate calendar", copy the link labelled "Public address in iCal format"</span>
-      </div>
-    </div>
-
-    <div class="field" style="margin-top:12px">
-      <label>Public iCal URL</label>
-      <textarea id="ical-url" placeholder="https://calendar.google.com/calendar/ical/.../public/basic.ics"></textarea>
-      <div class="validated-badge" id="url-validated">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        Calendar connected
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Trigger keywords</label>
-      <input id="keywords" placeholder="pitch, board, negotiation"/>
-      <span class="hint">Comma-separated event title keywords</span>
-    </div>
-
-    <div class="section-divider"></div>
-
-    <div class="field">
-      <label style="margin-bottom:10px;display:block;">Session triggers</label>
-      <span class="hint" style="margin-bottom:10px;display:block;">Choose when āera should prompt a session.</span>
-      <div class="trigger-checks" id="trigger-checks">
-        <label class="trigger-check"><input type="checkbox" value="before_critical" /><span>Before critical moments</span></label>
-        <label class="trigger-check"><input type="checkbox" value="back_to_back" /><span>Back-to-back meetings</span></label>
-        <label class="trigger-check"><input type="checkbox" value="high_density" /><span>High-intensity days</span></label>
-        <label class="trigger-check"><input type="checkbox" value="end_of_day" /><span>After a long day</span></label>
-        <label class="trigger-check"><input type="checkbox" value="energy_boost" /><span>Energy boost</span></label>
-      </div>
-    </div>
-
-    <div class="section-divider"></div>
-
-    <div class="field" style="margin-top:4px;">
-      <label style="margin:0 0 8px 0; font-weight:500; display:block;">Default sound setting</label>
-      <div style="display:flex; align-items:center; justify-content:space-between;">
-        <span id="sound-label" style="font-size:14px; color:#1a1a1a;">Sound</span>
-        <label class="toggle-switch" style="position:relative;display:inline-block;width:36px;height:20px;margin:0;">
-          <input type="checkbox" id="sound-toggle" checked style="opacity:0;width:0;height:0;">
-          <span class="toggle-slider" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:20px;transition:.2s;"></span>
-        </label>
-      </div>
-    </div>
-    <style>
-      .toggle-switch input:checked + .toggle-slider { background: #1a1a1a; }
-      .toggle-switch .toggle-slider::before { content:''; position:absolute; height:14px; width:14px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.2s; }
-      .toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); }
-      .trigger-checks{display:flex;flex-direction:column;gap:8px}
-      .trigger-check{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(0,0,0,0.03);cursor:pointer;transition:background 0.2s;font-size:13px;font-weight:500;color:rgba(0,0,0,0.75)}
-      .trigger-check:hover{background:rgba(0,0,0,0.06)}
-      .trigger-check input[type="checkbox"]{width:16px;height:16px;accent-color:#1a1a1a;cursor:pointer;flex-shrink:0}
-    </style>
     <button class="save-btn" id="save-btn">Save & Connect</button>
     <div class="status" id="status"></div>
 
