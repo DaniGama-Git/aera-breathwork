@@ -8,8 +8,9 @@ import BottomNavBar from "@/components/BottomNavBar";
 const STEPS = [
   {
     number: "01",
-    title: "Open Google Calendar",
-    description: "Click the button below to open Google Calendar settings.",
+    title: "Open Google Calendar Settings",
+    description:
+      'Open Google Calendar settings and click your calendar name in the left sidebar under "Settings for my calendars".',
     action: {
       label: "Open Calendar Settings",
       url: "https://calendar.google.com/calendar/r/settings",
@@ -19,31 +20,13 @@ const STEPS = [
     number: "02",
     title: "Make your calendar public",
     description:
-      'Click your calendar name in the left sidebar, then under "Access permissions for events", check "Make available to public". This allows āera to read your events via the iCal link.',
+      'Under "Access permissions for events", check "Make available to public". This allows āera to read your events via the iCal link.',
   },
   {
     number: "03",
-    title: "Click your calendar name",
+    title: "Copy the public iCal address",
     description:
-      'In the left sidebar, look for "Settings for my calendars". Click on the name of the calendar you use for work (usually your email address).',
-  },
-  {
-    number: "04",
-    title: 'Scroll down to "Integrate calendar"',
-    description:
-      'Scroll past "Calendar settings" and "Event notifications" until you reach a section called "Integrate calendar". It\'s near the bottom of the page.',
-  },
-  {
-    number: "05",
-    title: "Copy the secret iCal address",
-    description:
-      'Under "Secret address in iCal format", you\'ll see a long URL starting with https://calendar.google.com/calendar/ical/... — click the copy icon (📋) next to it.',
-  },
-  {
-    number: "06",
-    title: "Paste into āera",
-    description:
-      "Open the āera extension, go to the Settings tab, and paste the URL into the iCal field. That's it.",
+      'Scroll to "Integrate calendar" and copy the URL under "Public address in iCal format". Then paste it into the āera extension\'s Settings tab.',
   },
 ];
 
@@ -52,7 +35,7 @@ const CalendarSetup = () => {
   const [copied, setCopied] = useState(false);
 
   const handleCopyExample = () => {
-    navigator.clipboard.writeText("https://calendar.google.com/calendar/ical/YOUR_CALENDAR_ID/basic.ics");
+    navigator.clipboard.writeText("https://calendar.google.com/calendar/ical/YOUR_CALENDAR_ID/public/basic.ics");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
