@@ -141,6 +141,10 @@ saveBtn.addEventListener("click", async () => {
   const triggers = Array.from(document.querySelectorAll("#trigger-checks input[type=checkbox]:checked")).map(cb => cb.value);
   await chrome.storage.local.set({ icalUrl, keywords, leadMinutes, soundEnabled, triggers });
   updateConnectionStatus(true);
+  icalInlineDot.classList.add("connected");
+  // Collapse guide after successful save
+  guideToggleBtn.classList.remove("open");
+  guideBody.classList.remove("open");
   showStatus("Settings saved ✓", false, true);
 });
 
