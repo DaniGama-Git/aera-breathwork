@@ -43,6 +43,9 @@ document.querySelectorAll("#trigger-checks .trigger-pill").forEach(pill => {
   const cb = pill.querySelector("input[type=checkbox]");
   cb.addEventListener("change", () => {
     pill.classList.toggle("active", cb.checked);
+    const triggers = Array.from(document.querySelectorAll("#trigger-checks input[type=checkbox]:checked")).map(c => c.value);
+    chrome.storage.local.set({ triggers });
+    showStatus("Triggers updated ✓", false, true);
   });
 });
 
@@ -51,7 +54,10 @@ function updateSoundLabel(enabled) {
 }
 
 soundToggle.addEventListener("change", () => {
-  updateSoundLabel(soundToggle.checked);
+  const enabled = soundToggle.checked;
+  updateSoundLabel(enabled);
+  chrome.storage.local.set({ soundEnabled: enabled });
+  showStatus(enabled ? "Sound on ✓" : "Sound off ✓", false, true);
 });
 
 async function loadSettings() {
