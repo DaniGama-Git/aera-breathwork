@@ -126,26 +126,6 @@ function showStatus(msg, isError = false, isSuccess = false) {
 
 chrome.storage.local.get(["icalUrl"], data => updateConnectionStatus(!!data.icalUrl));
 
-// ─── Recover on demand ───
-const demandBtn = document.getElementById("demand-btn");
-if (demandBtn) {
-  demandBtn.addEventListener("click", async () => {
-    const protocolIds = Object.keys(PROTOCOLS);
-    const randomId = protocolIds[Math.floor(Math.random() * protocolIds.length)];
-    // Capture the real browser tab BEFORE closing the popup
-    let targetTabId = null;
-    try {
-      const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-      const tab = tabs.find(t => /^https?:\/\//.test(t.url || ""));
-      if (tab) targetTabId = tab.id;
-    } catch (_) {}
-    // Await overlay injection (background keeps channel alive until done)
-    try {
-      await chrome.runtime.sendMessage({ type: "open-breathe-session", protocolId: randomId, targetTabId });
-    } catch (_) {}
-    window.close();
-  });
-}
 
 
 // ─── Wave-style Breathing (Image + Gradient Mask) ───
