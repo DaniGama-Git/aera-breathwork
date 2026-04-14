@@ -1,56 +1,44 @@
 
 
-# Fix Fullscreen Mode for Extension Breathing Overlay
+# Extension Settings Panel — Design Refresh
 
-## Problem
-The screenshot shows the breathing UI stuck at 290x400px in the top-left corner when fullscreen is toggled. The parent iframe expands correctly (via `content.js`), but the popup's internal CSS (`iframe-mode`) keeps the body at fixed 290x400px dimensions.
+## Current State
+The settings panel is a long scrollable form with: logo, connection status dot, 2-step calendar guide, iCal URL textarea, keywords input, trigger checkboxes, sound toggle, save button, and "Recover on demand" button. It feels like a setup wizard rather than a polished settings screen.
 
-## Fix
+## Design Direction
+Consolidate into clean, grouped sections with a more minimal, app-like feel — fewer labels, tighter spacing, and a single-scroll layout that feels finished rather than instructional.
 
-### 1. Add fullscreen CSS rules in `extension/popup.html`
-Add a `.fullscreen-mode` class that overrides the `iframe-mode` constraints:
+## Changes (all in `extension/popup.html` + `extension/popup.js`)
 
-```css
-body.iframe-mode.fullscreen-mode {
-  width: 100vw !important;
-  min-width: 100vw !important;
-  height: 100vh !important;
-  min-height: 100vh !important;
-}
-body.iframe-mode.fullscreen-mode .card-wrap {
-  width: 100%; height: 100%;
-}
-body.iframe-mode.fullscreen-mode .card {
-  width: 100%; height: 100%; aspect-ratio: unset;
-}
-```
+### 1. Collapse the setup guide into a single accordion
+Replace the two numbered guide steps + "Open Calendar Settings" link with a collapsible "How to connect" section that starts collapsed once a calendar URL is saved. This removes ~40% of vertical space for returning users.
 
-Also override `html.overlay-mode` when fullscreen:
-```css
-html.overlay-mode.fullscreen-mode {
-  width: 100vw !important;
-  height: 100vh !important;
-}
-```
+### 2. Unify the calendar section
+- Merge the connection status dot into the iCal URL field as an inline indicator (green dot inside the input when connected).
+- Replace the textarea with a single-line input (URLs don't need multiline).
+- Move the "validated" badge inline with the input.
 
-### 2. Toggle the class in `extension/popup.js`
-In the fullscreen click handler (~line 607), add/remove `fullscreen-mode` on both `document.body` and `document.documentElement` when toggling:
+### 3. Restyle trigger checkboxes as toggle pills
+Replace the checkbox list with a compact grid of pill-shaped toggles (similar to the tab bar aesthetic). Each pill shows the trigger name and highlights when active. This is more visually appealing and touch-friendly.
 
-```js
-ctrlFullscreen.addEventListener("click", () => {
-  isFullscreen = !isFullscreen;
-  window.parent.postMessage({ type: "toggle-fullscreen", fullscreen: isFullscreen }, "*");
-  document.body.classList.toggle("fullscreen-mode", isFullscreen);
-  document.documentElement.classList.toggle("fullscreen-mode", isFullscreen);
-  expandIcon.style.display = isFullscreen ? "none" : "";
-  shrinkIcon.style.display = isFullscreen ? "" : "none";
-});
-```
+### 4. Group sound + save into a bottom bar
+- Move the sound toggle and save button into a sticky bottom bar so they're always visible without scrolling.
+- Style save as a full-width dark button instead of the current outlined pill.
 
-### 3. Repackage `public/aera-extension.zip`
+### 5. Remove the "āera" logo from settings
+The logo is already in the tab bar context and the breathe panel. Remove it from settings to save space.
+
+### 6. Restyle "Recover on demand"
+Move it above the save bar as a secondary action with a subtler outline style, or place it as a floating action in the breathe tab instead.
+
+### 7. Typography and spacing cleanup
+- Reduce section gaps from 14px to 10px.
+- Use consistent 13px for all labels.
+- Remove redundant hint text where labels are self-explanatory.
 
 ## Files Changed
-- `extension/popup.html` — add `fullscreen-mode` CSS overrides
-- `extension/popup.js` — toggle class on fullscreen
-- `public/aera-extension.zip` — rebuilt
+- `extension/popup.html` — restructured settings panel HTML + updated CSS
+- `extension/popup.js` — accordion toggle logic, updated element references
+
+## No backend or React changes needed — this is purely the extension's local popup UI.
 

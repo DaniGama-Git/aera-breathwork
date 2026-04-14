@@ -607,15 +607,6 @@ if (ctrlFullscreen) {
   ctrlFullscreen.addEventListener("click", () => {
     isFullscreen = !isFullscreen;
     window.parent.postMessage({ type: "toggle-fullscreen", fullscreen: isFullscreen }, "*");
-    document.body.classList.toggle("fullscreen-mode", isFullscreen);
-    document.documentElement.classList.toggle("fullscreen-mode", isFullscreen);
-    if (isFullscreen) {
-      document.documentElement.style.width = "100vw";
-      document.documentElement.style.height = "100vh";
-    } else {
-      document.documentElement.style.width = "290px";
-      document.documentElement.style.height = "400px";
-    }
     expandIcon.style.display = isFullscreen ? "none" : "";
     shrinkIcon.style.display = isFullscreen ? "" : "none";
   });
