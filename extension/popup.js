@@ -21,7 +21,6 @@ tabSettings.addEventListener("click", () => {
 // ─── Settings ───
 const icalInput = document.getElementById("ical-url");
 const keywordsInput = document.getElementById("keywords");
-const leadInput = document.getElementById("lead-minutes");
 const saveBtn = document.getElementById("save-btn");
 const statusEl = document.getElementById("status");
 const connectionDot = document.getElementById("connection-dot");
@@ -29,6 +28,23 @@ const connectionText = document.getElementById("connection-text");
 const urlValidated = document.getElementById("url-validated");
 const soundToggle = document.getElementById("sound-toggle");
 const soundLabel = document.getElementById("sound-label");
+const icalInlineDot = document.getElementById("ical-inline-dot");
+const guideToggleBtn = document.getElementById("guide-toggle");
+const guideBody = document.getElementById("guide-body");
+
+// ─── Accordion ───
+guideToggleBtn.addEventListener("click", () => {
+  guideToggleBtn.classList.toggle("open");
+  guideBody.classList.toggle("open");
+});
+
+// ─── Trigger pill toggles ───
+document.querySelectorAll("#trigger-checks .trigger-pill").forEach(pill => {
+  const cb = pill.querySelector("input[type=checkbox]");
+  cb.addEventListener("change", () => {
+    pill.classList.toggle("active", cb.checked);
+  });
+});
 
 function updateSoundLabel(enabled) {
   soundLabel.textContent = enabled ? "Sound" : "No sound";
@@ -67,17 +83,29 @@ async function loadSettings() {
   icalInput.value = data.icalUrl || "";
   keywordsInput.value = (data.keywords || []).join(", ");
   
-  // Load trigger checkboxes
+  // Load trigger checkboxes and sync pill active state
   const activeTriggers = data.triggers || [];
   document.querySelectorAll("#trigger-checks input[type=checkbox]").forEach(cb => {
     cb.checked = activeTriggers.includes(cb.value);
+    cb.closest(".trigger-pill").classList.toggle("active", cb.checked);
   });
 
   const soundEnabled = data.soundEnabled !== false;
   soundToggle.checked = soundEnabled;
   updateSoundLabel(soundEnabled);
 
-  updateConnectionStatus(!!data.icalUrl);
+  const connected = !!data.icalUrl;
+  updateConnectionStatus(connected);
+  icalInlineDot.classList.toggle("connected", connected);
+
+  // Auto-collapse guide if calendar is already connected
+  if (connected) {
+    guideToggleBtn.classList.remove("open");
+    guideBody.classList.remove("open");
+  } else {
+    guideToggleBtn.classList.add("open");
+    guideBody.classList.add("open");
+  }
 }
 
 const checkSvg = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
@@ -113,6 +141,10 @@ saveBtn.addEventListener("click", async () => {
   const triggers = Array.from(document.querySelectorAll("#trigger-checks input[type=checkbox]:checked")).map(cb => cb.value);
   await chrome.storage.local.set({ icalUrl, keywords, leadMinutes, soundEnabled, triggers });
   updateConnectionStatus(true);
+  icalInlineDot.classList.add("connected");
+  // Collapse guide after successful save
+  guideToggleBtn.classList.remove("open");
+  guideBody.classList.remove("open");
   showStatus("Settings saved ✓", false, true);
 });
 
@@ -123,7 +155,10 @@ function showStatus(msg, isError = false, isSuccess = false) {
   setTimeout(() => (statusEl.className = "status"), 4000);
 }
 
-chrome.storage.local.get(["icalUrl"], data => updateConnectionStatus(!!data.icalUrl));
+chrome.storage.local.get(["icalUrl"], data => {
+  updateConnectionStatus(!!data.icalUrl);
+  if (icalInlineDot) icalInlineDot.classList.toggle("connected", !!data.icalUrl);
+});
 
 // ─── Recover on demand ───
 const demandBtn = document.getElementById("demand-btn");
