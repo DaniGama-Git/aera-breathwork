@@ -35,7 +35,7 @@ const CalendarSetup = () => {
   const [copied, setCopied] = useState(false);
 
   const handleCopyExample = () => {
-    navigator.clipboard.writeText("https://calendar.google.com/calendar/ical/YOUR_CALENDAR_ID/basic.ics");
+    navigator.clipboard.writeText("https://calendar.google.com/calendar/ical/YOUR_CALENDAR_ID/public/basic.ics");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
