@@ -67,7 +67,13 @@ async function loadSettings() {
   icalInput.value = data.icalUrl || "";
   keywordsInput.value = (data.keywords || []).join(", ");
   
-  const soundEnabled = data.soundEnabled !== false; // default true
+  // Load trigger checkboxes
+  const activeTriggers = data.triggers || [];
+  document.querySelectorAll("#trigger-checks input[type=checkbox]").forEach(cb => {
+    cb.checked = activeTriggers.includes(cb.value);
+  });
+
+  const soundEnabled = data.soundEnabled !== false;
   soundToggle.checked = soundEnabled;
   updateSoundLabel(soundEnabled);
 
@@ -104,8 +110,8 @@ saveBtn.addEventListener("click", async () => {
   }
 
   const soundEnabled = soundToggle.checked;
-  const existingData = await chrome.storage.local.get(["triggers"]);
-  await chrome.storage.local.set({ icalUrl, keywords, leadMinutes, soundEnabled, triggers: existingData.triggers || [] });
+  const triggers = Array.from(document.querySelectorAll("#trigger-checks input[type=checkbox]:checked")).map(cb => cb.value);
+  await chrome.storage.local.set({ icalUrl, keywords, leadMinutes, soundEnabled, triggers });
   updateConnectionStatus(true);
   showStatus("Settings saved ✓", false, true);
 });
