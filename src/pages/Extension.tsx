@@ -59,9 +59,26 @@ const Extension = () => {
       const blob = await res.blob();
 
       let finalBlob = blob;
-      if (keywords.length > 0) {
+      // Inject keywords + trigger preferences into the extension bundle
+      const pendingData = sessionStorage.getItem("aera_onboarding_data");
+      let triggers: string[] = [];
+      if (pendingData) {
+        try {
+          const parsed = JSON.parse(pendingData);
+          if (parsed.moments?.length) triggers = parsed.moments;
+        } catch {}
+      }
+      if (triggers.length === 0 && user) {
+        const { data: prefs } = await supabase
+          .from("onboarding_preferences")
+          .select("moments")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (prefs?.moments?.length) triggers = prefs.moments;
+      }
+      if (keywords.length > 0 || triggers.length > 0) {
         const zip = await JSZip.loadAsync(blob);
-        zip.file("defaults.json", JSON.stringify({ keywords, leadMinutes: 15 }));
+        zip.file("defaults.json", JSON.stringify({ keywords, triggers, leadMinutes: 5 }));
         finalBlob = await zip.generateAsync({ type: "blob" });
       }
 
