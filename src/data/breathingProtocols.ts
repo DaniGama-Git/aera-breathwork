@@ -300,7 +300,7 @@ export const decisionClarityProtocol: Protocol = {
   descriptionSecondary: "Coherence breathing for mental clarity, then one decision breath.",
   introTexts: [
     { text: "Clear your mind.", duration: 2000 },
-    { text: "We begin with a physiological sigh — Double inhale through your nose, sniff at the top, then a long exhale through your mouth. The fastest way to reduce cortisol.", duration: 4000 },
+    { text: "We begin with a physiological sigh — double inhale through your nose, sniff at the top, then a long exhale through your mouth. The fastest way to reduce cortisol.", duration: 4000 },
   ],
   outroText: "LET'S GO.",
   stages: [
@@ -349,7 +349,7 @@ export const preMeetingProtocol: Protocol = {
   descriptionSecondary: "Coherence breathing to slow your heart rate before stepping in.",
   introTexts: [
     { text: "Leave the last thing behind.\nReset and enter with full presence.", duration: 2000 },
-    { text: "We begin with a physiological sigh — The fastest way to clear residual stress from your nervous system.", duration: 3000 },
+    { text: "We begin with a physiological sigh — the fastest way to clear residual stress from your nervous system.", duration: 3000 },
   ],
   outroText: "LET'S GO.",
   stages: [
@@ -397,7 +397,7 @@ export const reboundProtocol: Protocol = {
   descriptionSecondary: "Extended exhales to discharge adrenaline, then re-entry inhales.",
   introTexts: [
     { text: "Recovery is part of the performance.\nLet's start it now.", duration: 2000 },
-    { text: "We begin with a physiological sigh — The fastest way to break the stress spike and lower cortisol.", duration: 3000 },
+    { text: "We begin with a physiological sigh — the fastest way to break the stress spike and lower cortisol.", duration: 3000 },
   ],
   outroText: "BACK.",
   stages: [
@@ -461,7 +461,7 @@ export const deepFocusProtocol: Protocol = {
     {
       name: "Lock-in",
       method: "nose",
-      transition: "Let's move into coherence breathing — Building the stable internal rhythm your brain needs to sustain deep attention.",
+      transition: "Let's move into coherence breathing — building the stable internal rhythm your brain needs to sustain deep attention.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "EXHALE", duration: 5000 },
@@ -471,7 +471,7 @@ export const deepFocusProtocol: Protocol = {
     {
       name: "Transition Breath",
       method: "nose",
-      transition: "One final breath — Then begin.",
+      transition: "One final breath — then begin.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "EXHALE", duration: 5000 },
@@ -508,7 +508,7 @@ export const creativeFlowProtocol: Protocol = {
     {
       name: "Variability",
       method: "nose",
-      transition: "Let's move into a looser rhythm — Increasing cognitive flexibility and opening divergent thinking.",
+      transition: "Let's move into a looser rhythm — increasing cognitive flexibility and opening divergent thinking.",
       cycle: [
         { type: "INHALE", duration: 4000 },
         { type: "EXHALE", duration: 4500 },
@@ -555,7 +555,7 @@ export const wakeMeUpProtocol: Protocol = {
     {
       name: "Peak Inhale Hold",
       method: "nose",
-      transition: "One deep inhale — Hold at the top.",
+      transition: "One deep inhale — hold at the top.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "HOLD", duration: 10000 },
@@ -613,7 +613,7 @@ export const energyResetProtocol: Protocol = {
     {
       name: "Peak Breath Hold",
       method: "nose",
-      transition: "One deep inhale — Hold at the top.",
+      transition: "One deep inhale — hold at the top.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "HOLD", duration: 10000 },

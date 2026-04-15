@@ -89,7 +89,7 @@ const PROTOCOLS = {
     audioSrc: "audio/decision-clarity.mp3",
     introTexts: [
       { text: "Clear your mind.", duration: 2000 },
-      { text: "We begin with a physiological sigh — Double inhale through your nose, sniff at the top, then a long exhale through your mouth. The fastest way to reduce cortisol.", duration: 4000 },
+      { text: "We begin with a physiological sigh — double inhale through your nose, sniff at the top, then a long exhale through your mouth. The fastest way to reduce cortisol.", duration: 4000 },
     ],
     outroText: "LET'S GO.",
     stages: [
@@ -129,7 +129,7 @@ const PROTOCOLS = {
     audioSrc: "audio/pre-meeting.mp3",
     introTexts: [
       { text: "Leave the last thing behind.\nReset and enter with full presence.", duration: 2000 },
-      { text: "We begin with a physiological sigh — The fastest way to clear residual stress from your nervous system.", duration: 3000 },
+      { text: "We begin with a physiological sigh — the fastest way to clear residual stress from your nervous system.", duration: 3000 },
     ],
     outroText: "LET'S GO.",
     stages: [
@@ -168,7 +168,7 @@ const PROTOCOLS = {
     audioSrc: "audio/rebound.mp3",
     introTexts: [
       { text: "Recovery is part of the performance.\nLet's start it now.", duration: 2000 },
-      { text: "We begin with a physiological sigh — The fastest way to break the stress spike and lower cortisol.", duration: 3000 },
+      { text: "We begin with a physiological sigh — the fastest way to break the stress spike and lower cortisol.", duration: 3000 },
     ],
     outroText: "BACK.",
     stages: [
@@ -221,7 +221,7 @@ const PROTOCOLS = {
       },
       {
         name: "Lock-in",
-        transition: "Let's move into coherence breathing — Building the stable internal rhythm your brain needs to sustain deep attention.",
+        transition: "Let's move into coherence breathing — building the stable internal rhythm your brain needs to sustain deep attention.",
         cycle: [
           { phase: "inhale", duration: 5000 },
           { phase: "exhale", duration: 5000 },
@@ -230,7 +230,7 @@ const PROTOCOLS = {
       },
       {
         name: "Transition Breath",
-        transition: "One final breath — Then begin.",
+        transition: "One final breath — then begin.",
         cycle: [
           { phase: "inhale", duration: 5000 },
           { phase: "exhale", duration: 5000 },
@@ -259,7 +259,7 @@ const PROTOCOLS = {
       },
       {
         name: "Variability",
-        transition: "Let's move into a looser rhythm — Increasing cognitive flexibility and opening divergent thinking.",
+        transition: "Let's move into a looser rhythm — increasing cognitive flexibility and opening divergent thinking.",
         cycle: [
           { phase: "inhale", duration: 4000 },
           { phase: "exhale", duration: 4500 },
@@ -297,7 +297,7 @@ const PROTOCOLS = {
       },
       {
         name: "Peak Inhale Hold",
-        transition: "One deep inhale — Hold at the top.",
+        transition: "One deep inhale — hold at the top.",
         cycle: [
           { phase: "inhale", duration: 5000 },
           { phase: "hold", duration: 10000, label: "HOLD" },
@@ -393,7 +393,7 @@ const PROTOCOLS = {
       },
       {
         name: "Peak Breath Hold",
-        transition: "One deep inhale — Hold at the top.",
+        transition: "One deep inhale — hold at the top.",
         cycle: [
           { phase: "inhale", duration: 5000 },
           { phase: "hold", duration: 10000, label: "HOLD" },
