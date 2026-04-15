@@ -220,11 +220,19 @@ async function checkCalendar() {
       const b2bKey = `b2b-${today}`;
       const block = detectBackToBack(todayEvents);
       if (block) {
+        const blockNames = block.map(e => e.summary.slice(0, 20)).join(" → ");
         const gapTime = findFirstGap(block, 3 * 60 * 1000);
         const status = triggeredEvents[b2bKey] ? "✓ fired" : "⏳ pending";
-        _planned.push(`back_to_back: gap @ ${_fmt(gapTime)} (${_rel(gapTime)}) — ${status}`);
+        _planned.push(`back_to_back: ${block.length} events [${blockNames}], gap @ ${_fmt(gapTime)} (${_rel(gapTime)}) — ${status}`);
       } else {
-        _planned.push(`back_to_back: no 3+ consecutive block found`);
+        // Show gaps so user can see why no block was detected
+        const gaps = [];
+        for (let i = 1; i < todayEvents.length; i++) {
+          const prevEnd = todayEvents[i - 1].end || (todayEvents[i - 1].start + 3600000);
+          const gapMin = Math.round((todayEvents[i].start - prevEnd) / 60000);
+          gaps.push(`${todayEvents[i - 1].summary.slice(0, 15)}→${todayEvents[i].summary.slice(0, 15)} ${gapMin}min`);
+        }
+        _planned.push(`back_to_back: no 3+ block (need <30min gaps) — ${gaps.join(", ")}`);
       }
     }
 
@@ -235,7 +243,7 @@ async function checkCalendar() {
       const lastEnd = todayEvents[todayEvents.length - 1].end || todayEvents[todayEvents.length - 1].start + 3600000;
       const midpoint = firstStart + (lastEnd - firstStart) / 2;
       const status = triggeredEvents[densityKey] ? "✓ fired" : "⏳ pending";
-      _planned.push(`high_density: midpoint @ ${_fmt(midpoint)} (${_rel(midpoint)}) — ${status}`);
+      _planned.push(`high_density: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} (${_rel(midpoint)}) → energy-reset — ${status}`);
     }
 
     // Plan: daily load cap
@@ -280,7 +288,7 @@ async function checkCalendar() {
       const lastEnd = todayEvents[todayEvents.length - 1].end || todayEvents[todayEvents.length - 1].start + 3600000;
       const midpoint = firstStart + (lastEnd - firstStart) / 2;
       const status = triggeredEvents[midKey] ? "✓ fired" : "⏳ pending";
-      _planned.push(`midday_energy: midpoint @ ${_fmt(midpoint)} (${_rel(midpoint)}) — ${status}`);
+      _planned.push(`midday_energy: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} (${_rel(midpoint)}) → energy-reset — ${status}`);
     }
 
     _logEntry.planned = _planned;
@@ -325,7 +333,7 @@ async function checkCalendar() {
             await fireTrigger("back-to-back", "Back-to-back recovery", triggeredEvents);
             triggered = true;
             // DEBUG-START
-            _logEntry.result = "✓ triggered — back_to_back recovery";
+            _logEntry.result = "✓ triggered — back_to_back → back-to-back";
             // DEBUG-END
           } else if (gapTime && gapTime > now && (gapTime - now) < 5 * 60 * 1000) {
             // Gap is coming up within 5 min — fire now so user gets it before the gap
@@ -333,7 +341,7 @@ async function checkCalendar() {
             await fireTrigger("back-to-back", "Back-to-back recovery", triggeredEvents);
             triggered = true;
             // DEBUG-START
-            _logEntry.result = "✓ triggered — back_to_back (gap approaching)";
+            _logEntry.result = "✓ triggered — back_to_back (gap approaching) → back-to-back";
             // DEBUG-END
           }
         }
@@ -354,7 +362,7 @@ async function checkCalendar() {
           await fireTrigger("energy-reset", "High-density day reset", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = "✓ triggered — high_density midpoint";
+          _logEntry.result = "✓ triggered — high_density midpoint → energy-reset";
           // DEBUG-END
         }
       }
@@ -378,7 +386,7 @@ async function checkCalendar() {
             await fireTrigger("rebound", "Daily load cap reset", triggeredEvents);
             triggered = true;
             // DEBUG-START
-            _logEntry.result = "✓ triggered — daily load cap";
+            _logEntry.result = "✓ triggered — daily load cap → rebound";
             // DEBUG-END
           }
         }
@@ -398,7 +406,7 @@ async function checkCalendar() {
           await fireTrigger("back-to-back", "End-of-day recovery", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = "✓ triggered — end_of_day";
+          _logEntry.result = "✓ triggered — end_of_day → back-to-back";
           // DEBUG-END
         }
       }
@@ -416,7 +424,7 @@ async function checkCalendar() {
           await fireTrigger("wake-me-up", "Morning activation", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = "✓ triggered — morning activation";
+          _logEntry.result = "✓ triggered — morning activation → wake-me-up";
           // DEBUG-END
         }
       }
@@ -438,7 +446,7 @@ async function checkCalendar() {
           await fireTrigger("energy-reset", "Mid-day energy boost", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = "✓ triggered — mid-day energy boost";
+          _logEntry.result = "✓ triggered — mid-day energy boost → energy-reset";
           // DEBUG-END
         }
       }
@@ -482,7 +490,7 @@ function detectBackToBack(events) {
   for (let i = 1; i < events.length; i++) {
     const prevEnd = block[block.length - 1].end || (block[block.length - 1].start + 3600000);
     const gap = events[i].start - prevEnd;
-    if (gap < 10 * 60 * 1000) { // <10 min gap
+    if (gap < 30 * 60 * 1000) { // <30 min gap
       block.push(events[i]);
     } else {
       if (block.length >= 3) return block;
