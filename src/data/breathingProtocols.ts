@@ -33,6 +33,8 @@ export interface Protocol {
   stages: ProtocolStage[];
   finalSequence?: BreathPhase[]; // optional final sequence (e.g. final exhale + hold)
   finalMethod?: "nose" | "mouth";
+  introTexts?: { text: string; duration: number }[];
+  outroText?: string;
 }
 
 export interface TimelineEntry {
@@ -52,6 +54,22 @@ const SCIENCE_DURATION = 5000;
 export function buildTimeline(protocol: Protocol): TimelineEntry[] {
   const entries: TimelineEntry[] = [];
   let cursor = 0;
+
+  // Inject introTexts as TRANSITION entries at the very start
+  if (protocol.introTexts) {
+    protocol.introTexts.forEach((intro) => {
+      entries.push({
+        type: "TRANSITION",
+        duration: intro.duration,
+        startMs: cursor,
+        endMs: cursor + intro.duration,
+        displayLabel: "",
+        stageIndex: 0,
+        transitionText: intro.text,
+      });
+      cursor += intro.duration;
+    });
+  }
 
   protocol.stages.forEach((stage, stageIdx) => {
     if (stage.transition) {
@@ -172,42 +190,43 @@ export const prePitchProtocol: Protocol = {
   id: "pre-pitch",
   title: "Pre-Pitch",
   audioSrc: "/audio/pre-pitch.mp3",
-  subtitle: "~3 mins",
-  duration: "~3 mins",
-  introText: "You're about to step in,\nlet's get you sharp",
-  descriptionPrimary: "Coherence breathing to sync your nervous system.",
-  descriptionSecondary: "Extended exhales to lower cortisol and sharpen focus.",
+  subtitle: "~4.5 mins",
+  duration: "~4.5 mins",
+  introText: "you're about to step in.\nlet's get you sharp.",
+  descriptionPrimary: "Box breathing to balance your nervous system.",
+  descriptionSecondary: "Extended exhales to lower cortisol, then a final breath hold.",
+  introTexts: [
+    { text: "you're about to step in.\nlet's get you sharp.", duration: 2000 },
+    { text: "we'll start with a few rounds of box breathing through your nose to balance your nervous system.", duration: 3000 },
+  ],
+  outroText: "LET'S GO.",
   stages: [
     {
-      name: "Coherence Breathing",
+      name: "Box Breathing",
       method: "nose",
       cycle: [
-        { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 5000 },
+        { type: "INHALE", duration: 4000 },
+        { type: "HOLD", duration: 4000 },
+        { type: "EXHALE", duration: 4000 },
+        { type: "HOLD_EMPTY", duration: 4000 },
       ],
-      cycles: 6,
-      midSetHold: {
-        afterCycle: 3,
-        phase: { type: "HOLD_EMPTY", duration: 6000 },
-      },
+      cycles: 9,
     },
     {
       name: "Extended Exhale",
       method: "mouth",
-      transition:
-        "Let's continue with extended exhales through your mouth to deepen your parasympathetic state.",
+      transition: "let's continue with extended exhales through your mouth to reduce your blood pressure and cortisol.",
       cycle: [
         { type: "INHALE", duration: 4000 },
         { type: "HOLD", duration: 2000 },
-        { type: "EXHALE", duration: 8000 },
+        { type: "EXHALE", duration: 8000, label: "EXHALE THROUGH YOUR MOUTH" },
       ],
       cycles: 6,
     },
     {
       name: "Final Breath Hold",
       method: "mouth",
-      transition:
-        "Let's go for one extended breath hold. Exhale fully, then hold to lower your heart rate.",
+      transition: "let's go for one extended breath hold. exhale fully, then hold to lower your heart rate.",
       cycle: [],
       cycles: 0,
     },
@@ -223,11 +242,16 @@ export const preNegotiationProtocol: Protocol = {
   id: "pre-negotiation",
   title: "Pre-Negotiation",
   audioSrc: "/audio/pre-negotiation.mp3",
-  subtitle: "~3.5 mins",
-  duration: "~3.5 mins",
-  introText: "Time to lock in.\nLet's sharpen your edge.",
-  descriptionPrimary: "Coherence breathing to stabilize your nervous system.",
-  descriptionSecondary: "Activation inhales to prime alertness before you step in.",
+  subtitle: "~4 mins",
+  duration: "~4 mins",
+  introText: "turn presence into your power.",
+  descriptionPrimary: "Coherence breathing to slow your heart rate.",
+  descriptionSecondary: "Extended exhales and activation inhales to restore sharp alertness.",
+  introTexts: [
+    { text: "turn presence into your power.", duration: 2000 },
+    { text: "coherence breathing to slow your heart rate, extended exhales to deepen your parasympathetic state, and three deep inhales to restore sharp alertness.", duration: 4000 },
+  ],
+  outroText: "LET'S GO.",
   stages: [
     {
       name: "Coherence Breathing",
@@ -241,22 +265,20 @@ export const preNegotiationProtocol: Protocol = {
     {
       name: "Extended Exhale",
       method: "mouth",
-      transition:
-        "Let's continue with extended exhales to deepen your parasympathetic state.",
+      transition: "let's continue with extended exhales through your mouth to deepen your parasympathetic state.",
       cycle: [
         { type: "INHALE", duration: 4000 },
-        { type: "EXHALE", duration: 7000 },
+        { type: "EXHALE", duration: 7000, label: "EXHALE THROUGH YOUR MOUTH" },
       ],
       cycles: 6,
     },
     {
       name: "Activation",
       method: "nose",
-      transition:
-        "Now, three slow deep inhales to activate your system. Exhale naturally after each.",
+      transition: "three deep inhales to increase oxygen uptake and restore alertness.",
       cycle: [
         { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 3000 },
+        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
       ],
       cycles: 3,
     },
@@ -267,310 +289,51 @@ export const preNegotiationProtocol: Protocol = {
   finalMethod: "nose",
 };
 
-export const creativeFlowProtocol: Protocol = {
-  id: "creative-flow",
-  title: "Creative Flow",
+export const decisionClarityProtocol: Protocol = {
+  id: "decision-clarity",
+  title: "Decision Clarity",
   audioSrc: "/audio/decision-clarity.mp3",
-  subtitle: "~3.5 mins",
-  duration: "~3.5 mins",
-  introText: "Let go of control.\nLet your mind open up.",
-  descriptionPrimary: "Longer exhales to release prefrontal control and reduce cognitive rigidity.",
-  descriptionSecondary: "Variable breathing to increase cognitive flexibility for divergent thinking.",
-  stages: [
-    {
-      name: "Release Control",
-      method: "nose",
-      science: "Downregulates prefrontal control and reduces cognitive rigidity.",
-      cycle: [
-        { type: "INHALE", duration: 4000 },
-        { type: "EXHALE", duration: 6000 },
-      ],
-      cycles: 7,
-    },
-    {
-      name: "Add Variability",
-      method: "nose",
-      transition:
-        "Now let your breathing become less rigid. Allow natural variation in your exhales.",
-      science: "Breaks rigid attentional rhythm and increases cognitive flexibility for divergent thinking.",
-      cycle: [
-        { type: "INHALE", duration: 4000 },
-        { type: "EXHALE", duration: 4500 },
-      ],
-      cycles: 12,
-    },
-    {
-      name: "Expand",
-      method: "nose",
-      transition:
-        "Take a few slightly deeper breaths. Relaxed, not controlled. Open up your mental space.",
-      science: "Opens mental space without re-introducing control.",
-      cycle: [
-        { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 3000 },
-      ],
-      cycles: 3,
-    },
+  subtitle: "~3 mins",
+  duration: "~3 mins",
+  introText: "clear your mind.",
+  descriptionPrimary: "Physiological sighs to reduce cortisol fast.",
+  descriptionSecondary: "Coherence breathing for mental clarity, then one decision breath.",
+  introTexts: [
+    { text: "clear your mind.", duration: 2000 },
+    { text: "we begin with a physiological sigh — double inhale through your nose, sniff at the top, then a long exhale through your mouth. the fastest way to reduce cortisol.", duration: 4000 },
   ],
-};
-
-export const deepFocusProtocol: Protocol = {
-  id: "deep-focus",
-  title: "Deep Focus",
-  audioSrc: "/audio/deep-focus.mp3",
-  subtitle: "~3.5 mins",
-  duration: "~3.5 mins",
-  introText: "Settle in.\nLet's lock your attention.",
-  descriptionPrimary: "Longer exhales to reduce surface noise and prepare for sustained attention.",
-  descriptionSecondary: "Coherence breathing to build HRV and attentional stability.",
+  outroText: "LET'S GO.",
   stages: [
     {
-      name: "Settle",
+      name: "Physiological Sigh",
       method: "nose",
-      science: "Reduces surface noise and prepares the nervous system for sustained attention.",
       cycle: [
-        { type: "INHALE", duration: 4000 },
-        { type: "EXHALE", duration: 6000 },
-      ],
-      cycles: 7,
-    },
-    {
-      name: "Lock-in",
-      method: "nose",
-      transition:
-        "Now settle into a steady rhythm. Same pace, no variation. Let your attention lock in.",
-      science: "Builds HRV and attentional stability through consistent internal rhythm.",
-      cycle: [
-        { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 5000 },
-      ],
-      cycles: 12,
-    },
-    {
-      name: "Transition Breath",
-      method: "nose",
-      transition:
-        "One final breath. Inhale deeply, exhale slowly, then begin.",
-      cycle: [
-        { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 5000 },
-      ],
-      cycles: 1,
-    },
-  ],
-};
-
-export const wakeMeUpProtocol: Protocol = {
-  id: "wake-me-up",
-  title: "Wake Me Up",
-  audioSrc: "/audio/wake-me-up.mp3",
-  subtitle: "~4 mins",
-  duration: "~4 mins",
-  introText: "Time to wake up.\nLet's build some clean energy.",
-  descriptionPrimary: "Cyclic breathing to trigger sympathetic activation for clean alertness.",
-  descriptionSecondary: "Coherence breathing to stabilize and prevent an energy crash.",
-  stages: [
-    {
-      name: "Activate",
-      method: "nose",
-      science: "Light cyclic breathing increases oxygen uptake and triggers sympathetic activation for clean alertness.",
-      cycle: [
-        { type: "INHALE", duration: 2000 },
-        { type: "EXHALE", duration: 2000 },
-      ],
-      cycles: 25,
-    },
-    {
-      name: "Peak Inhale",
-      method: "nose",
-      transition:
-        "Now take one deep inhale and hold. Let the alertness build.",
-      science: "Controlled breath hold after activation creates an alertness spike without overstimulation.",
-      cycle: [
-        { type: "INHALE", duration: 5000 },
-        { type: "HOLD", duration: 10000 },
-      ],
-      cycles: 1,
-    },
-    {
-      name: "Stabilise",
-      method: "nose",
-      transition:
-        "Let's stabilize with coherence breathing. Steady rhythm to lock in your energy.",
-      science: "Coherence breathing stabilises HRV and sharpens cognition after activation — prevents energy crash.",
-      cycle: [
-        { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 5000 },
-      ],
-      cycles: 9,
-    },
-    {
-      name: "Final Lift",
-      method: "nose",
-      transition:
-        "A few deeper breaths to fully expand and oxygenate before you start your day.",
-      science: "Expands lung capacity and restores full oxygenation before starting the day.",
-      cycle: [
-        { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 3000 },
-      ],
-      cycles: 3,
-    },
-  ],
-};
-
-export const energyResetProtocol: Protocol = {
-  id: "energy-reset",
-  title: "Energy Reset",
-  audioSrc: "/audio/energy-reset.mp3",
-  subtitle: "~3.5 mins",
-  duration: "~3.5 mins",
-  introText: "Feeling the dip?\nLet's bring you back online.",
-  descriptionPrimary: "Cyclic activation to boost oxygen uptake and trigger clean alertness.",
-  descriptionSecondary: "Coherence breathing to stabilize and lock in focused energy.",
-  stages: [
-    {
-      name: "Activate",
-      method: "nose",
-      science: "Light cyclic breathing increases oxygen uptake and triggers sympathetic nervous system activation.",
-      cycle: [
-        { type: "INHALE", duration: 2000 },
-        { type: "EXHALE", duration: 2000 },
-      ],
-      cycles: 22,
-    },
-    {
-      name: "Peak Breath",
-      method: "nose",
-      transition:
-        "Now take one deep inhale and hold. Let the alertness spike.",
-      science: "Controlled breath hold after activation creates an alertness spike without overstimulation.",
-      cycle: [
-        { type: "INHALE", duration: 5000 },
-        { type: "HOLD", duration: 10000 },
-        { type: "EXHALE", duration: 5000 },
-      ],
-      cycles: 1,
-    },
-    {
-      name: "Stabilise",
-      method: "nose",
-      transition:
-        "Let's stabilize with coherence breathing. Steady rhythm to prevent a crash.",
-      science: "Coherence breathing stabilises HRV and prevents energy crash after activation.",
-      cycle: [
-        { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 5000 },
-      ],
-      cycles: 9,
-    },
-    {
-      name: "Focus Lock",
-      method: "nose",
-      transition:
-        "Now a slight exhale extension to bring cognitive clarity online.",
-      science: "Slight exhale extension lowers residual arousal and brings cognitive clarity online.",
-      cycle: [
-        { type: "INHALE", duration: 4000 },
-        { type: "EXHALE", duration: 6000 },
+        { type: "INHALE", duration: 3000 },
+        { type: "SNIFF", duration: 1000, label: "TOP UP" },
+        { type: "EXHALE", duration: 5000, label: "EXHALE THROUGH YOUR MOUTH" },
       ],
       cycles: 4,
     },
-  ],
-};
-
-export const reboundProtocol: Protocol = {
-  id: "rebound",
-  title: "Rebound",
-  audioSrc: "/audio/rebound.mp3",
-  subtitle: "~3 mins",
-  duration: "~3 mins",
-  introText: "That was tough.\nLet's reset your system.",
-  descriptionPrimary: "Physiological sighs to break the acute stress spike.",
-  descriptionSecondary: "Extended exhales to discharge adrenaline, then re-entry inhales to restore alertness.",
-  stages: [
     {
-      name: "Discharge",
+      name: "Coherence Breathing",
       method: "nose",
-      science: "Breaks the acute stress spike and rapidly lowers cortisol.",
-      cycle: [
-        { type: "INHALE", duration: 3000 },
-        { type: "INHALE", duration: 1000, label: "TOP UP" },
-        { type: "EXHALE", duration: 3000 },
-      ],
-      cycles: 3,
-    },
-    {
-      name: "Regulate",
-      method: "nose",
-      transition:
-        "Now let's regulate with extended exhales. Let the tension leave your body.",
-      science: "Extended exhales activate the vagus nerve and discharge residual adrenaline.",
+      transition: "let's move into coherence breathing to drop your heart rate and build mental clarity.",
       cycle: [
         { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 8000 },
-      ],
-      cycles: 8,
-    },
-    {
-      name: "Re-entry",
-      method: "nose",
-      transition:
-        "Three slow deep inhales to bring you back. Exhale naturally after each.",
-      science: "Restores alertness and prevents flat post-regulation state.",
-      cycle: [
-        { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 3000 },
-      ],
-      cycles: 3,
-    },
-  ],
-};
-
-export const contextSwitchProtocol: Protocol = {
-  id: "context-switch",
-  title: "Context Switch",
-  audioSrc: "/audio/context-switch.mp3",
-  subtitle: "~3.5 mins",
-  duration: "~3.5 mins",
-  introText: "New task, new state.\nLet's clear the slate.",
-  descriptionPrimary: "Physiological sighs to interrupt cognitive carryover.",
-  descriptionSecondary: "Coherence breathing to re-establish a neutral baseline for the next task.",
-  stages: [
-    {
-      name: "Interrupt",
-      method: "nose",
-      science: "Immediately breaks the previous mental loop and interrupts cognitive carryover.",
-      cycle: [
-        { type: "INHALE", duration: 4000 },
-        { type: "INHALE", duration: 1500, label: "TOP UP" },
-        { type: "EXHALE", duration: 3500 },
-      ],
-      cycles: 2,
-    },
-    {
-      name: "Clear",
-      method: "nose",
-      transition:
-        "Now let's clear residual activation with extended exhales.",
-      science: "Extended exhale clears residual cognitive activation and reduces attentional fragmentation.",
-      cycle: [
-        { type: "INHALE", duration: 4000 },
         { type: "EXHALE", duration: 6000 },
       ],
-      cycles: 13,
+      cycles: 12,
     },
     {
-      name: "Re-align",
+      name: "Decision Pause",
       method: "nose",
-      transition:
-        "Settle into coherence breathing. Equal pace to reset your baseline.",
-      science: "Coherence breathing re-establishes neutral autonomic baseline and cognitive flexibility.",
+      transition: "one breath before you decide.",
       cycle: [
         { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 5000 },
+        { type: "EXHALE", duration: 6000 },
+        { type: "HOLD_EMPTY", duration: 8000 },
       ],
-      cycles: 8,
+      cycles: 1,
     },
   ],
 };
@@ -581,26 +344,29 @@ export const preMeetingProtocol: Protocol = {
   audioSrc: "/audio/pre-meeting.mp3",
   subtitle: "~2 mins",
   duration: "~2 mins",
-  introText: "Meeting coming up.\nLet's get you centered.",
-  descriptionPrimary: "Physiological sighs to discharge stress and clear mental noise.",
-  descriptionSecondary: "Reset breathing to stabilize, then one transition breath to step in sharp.",
+  introText: "leave the last thing behind.\nreset and enter with full presence.",
+  descriptionPrimary: "Physiological sighs to clear residual stress.",
+  descriptionSecondary: "Coherence breathing to slow your heart rate before stepping in.",
+  introTexts: [
+    { text: "leave the last thing behind.\nreset and enter with full presence.", duration: 2000 },
+    { text: "we begin with a physiological sigh — the fastest way to clear residual stress from your nervous system.", duration: 3000 },
+  ],
+  outroText: "LET'S GO.",
   stages: [
     {
       name: "Physiological Sigh",
       method: "nose",
-      science: "Double inhale activates alveolar sacs and rapidly lowers CO₂, breaking the stress loop in seconds.",
       cycle: [
         { type: "INHALE", duration: 3000 },
-        { type: "SNIFF", duration: 1000, label: "SNIFF" },
-        { type: "EXHALE", duration: 3000 },
+        { type: "SNIFF", duration: 1000, label: "TOP UP" },
+        { type: "EXHALE", duration: 5000, label: "NATURALLY EXHALE" },
       ],
-      cycles: 2,
+      cycles: 3,
     },
     {
       name: "Reset Breathing",
       method: "nose",
-      transition: "Now settle into a smooth, continuous rhythm. No holds, just flow.",
-      science: "Balanced nasal breathing at a slow cadence maximises HRV and resets the autonomic baseline.",
+      transition: "let's move into coherence breathing to slow your heart rate.",
       cycle: [
         { type: "INHALE", duration: 5000 },
         { type: "EXHALE", duration: 6000 },
@@ -610,7 +376,369 @@ export const preMeetingProtocol: Protocol = {
     {
       name: "Transition Breath",
       method: "nose",
-      transition: "One final breath. Inhale deeply through your nose, then exhale fully through your mouth.",
+      transition: "one final breath to complete your reset.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 3500, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 1,
+    },
+  ],
+};
+
+export const reboundProtocol: Protocol = {
+  id: "rebound",
+  title: "Post-Setback Recovery",
+  audioSrc: "/audio/rebound.mp3",
+  subtitle: "~3 mins",
+  duration: "~3 mins",
+  introText: "recovery is part of the performance.\nlet's start it now.",
+  descriptionPrimary: "Physiological sighs to break the stress spike.",
+  descriptionSecondary: "Extended exhales to discharge adrenaline, then re-entry inhales.",
+  introTexts: [
+    { text: "recovery is part of the performance.\nlet's start it now.", duration: 2000 },
+    { text: "we begin with a physiological sigh — the fastest way to break the stress spike and lower cortisol.", duration: 3000 },
+  ],
+  outroText: "BACK.",
+  stages: [
+    {
+      name: "Physiological Sigh",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 3000 },
+        { type: "SNIFF", duration: 1000, label: "TOP UP" },
+        { type: "EXHALE", duration: 5000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 3,
+    },
+    {
+      name: "Extended Exhale",
+      method: "mouth",
+      transition: "let's move into extended exhales to activate your vagus nerve and discharge adrenaline.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 8000, label: "EXHALE THROUGH YOUR MOUTH" },
+      ],
+      cycles: 8,
+    },
+    {
+      name: "Re-entry",
+      method: "nose",
+      transition: "three deep inhales to restore alertness and bring you back.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 3,
+    },
+  ],
+};
+
+export const deepFocusProtocol: Protocol = {
+  id: "deep-focus",
+  title: "Deep Focus",
+  audioSrc: "/audio/deep-focus.mp3",
+  subtitle: "~4 mins",
+  duration: "~4 mins",
+  introText: "full focus is a competitive advantage.\nlet's build it.",
+  descriptionPrimary: "Extended exhales to reduce surface noise.",
+  descriptionSecondary: "Coherence breathing for sustained deep attention.",
+  introTexts: [
+    { text: "full focus is a competitive advantage.\nlet's build it.", duration: 2000 },
+    { text: "we begin with extended exhales to reduce surface noise and prepare your nervous system for sustained attention.", duration: 3000 },
+  ],
+  outroText: "LOCKED.",
+  stages: [
+    {
+      name: "Settle",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 6000 },
+      ],
+      cycles: 7,
+    },
+    {
+      name: "Lock-in",
+      method: "nose",
+      transition: "let's move into coherence breathing — building the stable internal rhythm your brain needs to sustain deep attention.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 12,
+    },
+    {
+      name: "Transition Breath",
+      method: "nose",
+      transition: "one final breath — then begin.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 1,
+    },
+  ],
+};
+
+export const creativeFlowProtocol: Protocol = {
+  id: "creative-flow",
+  title: "Creative Flow",
+  audioSrc: "/audio/decision-clarity.mp3",
+  subtitle: "~4 mins",
+  duration: "~4 mins",
+  introText: "the best ideas come to a quiet mind.\nlet's get you there.",
+  descriptionPrimary: "Extended exhales to downregulate prefrontal control.",
+  descriptionSecondary: "Variable breathing for cognitive flexibility and divergent thinking.",
+  introTexts: [
+    { text: "the best ideas come to a quiet mind.\nlet's get you there.", duration: 2000 },
+    { text: "we begin with extended exhales to downregulate prefrontal control and reduce cognitive rigidity.", duration: 3000 },
+  ],
+  outroText: "LET IT COME.",
+  stages: [
+    {
+      name: "Release Control",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 6000 },
+      ],
+      cycles: 7,
+    },
+    {
+      name: "Variability",
+      method: "nose",
+      transition: "let's move into a looser rhythm — increasing cognitive flexibility and opening divergent thinking.",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 4500 },
+      ],
+      cycles: 12,
+    },
+    {
+      name: "Expand",
+      method: "nose",
+      transition: "a few deeper breaths to open mental space.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 3,
+    },
+  ],
+};
+
+export const wakeMeUpProtocol: Protocol = {
+  id: "wake-me-up",
+  title: "Morning Activation",
+  audioSrc: "/audio/wake-me-up.mp3",
+  subtitle: "~4 mins",
+  duration: "~4 mins",
+  introText: "build your energy for the day ahead.",
+  descriptionPrimary: "Cyclic breathing to boost oxygen and trigger sympathetic activation.",
+  descriptionSecondary: "Coherence breathing to stabilise and sharpen focus.",
+  introTexts: [
+    { text: "build your energy for the day ahead.", duration: 2000 },
+    { text: "we begin with cyclic breathing to boost oxygen and trigger sympathetic nervous system activation.", duration: 3000 },
+  ],
+  outroText: "YOU'RE ON.",
+  stages: [
+    {
+      name: "Cyclic Activation",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 2000 },
+        { type: "EXHALE", duration: 2000 },
+      ],
+      cycles: 25,
+    },
+    {
+      name: "Peak Inhale Hold",
+      method: "nose",
+      transition: "one deep inhale — hold at the top.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "HOLD", duration: 10000 },
+        { type: "EXHALE", duration: 3500, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 1,
+    },
+    {
+      name: "Coherence Stabilisation",
+      method: "nose",
+      transition: "let's move into coherence breathing to stabilise your nervous system and sharpen your focus.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 9,
+    },
+    {
+      name: "Final Lift",
+      method: "nose",
+      transition: "two deeper breaths to maximise oxygen uptake.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 3000, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 3,
+    },
+  ],
+};
+
+export const energyResetProtocol: Protocol = {
+  id: "energy-reset",
+  title: "Midday Energizer",
+  audioSrc: "/audio/energy-reset.mp3",
+  subtitle: "~4 mins",
+  duration: "~4 mins",
+  introText: "beat the afternoon dip.\nget your brain back online.",
+  descriptionPrimary: "Cyclic activation to boost oxygen and trigger alertness.",
+  descriptionSecondary: "Coherence breathing to stabilise and prevent an energy crash.",
+  introTexts: [
+    { text: "beat the afternoon dip.\nget your brain back online.", duration: 2000 },
+    { text: "we begin with cyclic breathing to boost oxygen and activate your sympathetic nervous system.", duration: 3000 },
+  ],
+  outroText: "YOU'RE CLEAR. GO.",
+  stages: [
+    {
+      name: "Cyclic Activation",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 2000 },
+        { type: "EXHALE", duration: 2000 },
+      ],
+      cycles: 22,
+    },
+    {
+      name: "Peak Breath Hold",
+      method: "nose",
+      transition: "one deep inhale — hold at the top.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "HOLD", duration: 10000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 1,
+    },
+    {
+      name: "Coherence Stabilisation",
+      method: "nose",
+      transition: "let's move into coherence breathing to stabilise your nervous system and prevent an energy crash.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 9,
+    },
+    {
+      name: "Focus Lock",
+      method: "mouth",
+      transition: "let's finish with extended exhales to bring cognitive clarity back online.",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 6000, label: "EXHALE THROUGH YOUR MOUTH" },
+      ],
+      cycles: 4,
+    },
+  ],
+};
+
+export const contextSwitchProtocol: Protocol = {
+  id: "context-switch",
+  title: "Context Switch",
+  audioSrc: "/audio/context-switch.mp3",
+  subtitle: "~3 mins",
+  duration: "~3 mins",
+  introText: "clear your mind.\nenter what's next with full attention.",
+  descriptionPrimary: "Physiological sighs to break the mental loop.",
+  descriptionSecondary: "Extended exhales and coherence breathing to rebuild a neutral baseline.",
+  introTexts: [
+    { text: "clear your mind.\nenter what's next with full attention.", duration: 2000 },
+    { text: "we begin with a physiological sigh to break the mental loop from your last task.", duration: 3000 },
+  ],
+  outroText: "you're ready for what's next.",
+  stages: [
+    {
+      name: "Physiological Sigh",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "SNIFF", duration: 1500, label: "TOP UP" },
+        { type: "EXHALE", duration: 7000, label: "EXHALE THROUGH YOUR MOUTH" },
+      ],
+      cycles: 2,
+    },
+    {
+      name: "Extended Exhale",
+      method: "mouth",
+      transition: "let's move into extended exhales to lower cortisol and clear your working memory.",
+      cycle: [
+        { type: "INHALE", duration: 4000 },
+        { type: "EXHALE", duration: 6000, label: "EXHALE THROUGH YOUR MOUTH" },
+      ],
+      cycles: 13,
+    },
+    {
+      name: "Coherence",
+      method: "nose",
+      transition: "let's move into coherence breathing to rebuild a neutral baseline in your nervous system.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 7,
+    },
+    {
+      name: "Transition Breath",
+      method: "nose",
+      transition: "one breath to complete the shift.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 3500, label: "NATURALLY EXHALE" },
+      ],
+      cycles: 1,
+    },
+  ],
+};
+
+export const backToBackProtocol: Protocol = {
+  id: "back-to-back",
+  title: "Back-to-Back",
+  audioSrc: "/audio/back-to-back.mp3",
+  subtitle: "~3 mins",
+  duration: "~3 mins",
+  introText: "let go of what just happened.\nreset before what's next.",
+  descriptionPrimary: "Extended exhales to flush residual stress.",
+  descriptionSecondary: "Coherence breathing to restore autonomic balance.",
+  introTexts: [
+    { text: "let go of what just happened.\nreset before what's next.", duration: 2000 },
+  ],
+  outroText: "LET'S GO.",
+  stages: [
+    {
+      name: "Flush",
+      method: "nose",
+      cycle: [
+        { type: "INHALE", duration: 3000 },
+        { type: "EXHALE", duration: 6000 },
+      ],
+      cycles: 5,
+    },
+    {
+      name: "Reset",
+      method: "nose",
+      transition: "good. now even out the breath.\nsmooth and steady.",
+      cycle: [
+        { type: "INHALE", duration: 5000 },
+        { type: "EXHALE", duration: 5000 },
+      ],
+      cycles: 8,
+    },
+    {
+      name: "Ready",
+      method: "nose",
+      transition: "one final breath. deep inhale, long full exhale. you're ready.",
       cycle: [],
       cycles: 0,
     },
@@ -622,48 +750,17 @@ export const preMeetingProtocol: Protocol = {
   finalMethod: "mouth",
 };
 
-export const backToBackProtocol: Protocol = {
-  id: "back-to-back",
-  title: "Back-to-Back",
-  audioSrc: "/audio/back-to-back.mp3",
-  subtitle: "~3 mins",
-  duration: "~3 mins",
-  introText: "Let go of what just happened.\nReset before what's next.",
-  descriptionPrimary: "Extended exhales to flush residual stress and lower sympathetic tone.",
-  descriptionSecondary: "Coherence breathing to restore autonomic balance between demands.",
-  stages: [
-    {
-      name: "Flush",
-      method: "nose",
-      science: "Extended exhales activate the vagus nerve, clearing residual cortisol and adrenaline from the previous demand.",
-      cycle: [
-        { type: "INHALE", duration: 3000 },
-        { type: "EXHALE", duration: 6000 },
-      ],
-      cycles: 5,
-    },
-    {
-      name: "Reset",
-      method: "nose",
-      transition: "Good. Now even out the breath.\nSmooth and steady.",
-      science: "Equal-ratio breathing at ~6 breaths/min maximises HRV and resets the autonomic baseline.",
-      cycle: [
-        { type: "INHALE", duration: 5000 },
-        { type: "EXHALE", duration: 5000 },
-      ],
-      cycles: 8,
-    },
-    {
-      name: "Ready",
-      method: "nose",
-      transition: "One final breath. Deep inhale, long full exhale. You're ready.",
-      cycle: [],
-      cycles: 0,
-    },
-  ],
-  finalSequence: [
-    { type: "INHALE", duration: 5000 },
-    { type: "EXHALE", duration: 7000, label: "FULL EXHALE" },
-  ],
-  finalMethod: "mouth",
+/* ── All protocols indexed by ID ── */
+export const ALL_PROTOCOLS: Record<string, Protocol> = {
+  "pre-pitch": prePitchProtocol,
+  "pre-negotiation": preNegotiationProtocol,
+  "decision-clarity": decisionClarityProtocol,
+  "pre-meeting": preMeetingProtocol,
+  "rebound": reboundProtocol,
+  "deep-focus": deepFocusProtocol,
+  "creative-flow": creativeFlowProtocol,
+  "wake-me-up": wakeMeUpProtocol,
+  "energy-reset": energyResetProtocol,
+  "context-switch": contextSwitchProtocol,
+  "back-to-back": backToBackProtocol,
 };

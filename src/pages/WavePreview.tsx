@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { BreathAudio } from "@/lib/breathAudio";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import waveBgLogo from "@/assets/wave-bg-logo.png";
 import waveBgIntro from "@/assets/wave-bg-intro.png";
 import waveBgDescription from "@/assets/wave-bg-description.png";
@@ -8,9 +8,11 @@ import waveBgInhale from "@/assets/wave-bg-inhale.png";
 import lightbulbIcon from "@/assets/lightbulb-icon.svg";
 import BreatheDots from "@/components/BreatheDots";
 import {
+  ALL_PROTOCOLS,
   backToBackProtocol,
   buildTimeline,
   getBarPosition,
+  type Protocol,
   type TimelineEntry,
 } from "@/data/breathingProtocols";
 
@@ -54,10 +56,12 @@ function buildBreathingMask(barTop: number): string {
     rgba(255,255,255,0.9) 100%)`;
 }
 
-const protocol = backToBackProtocol;
-
 const WavePreview = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const protocolId = searchParams.get("protocol") || "back-to-back";
+  const protocol: Protocol = ALL_PROTOCOLS[protocolId] || backToBackProtocol;
+
   const [screen, setScreen] = useState<Screen>("loading");
   const [phase, setPhase] = useState("");
   const [fadeIn, setFadeIn] = useState(true);
@@ -67,6 +71,7 @@ const WavePreview = () => {
   const [paused, setPaused] = useState(false);
   const [muted, setMuted] = useState(false);
   const [showPausedOverlay, setShowPausedOverlay] = useState(false);
+  const [showSelector, setShowSelector] = useState(false);
   const pausedElapsedRef = useRef(0);
   const transitionTextRef = useRef("");
   const scienceTextRef = useRef("");
@@ -78,7 +83,7 @@ const WavePreview = () => {
   const bgAudioRef = useRef<HTMLAudioElement | null>(null);
   const mutedRef = useRef(false);
 
-  const timeline = useMemo(() => buildTimeline(protocol), []);
+  const timeline = useMemo(() => buildTimeline(protocol), [protocol]);
   const totalDuration = timeline.length > 0 ? timeline[timeline.length - 1].endMs : 0;
   const startsWithOverlay = timeline.length > 0 && (timeline[0].type === "SCIENCE" || timeline[0].type === "TRANSITION");
   const [hasStartedBreathing, setHasStartedBreathing] = useState(false);
@@ -129,7 +134,7 @@ const WavePreview = () => {
       }
       setFadeIn(true);
     }, 600);
-  }, []);
+  }, [protocol]);
 
   /* ── Timeline-driven breathing engine ── */
   useEffect(() => {
@@ -270,6 +275,7 @@ const WavePreview = () => {
   const showTransition = isBreathing && !!transitionText;
   const showScience = isBreathing && !!scienceText;
   const showOverlay = showTransition || showScience;
+  const isDone = screen === "done";
 
   if (screen === "loading") {
     return (
@@ -287,7 +293,57 @@ const WavePreview = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#111] flex items-center justify-center font-body">
+    <div className="min-h-screen bg-[#111] flex flex-col items-center justify-center font-body relative">
+      {/* Protocol selector */}
+      <div className="absolute top-4 left-4 z-30">
+        <button
+          onClick={() => setShowSelector(!showSelector)}
+          className="px-3 py-1.5 rounded-lg text-[10px] tracking-[0.1em] uppercase font-medium transition-all"
+          style={{
+            background: "rgba(255,255,255,0.08)",
+            border: "1px solid rgba(255,255,255,0.15)",
+            color: "rgba(255,255,255,0.5)",
+          }}
+        >
+          {protocol.title} ▾
+        </button>
+        {showSelector && (
+          <div
+            className="absolute top-full left-0 mt-2 rounded-xl overflow-hidden"
+            style={{
+              background: "rgba(30,30,30,0.95)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              backdropFilter: "blur(12px)",
+              minWidth: 180,
+            }}
+          >
+            {Object.entries(ALL_PROTOCOLS).map(([id, p]) => (
+              <button
+                key={id}
+                onClick={() => {
+                  setSearchParams({ protocol: id });
+                  setShowSelector(false);
+                  setScreen("loading");
+                  setHasStartedBreathing(false);
+                  setTransitionText("");
+                  setScienceText("");
+                  if (bgAudioRef.current) { bgAudioRef.current.pause(); bgAudioRef.current = null; }
+                  breathAudioRef.current.stop();
+                  setTimeout(() => setScreen("logo"), 100);
+                }}
+                className="w-full text-left px-4 py-2.5 text-[11px] tracking-wide font-medium transition-colors hover:bg-white/5"
+                style={{
+                  color: id === protocolId ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.45)",
+                  background: id === protocolId ? "rgba(255,255,255,0.06)" : "transparent",
+                }}
+              >
+                {p.title}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
       <div style={{ width: 320, padding: 16 }}>
         <div
           className="relative w-full overflow-hidden"
@@ -301,7 +357,7 @@ const WavePreview = () => {
                 backgroundImage: `url(${src})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                opacity: !isBreathing && (screen === key || (screen === "done" && key === "logo")) ? 1 : 0,
+                opacity: !isBreathing && !isDone && screen === key ? 1 : 0,
               }}
             />
           ))}
@@ -313,6 +369,15 @@ const WavePreview = () => {
               backgroundSize: "cover",
               backgroundPosition: "center",
               opacity: isBreathing ? 1 : 0,
+            }}
+          />
+
+          {/* Done screen white background */}
+          <div
+            className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
+            style={{
+              background: "#fff",
+              opacity: isDone ? 1 : 0,
             }}
           />
 
@@ -333,6 +398,12 @@ const WavePreview = () => {
                 style={{ fontSize: 26, fontWeight: 300, filter: "drop-shadow(0px 4px 4px rgba(0,0,0,0.25))" }}
               >
                 āera
+              </span>
+              <span
+                className="block mt-2 uppercase tracking-[0.25em] font-medium"
+                style={{ fontSize: 10, color: "rgba(255,255,255,0.45)" }}
+              >
+                {protocol.title.toUpperCase()}
               </span>
             </div>
           )}
@@ -516,25 +587,22 @@ const WavePreview = () => {
             </>
           )}
 
-          {screen === "done" && (
+          {isDone && (
             <div className={contentBase}>
               <span
-                className="text-white/90 tracking-[0.2em] font-light"
-                style={{ fontSize: 26, filter: "drop-shadow(0px 4px 4px rgba(0,0,0,0.25))" }}
+                className="tracking-[0.08em] font-semibold"
+                style={{ fontSize: 22, color: "#1a1a1a" }}
               >
-                āera
+                {protocol.outroText || "LET'S GO."}
               </span>
-              <p className="text-white/50 text-[13px] tracking-wide mt-3 font-medium">
-                You're ready.
-              </p>
               <div className="flex flex-col items-center gap-3 mt-8">
                 <button
                   onClick={restart}
                   className="px-7 py-2.5 rounded-full text-[10px] tracking-[0.2em] uppercase font-medium cursor-pointer transition-all hover:brightness-110"
                   style={{
-                    background: "rgba(255,255,255,0.08)",
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    color: "rgba(255,255,255,0.55)",
+                    background: "rgba(0,0,0,0.05)",
+                    border: "1px solid rgba(0,0,0,0.12)",
+                    color: "rgba(0,0,0,0.5)",
                   }}
                 >
                   Again
@@ -543,12 +611,12 @@ const WavePreview = () => {
                   onClick={() => navigate("/")}
                   className="px-7 py-2.5 rounded-full text-[10px] tracking-[0.2em] uppercase font-medium cursor-pointer transition-all hover:brightness-110"
                   style={{
-                    background: "rgba(255,255,255,0.15)",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    color: "rgba(255,255,255,0.75)",
+                    background: "rgba(0,0,0,0.08)",
+                    border: "1px solid rgba(0,0,0,0.15)",
+                    color: "rgba(0,0,0,0.6)",
                   }}
                 >
-                  Get Started
+                  Done
                 </button>
               </div>
             </div>
