@@ -222,6 +222,10 @@ function renderDebugLog() {
       const dotColor = isTriggered ? "#16a34a" : isError ? "#dc2626" : "rgba(0,0,0,0.15)";
       const evtText = entry.events > 0 ? `${entry.events} event${entry.events !== 1 ? "s" : ""} today` : "No events";
       const summaries = (entry.summaries || []).map(s => `<div style="font-size:10px;color:rgba(0,0,0,0.35);padding-left:8px;line-height:1.4">· ${s}</div>`).join("");
+      // Show active triggers & keywords config
+      const triggerTags = (entry.triggers || []).map(t => `<span style="display:inline-block;font-size:9px;background:rgba(0,0,0,0.06);color:rgba(0,0,0,0.5);padding:1px 5px;border-radius:4px;margin-right:3px">${t}</span>`).join("");
+      const kwTags = (entry.keywords || []).map(k => `<span style="display:inline-block;font-size:9px;background:rgba(59,130,246,0.1);color:rgba(59,130,246,0.7);padding:1px 5px;border-radius:4px;margin-right:3px">${k}</span>`).join("");
+      const configSection = (triggerTags || kwTags) ? `<div style="margin-top:3px;line-height:1.8">${triggerTags}${kwTags}</div>` : "";
       return `<div style="padding:8px 10px;border-radius:10px;background:rgba(0,0,0,0.03)">
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
           <span style="width:6px;height:6px;border-radius:50%;background:${dotColor};flex-shrink:0"></span>
@@ -229,6 +233,7 @@ function renderDebugLog() {
           <span style="font-size:10px;color:rgba(0,0,0,0.35);margin-left:auto">${evtText}</span>
         </div>
         ${summaries}
+        ${configSection}
         <div style="font-size:10px;color:${isTriggered ? '#16a34a' : isError ? '#dc2626' : 'rgba(0,0,0,0.45)'};margin-top:3px;font-weight:${isTriggered ? '600' : '400'}">${entry.result || "—"}</div>
         ${entry.error ? `<div style="font-size:10px;color:#dc2626;margin-top:1px">${entry.error}</div>` : ""}
         ${(entry.planned && entry.planned.length > 0) ? `<div style="margin-top:5px;padding-top:4px;border-top:1px solid rgba(0,0,0,0.06)">
