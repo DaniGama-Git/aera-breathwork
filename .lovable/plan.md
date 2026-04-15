@@ -1,33 +1,25 @@
 
 
-# Fix High-Density Trigger: Fire at Open Gaps (Keep Midday at Midpoint)
+# Fallback: Open Breathing Session in New Tab When No Injectable Tab Found
 
-## Summary
-- **high_density** (block c, lines 390–407): Replace the midpoint calculation with a gap-finding approach — scan events for the first open gap ≥ 5 minutes and fire there. If no gap exists, skip the trigger.
-- **midday_energy** (block g, lines 471–491): Leave as-is — midpoint firing is correct for this trigger.
-- Fix the git sync error by ensuring a clean commit.
+## Problem
+When the user is on a restricted page (`chrome://`, `about:blank`, new tab page, etc.), `openBreathPanel` silently exits because no injectable tab exists. This affects both smart triggers and "Recover on Demand."
+
+## Solution
+Add a single fallback line in `openBreathPanel` — if no injectable tab is found, open `popup.html?triggered=true` in a new browser tab instead. The breathing session UI already works standalone in a tab, so no other changes needed.
 
 ## Technical Detail
 
-**`extension/background.js`**:
+**`extension/background.js`** — Update `openBreathPanel` (~line 694):
+- Where it currently does nothing when `findInjectableTab()` returns null, add:
+  ```javascript
+  chrome.tabs.create({ url: chrome.runtime.getURL("popup.html?triggered=true") });
+  ```
+- This covers both smart triggers and Recover on Demand
 
-1. Add a `findBestGap(events, minGapMs)` helper near the existing `detectBackToBack` / `findFirstGap` helpers (~line 535):
-   - Walk sorted events, collect all gaps ≥ `minGapMs` (5 min)
-   - Return the midpoint of the gap closest to the overall schedule midpoint
-   - Return `null` if no qualifying gap
-
-2. Update **high_density block** (lines 390–407):
-   - Replace `midpoint` calculation with `findBestGap(todayEvents, 5 * 60 * 1000)`
-   - If `null`, skip trigger and log "no open gap found"
-   - Update log to show "gap @ HH:MM" instead of "midpoint"
-
-3. Update **planned-trigger logging** for high_density to reflect gap-based timing or "no gap"
-
-4. Leave midday_energy block unchanged
-
-**`public/aera-extension.zip`** — repackage
+**`public/aera-extension.zip`** — Repackage
 
 ## Files Changed
-- `extension/background.js` — new `findBestGap` helper; updated high_density logic
+- `extension/background.js` — one fallback line in `openBreathPanel`
 - `public/aera-extension.zip` — repackaged
 
