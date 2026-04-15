@@ -294,7 +294,8 @@ async function checkCalendar() {
     }
     await chrome.storage.local.set({ triggeredEvents });
   } catch (e) {
-    console.error("āera: calendar check failed", e);
+    const redacted = icalUrl ? icalUrl.slice(0, 50) + "…" : "(no URL)";
+    console.error(`āera: calendar check failed [${e.name}] for ${redacted}`, e.message);
   }
 }
 
