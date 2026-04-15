@@ -333,7 +333,7 @@ async function checkCalendar() {
             await fireTrigger("back-to-back", "Back-to-back recovery", triggeredEvents);
             triggered = true;
             // DEBUG-START
-            _logEntry.result = "✓ triggered — back_to_back recovery";
+            _logEntry.result = "✓ triggered — back_to_back → back-to-back";
             // DEBUG-END
           } else if (gapTime && gapTime > now && (gapTime - now) < 5 * 60 * 1000) {
             // Gap is coming up within 5 min — fire now so user gets it before the gap
@@ -341,7 +341,7 @@ async function checkCalendar() {
             await fireTrigger("back-to-back", "Back-to-back recovery", triggeredEvents);
             triggered = true;
             // DEBUG-START
-            _logEntry.result = "✓ triggered — back_to_back (gap approaching)";
+            _logEntry.result = "✓ triggered — back_to_back (gap approaching) → back-to-back";
             // DEBUG-END
           }
         }
@@ -362,7 +362,7 @@ async function checkCalendar() {
           await fireTrigger("energy-reset", "High-density day reset", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = "✓ triggered — high_density midpoint";
+          _logEntry.result = "✓ triggered — high_density midpoint → energy-reset";
           // DEBUG-END
         }
       }
@@ -386,7 +386,7 @@ async function checkCalendar() {
             await fireTrigger("rebound", "Daily load cap reset", triggeredEvents);
             triggered = true;
             // DEBUG-START
-            _logEntry.result = "✓ triggered — daily load cap";
+            _logEntry.result = "✓ triggered — daily load cap → rebound";
             // DEBUG-END
           }
         }
@@ -406,7 +406,7 @@ async function checkCalendar() {
           await fireTrigger("back-to-back", "End-of-day recovery", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = "✓ triggered — end_of_day";
+          _logEntry.result = "✓ triggered — end_of_day → back-to-back";
           // DEBUG-END
         }
       }
@@ -424,7 +424,7 @@ async function checkCalendar() {
           await fireTrigger("wake-me-up", "Morning activation", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = "✓ triggered — morning activation";
+          _logEntry.result = "✓ triggered — morning activation → wake-me-up";
           // DEBUG-END
         }
       }
@@ -446,7 +446,7 @@ async function checkCalendar() {
           await fireTrigger("energy-reset", "Mid-day energy boost", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = "✓ triggered — mid-day energy boost";
+          _logEntry.result = "✓ triggered — mid-day energy boost → energy-reset";
           // DEBUG-END
         }
       }
