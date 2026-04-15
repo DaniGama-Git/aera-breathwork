@@ -587,6 +587,22 @@ Let your mind open up.</p>
     </div>
 
     <button class="demand-btn" id="demand-btn">Recover on demand</button>
+
+    <!-- DEBUG-START -->
+    <div class="section-divider" style="margin-top:14px"></div>
+    <div class="guide-accordion">
+      <button class="guide-toggle" id="debug-toggle" style="font-size:11px;color:rgba(0,0,0,0.4)">
+        Debug log
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="guide-body" id="debug-body">
+        <div style="display:flex;justify-content:flex-end;padding:4px 0">
+          <button id="debug-clear" style="font-size:10px;color:rgba(0,0,0,0.4);background:none;border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:3px 10px;cursor:pointer;font-family:inherit">Clear</button>
+        </div>
+        <div id="debug-log" style="max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;padding-bottom:6px"></div>
+      </div>
+    </div>
+    <!-- DEBUG-END -->
   </div>
 
   <div class="bottom-bar" id="bottom-bar">
