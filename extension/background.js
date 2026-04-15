@@ -46,6 +46,31 @@ function resolveProtocol(matchedKeyword) {
   return "deep-focus";
 }
 
+// Protocol → category label for debug log display
+const PROTOCOL_CATEGORY = {
+  "pre-pitch": "Perform",
+  "pre-negotiation": "Perform",
+  "pre-meeting": "Perform",
+  "decision-clarity": "Perform",
+  "creative-flow": "Perform",
+  "deep-focus": "Perform",
+  "wake-me-up": "Activate",
+  "energy-reset": "Activate",
+  "back-to-back": "Recover",
+  "rebound": "Recover",
+  "context-switch": "Recover",
+  "quick-recovery": "Recover",
+  "anxiety-reset": "Recover",
+  "conflict-reset": "Recover",
+  "wind-down": "Ground",
+  "travel-reset": "Ground",
+  "deep-decompression": "Ground",
+};
+
+function categoryFor(protocolId) {
+  return PROTOCOL_CATEGORY[protocolId] || "Perform";
+}
+
 const ALARM_NAME = "check-calendar";
 
 chrome.runtime.onInstalled.addListener(() => {
