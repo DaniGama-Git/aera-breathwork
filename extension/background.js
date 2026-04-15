@@ -46,6 +46,31 @@ function resolveProtocol(matchedKeyword) {
   return "deep-focus";
 }
 
+// Protocol → category label for debug log display
+const PROTOCOL_CATEGORY = {
+  "pre-pitch": "Perform",
+  "pre-negotiation": "Perform",
+  "pre-meeting": "Perform",
+  "decision-clarity": "Perform",
+  "creative-flow": "Perform",
+  "deep-focus": "Perform",
+  "wake-me-up": "Activate",
+  "energy-reset": "Activate",
+  "back-to-back": "Recover",
+  "rebound": "Recover",
+  "context-switch": "Recover",
+  "quick-recovery": "Recover",
+  "anxiety-reset": "Recover",
+  "conflict-reset": "Recover",
+  "wind-down": "Ground",
+  "travel-reset": "Ground",
+  "deep-decompression": "Ground",
+};
+
+function categoryFor(protocolId) {
+  return PROTOCOL_CATEGORY[protocolId] || "Perform";
+}
+
 const ALARM_NAME = "check-calendar";
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -210,7 +235,7 @@ async function checkCalendar() {
         if (matchedKw) {
           const protocolId = resolveProtocol(matchedKw);
           const status = triggeredEvents[evt.uid] ? "✓ fired" : "⏳ pending";
-          _planned.push(`before_critical: '${matchedKw}' @ ${_fmt(evt.start)} → ${protocolId} (${_rel(evt.start)}) — ${status}`);
+          _planned.push(`before_critical: '${matchedKw}' @ ${_fmt(evt.start)} → ${protocolId} [${categoryFor(protocolId)}] (${_rel(evt.start)}) — ${status}`);
         }
       }
     }
@@ -223,7 +248,7 @@ async function checkCalendar() {
         const blockNames = block.map(e => e.summary.slice(0, 20)).join(" → ");
         const gapTime = findFirstGap(block, 3 * 60 * 1000);
         const status = triggeredEvents[b2bKey] ? "✓ fired" : "⏳ pending";
-        _planned.push(`back_to_back: ${block.length} events [${blockNames}], gap @ ${_fmt(gapTime)} (${_rel(gapTime)}) — ${status}`);
+        _planned.push(`back_to_back: ${block.length} events [${blockNames}], gap @ ${_fmt(gapTime)} [Recover] (${_rel(gapTime)}) — ${status}`);
       } else {
         // Show gaps so user can see why no block was detected
         const gaps = [];
@@ -243,7 +268,7 @@ async function checkCalendar() {
       const lastEnd = todayEvents[todayEvents.length - 1].end || todayEvents[todayEvents.length - 1].start + 3600000;
       const midpoint = firstStart + (lastEnd - firstStart) / 2;
       const status = triggeredEvents[densityKey] ? "✓ fired" : "⏳ pending";
-      _planned.push(`high_density: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} (${_rel(midpoint)}) → energy-reset — ${status}`);
+      _planned.push(`high_density: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} [Activate] (${_rel(midpoint)}) → energy-reset — ${status}`);
     }
 
     // Plan: daily load cap
@@ -258,7 +283,7 @@ async function checkCalendar() {
         const lastEnd = todayEvents[todayEvents.length - 1].end || todayEvents[todayEvents.length - 1].start + 3600000;
         const firePoint = firstStart + (lastEnd - firstStart) * 0.6;
         const status = triggeredEvents[loadKey] ? "✓ fired" : "⏳ pending";
-        _planned.push(`load_cap: 60% @ ${_fmt(firePoint)} (${_rel(firePoint)}) — ${status}`);
+        _planned.push(`load_cap: 60% @ ${_fmt(firePoint)} [Recover] (${_rel(firePoint)}) — ${status}`);
       }
     }
 
@@ -269,7 +294,7 @@ async function checkCalendar() {
       const lastEnd = lastEvt.end || (lastEvt.start + 3600000);
       const fireTime = lastEnd + 60000;
       const status = triggeredEvents[eodKey] ? "✓ fired" : "⏳ pending";
-      _planned.push(`end_of_day: last ends @ ${_fmt(lastEnd)} (fires ~${_fmt(fireTime)}, ${_rel(fireTime)}) — ${status}`);
+      _planned.push(`end_of_day: last ends @ ${_fmt(lastEnd)} [Ground] (fires ~${_fmt(fireTime)}, ${_rel(fireTime)}) — ${status}`);
     }
 
     // Plan: morning activation
@@ -278,7 +303,7 @@ async function checkCalendar() {
       const firstEvent = todayEvents[0];
       const fireTime = firstEvent.start - 10 * 60 * 1000;
       const status = triggeredEvents[morningKey] ? "✓ fired" : "⏳ pending";
-      _planned.push(`morning: first @ ${_fmt(firstEvent.start)} (fires ~${_fmt(fireTime)}, ${_rel(fireTime)}) — ${status}`);
+      _planned.push(`morning: first @ ${_fmt(firstEvent.start)} [Activate] (fires ~${_fmt(fireTime)}, ${_rel(fireTime)}) — ${status}`);
     }
 
     // Plan: mid-day energy
@@ -288,7 +313,7 @@ async function checkCalendar() {
       const lastEnd = todayEvents[todayEvents.length - 1].end || todayEvents[todayEvents.length - 1].start + 3600000;
       const midpoint = firstStart + (lastEnd - firstStart) / 2;
       const status = triggeredEvents[midKey] ? "✓ fired" : "⏳ pending";
-      _planned.push(`midday_energy: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} (${_rel(midpoint)}) → energy-reset — ${status}`);
+      _planned.push(`midday_energy: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} [Activate] (${_rel(midpoint)}) → energy-reset — ${status}`);
     }
 
     _logEntry.planned = _planned;
@@ -323,7 +348,7 @@ async function checkCalendar() {
             await fireTrigger(protocolId, evt.summary, triggeredEvents);
             triggered = true;
             // DEBUG-START
-            _logEntry.result = `✓ triggered — before_critical: "${matchedKw}" → ${protocolId}`;
+            _logEntry.result = `✓ triggered — before_critical: "${matchedKw}" → ${protocolId} [${categoryFor(protocolId)}]`;
             // DEBUG-END
             break; // one trigger per check cycle
           }
@@ -346,7 +371,7 @@ async function checkCalendar() {
             await fireTrigger("back-to-back", "Back-to-back recovery", triggeredEvents);
             triggered = true;
             // DEBUG-START
-            _logEntry.result = `✓ triggered — back_to_back: ${block.length} events [${blockNames}], gap @ ${_fmt(gapTime)} → back-to-back`;
+            _logEntry.result = `✓ triggered — back_to_back: ${block.length} events [${blockNames}], gap @ ${_fmt(gapTime)} → back-to-back [Recover]`;
             // DEBUG-END
           } else if (gapTime && gapTime > now && (gapTime - now) < 5 * 60 * 1000) {
             // Gap is coming up within 5 min — fire now so user gets it before the gap
@@ -354,7 +379,7 @@ async function checkCalendar() {
             await fireTrigger("back-to-back", "Back-to-back recovery", triggeredEvents);
             triggered = true;
             // DEBUG-START
-            _logEntry.result = `✓ triggered — back_to_back (gap approaching): ${block.length} events [${blockNames}], gap @ ${_fmt(gapTime)} → back-to-back`;
+            _logEntry.result = `✓ triggered — back_to_back (gap approaching): ${block.length} events [${blockNames}], gap @ ${_fmt(gapTime)} → back-to-back [Recover]`;
             // DEBUG-END
           }
         }
@@ -375,7 +400,7 @@ async function checkCalendar() {
           await fireTrigger("energy-reset", "High-density day reset", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = `✓ triggered — high_density: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} → energy-reset`;
+          _logEntry.result = `✓ triggered — high_density: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} → energy-reset [Activate]`;
           // DEBUG-END
         }
       }
@@ -399,7 +424,7 @@ async function checkCalendar() {
             await fireTrigger("rebound", "Daily load cap reset", triggeredEvents);
             triggered = true;
             // DEBUG-START
-            _logEntry.result = "✓ triggered — daily load cap → rebound";
+            _logEntry.result = "✓ triggered — daily load cap → rebound [Recover]";
             // DEBUG-END
           }
         }
@@ -419,7 +444,7 @@ async function checkCalendar() {
           await fireTrigger("back-to-back", "End-of-day recovery", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = `✓ triggered — end_of_day: last event "${lastEvt.summary.slice(0, 25)}" ended @ ${_fmt(lastEnd)} → back-to-back`;
+          _logEntry.result = `✓ triggered — end_of_day: last event "${lastEvt.summary.slice(0, 25)}" ended @ ${_fmt(lastEnd)} → back-to-back [Ground]`;
           // DEBUG-END
         }
       }
@@ -437,7 +462,7 @@ async function checkCalendar() {
           await fireTrigger("wake-me-up", "Morning activation", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = `✓ triggered — morning: first event "${firstEvent.summary.slice(0, 25)}" @ ${_fmt(firstEvent.start)} → wake-me-up`;
+          _logEntry.result = `✓ triggered — morning: first event "${firstEvent.summary.slice(0, 25)}" @ ${_fmt(firstEvent.start)} → wake-me-up [Activate]`;
           // DEBUG-END
         }
       }
@@ -459,7 +484,7 @@ async function checkCalendar() {
           await fireTrigger("energy-reset", "Mid-day energy boost", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = `✓ triggered — midday_energy: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} → energy-reset`;
+          _logEntry.result = `✓ triggered — midday_energy: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} → energy-reset [Activate]`;
           // DEBUG-END
         }
       }
