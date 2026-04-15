@@ -1,4 +1,4 @@
-// background.js — Smart Calendar Trigger Engine
+// background.js — Smart Calendar Trigger Engine v3.8
 // Polls Google Calendar iCal feed and triggers context-aware breathwork sessions
 
 const CHECK_INTERVAL_MINUTES = 1;
