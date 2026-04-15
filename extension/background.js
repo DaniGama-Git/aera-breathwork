@@ -126,7 +126,7 @@ async function checkCalendar() {
   const { icalUrl, keywords = [], triggers = [], triggeredEvents = {} } = data;
 
   // DEBUG-START
-  const _logEntry = { ts: new Date().toISOString(), events: 0, summaries: [], triggers, keywords, result: null, error: null };
+  const _logEntry = { ts: new Date().toISOString(), events: 0, summaries: [], triggers, keywords, result: null, error: null, matchedTriggers: [] };
   async function _pushLog(entry) {
     try {
       const d = await chrome.storage.local.get(["_debugLog"]);
@@ -292,6 +292,18 @@ async function checkCalendar() {
     }
 
     _logEntry.planned = _planned;
+    // Compute which trigger types have planned entries
+    const _matchedTriggerTypes = [];
+    for (const p of _planned) {
+      if (p.startsWith("before_critical:")) _matchedTriggerTypes.push("before_critical");
+      else if (p.startsWith("back_to_back:") && !p.includes("no 3+ block")) _matchedTriggerTypes.push("back_to_back");
+      else if (p.startsWith("high_density:")) _matchedTriggerTypes.push("high_density");
+      else if (p.startsWith("load_cap:")) _matchedTriggerTypes.push("high_density");
+      else if (p.startsWith("end_of_day:")) _matchedTriggerTypes.push("end_of_day");
+      else if (p.startsWith("morning:")) _matchedTriggerTypes.push("energy_boost");
+      else if (p.startsWith("midday_energy:")) _matchedTriggerTypes.push("energy_boost");
+    }
+    _logEntry.matchedTriggers = [...new Set(_matchedTriggerTypes)];
     // DEBUG-END
 
     let triggered = false;
@@ -454,7 +466,17 @@ async function checkCalendar() {
     }
 
     // DEBUG-START
-    if (!triggered) _logEntry.result = "no match — no trigger conditions met";
+    if (!triggered) {
+      const pendingCount = _planned.filter(p => p.includes("⏳ pending")).length;
+      const firedCount = _planned.filter(p => p.includes("✓ fired")).length;
+      if (pendingCount > 0) {
+        _logEntry.result = `${pendingCount} trigger${pendingCount !== 1 ? "s" : ""} planned${firedCount > 0 ? `, ${firedCount} already fired` : ""}`;
+      } else if (firedCount > 0) {
+        _logEntry.result = `${firedCount} trigger${firedCount !== 1 ? "s" : ""} already fired today`;
+      } else {
+        _logEntry.result = "no match — no trigger conditions met";
+      }
+    }
     await _pushLog(_logEntry);
     // DEBUG-END
 
