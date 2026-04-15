@@ -98,6 +98,27 @@ async function validateCalendarUrl(icalUrl) {
 
 // ─── Smart Calendar Trigger Engine ───
 
+async function fetchWithTimeout(url, timeoutMs = 10000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    return res;
+  } finally {
+    clearTimeout(id);
+  }
+}
+
+async function resilientFetch(url) {
+  try {
+    return await fetchWithTimeout(url);
+  } catch (e) {
+    console.warn("āera: first fetch attempt failed, retrying in 2s…", e.name);
+    await new Promise(r => setTimeout(r, 2000));
+    return await fetchWithTimeout(url);
+  }
+}
+
 async function checkCalendar() {
   const data = await chrome.storage.local.get([
     "icalUrl", "keywords", "triggers", "triggeredEvents",
@@ -105,12 +126,20 @@ async function checkCalendar() {
   const { icalUrl, keywords = [], triggers = [], triggeredEvents = {} } = data;
 
   if (!icalUrl) return;
-  // If no triggers configured and no keywords, nothing to check
   if (triggers.length === 0 && keywords.length === 0) return;
 
+  // Validate URL format before fetching
+  if (!/^https:\/\/calendar\.google\.com\/calendar\/ical\//i.test(icalUrl)) {
+    console.warn("āera: stored iCal URL is not a valid Google Calendar URL, skipping check");
+    return;
+  }
+
   try {
-    const res = await fetch(icalUrl);
-    if (!res.ok) return;
+    const res = await resilientFetch(icalUrl);
+    if (!res.ok) {
+      console.warn("āera: calendar fetch returned", res.status);
+      return;
+    }
     const text = await res.text();
 
     const allEvents = parseIcal(text);
@@ -265,7 +294,8 @@ async function checkCalendar() {
     }
     await chrome.storage.local.set({ triggeredEvents });
   } catch (e) {
-    console.error("āera: calendar check failed", e);
+    const redacted = icalUrl ? icalUrl.slice(0, 50) + "…" : "(no URL)";
+    console.error(`āera: calendar check failed [${e.name}] for ${redacted}`, e.message);
   }
 }
 
