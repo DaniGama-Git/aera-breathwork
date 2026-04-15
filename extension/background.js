@@ -125,12 +125,41 @@ async function checkCalendar() {
   ]);
   const { icalUrl, keywords = [], triggers = [], triggeredEvents = {} } = data;
 
-  if (!icalUrl) return;
-  if (triggers.length === 0 && keywords.length === 0) return;
+  // DEBUG-START
+  const _logEntry = { ts: new Date().toISOString(), events: 0, summaries: [], triggers, keywords, result: null, error: null };
+  async function _pushLog(entry) {
+    try {
+      const d = await chrome.storage.local.get(["_debugLog"]);
+      const logs = d._debugLog || [];
+      logs.unshift(entry);
+      await chrome.storage.local.set({ _debugLog: logs.slice(0, 30) });
+    } catch (_) {}
+  }
+  // DEBUG-END
+
+  if (!icalUrl) {
+    // DEBUG-START
+    _logEntry.result = "skip — no iCal URL configured";
+    await _pushLog(_logEntry);
+    // DEBUG-END
+    return;
+  }
+  if (triggers.length === 0 && keywords.length === 0) {
+    // DEBUG-START
+    _logEntry.result = "skip — no triggers or keywords configured";
+    await _pushLog(_logEntry);
+    // DEBUG-END
+    return;
+  }
 
   // Validate URL format before fetching
   if (!/^https:\/\/calendar\.google\.com\/calendar\/ical\//i.test(icalUrl)) {
     console.warn("āera: stored iCal URL is not a valid Google Calendar URL, skipping check");
+    // DEBUG-START
+    _logEntry.result = "skip — invalid URL format";
+    _logEntry.error = "URL does not match Google Calendar pattern";
+    await _pushLog(_logEntry);
+    // DEBUG-END
     return;
   }
 
@@ -138,6 +167,11 @@ async function checkCalendar() {
     const res = await resilientFetch(icalUrl);
     if (!res.ok) {
       console.warn("āera: calendar fetch returned", res.status);
+      // DEBUG-START
+      _logEntry.result = "error — fetch failed";
+      _logEntry.error = `HTTP ${res.status}`;
+      await _pushLog(_logEntry);
+      // DEBUG-END
       return;
     }
     const text = await res.text();
@@ -152,6 +186,14 @@ async function checkCalendar() {
     const todayEvents = allEvents
       .filter(e => e.start >= todayStart.getTime() && e.start <= todayEnd.getTime())
       .sort((a, b) => a.start - b.start);
+
+    // DEBUG-START
+    _logEntry.events = todayEvents.length;
+    _logEntry.summaries = todayEvents.slice(0, 8).map(e => {
+      const t = new Date(e.start).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      return `${t} — ${e.summary.slice(0, 40)}`;
+    });
+    // DEBUG-END
 
     let triggered = false;
 
@@ -169,6 +211,9 @@ async function checkCalendar() {
             triggeredEvents[evt.uid] = now;
             await fireTrigger(protocolId, evt.summary, triggeredEvents);
             triggered = true;
+            // DEBUG-START
+            _logEntry.result = `✓ triggered — before_critical: "${matchedKw}" → ${protocolId}`;
+            // DEBUG-END
             break; // one trigger per check cycle
           }
         }
@@ -188,11 +233,17 @@ async function checkCalendar() {
             triggeredEvents[b2bKey] = now;
             await fireTrigger("back-to-back", "Back-to-back recovery", triggeredEvents);
             triggered = true;
+            // DEBUG-START
+            _logEntry.result = "✓ triggered — back_to_back recovery";
+            // DEBUG-END
           } else if (gapTime && gapTime > now && (gapTime - now) < 5 * 60 * 1000) {
             // Gap is coming up within 5 min — fire now so user gets it before the gap
             triggeredEvents[b2bKey] = now;
             await fireTrigger("back-to-back", "Back-to-back recovery", triggeredEvents);
             triggered = true;
+            // DEBUG-START
+            _logEntry.result = "✓ triggered — back_to_back (gap approaching)";
+            // DEBUG-END
           }
         }
       }
@@ -211,6 +262,9 @@ async function checkCalendar() {
           triggeredEvents[densityKey] = now;
           await fireTrigger("energy-reset", "High-density day reset", triggeredEvents);
           triggered = true;
+          // DEBUG-START
+          _logEntry.result = "✓ triggered — high_density midpoint";
+          // DEBUG-END
         }
       }
     }
@@ -232,6 +286,9 @@ async function checkCalendar() {
             triggeredEvents[loadKey] = now;
             await fireTrigger("rebound", "Daily load cap reset", triggeredEvents);
             triggered = true;
+            // DEBUG-START
+            _logEntry.result = "✓ triggered — daily load cap";
+            // DEBUG-END
           }
         }
       }
@@ -249,6 +306,9 @@ async function checkCalendar() {
           triggeredEvents[eodKey] = now;
           await fireTrigger("back-to-back", "End-of-day recovery", triggeredEvents);
           triggered = true;
+          // DEBUG-START
+          _logEntry.result = "✓ triggered — end_of_day";
+          // DEBUG-END
         }
       }
     }
@@ -264,6 +324,9 @@ async function checkCalendar() {
           triggeredEvents[morningKey] = now;
           await fireTrigger("wake-me-up", "Morning activation", triggeredEvents);
           triggered = true;
+          // DEBUG-START
+          _logEntry.result = "✓ triggered — morning activation";
+          // DEBUG-END
         }
       }
     }
@@ -283,9 +346,17 @@ async function checkCalendar() {
           triggeredEvents[midKey] = now;
           await fireTrigger("energy-reset", "Mid-day energy boost", triggeredEvents);
           triggered = true;
+          // DEBUG-START
+          _logEntry.result = "✓ triggered — mid-day energy boost";
+          // DEBUG-END
         }
       }
     }
+
+    // DEBUG-START
+    if (!triggered) _logEntry.result = "no match — no trigger conditions met";
+    await _pushLog(_logEntry);
+    // DEBUG-END
 
     // Clean up old triggered events (>24h)
     const cutoff = now - 24 * 60 * 60 * 1000;
@@ -296,6 +367,11 @@ async function checkCalendar() {
   } catch (e) {
     const redacted = icalUrl ? icalUrl.slice(0, 50) + "…" : "(no URL)";
     console.error(`āera: calendar check failed [${e.name}] for ${redacted}`, e.message);
+    // DEBUG-START
+    _logEntry.result = "error — exception";
+    _logEntry.error = `${e.name}: ${e.message}`;
+    await _pushLog(_logEntry);
+    // DEBUG-END
   }
 }
 

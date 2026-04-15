@@ -181,6 +181,62 @@ if (demandBtn) {
   });
 }
 
+// DEBUG-START — Activity log rendering
+const debugToggleBtn = document.getElementById("debug-toggle");
+const debugBody = document.getElementById("debug-body");
+const debugLogEl = document.getElementById("debug-log");
+const debugClearBtn = document.getElementById("debug-clear");
+let _debugRefreshTimer = null;
+
+if (debugToggleBtn) {
+  debugToggleBtn.addEventListener("click", () => {
+    debugToggleBtn.classList.toggle("open");
+    debugBody.classList.toggle("open");
+    if (debugBody.classList.contains("open")) {
+      renderDebugLog();
+      _debugRefreshTimer = setInterval(renderDebugLog, 30000);
+    } else {
+      clearInterval(_debugRefreshTimer);
+    }
+  });
+}
+
+if (debugClearBtn) {
+  debugClearBtn.addEventListener("click", () => {
+    chrome.storage.local.set({ _debugLog: [] }, () => renderDebugLog());
+  });
+}
+
+function renderDebugLog() {
+  chrome.storage.local.get(["_debugLog"], data => {
+    const logs = data._debugLog || [];
+    if (!debugLogEl) return;
+    if (logs.length === 0) {
+      debugLogEl.innerHTML = '<span style="font-size:11px;color:rgba(0,0,0,0.3);padding:8px 0;text-align:center">No scans yet</span>';
+      return;
+    }
+    debugLogEl.innerHTML = logs.map(entry => {
+      const time = new Date(entry.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      const isTriggered = entry.result && entry.result.startsWith("✓");
+      const isError = entry.result && entry.result.startsWith("error");
+      const dotColor = isTriggered ? "#16a34a" : isError ? "#dc2626" : "rgba(0,0,0,0.15)";
+      const evtText = entry.events > 0 ? `${entry.events} event${entry.events !== 1 ? "s" : ""} today` : "No events";
+      const summaries = (entry.summaries || []).map(s => `<div style="font-size:10px;color:rgba(0,0,0,0.35);padding-left:8px;line-height:1.4">· ${s}</div>`).join("");
+      return `<div style="padding:8px 10px;border-radius:10px;background:rgba(0,0,0,0.03)">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <span style="width:6px;height:6px;border-radius:50%;background:${dotColor};flex-shrink:0"></span>
+          <span style="font-size:11px;font-weight:500;color:rgba(0,0,0,0.6)">${time}</span>
+          <span style="font-size:10px;color:rgba(0,0,0,0.35);margin-left:auto">${evtText}</span>
+        </div>
+        ${summaries}
+        <div style="font-size:10px;color:${isTriggered ? '#16a34a' : isError ? '#dc2626' : 'rgba(0,0,0,0.45)'};margin-top:3px;font-weight:${isTriggered ? '600' : '400'}">${entry.result || "—"}</div>
+        ${entry.error ? `<div style="font-size:10px;color:#dc2626;margin-top:1px">${entry.error}</div>` : ""}
+      </div>`;
+    }).join("");
+  });
+}
+// DEBUG-END
+
 
 // ─── Wave-style Breathing (Image + Gradient Mask) ───
 const card = document.getElementById("card");
