@@ -218,12 +218,20 @@ function renderDebugLog() {
     debugLogEl.innerHTML = logs.map(entry => {
       const time = new Date(entry.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
       const isTriggered = entry.result && entry.result.startsWith("✓");
+      const isPlanned = entry.result && /\d+ trigger/.test(entry.result);
       const isError = entry.result && entry.result.startsWith("error");
-      const dotColor = isTriggered ? "#16a34a" : isError ? "#dc2626" : "rgba(0,0,0,0.15)";
+      const dotColor = isTriggered ? "#16a34a" : isPlanned ? "#3b82f6" : isError ? "#dc2626" : "rgba(0,0,0,0.15)";
       const evtText = entry.events > 0 ? `${entry.events} event${entry.events !== 1 ? "s" : ""} today` : "No events";
       const summaries = (entry.summaries || []).map(s => `<div style="font-size:10px;color:rgba(0,0,0,0.35);padding-left:8px;line-height:1.4">· ${s}</div>`).join("");
       // Show active triggers & keywords config
-      const triggerTags = (entry.triggers || []).map(t => `<span style="display:inline-block;font-size:9px;background:rgba(0,0,0,0.06);color:rgba(0,0,0,0.5);padding:1px 5px;border-radius:4px;margin-right:3px">${t}</span>`).join("");
+      const matchedT = entry.matchedTriggers || [];
+      const triggerTags = (entry.triggers || []).map(t => {
+        const isMatched = matchedT.includes(t);
+        const bg = isMatched ? "rgba(59,130,246,0.12)" : "rgba(0,0,0,0.06)";
+        const color = isMatched ? "rgba(59,130,246,0.8)" : "rgba(0,0,0,0.5)";
+        const weight = isMatched ? "600" : "400";
+        return `<span style="display:inline-block;font-size:9px;background:${bg};color:${color};padding:1px 5px;border-radius:4px;margin-right:3px;font-weight:${weight}">${t}</span>`;
+      }).join("");
       const kwTags = (entry.keywords || []).map(k => `<span style="display:inline-block;font-size:9px;background:rgba(59,130,246,0.1);color:rgba(59,130,246,0.7);padding:1px 5px;border-radius:4px;margin-right:3px">${k}</span>`).join("");
       const configSection = (triggerTags || kwTags) ? `<div style="margin-top:3px;line-height:1.8">${triggerTags}${kwTags}</div>` : "";
       return `<div style="padding:8px 10px;border-radius:10px;background:rgba(0,0,0,0.03)">
@@ -234,7 +242,7 @@ function renderDebugLog() {
         </div>
         ${summaries}
         ${configSection}
-        <div style="font-size:10px;color:${isTriggered ? '#16a34a' : isError ? '#dc2626' : 'rgba(0,0,0,0.45)'};margin-top:3px;font-weight:${isTriggered ? '600' : '400'}">${entry.result || "—"}</div>
+        <div style="font-size:10px;color:${isTriggered ? '#16a34a' : isPlanned ? '#3b82f6' : isError ? '#dc2626' : 'rgba(0,0,0,0.45)'};margin-top:3px;font-weight:${isTriggered || isPlanned ? '600' : '400'}">${entry.result || "—"}</div>
         ${entry.error ? `<div style="font-size:10px;color:#dc2626;margin-top:1px">${entry.error}</div>` : ""}
         ${(entry.planned && entry.planned.length > 0) ? `<div style="margin-top:5px;padding-top:4px;border-top:1px solid rgba(0,0,0,0.06)">
           <div style="font-size:9px;font-weight:600;color:rgba(0,0,0,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Planned triggers</div>
