@@ -691,6 +691,7 @@ async function openBreathPanel(protocolId, preferredTabId) {
     console.log("āera: tab discovery/injection failed", e.message);
   }
 
-  console.log("āera: no injectable tab available, doing nothing");
+  console.log("āera: no injectable tab available, opening in new tab");
+  chrome.tabs.create({ url: chrome.runtime.getURL("popup.html?triggered=true&protocol=" + protocolId) });
   chrome.storage.local.remove(["autoStart"]);
 }
