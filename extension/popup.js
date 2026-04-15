@@ -507,6 +507,8 @@ function animate() {
     breathAudio.stop();
     currentAudioPhase = null;
     if (bgAudio) { bgAudio.pause(); bgAudio = null; }
+    // Apply white outro styling
+    screenDone.classList.add("done-white");
     showScreen("done");
     return;
   }
