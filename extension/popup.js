@@ -273,6 +273,22 @@ function buildFullTimeline(protocolId) {
   const entries = [];
   let cursor = 0;
 
+  // Inject introTexts as TRANSITION entries at the very start
+  if (proto.introTexts) {
+    proto.introTexts.forEach((intro, idx) => {
+      entries.push({
+        type: "TRANSITION",
+        duration: intro.duration,
+        startMs: cursor,
+        endMs: cursor + intro.duration,
+        displayLabel: "",
+        stageIndex: 0,
+        transitionText: intro.text,
+      });
+      cursor += intro.duration;
+    });
+  }
+
   proto.stages.forEach((stage, stageIdx) => {
     if (stage.transition) {
       entries.push({
@@ -353,7 +369,15 @@ function setProtocol(protocolId) {
   const mins = Math.round(activeTotalMs / 60000);
   introTitle.textContent = proto.title.toUpperCase();
   introSubtitle.textContent = `~${mins} MINS`;
-  introText.textContent = proto.introText || "";
+  introText.textContent = (proto.introTexts && proto.introTexts[0]) ? proto.introTexts[0].text : "";
+
+  // Populate logo subtitle
+  const logoSubtitle = document.getElementById("logo-subtitle");
+  if (logoSubtitle) logoSubtitle.textContent = proto.title.toUpperCase();
+
+  // Set outro text for done screen
+  const doneText = document.getElementById("done-text");
+  if (doneText && proto.outroText) doneText.textContent = proto.outroText;
 
   startsWithOverlay = activeTimeline.length > 0 &&
     (activeTimeline[0].type === "SCIENCE" || activeTimeline[0].type === "TRANSITION");
