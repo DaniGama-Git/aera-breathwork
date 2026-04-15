@@ -1,44 +1,57 @@
 
 
-# Extension Settings Panel — Design Refresh
+# Extension Protocol Overhaul — Intro Flow + Updated Protocols
 
-## Current State
-The settings panel is a long scrollable form with: logo, connection status dot, 2-step calendar guide, iCal URL textarea, keywords input, trigger checkboxes, sound toggle, save button, and "Recover on demand" button. It feels like a setup wizard rather than a polished settings screen.
+## Summary
+Rewrite all 11 extension protocols with the exact copy provided, add protocol name to the logo screen, implement per-protocol intro text screens that play before and between stages, and add per-protocol outro text on the done screen.
 
-## Design Direction
-Consolidate into clean, grouped sections with a more minimal, app-like feel — fewer labels, tighter spacing, and a single-scroll layout that feels finished rather than instructional.
+## Current Flow
+`loading → logo ("āera") → startSession (breathing) → done ("You're ready.")`
 
-## Changes (all in `extension/popup.html` + `extension/popup.js`)
+## New Flow
+`loading → logo ("āera" + PROTOCOL NAME) → intro 1 (tagline, 2-3s) → intro 2 (protocol description, 3-4s) → breathing stage 1 → stage intro (3s) → breathing stage 2 → ... → outro (custom text, white bg, 2-3s) → done`
 
-### 1. Collapse the setup guide into a single accordion
-Replace the two numbered guide steps + "Open Calendar Settings" link with a collapsible "How to connect" section that starts collapsed once a calendar URL is saved. This removes ~40% of vertical space for returning users.
+## Changes
 
-### 2. Unify the calendar section
-- Merge the connection status dot into the iCal URL field as an inline indicator (green dot inside the input when connected).
-- Replace the textarea with a single-line input (URLs don't need multiline).
-- Move the "validated" badge inline with the input.
+### 1. `extension/protocols.js` — Complete rewrite
+Replace all protocol definitions with the 11 protocols provided. New structure adds:
+- `introTexts`: array of `{ text, duration }` objects shown sequentially before breathing starts
+- `outroText`: custom end text (e.g. "LET'S GO.", "LOCKED.", "BACK.")
+- Stage-level `transition` fields become the intro text shown before each new stage
+- Updated cycle counts, durations, and phase definitions to match the spec exactly
 
-### 3. Restyle trigger checkboxes as toggle pills
-Replace the checkbox list with a compact grid of pill-shaped toggles (similar to the tab bar aesthetic). Each pill shows the trigger name and highlights when active. This is more visually appealing and touch-friendly.
+Protocol ID mapping:
+| # | Title | ID | Audio |
+|---|-------|----|-------|
+| 1 | Pre-Pitch | `pre-pitch` | `audio/pre-pitch.mp3` |
+| 3 | Pre-Negotiation | `pre-negotiation` | `audio/pre-negotiation.mp3` |
+| 4 | Decision Clarity | `decision-clarity` | `audio/decision-clarity.mp3` |
+| 5 | Pre-Meeting | `pre-meeting` | `audio/pre-meeting.mp3` |
+| 6 | Post-Setback Recovery | `rebound` | `audio/rebound.mp3` |
+| 7 | Deep Focus | `deep-focus` | `audio/deep-focus.mp3` |
+| 8 | Creative Flow | `creative-flow` | `audio/decision-clarity.mp3` |
+| 9 | Morning Activation | `wake-me-up` | `audio/wake-me-up.mp3` |
+| 10 | Context Switch | `context-switch` | `audio/context-switch.mp3` |
+| 11 | Midday Energizer | `energy-reset` | `audio/energy-reset.mp3` |
 
-### 4. Group sound + save into a bottom bar
-- Move the sound toggle and save button into a sticky bottom bar so they're always visible without scrolling.
-- Style save as a full-width dark button instead of the current outlined pill.
+Back-to-back protocol stays as a fallback default.
 
-### 5. Remove the "āera" logo from settings
-The logo is already in the tab bar context and the breathe panel. Remove it from settings to save space.
+### 2. `extension/popup.html`
+- **Logo screen**: Add `<span class="logo-subtitle" id="logo-subtitle"></span>` below the āera text for protocol name
+- **Done screen**: Make the subtitle dynamic via `id="done-text"` and support white background styling
+- Add CSS for `.logo-subtitle` (uppercase, letter-spaced, smaller font below logo)
 
-### 6. Restyle "Recover on demand"
-Move it above the save bar as a secondary action with a subtler outline style, or place it as a floating action in the breathe tab instead.
+### 3. `extension/popup.js`
+- **`setProtocol()`**: Populate `logo-subtitle` with protocol title, set `done-text` with `outroText`
+- **`buildFullTimeline()`**: Process `introTexts` array as TRANSITION entries at the start of the timeline (before first stage), each with its specified duration
+- **Screen flow in triggered/iframe mode**: Show logo screen with subtitle for 2.2s, then auto-play through intro texts as part of the timeline before breathing begins
+- **Done screen**: Apply white background class and show custom outro text
 
-### 7. Typography and spacing cleanup
-- Reduce section gaps from 14px to 10px.
-- Use consistent 13px for all labels.
-- Remove redundant hint text where labels are self-explanatory.
+### 4. Timeline intro text handling
+The existing TRANSITION overlay mechanism already displays text and pauses breathing. The intro texts will be injected as TRANSITION entries at the start of the timeline and before each stage. This reuses the existing overlay rendering in `animate()` with no new screen type needed.
 
 ## Files Changed
-- `extension/popup.html` — restructured settings panel HTML + updated CSS
-- `extension/popup.js` — accordion toggle logic, updated element references
-
-## No backend or React changes needed — this is purely the extension's local popup UI.
+- `extension/protocols.js` — full rewrite (11 protocols + back-to-back fallback)
+- `extension/popup.html` — logo subtitle element, done screen dynamic text, white outro CSS
+- `extension/popup.js` — timeline builder for intro texts, setProtocol updates, outro handling
 
