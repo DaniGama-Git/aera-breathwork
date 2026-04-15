@@ -264,11 +264,13 @@ async function checkCalendar() {
     // Plan: high_density
     if (triggers.includes("high_density") && todayEvents.length >= 4) {
       const densityKey = `density-${today}`;
-      const firstStart = todayEvents[0].start;
-      const lastEnd = todayEvents[todayEvents.length - 1].end || todayEvents[todayEvents.length - 1].start + 3600000;
-      const midpoint = firstStart + (lastEnd - firstStart) / 2;
+      const gapTime = findBestGap(todayEvents, 5 * 60 * 1000);
       const status = triggeredEvents[densityKey] ? "✓ fired" : "⏳ pending";
-      _planned.push(`high_density: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} [Activate] (${_rel(midpoint)}) → energy-reset — ${status}`);
+      if (gapTime) {
+        _planned.push(`high_density: gap @ ${_fmt(gapTime)} [Activate] (${_rel(gapTime)}) → energy-reset — ${status}`);
+      } else {
+        _planned.push(`high_density: no open gap found (needs 5min+) [Activate] — skipped`);
+      }
     }
 
     // Plan: daily load cap
@@ -391,16 +393,13 @@ async function checkCalendar() {
       const densityKey = `density-${today}`;
       const b2bKey = `b2b-${today}`;
       if (!triggeredEvents[densityKey] && !triggeredEvents[b2bKey] && todayEvents.length >= 4) {
-        const firstStart = todayEvents[0].start;
-        const lastEnd = todayEvents[todayEvents.length - 1].end || todayEvents[todayEvents.length - 1].start + 3600000;
-        const midpoint = firstStart + (lastEnd - firstStart) / 2;
-        // Fire if we're within 2 min of the midpoint
-        if (Math.abs(midpoint - now) < 2 * 60 * 1000) {
+        const gapTime = findBestGap(todayEvents, 5 * 60 * 1000);
+        if (gapTime && Math.abs(gapTime - now) < 2 * 60 * 1000) {
           triggeredEvents[densityKey] = now;
           await fireTrigger("energy-reset", "High-density day reset", triggeredEvents);
           triggered = true;
           // DEBUG-START
-          _logEntry.result = `✓ triggered — high_density: schedule ${_fmt(firstStart)}–${_fmt(lastEnd)}, midpoint @ ${_fmt(midpoint)} → energy-reset [Activate]`;
+          _logEntry.result = `✓ triggered — high_density: gap @ ${_fmt(gapTime)} → energy-reset [Activate]`;
           // DEBUG-END
         }
       }
@@ -558,6 +557,29 @@ function findFirstGap(block, minGap) {
   // After the block ends
   const lastEnd = block[block.length - 1].end || (block[block.length - 1].start + 3600000);
   return lastEnd;
+}
+
+// Find the best open gap (≥ minGapMs) closest to the schedule midpoint
+function findBestGap(events, minGapMs) {
+  if (events.length < 2) return null;
+  const firstStart = events[0].start;
+  const lastEnd = events[events.length - 1].end || (events[events.length - 1].start + 3600000);
+  const scheduleMid = firstStart + (lastEnd - firstStart) / 2;
+  let bestGapMid = null;
+  let bestDist = Infinity;
+  for (let i = 0; i < events.length - 1; i++) {
+    const end = events[i].end || (events[i].start + 3600000);
+    const gap = events[i + 1].start - end;
+    if (gap >= minGapMs) {
+      const gapMid = end + gap / 2;
+      const dist = Math.abs(gapMid - scheduleMid);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestGapMid = gapMid;
+      }
+    }
+  }
+  return bestGapMid;
 }
 
 // ─── iCal Parser (with DTEND support) ───
