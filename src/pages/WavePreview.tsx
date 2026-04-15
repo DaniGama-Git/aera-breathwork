@@ -357,7 +357,7 @@ const WavePreview = () => {
                 backgroundImage: `url(${src})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                opacity: !isBreathing && !isDone && (screen === key || (screen === "done" && key === "logo")) ? 1 : 0,
+                opacity: !isBreathing && !isDone && screen === key ? 1 : 0,
               }}
             />
           ))}
