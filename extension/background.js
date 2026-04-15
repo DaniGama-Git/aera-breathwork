@@ -193,6 +193,97 @@ async function checkCalendar() {
       const t = new Date(e.start).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
       return `${t} — ${e.summary.slice(0, 40)}`;
     });
+    // Compute planned triggers
+    const _planned = [];
+    const _fmt = ts => new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const _rel = ts => {
+      const diff = ts - now;
+      if (diff < 0) return `${Math.round(-diff / 60000)} min ago`;
+      if (diff < 3600000) return `in ${Math.round(diff / 60000)} min`;
+      return `in ${(diff / 3600000).toFixed(1)}h`;
+    };
+
+    // Plan: before_critical
+    if (triggers.includes("before_critical") && keywords.length > 0) {
+      for (const evt of todayEvents) {
+        const matchedKw = keywords.find(kw => evt.summary.toLowerCase().includes(kw.toLowerCase()));
+        if (matchedKw) {
+          const protocolId = resolveProtocol(matchedKw);
+          const status = triggeredEvents[evt.uid] ? "✓ fired" : "⏳ pending";
+          _planned.push(`before_critical: '${matchedKw}' @ ${_fmt(evt.start)} → ${protocolId} (${_rel(evt.start)}) — ${status}`);
+        }
+      }
+    }
+
+    // Plan: back_to_back
+    if (triggers.includes("back_to_back") && todayEvents.length >= 3) {
+      const b2bKey = `b2b-${today}`;
+      const block = detectBackToBack(todayEvents);
+      if (block) {
+        const gapTime = findFirstGap(block, 3 * 60 * 1000);
+        const status = triggeredEvents[b2bKey] ? "✓ fired" : "⏳ pending";
+        _planned.push(`back_to_back: gap @ ${_fmt(gapTime)} (${_rel(gapTime)}) — ${status}`);
+      } else {
+        _planned.push(`back_to_back: no 3+ consecutive block found`);
+      }
+    }
+
+    // Plan: high_density
+    if (triggers.includes("high_density") && todayEvents.length >= 4) {
+      const densityKey = `density-${today}`;
+      const firstStart = todayEvents[0].start;
+      const lastEnd = todayEvents[todayEvents.length - 1].end || todayEvents[todayEvents.length - 1].start + 3600000;
+      const midpoint = firstStart + (lastEnd - firstStart) / 2;
+      const status = triggeredEvents[densityKey] ? "✓ fired" : "⏳ pending";
+      _planned.push(`high_density: midpoint @ ${_fmt(midpoint)} (${_rel(midpoint)}) — ${status}`);
+    }
+
+    // Plan: daily load cap
+    if (triggers.includes("high_density")) {
+      const loadKey = `load-${today}`;
+      const totalMinutes = todayEvents.reduce((sum, e) => {
+        const end = e.end || (e.start + 3600000);
+        return sum + (end - e.start) / 60000;
+      }, 0);
+      if (totalMinutes > 390 || todayEvents.length >= 5) {
+        const firstStart = todayEvents[0].start;
+        const lastEnd = todayEvents[todayEvents.length - 1].end || todayEvents[todayEvents.length - 1].start + 3600000;
+        const firePoint = firstStart + (lastEnd - firstStart) * 0.6;
+        const status = triggeredEvents[loadKey] ? "✓ fired" : "⏳ pending";
+        _planned.push(`load_cap: 60% @ ${_fmt(firePoint)} (${_rel(firePoint)}) — ${status}`);
+      }
+    }
+
+    // Plan: end_of_day
+    if (triggers.includes("end_of_day") && todayEvents.length > 0) {
+      const eodKey = `eod-${today}`;
+      const lastEvt = todayEvents[todayEvents.length - 1];
+      const lastEnd = lastEvt.end || (lastEvt.start + 3600000);
+      const fireTime = lastEnd + 60000;
+      const status = triggeredEvents[eodKey] ? "✓ fired" : "⏳ pending";
+      _planned.push(`end_of_day: last ends @ ${_fmt(lastEnd)} (fires ~${_fmt(fireTime)}, ${_rel(fireTime)}) — ${status}`);
+    }
+
+    // Plan: morning activation
+    if (triggers.includes("energy_boost") && todayEvents.length > 0) {
+      const morningKey = `morning-${today}`;
+      const firstEvent = todayEvents[0];
+      const fireTime = firstEvent.start - 10 * 60 * 1000;
+      const status = triggeredEvents[morningKey] ? "✓ fired" : "⏳ pending";
+      _planned.push(`morning: first @ ${_fmt(firstEvent.start)} (fires ~${_fmt(fireTime)}, ${_rel(fireTime)}) — ${status}`);
+    }
+
+    // Plan: mid-day energy
+    if (triggers.includes("energy_boost") && todayEvents.length >= 4) {
+      const midKey = `midday-${today}`;
+      const firstStart = todayEvents[0].start;
+      const lastEnd = todayEvents[todayEvents.length - 1].end || todayEvents[todayEvents.length - 1].start + 3600000;
+      const midpoint = firstStart + (lastEnd - firstStart) / 2;
+      const status = triggeredEvents[midKey] ? "✓ fired" : "⏳ pending";
+      _planned.push(`midday_energy: midpoint @ ${_fmt(midpoint)} (${_rel(midpoint)}) — ${status}`);
+    }
+
+    _logEntry.planned = _planned;
     // DEBUG-END
 
     let triggered = false;
