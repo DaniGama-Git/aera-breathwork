@@ -231,6 +231,14 @@ function renderDebugLog() {
         ${summaries}
         <div style="font-size:10px;color:${isTriggered ? '#16a34a' : isError ? '#dc2626' : 'rgba(0,0,0,0.45)'};margin-top:3px;font-weight:${isTriggered ? '600' : '400'}">${entry.result || "—"}</div>
         ${entry.error ? `<div style="font-size:10px;color:#dc2626;margin-top:1px">${entry.error}</div>` : ""}
+        ${(entry.planned && entry.planned.length > 0) ? `<div style="margin-top:5px;padding-top:4px;border-top:1px solid rgba(0,0,0,0.06)">
+          <div style="font-size:9px;font-weight:600;color:rgba(0,0,0,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Planned triggers</div>
+          ${entry.planned.map(p => {
+            const isFired = p.includes("✓ fired");
+            const color = isFired ? "#16a34a" : "rgba(0,0,0,0.4)";
+            return `<div style="font-size:10px;color:${color};padding-left:8px;line-height:1.5;font-weight:${isFired ? '500' : '400'}">· ${p}</div>`;
+          }).join("")}
+        </div>` : ""}
       </div>`;
     }).join("");
   });
