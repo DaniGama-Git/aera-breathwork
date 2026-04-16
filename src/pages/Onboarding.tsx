@@ -118,9 +118,7 @@ const Onboarding = () => {
   const canGoBack = step !== "goals";
 
   return (
-    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden bg-[#d8dce0]">
-      <img src={onboardingBg} alt="" className="absolute inset-0 w-full h-full object-contain object-bottom" aria-hidden="true" />
-      <div className="absolute inset-0 bg-white/30" aria-hidden="true" />
+    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden bg-white">
 
       <div className="relative z-10 flex flex-col min-h-screen max-w-[560px] mx-auto w-full">
         {/* Header */}
