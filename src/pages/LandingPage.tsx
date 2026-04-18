@@ -5,6 +5,7 @@
 
 import { useNavigate } from "react-router-dom";
 import aeraLogo from "@/assets/aera-logo.svg";
+import heroDunes from "@/assets/landing-hero-dunes.png";
 
 const LandingPage = () => {
   const navigate = useNavigate();
