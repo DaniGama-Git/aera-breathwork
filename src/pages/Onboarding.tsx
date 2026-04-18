@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import areaLogo from "@/assets/aera-logo.svg";
 
-import OnboardingStep from "@/components/onboarding/OnboardingStep";
 import MultiSelectStep from "@/components/onboarding/MultiSelectStep";
 import KeywordStep from "@/components/onboarding/KeywordStep";
 
@@ -37,6 +36,21 @@ const SUGGESTED_KEYWORDS = [
 
 type Step = "goals" | "moments" | "keywords";
 
+const STEP_CONFIG: Record<Step, { question: string; hint: string }> = {
+  goals: {
+    question: "What does performing at your best look like?",
+    hint: "Select everything that applies.",
+  },
+  moments: {
+    question: "When do you need a quick reset the most?",
+    hint: "Select everything that applies.",
+  },
+  keywords: {
+    question: "In which specific meetings would you like a quick reset?",
+    hint: "Pick from the suggestions or add your own.",
+  },
+};
+
 const Onboarding = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -52,20 +66,34 @@ const Onboarding = () => {
 
   const stepOrder: Step[] = ["goals", "moments", "keywords"];
   const currentIndex = stepOrder.indexOf(step);
-  const totalVisualSteps = 3;
+  const totalSteps = stepOrder.length;
+  const config = STEP_CONFIG[step];
 
   const goBack = () => {
-    if (currentIndex > 0) {
-      setStep(stepOrder[currentIndex - 1]);
+    if (currentIndex > 0) setStep(stepOrder[currentIndex - 1]);
+  };
+
+  const goNext = () => {
+    if (currentIndex < totalSteps - 1) {
+      setStep(stepOrder[currentIndex + 1]);
+    } else {
+      saveAndFinish();
     }
   };
+
+  const currentSelectionCount = (() => {
+    if (step === "goals") return data.goals.length;
+    if (step === "moments") return data.moments.length;
+    return data.calendarKeywords.length;
+  })();
+
+  const canContinue = currentSelectionCount > 0;
 
   const saveAndFinish = async () => {
     if (saving) return;
     setSaving(true);
 
     try {
-      // If user is logged in, save to DB directly
       if (user) {
         const { error: prefError } = await supabase
           .from("onboarding_preferences")
@@ -99,14 +127,12 @@ const Onboarding = () => {
         sessionStorage.removeItem("aera_flow");
         navigate("/extension", { replace: true });
       } else {
-        // Not logged in (chrome flow before auth) — store locally, move to extension
         sessionStorage.setItem("aera_onboarding_data", JSON.stringify(data));
         sessionStorage.setItem("aera_flow", "chrome");
         navigate("/extension?flow=chrome", { replace: true });
       }
     } catch (err) {
       console.error("Failed to save onboarding:", err);
-      // Fallback: store locally and continue
       sessionStorage.setItem("aera_onboarding_data", JSON.stringify(data));
       sessionStorage.setItem("aera_flow", "chrome");
       navigate("/extension?flow=chrome", { replace: true });
@@ -115,91 +141,101 @@ const Onboarding = () => {
     }
   };
 
-  const canGoBack = step !== "goals";
-
   return (
-    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden bg-white">
+    <div className="relative w-full min-h-screen flex flex-col bg-white">
+      {/* Header */}
+      <header className="px-5 pt-6 pb-4 flex items-center justify-between border-b border-gray-100">
+        <img src={areaLogo} alt="Aera" className="h-5 brightness-0" />
+        <p className="text-gray-900 font-body text-[11px] leading-tight text-right">
+          Breathe. Recover. Perform.
+          <br />
+          <span className="text-gray-500">In under 5 minutes.</span>
+        </p>
+      </header>
 
-      <div className="relative z-10 flex flex-col min-h-screen max-w-[560px] mx-auto w-full">
-        {/* Header */}
-        <div className="px-6 pt-14 pb-4 flex items-center justify-between">
-          <img src={areaLogo} alt="Aera" className="h-6 brightness-0" />
-          <div className="flex items-center gap-4">
-            <span className="text-gray-500 font-body text-xs">
-              {currentIndex + 1} / {totalVisualSteps}
-            </span>
-            <button
-              onClick={() => saveAndFinish()}
-              disabled={saving}
-              className="text-gray-500 font-body text-xs hover:text-gray-700 transition-colors"
-            >
-              Skip
-            </button>
-          </div>
+      {/* Progress + step indicator */}
+      <div className="px-5 pt-5">
+        <div className="flex items-center justify-between mb-2">
+          <span className="font-body text-[11px] text-gray-500">
+            Step {currentIndex + 1} of {totalSteps}
+          </span>
+          <button
+            onClick={() => saveAndFinish()}
+            disabled={saving}
+            className="font-body text-[11px] text-gray-500 hover:text-gray-900 transition-colors"
+          >
+            Skip
+          </button>
         </div>
-
-        {/* Progress bar */}
-        <div className="px-6 mb-8">
-          <div className="h-[2px] bg-gray-300 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gray-700 rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${((currentIndex + 1) / totalVisualSteps) * 100}%` }}
-            />
-          </div>
+        <div className="h-[2px] bg-gray-200 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gray-900 rounded-full transition-all duration-500 ease-out"
+            style={{ width: `${((currentIndex + 1) / totalSteps) * 100}%` }}
+          />
         </div>
+      </div>
 
-        {/* Content */}
-        <div className="flex-1 px-6 flex flex-col">
+      {/* Card */}
+      <main className="flex-1 px-5 pt-6 pb-32">
+        <div className="bg-[#f4f4f3] rounded-3xl p-5 sm:p-6">
+          <h1 className="text-gray-900 font-body font-semibold text-[18px] leading-snug mb-1.5">
+            {config.question}
+          </h1>
+          <p className="text-gray-600 font-body text-[13px] leading-relaxed mb-5">
+            {config.hint}
+          </p>
+
           {step === "goals" && (
-            <OnboardingStep>
-              <MultiSelectStep
-                question="What does performing at your best look like?"
-                hint="Select everything that applies."
-                options={GOAL_OPTIONS}
-                selected={data.goals}
-                onChange={(goals) => setData({ ...data, goals })}
-                onContinue={() => setStep("moments")}
-              />
-            </OnboardingStep>
+            <MultiSelectStep
+              options={GOAL_OPTIONS}
+              selected={data.goals}
+              onChange={(goals) => setData({ ...data, goals })}
+            />
           )}
 
           {step === "moments" && (
-            <OnboardingStep>
-              <MultiSelectStep
-                question="When do you need a quick reset the most?"
-                hint="Select everything that applies."
-                options={MOMENT_OPTIONS}
-                selected={data.moments}
-                onChange={(moments) => setData({ ...data, moments })}
-                onContinue={() => setStep("keywords")}
-              />
-            </OnboardingStep>
+            <MultiSelectStep
+              options={MOMENT_OPTIONS}
+              selected={data.moments}
+              onChange={(moments) => setData({ ...data, moments })}
+            />
           )}
 
           {step === "keywords" && (
-            <OnboardingStep>
-              <KeywordStep
-                selected={data.calendarKeywords}
-                suggestions={SUGGESTED_KEYWORDS}
-                onChange={(kw) => setData({ ...data, calendarKeywords: kw })}
-                onContinue={() => saveAndFinish()}
-              />
-            </OnboardingStep>
-          )}
-
-          {/* Back button */}
-          {canGoBack && (
-            <div className="mt-auto pt-4 pb-10 flex justify-center">
-              <button
-                onClick={goBack}
-                className="min-h-10 px-4 text-gray-500 text-sm font-body hover:text-gray-700 transition-colors disabled:opacity-30"
-                disabled={saving}
-              >
-                Go back
-              </button>
-            </div>
+            <KeywordStep
+              selected={data.calendarKeywords}
+              suggestions={SUGGESTED_KEYWORDS}
+              onChange={(kw) => setData({ ...data, calendarKeywords: kw })}
+            />
           )}
         </div>
+      </main>
+
+      {/* Sticky bottom action bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-5 py-4 flex items-center justify-between">
+        {currentIndex > 0 ? (
+          <button
+            onClick={goBack}
+            disabled={saving}
+            className="font-body text-[13px] text-gray-500 hover:text-gray-900 transition-colors disabled:opacity-30"
+          >
+            ← Back
+          </button>
+        ) : (
+          <span />
+        )}
+
+        <button
+          onClick={goNext}
+          disabled={!canContinue || saving}
+          className={`px-6 py-3 rounded-full font-body text-[14px] transition-all duration-200 ${
+            canContinue && !saving
+              ? "bg-[#1a1a1a] text-white hover:bg-black"
+              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+          }`}
+        >
+          {currentIndex === totalSteps - 1 ? "Finish" : "Continue"} →
+        </button>
       </div>
     </div>
   );
