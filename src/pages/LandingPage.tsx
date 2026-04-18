@@ -43,13 +43,13 @@ const LandingPage = () => {
 
             <button
               onClick={() => navigate("/auth")}
-              className="mt-7 px-8 py-3 rounded-full bg-white text-[#1a1a1a] font-body text-[13px] hover:opacity-90 transition"
+              className="relative mt-7 px-8 py-3 rounded-full bg-white text-[#1a1a1a] font-body text-[13px] hover:opacity-90 transition"
             >
               Breathe
             </button>
 
             <ChevronDown
-              className="mt-4 text-white/70 animate-bounce"
+              className="relative mt-4 text-white/70 animate-bounce"
               size={22}
               strokeWidth={1.5}
             />
