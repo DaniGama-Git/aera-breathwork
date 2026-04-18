@@ -176,6 +176,46 @@ const LandingPage = () => {
           </div>
         </section>
 
+        {/* ——— THE MOMENT — DEEP DIVE ——— */}
+        <section className="px-6 pt-12 pb-12 bg-[#F5F5F7]">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="block w-10 h-[2px] bg-gray-300" />
+            <span className="block w-10 h-[2px] bg-gray-900" />
+          </div>
+
+          <h2 className="font-body font-semibold text-[26px] text-gray-900 mb-1">
+            The Moment
+          </h2>
+          <p className="font-body font-semibold text-[13px] text-gray-700 mb-3">
+            Breathe in the moments that matter most.
+          </p>
+
+          <p className="font-body text-[13px] text-gray-600 leading-relaxed mb-6">
+            Reads your calendar. Pulls the right āera session. Pops up before your pitch,
+            your board meeting, or your creative block. You just breathe.
+          </p>
+
+          <button
+            onClick={() => navigate("/onboarding?flow=chrome")}
+            className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition mb-6"
+          >
+            Add to Chrome →
+          </button>
+
+          <div
+            className="w-full rounded-[20px] bg-white border border-gray-200 flex items-center justify-center"
+            style={{ aspectRatio: "4 / 3" }}
+          >
+            <span className="font-body text-[11px] text-gray-400">
+              Extension mockup goes here
+            </span>
+          </div>
+
+          <div className="flex justify-center">
+            <ChevronDown className="mt-8 text-gray-400" size={22} strokeWidth={1.5} />
+          </div>
+        </section>
+
         {/* ——— HOW IT WORKS ——— */}
         <section className="px-5 pb-10 bg-white">
           <div className="bg-[#F5F5F7] rounded-[40px] p-6">
