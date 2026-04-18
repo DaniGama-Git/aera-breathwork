@@ -44,7 +44,7 @@ const KeywordStep = ({ selected, suggestions, onChange }: Props) => {
             <button
               key={kw}
               onClick={() => toggle(kw)}
-              className={`px-4 py-2 rounded-full border transition-all duration-200 font-body text-[13px] ${
+              className={`px-4 py-2 rounded-[80px] border transition-all duration-200 font-body text-[13px] ${
                 isSelected
                   ? "border-[#1a1a1a] bg-[#1a1a1a] text-white"
                   : "border-gray-300 bg-white text-gray-900 hover:border-gray-400"
@@ -64,12 +64,12 @@ const KeywordStep = ({ selected, suggestions, onChange }: Props) => {
           onChange={(e) => setCustom(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Add a custom keyword"
-          className="flex-1 px-4 py-3 rounded-full border border-gray-300 bg-white text-gray-900 font-body text-[14px] placeholder:text-gray-400 focus:outline-none focus:border-gray-500 transition-colors"
+          className="flex-1 px-4 py-3 rounded-[80px] border border-gray-300 bg-white text-gray-900 font-body text-[14px] placeholder:text-gray-400 focus:outline-none focus:border-gray-500 transition-colors"
         />
         {custom.trim() && (
           <button
             onClick={addCustom}
-            className="px-5 py-3 rounded-full border border-gray-300 bg-white text-gray-900 font-body text-[14px] hover:bg-gray-50 transition-colors"
+            className="px-5 py-3 rounded-[80px] border border-gray-300 bg-white text-gray-900 font-body text-[14px] hover:bg-gray-50 transition-colors"
           >
             Add
           </button>
@@ -83,7 +83,7 @@ const KeywordStep = ({ selected, suggestions, onChange }: Props) => {
             <button
               key={kw}
               onClick={() => toggle(kw)}
-              className="px-4 py-2 rounded-full border border-[#1a1a1a] bg-[#1a1a1a] text-white font-body text-[13px]"
+              className="px-4 py-2 rounded-[80px] border border-[#1a1a1a] bg-[#1a1a1a] text-white font-body text-[13px]"
             >
               {kw} ×
             </button>

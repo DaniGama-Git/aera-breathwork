@@ -26,7 +26,7 @@ const MultiSelectStep = ({ options, selected, onChange }: Props) => {
           <button
             key={option.value}
             onClick={() => toggle(option.value)}
-            className={`w-full text-left px-5 py-4 rounded-full border transition-all duration-200 font-body text-[14px] ${
+            className={`w-full text-left px-5 py-4 rounded-[80px] border transition-all duration-200 font-body text-[14px] ${
               isSelected
                 ? "border-[#1a1a1a] bg-[#1a1a1a] text-white"
                 : "border-gray-300 bg-white text-gray-900 hover:border-gray-400"
