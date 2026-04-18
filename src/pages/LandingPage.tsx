@@ -15,14 +15,11 @@ const LandingPage = () => {
       <div className="w-full max-w-[430px] bg-white flex flex-col">
         {/* ——— HERO ——— */}
         <section className="relative">
-          {/* Reserved space for desert hero image */}
+          {/* Hero with desert dunes background */}
           <div
-            className="relative w-full bg-[#2a2622] flex flex-col items-center justify-center text-white"
-            style={{ aspectRatio: "9 / 14" }}
+            className="relative w-full flex flex-col items-center justify-center text-white bg-cover bg-center"
+            style={{ aspectRatio: "9 / 14", backgroundImage: `url(${heroDunes})` }}
           >
-            <span className="absolute top-3 left-3 font-body text-[10px] text-white/30">
-              Hero image goes here
-            </span>
 
             <img src={aeraLogo} alt="āera" className="w-[88px] mb-6" />
 
