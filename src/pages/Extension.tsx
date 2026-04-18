@@ -133,7 +133,7 @@ const Extension = () => {
           <h1 className="text-gray-900 font-body font-semibold text-[26px] leading-tight mb-2">
             Chrome Extension
           </h1>
-          <p className="text-gray-600 font-body text-[13px] mb-5">
+          <p className="font-body text-[13px] mb-5" style={{ color: "#6A6A6B" }}>
             Breathwork prompts before your key meetings.
           </p>
 
