@@ -18,8 +18,8 @@ const LandingPage = () => {
         <section className="relative">
           {/* Hero with desert dunes background */}
           <div
-            className="relative w-full flex flex-col items-center justify-center text-white bg-cover bg-center"
-            style={{ aspectRatio: "9 / 14", backgroundImage: `url(${heroDunes})` }}
+            className="relative w-full flex flex-col items-center justify-center text-white bg-cover bg-center bg-black"
+            style={{ aspectRatio: "9 / 14", backgroundImage: `url(${heroDunes})`, marginBottom: "-1px" }}
           >
             {/* 30% black overlay for text legibility */}
             <div className="absolute inset-0 bg-black/30 pointer-events-none" />
