@@ -234,7 +234,7 @@ const Onboarding = () => {
               : "bg-gray-200 text-gray-400 cursor-not-allowed"
           }`}
         >
-          {currentIndex === totalSteps - 1 ? "Finish" : "Continue"} →
+          Continue →
         </button>
       </div>
     </div>
