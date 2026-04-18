@@ -115,7 +115,7 @@ const Extension = () => {
         <img src={areaLogo} alt="Aera" className="h-5 brightness-0" />
         <p
           className="font-body text-right"
-          style={{ fontWeight: 600, fontSize: "18px", lineHeight: "24px", color: "#1D1D1F" }}
+          style={{ fontWeight: 600, fontSize: "13px", lineHeight: "18px", color: "#1D1D1F" }}
         >
           Breathe. Recover. Perform.
           <br />
