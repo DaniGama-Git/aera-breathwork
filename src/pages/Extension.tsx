@@ -1,19 +1,16 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Download, Copy, Check } from "lucide-react";
+import { Copy, Check, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import JSZip from "jszip";
-import activateGradientBg from "@/assets/activate-gradient-v2.webp";
 import areaLogo from "@/assets/aera-logo.svg";
-import mockupExtension from "@/assets/mockup-extension-breathe.svg";
-import BottomNavBar from "@/components/BottomNavBar";
 import BreatheDots from "@/components/BreatheDots";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
-const STEPS = [
-  { number: "01", text: "Download & unzip the extension" },
-  { number: "02", text: "Enable Developer mode at chrome://extensions, click Load unpacked" },
-  { number: "03", text: "Open the extension & connect your calendar" },
+const INSTALL_STEPS = [
+  "Download & unzip the extension",
+  "Enable Developer mode at chrome://extensions, click Load unpacked",
+  "Open the extension & connect your calendar",
 ];
 
 const Extension = () => {
@@ -25,6 +22,7 @@ const Extension = () => {
   const [copied, setCopied] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [openSection, setOpenSection] = useState<"install" | "calendar" | null>(null);
 
   useEffect(() => {
     const pendingData = sessionStorage.getItem("aera_onboarding_data");
@@ -59,7 +57,6 @@ const Extension = () => {
       const blob = await res.blob();
 
       let finalBlob = blob;
-      // Inject keywords + trigger preferences into the extension bundle
       const pendingData = sessionStorage.getItem("aera_onboarding_data");
       let triggers: string[] = [];
       if (pendingData) {
@@ -101,148 +98,168 @@ const Extension = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const toggleSection = (section: "install" | "calendar") => {
+    setOpenSection(openSection === section ? null : section);
+  };
+
   return (
-    <div className="relative w-full mx-auto min-h-screen flex flex-col overflow-hidden">
+    <div className="relative w-full min-h-screen flex flex-col bg-white">
       {downloading && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm">
           <BreatheDots className="w-14 h-14" />
         </div>
       )}
-      <img
-        src={activateGradientBg}
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
-        aria-hidden="true"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "128px 128px",
-        }}
-      />
 
-      <div className="relative z-10 flex flex-col min-h-screen max-w-[430px] mx-auto w-full overflow-y-auto">
-        {/* Back */}
-        <div className="pt-10 px-6">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-white/40 hover:text-white/70 transition text-sm font-body font-medium tracking-wide"
-          >
-            <ArrowLeft size={16} />
-            Back
-          </button>
-        </div>
+      {/* Header — matches onboarding */}
+      <header className="px-5 pt-6 pb-4 flex items-center justify-between border-b border-gray-100">
+        <img src={areaLogo} alt="Aera" className="h-5 brightness-0" />
+        <p className="text-gray-900 font-body text-[11px] leading-tight text-right">
+          Breathe. Recover. Perform.
+          <br />
+          <span className="text-gray-500">In under 5 minutes.</span>
+        </p>
+      </header>
 
-        {/* Hero */}
-        <div className="flex flex-col items-center text-center px-6 pt-6 pb-4">
-          <img src={areaLogo} alt="āera" className="h-8 mb-5 opacity-90" />
-          <h1
-            className="text-white font-body font-semibold mb-2"
-            style={{ fontSize: "24px", lineHeight: "110%", letterSpacing: "-0.01em" }}
-          >
+      {/* Main content */}
+      <main className="flex-1 px-5 pt-6 pb-10 space-y-4">
+        {/* Hero card */}
+        <div className="bg-[#F5F5F7] rounded-[40px] p-6">
+          <div className="inline-flex px-4 py-1.5 rounded-full border border-gray-300 bg-white mb-5">
+            <span className="font-body text-[11px] text-gray-700">
+              Performance Breathwork · Built for work
+            </span>
+          </div>
+
+          <h1 className="text-gray-900 font-body font-semibold text-[26px] leading-tight mb-2">
             Chrome Extension
           </h1>
-          <p className="text-white/50 text-[14px] leading-[140%] font-body font-medium max-w-[260px]">
+          <p className="text-gray-600 font-body text-[13px] mb-5">
             Breathwork prompts before your key meetings.
           </p>
-        </div>
 
-        {/* Product mockup */}
-        <div className="px-6 flex justify-center pb-6" style={{ minHeight: "224px" }}>
-          <img
-            src={mockupExtension}
-            alt="āera Chrome extension preview"
-            className="max-h-[200px] w-auto rounded-xl"
-            loading="eager"
-            style={{ filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.3))" }}
-          />
-        </div>
+          {/* Reserved space for product mockup image (desktop + phone) — pass image later */}
+          <div
+            className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
+            style={{ aspectRatio: "16 / 10" }}
+          >
+            <span className="font-body text-[11px] text-gray-400">
+              Mockup image goes here
+            </span>
+          </div>
 
-        {/* 3 compact steps */}
-        <div className="px-6 space-y-3 mb-8">
-          {STEPS.map((step) => (
-            <div key={step.number} className="flex items-center gap-3">
-              <span className="text-white/20 font-body font-light text-[12px] tracking-widest shrink-0">
-                {step.number}
-              </span>
-              <p className="text-white/50 text-[13px] font-body font-medium leading-snug">
-                {step.text}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Trigger keywords */}
-        {keywords.length > 0 && (
-          <div className="px-6 mb-5">
-            <div
-              className="p-4 rounded-xl"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
-            >
+          {/* Trigger keywords */}
+          {keywords.length > 0 && (
+            <div className="rounded-[20px] bg-white border border-gray-200 p-4 mb-5">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-white/30 text-[11px] font-body font-medium tracking-wide uppercase">
+                <p className="font-body text-[10px] text-gray-500 tracking-widest uppercase">
                   Your trigger words
                 </p>
                 <button
                   onClick={handleCopyKeywords}
-                  className="flex items-center gap-1.5 text-white/30 hover:text-white/60 transition text-[11px] font-body font-medium tracking-wide"
+                  className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 transition font-body text-[11px]"
                 >
                   {copied ? <Check size={12} /> : <Copy size={12} />}
                   {copied ? "Copied" : "Copy"}
                 </button>
               </div>
-              <p className="text-white/60 text-[13px] font-body font-medium leading-relaxed">
+              <p className="text-gray-900 font-body font-semibold text-[14px] uppercase mb-2">
                 {keywords.join(", ")}
               </p>
-              <p className="text-white/20 text-[11px] font-body font-medium mt-2">
+              <p className="text-gray-500 font-body text-[11px] leading-relaxed">
                 Paste these into the extension after connecting your calendar.
               </p>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Download CTA */}
-        <div className="px-6 pb-4">
+          {/* Download CTA */}
           <button
             onClick={handleDownload}
             disabled={downloading}
-            className="w-full py-4 rounded-xl text-white font-body font-semibold text-[15px] tracking-wide flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
-            style={{
-              background: "rgba(255,255,255,0.12)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255,255,255,0.15)",
-            }}
+            className="w-full py-4 rounded-[80px] bg-[#1a1a1a] text-white font-body font-semibold text-[14px] flex items-center justify-center gap-2 transition-all hover:bg-black active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
           >
-            <Download size={18} />
             Download Extension
           </button>
-          <p className="text-center text-[11px] text-white/25 mt-3 font-body font-medium tracking-wide">
+          <p className="text-center text-[11px] text-gray-500 mt-3 font-body">
             Works in Chrome, Edge, Brave, and Arc
           </p>
         </div>
 
-        {/* Chrome flow: prompt to create account after download */}
-        {isChromeFlow && !user && downloaded && (
-          <div className="px-6 pb-8">
-            <button
-              onClick={() => navigate("/auth?flow=chrome")}
-              className="w-full py-4 rounded-xl text-white font-body font-semibold text-[15px] tracking-wide flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-[0.98]"
-              style={{
-                background: "rgba(255,255,255,0.20)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid rgba(255,255,255,0.25)",
-              }}
-            >
-              Create your account →
-            </button>
-          </div>
-        )}
+        {/* Accordion: Install instructions */}
+        <div className="bg-[#F5F5F7] rounded-[20px] overflow-hidden">
+          <button
+            onClick={() => toggleSection("install")}
+            className="w-full flex items-center justify-between px-5 py-4 text-left"
+          >
+            <span className="font-body font-semibold text-[14px] text-gray-900">
+              How to install extension (Manually)
+            </span>
+            <ChevronDown
+              size={18}
+              className={`text-gray-700 transition-transform ${openSection === "install" ? "rotate-180" : ""}`}
+            />
+          </button>
+          {openSection === "install" && (
+            <div className="px-5 pb-5 space-y-2">
+              {INSTALL_STEPS.map((step, i) => (
+                <div key={i} className="flex gap-3">
+                  <span className="font-body text-[13px] text-gray-400 shrink-0">
+                    {i + 1}.
+                  </span>
+                  <p className="font-body text-[13px] text-gray-700 leading-relaxed">
+                    {step}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-        <div className="h-8" />
-      </div>
+        {/* Accordion: Calendar Settings */}
+        <div className="bg-[#F5F5F7] rounded-[20px] overflow-hidden">
+          <button
+            onClick={() => toggleSection("calendar")}
+            className="w-full flex items-center justify-between px-5 py-4 text-left"
+          >
+            <span className="font-body font-semibold text-[14px] text-gray-900">
+              Calendar Settings
+            </span>
+            <ChevronDown
+              size={18}
+              className={`text-gray-700 transition-transform ${openSection === "calendar" ? "rotate-180" : ""}`}
+            />
+          </button>
+          {openSection === "calendar" && (
+            <div className="px-5 pb-5">
+              <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-3">
+                Connect your Google Calendar so āera can detect your key meetings and trigger sessions automatically.
+              </p>
+              <button
+                onClick={() => navigate("/calendar-setup")}
+                className="font-body text-[13px] text-gray-900 underline underline-offset-4"
+              >
+                Open calendar setup →
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Chrome flow: create account CTA */}
+        {isChromeFlow && !user && downloaded && (
+          <button
+            onClick={() => navigate("/auth?flow=chrome")}
+            className="w-full py-4 rounded-[80px] bg-[#1a1a1a] text-white font-body font-semibold text-[14px] flex items-center justify-center gap-2 transition-all hover:bg-black active:scale-[0.98]"
+          >
+            Create your account →
+          </button>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="px-5 py-5 border-t border-gray-100 text-center">
+        <p className="font-body text-[11px] text-gray-500">
+          © 2026 āera. All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 };
