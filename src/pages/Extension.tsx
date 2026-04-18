@@ -124,8 +124,8 @@ const Extension = () => {
       <main className="flex-1 px-5 pt-6 pb-10 space-y-4">
         {/* Hero card */}
         <div className="bg-[#F5F5F7] rounded-[40px] p-6">
-          <div className="inline-flex px-4 py-1.5 rounded-full border border-gray-300 bg-white mb-5">
-            <span className="font-body text-[11px] text-gray-700">
+          <div className="inline-flex px-4 py-1.5 rounded-full border border-[#1a1a1a] bg-white mb-5">
+            <span className="font-body text-[11px] text-gray-900">
               Performance Breathwork · Built for work
             </span>
           </div>

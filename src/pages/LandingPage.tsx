@@ -1,176 +1,203 @@
 /**
- * LandingPage — Public marketing page for āera
+ * LandingPage — Public marketing page for āera (mobile-first phone view)
  * Route: /
- * Two sections: immersive hero + product overview with two cards
  */
 
+import { useNavigate } from "react-router-dom";
 import aeraLogo from "@/assets/aera-logo.svg";
-import landingBg from "@/assets/landing-bg.svg";
-import mockupApp from "@/assets/mockup-iphone.png";
-import sessionCards from "@/assets/app-session-cards.png";
-import mockupExtension from "@/assets/mockup-extension-breathe.svg";
 
 const LandingPage = () => {
-  const scrollToProducts = () => {
-    document.getElementById("products")?.scrollIntoView({ behavior: "smooth" });
-  };
+  const navigate = useNavigate();
 
   return (
-    <div className="w-full min-h-screen bg-[#0e0e0d] text-[#F7F6F5] font-body">
-      {/* ——— SECTION 1: Hero ——— */}
-      <section className="relative w-full h-screen flex flex-col items-end overflow-hidden">
-        {/* BG */}
-        <img
-          src={landingBg}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-          aria-hidden="true"
-        />
-
-        {/* Content — anchored to bottom center */}
-        <div className="relative z-10 w-full mt-auto flex flex-col items-center text-center px-6 pb-16 md:pb-20">
-          <img src={aeraLogo} alt="āera" className="w-[90px] md:w-[110px] mb-8" />
-
-          <p
-            className="font-body font-normal text-[#F7F6F5]/85 uppercase tracking-[0.15em] leading-[1.6]"
-            style={{ fontSize: "clamp(11px, 2.2vw, 14px)" }}
+    <div className="w-full min-h-screen flex justify-center bg-black">
+      <div className="w-full max-w-[430px] bg-white flex flex-col">
+        {/* ——— HERO ——— */}
+        <section className="relative">
+          {/* Reserved space for desert hero image */}
+          <div
+            className="relative w-full bg-[#2a2622] flex flex-col items-center justify-center text-white"
+            style={{ aspectRatio: "9 / 14" }}
           >
-            Every athlete has a recovery coach.
-            <br />
-            High performers don't.
-          </p>
+            <span className="absolute top-3 left-3 font-body text-[10px] text-white/30">
+              Hero image goes here
+            </span>
 
-          <p
-            className="font-body font-semibold text-[#F7F6F5] uppercase tracking-[0.15em] mt-4"
-            style={{ fontSize: "clamp(13px, 2.5vw, 16px)" }}
-          >
-            Until now.
-          </p>
+            <img src={aeraLogo} alt="āera" className="w-[88px] mb-6" />
 
-          <button
-            onClick={scrollToProducts}
-            className="mt-8 inline-flex items-center justify-center px-8 h-[44px] rounded-full bg-[#F7F6F5] text-[#1D1D1C] font-body font-medium text-[15px] hover:opacity-90 transition-opacity"
-          >
-            Breathe
-          </button>
+            <p className="font-body text-[10px] uppercase tracking-[0.18em] text-white/80 text-center leading-[1.7] px-6">
+              Every athlete has a recovery coach.
+              <br />
+              High performers don't.
+            </p>
+            <p className="font-body font-semibold text-[11px] uppercase tracking-[0.18em] text-white mt-3">
+              Until now.
+            </p>
 
-          {/* Scroll hint arrow */}
-          <svg
-            onClick={scrollToProducts}
-            className="mt-6 animate-bounce cursor-pointer"
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="rgba(255,255,255,0.12)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <polyline points="4,7 10,13 16,7" />
-          </svg>
-        </div>
-      </section>
+            <button
+              onClick={() => navigate("/auth")}
+              className="mt-7 px-8 py-3 rounded-full bg-white text-[#1a1a1a] font-body text-[13px] hover:opacity-90 transition"
+            >
+              Breathe
+            </button>
+          </div>
+        </section>
 
-      {/* ——— SECTION 2: Product Overview ——— */}
-      <section
-        id="products"
-        className="relative w-full min-h-screen flex flex-col items-center justify-center bg-[#F0EEEB] py-10 md:py-6"
-      >
-        <div className="w-full max-w-[1100px] px-6 md:px-12 flex flex-col items-center">
-          {/* Logo + tagline */}
-          <img src={aeraLogo} alt="āera" className="w-[90px] md:w-[110px] mb-4 py-2 opacity-80 invert" loading="lazy" />
-          <p
-            className="font-body font-semibold text-[#1D1D1C] text-center mb-8 md:mb-10"
-            style={{ fontSize: "clamp(13px, 3vw, 16px)" }}
-          >
-            Breathe. Recover. Perform.
-            <br />
-            In under 5 minutes.
-          </p>
+        {/* ——— THE APP ——— */}
+        <section className="px-5 pt-10 pb-6 bg-white">
+          <div className="bg-[#F5F5F7] rounded-[40px] p-6">
+            <h2 className="font-body font-semibold text-[24px] text-gray-900 mb-1">
+              The App
+            </h2>
+            <p className="font-body text-[13px] text-gray-600 mb-5">
+              Breathe wherever you are.
+            </p>
 
-          {/* Product cards — use items-end on the row so buttons align */}
-          <div className="w-full flex flex-col md:flex-row md:items-end items-stretch gap-4 md:gap-0">
-            {/* Card 1 — The App */}
-            <div className="flex-1 max-w-[600px] w-full flex flex-col items-center text-center">
-              <h2 className="font-body font-semibold text-[#1D1D1C] text-[26px] md:text-[30px] tracking-[-0.02em] mb-1.5">
-                The App
-              </h2>
-              <p className="font-body font-semibold text-[#1D1D1C]/80 text-[14px] md:text-[16px] mb-4">
-                Breathe wherever you are.
-              </p>
-
-              <div className="flex items-end justify-center gap-3 mb-4 h-[150px] md:h-[180px]">
-                <img
-                  src={mockupApp}
-                  alt="āera app on mobile"
-                  className="w-[90px] md:w-[110px] h-auto max-h-full object-contain"
-                  loading="lazy"
-                />
-                <img
-                  src={sessionCards}
-                  alt="āera session cards"
-                  className="w-[170px] md:w-[220px] h-auto max-h-full object-contain"
-                  loading="lazy"
-                />
-              </div>
-
-              <p className="font-body font-normal text-[#1D1D1C]/70 text-[13px] leading-[1.5] mb-5 max-w-[380px]">
-                Your full session library. Includes longer on-demand sessions across all four categories.
-                Built for the space between meetings and on-the-go.
-              </p>
-
-              <a
-                href="/auth"
-                className="inline-flex items-center justify-center h-[40px] px-7 rounded-full bg-[#1D1D1C] text-[#F7F6F5] font-body font-medium text-[14px] hover:opacity-90 transition-opacity"
-              >
-                Open App
-              </a>
-            </div>
-
-            {/* Plus symbol */}
-            <div className="flex items-center justify-center px-3 md:px-5 md:pb-[20px]">
-              <span
-                className="font-body font-light text-[#1D1D1C]/25"
-                style={{ fontSize: "clamp(24px, 3.5vw, 36px)" }}
-              >
-                +
+            {/* Reserved space for app mockup */}
+            <div
+              className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
+              style={{ aspectRatio: "4 / 3" }}
+            >
+              <span className="font-body text-[11px] text-gray-400">
+                App mockup goes here
               </span>
             </div>
 
-            {/* Card 2 — The Moment */}
-            <div className="flex-1 max-w-[480px] w-full flex flex-col items-center text-center">
-              <h2 className="font-body font-semibold text-[#1D1D1C] text-[26px] md:text-[30px] tracking-[-0.02em] mb-1.5">
-                The Moment
-              </h2>
-              <p className="font-body font-semibold text-[#1D1D1C]/80 text-[14px] md:text-[16px] mb-4">
-                Breathe in the moments that matter most.
+            <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-5">
+              Your full session library. Includes longer on-demand sessions across all four
+              categories. Built for the space between meetings and on-the-go.
+            </p>
+
+            <button
+              onClick={() => navigate("/auth")}
+              className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition"
+            >
+              Open App
+            </button>
+          </div>
+        </section>
+
+        {/* ——— THE MOMENT ——— */}
+        <section className="px-5 pb-6 bg-white">
+          <div className="bg-[#F5F5F7] rounded-[40px] p-6">
+            <h2 className="font-body font-semibold text-[24px] text-gray-900 mb-1">
+              The Moment
+            </h2>
+            <p className="font-body text-[13px] text-gray-600 mb-5">
+              Breathe in the moments that matter most.
+            </p>
+
+            {/* Reserved space for extension mockup (phone + laptop) */}
+            <div
+              className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
+              style={{ aspectRatio: "4 / 3" }}
+            >
+              <span className="font-body text-[11px] text-gray-400">
+                Extension mockup goes here
+              </span>
+            </div>
+
+            <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-5">
+              Reads your calendar. Pulls the right āera session. Pops up before your pitch,
+              your board meeting, or your creative block. You just breathe.
+            </p>
+
+            <button
+              onClick={() => navigate("/onboarding?flow=chrome")}
+              className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition"
+            >
+              Add to Chrome
+            </button>
+          </div>
+        </section>
+
+        {/* ——— HOW IT WORKS ——— */}
+        <section className="px-5 pb-10 bg-white">
+          <div className="bg-[#F5F5F7] rounded-[40px] p-6">
+            <p className="font-body text-[10px] uppercase tracking-widest text-gray-500 text-center mb-3">
+              How it works
+            </p>
+            <h2 className="font-body font-semibold text-[22px] text-gray-900 text-center mb-2 leading-tight">
+              Breathe. Recover. Perform.
+            </h2>
+            <p className="font-body text-[12px] text-gray-600 text-center mb-6">
+              Three steps to peak performance throughout your day.
+            </p>
+
+            {/* Step 1 */}
+            <div className="bg-white rounded-[20px] border border-gray-200 p-4 mb-3">
+              <p className="font-body text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">
+                Step 1
               </p>
-
-              <div className="flex justify-center mb-4 h-[150px] md:h-[180px] items-center">
-                <img
-                  src={mockupExtension}
-                  alt="āera Chrome extension with calendar integration"
-                  className="h-auto max-h-full w-auto max-w-full object-contain mix-blend-multiply"
-                  loading="lazy"
-                />
-              </div>
-
-              <p className="font-body font-normal text-[#1D1D1C]/70 text-[13px] leading-[1.5] mb-5 max-w-[340px]">
-                Reads your calendar. Pulls the right āera session. Pops up before your pitch,
-                your board meeting, or your creative block. You just breathe.
+              <p className="font-body font-semibold text-[14px] text-gray-900 mb-2">
+                Reads your calendar
               </p>
-
-              <a
-                href="/onboarding?flow=chrome"
-                className="inline-flex items-center justify-center h-[40px] px-7 rounded-full bg-[#1D1D1C] text-[#F7F6F5] font-body font-medium text-[14px] hover:opacity-90 transition-opacity"
+              <p className="font-body text-[12px] text-gray-600 leading-relaxed mb-3">
+                Connects to your Google Calendar. Sniffs out the events that matter,
+                so āera knows when you'll need a quick reset.
+              </p>
+              <div
+                className="w-full rounded-[14px] bg-[#F5F5F7] flex items-center justify-center"
+                style={{ aspectRatio: "16 / 9" }}
               >
-                Add to Chrome
-              </a>
+                <span className="font-body text-[10px] text-gray-400">
+                  Calendar visual goes here
+                </span>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="bg-white rounded-[20px] border border-gray-200 p-4 mb-3">
+              <p className="font-body text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">
+                Step 2
+              </p>
+              <p className="font-body font-semibold text-[14px] text-gray-900 mb-2">
+                Matches events to breathwork
+              </p>
+              <p className="font-body text-[12px] text-gray-600 leading-relaxed mb-3">
+                Each meeting type maps to one of four protocols: Focus, Calm, Energy, or Recover.
+              </p>
+              <div
+                className="w-full rounded-[14px] bg-[#F5F5F7] flex items-center justify-center"
+                style={{ aspectRatio: "16 / 9" }}
+              >
+                <span className="font-body text-[10px] text-gray-400">
+                  Protocol visual goes here
+                </span>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="bg-white rounded-[20px] border border-gray-200 p-4">
+              <p className="font-body text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">
+                Step 3
+              </p>
+              <p className="font-body font-semibold text-[14px] text-gray-900 mb-2">
+                Pops up at the right moment
+              </p>
+              <p className="font-body text-[12px] text-gray-600 leading-relaxed mb-3">
+                A few minutes before your meeting, āera triggers a breathing session — right
+                in your browser. No app to open. Just breathe.
+              </p>
+              <div
+                className="w-full rounded-[14px] bg-[#F5F5F7] flex items-center justify-center"
+                style={{ aspectRatio: "16 / 9" }}
+              >
+                <span className="font-body text-[10px] text-gray-400">
+                  Trigger visual goes here
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* ——— FOOTER ——— */}
+        <footer className="px-5 py-6 border-t border-gray-100 bg-white text-center">
+          <p className="font-body text-[11px] text-gray-500">
+            © 2026 āera. All rights reserved.
+          </p>
+        </footer>
+      </div>
     </div>
   );
 };
