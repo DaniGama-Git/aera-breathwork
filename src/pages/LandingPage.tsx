@@ -177,7 +177,7 @@ const LandingPage = () => {
         </section>
 
         {/* ——— THE MOMENT — DEEP DIVE ——— */}
-        <section className="px-6 pt-12 pb-12 bg-[#F5F5F7]">
+        <section className="px-6 pt-12 pb-12 bg-white">
           <div className="flex items-center gap-2 mb-4">
             <span className="block w-10 h-[2px] bg-gray-300" />
             <span className="block w-10 h-[2px] bg-gray-900" />
@@ -203,7 +203,7 @@ const LandingPage = () => {
           </button>
 
           <div
-            className="w-full rounded-[20px] bg-white border border-gray-200 flex items-center justify-center"
+            className="w-full rounded-[20px] bg-[#F5F5F7] flex items-center justify-center"
             style={{ aspectRatio: "4 / 3" }}
           >
             <span className="font-body text-[11px] text-gray-400">
