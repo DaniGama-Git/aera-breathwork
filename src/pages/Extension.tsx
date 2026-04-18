@@ -185,7 +185,7 @@ const Extension = () => {
               color: "#FFFFFF",
               fontFamily: "inherit",
               fontWeight: 500,
-              fontSize: "17px",
+              fontSize: "15px",
               lineHeight: "100%",
               letterSpacing: "0.02em",
             }}
