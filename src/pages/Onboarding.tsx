@@ -177,7 +177,7 @@ const Onboarding = () => {
 
       {/* Card */}
       <main className="flex-1 px-5 pt-6 pb-32">
-        <div className="bg-[#f4f4f3] rounded-3xl p-5 sm:p-6">
+        <div className="bg-[#F5F5F7] rounded-[40px] p-5 sm:p-6">
           <h1 className="text-gray-900 font-body font-semibold text-[18px] leading-snug mb-1.5">
             {config.question}
           </h1>
