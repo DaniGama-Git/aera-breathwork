@@ -210,6 +210,7 @@ const LandingPage = () => {
               Extension mockup goes here
             </span>
           </div>
+        </section>
 
 
         {/* ——— HOW IT WORKS ——— */}
