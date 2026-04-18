@@ -56,10 +56,10 @@ const LandingPage = () => {
           </div>
         </section>
 
-        {/* ——— THE APP + THE MOMENT (shared grey background) ——— */}
-        <section className="px-5 pt-10 pb-10 bg-[#F5F5F7]">
+        {/* ——— THE APP + THE MOMENT (shared grey background, centered) ——— */}
+        <section className="px-5 pt-10 pb-12 bg-[#F5F5F7] flex flex-col items-center text-center">
           {/* The App */}
-          <h2 className="font-body font-semibold text-[24px] text-gray-900 mb-1">
+          <h2 className="font-body font-semibold text-[28px] text-gray-900 mb-1">
             The App
           </h2>
           <p className="font-body text-[13px] text-gray-600 mb-5">
@@ -75,24 +75,24 @@ const LandingPage = () => {
             </span>
           </div>
 
-          <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-5">
+          <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-5 max-w-[340px]">
             Your full session library. Includes longer on-demand sessions across all four
             categories. Built for the space between meetings and on-the-go.
           </p>
 
           <button
             onClick={() => navigate("/auth")}
-            className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition mb-10"
+            className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition mb-12"
           >
-            Open App
+            Open App →
           </button>
 
           {/* The Moment */}
-          <h2 className="font-body font-semibold text-[24px] text-gray-900 mb-1">
+          <h2 className="font-body font-semibold text-[28px] text-gray-900 mb-1">
             The Moment
           </h2>
           <p className="font-body text-[13px] text-gray-600 mb-5">
-            Breathe in the moments that matter most.
+            Reset your performance in under 5 minutes
           </p>
 
           <div
@@ -104,17 +104,40 @@ const LandingPage = () => {
             </span>
           </div>
 
-          <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-5">
-            Reads your calendar. Pulls the right āera session. Pops up before your pitch,
-            your board meeting, or your creative block. You just breathe.
+          <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-5 max-w-[340px]">
+            āera reads your calendar and delivers a targeted breathwork session before every
+            high-stakes moment — automatically.
           </p>
 
-          <button
-            onClick={() => navigate("/onboarding?flow=chrome")}
-            className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition"
-          >
-            Add to Chrome
-          </button>
+          <div className="flex items-center gap-2 mb-4">
+            <button
+              onClick={() => navigate("/onboarding?flow=chrome")}
+              className="px-5 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[12px] hover:bg-black transition flex items-center gap-2"
+            >
+              <span className="inline-block w-4 h-4 rounded-full bg-white" />
+              Add to Chrome — It's free
+            </button>
+            <button
+              onClick={() => navigate("/wave")}
+              className="px-4 py-3 rounded-full bg-white border border-gray-300 text-[#1a1a1a] font-body text-[12px] hover:bg-gray-50 transition flex items-center gap-1.5"
+            >
+              ▶ Watch Demo
+            </button>
+          </div>
+
+          <p className="font-body text-[10px] text-gray-500 flex items-center gap-2 flex-wrap justify-center">
+            <span>⊘ No credit card</span>
+            <span className="text-gray-300">·</span>
+            <span>◷ Works with Google & Outlook</span>
+            <span className="text-gray-300">·</span>
+            <span>◷ 2 min setup</span>
+          </p>
+
+          <ChevronDown
+            className="mt-8 text-gray-400"
+            size={22}
+            strokeWidth={1.5}
+          />
         </section>
 
         {/* ——— HOW IT WORKS ——— */}
