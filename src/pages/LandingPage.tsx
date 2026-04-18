@@ -21,27 +21,35 @@ const LandingPage = () => {
             className="relative w-full flex flex-col items-center justify-center text-white bg-cover bg-center"
             style={{ aspectRatio: "9 / 14", backgroundImage: `url(${heroDunes})` }}
           >
+            {/* 30% black overlay for text legibility */}
+            <div className="absolute inset-0 bg-black/30 pointer-events-none" />
 
-            <img src={aeraLogo} alt="āera" className="w-[88px] mb-6" />
+            <img src={aeraLogo} alt="āera" className="relative w-[88px] mb-6" />
 
-            <p className="font-body text-[10px] uppercase tracking-[0.18em] text-white/80 text-center leading-[1.7] px-6">
+            <p
+              className="relative font-body text-[10px] uppercase tracking-[0.18em] text-center leading-[1.7] px-6"
+              style={{ color: "#ECE9E4" }}
+            >
               Every athlete has a recovery coach.
               <br />
               High performers don't.
             </p>
-            <p className="font-body font-semibold text-[11px] uppercase tracking-[0.18em] text-white mt-3">
+            <p
+              className="relative font-body text-[11px] uppercase tracking-[0.18em] mt-3"
+              style={{ color: "#FFFFFF", fontWeight: 700 }}
+            >
               Until now.
             </p>
 
             <button
               onClick={() => navigate("/auth")}
-              className="mt-7 px-8 py-3 rounded-full bg-white text-[#1a1a1a] font-body text-[13px] hover:opacity-90 transition"
+              className="relative mt-7 px-8 py-3 rounded-full bg-white text-[#1a1a1a] font-body text-[13px] hover:opacity-90 transition"
             >
               Breathe
             </button>
 
             <ChevronDown
-              className="mt-4 text-white/70 animate-bounce"
+              className="relative mt-4 text-white/70 animate-bounce"
               size={22}
               strokeWidth={1.5}
             />
