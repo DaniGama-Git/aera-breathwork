@@ -64,7 +64,7 @@ const KeywordStep = ({ selected, suggestions, onChange }: Props) => {
           onChange={(e) => setCustom(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Add a custom keyword"
-          className="flex-1 px-4 py-3 rounded-[80px] border border-gray-300 bg-white text-gray-900 font-body text-[14px] placeholder:text-gray-400 focus:outline-none focus:border-gray-500 transition-colors"
+          className="flex-1 px-4 py-3 rounded-[14px] border border-gray-300 bg-white text-gray-900 font-body text-[14px] placeholder:text-gray-400 focus:outline-none focus:border-gray-500 transition-colors"
         />
         {custom.trim() && (
           <button
