@@ -41,9 +41,10 @@ const LandingPage = () => {
           </div>
         </section>
 
-        {/* ——— THE APP ——— */}
+        {/* ——— THE APP + THE MOMENT (combined card) ——— */}
         <section className="px-5 pt-10 pb-6 bg-white">
           <div className="bg-[#F5F5F7] rounded-[40px] p-6">
+            {/* The App */}
             <h2 className="font-body font-semibold text-[24px] text-gray-900 mb-1">
               The App
             </h2>
@@ -51,7 +52,6 @@ const LandingPage = () => {
               Breathe wherever you are.
             </p>
 
-            {/* Reserved space for app mockup */}
             <div
               className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
               style={{ aspectRatio: "4 / 3" }}
@@ -68,16 +68,12 @@ const LandingPage = () => {
 
             <button
               onClick={() => navigate("/auth")}
-              className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition"
+              className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition mb-10"
             >
               Open App
             </button>
-          </div>
-        </section>
 
-        {/* ——— THE MOMENT ——— */}
-        <section className="px-5 pb-6 bg-white">
-          <div className="bg-[#F5F5F7] rounded-[40px] p-6">
+            {/* The Moment */}
             <h2 className="font-body font-semibold text-[24px] text-gray-900 mb-1">
               The Moment
             </h2>
@@ -85,7 +81,6 @@ const LandingPage = () => {
               Breathe in the moments that matter most.
             </p>
 
-            {/* Reserved space for extension mockup (phone + laptop) */}
             <div
               className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
               style={{ aspectRatio: "4 / 3" }}
