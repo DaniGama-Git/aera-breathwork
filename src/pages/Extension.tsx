@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Copy, Check, ChevronDown } from "lucide-react";
+import { Copy, Check, ChevronDown, Download } from "lucide-react";
 import { useState, useEffect } from "react";
 import JSZip from "jszip";
 import areaLogo from "@/assets/aera-logo.svg";
@@ -179,8 +179,18 @@ const Extension = () => {
           <button
             onClick={handleDownload}
             disabled={downloading}
-            className="w-full py-4 rounded-[80px] bg-[#1a1a1a] text-white font-body font-semibold text-[14px] flex items-center justify-center gap-2 transition-all hover:bg-black active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
+            className="w-full py-4 rounded-[80px] flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
+            style={{
+              background: "#1D1D1F",
+              color: "#FFFFFF",
+              fontFamily: "inherit",
+              fontWeight: 500,
+              fontSize: "17px",
+              lineHeight: "100%",
+              letterSpacing: "0.02em",
+            }}
           >
+            <Download size={18} strokeWidth={2} />
             Download Extension
           </button>
           <p className="text-center text-[11px] text-gray-500 mt-3 font-body">
@@ -251,7 +261,15 @@ const Extension = () => {
         {isChromeFlow && !user && downloaded && (
           <button
             onClick={() => navigate("/auth?flow=chrome")}
-            className="w-full py-4 rounded-[80px] bg-[#1a1a1a] text-white font-body font-semibold text-[14px] flex items-center justify-center gap-2 transition-all hover:bg-black active:scale-[0.98]"
+            className="w-full py-4 rounded-[80px] flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98]"
+            style={{
+              background: "#1D1D1F",
+              color: "#FFFFFF",
+              fontWeight: 500,
+              fontSize: "17px",
+              lineHeight: "100%",
+              letterSpacing: "0.02em",
+            }}
           >
             Create your account →
           </button>
