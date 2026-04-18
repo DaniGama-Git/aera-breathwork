@@ -38,6 +38,12 @@ const LandingPage = () => {
             >
               Breathe
             </button>
+
+            <ChevronDown
+              className="mt-4 text-white/70 animate-bounce"
+              size={22}
+              strokeWidth={1.5}
+            />
           </div>
         </section>
 
