@@ -32,7 +32,7 @@ const MultiSelectStep = ({ options, selected, onChange }: Props) => {
                 : "border-gray-300 bg-white text-gray-900 hover:border-gray-400"
             }`}
           >
-            <span className={`mr-2 ${isSelected ? "text-white/70" : "text-gray-400"}`}>
+            <span className={`mr-2 ${isSelected ? "text-white" : "text-gray-900"}`}>
               {i + 1}.
             </span>
             {option.label}
