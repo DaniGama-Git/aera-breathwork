@@ -211,8 +211,8 @@ const Onboarding = () => {
         </div>
       </main>
 
-      {/* Sticky bottom action bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-5 py-4 flex items-center justify-between">
+      {/* Bottom action bar — anchored to the mobile phone frame */}
+      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-5 py-4 flex items-center justify-between">
         {currentIndex > 0 ? (
           <button
             onClick={goBack}
