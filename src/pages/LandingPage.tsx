@@ -177,7 +177,7 @@ const LandingPage = () => {
         </section>
 
         {/* ——— THE MOMENT — DEEP DIVE ——— */}
-        <section className="px-6 pt-12 pb-12 bg-[#F5F5F7]">
+        <section className="px-6 pt-12 pb-12 bg-white">
           <div className="flex items-center gap-2 mb-4">
             <span className="block w-10 h-[2px] bg-gray-300" />
             <span className="block w-10 h-[2px] bg-gray-900" />
@@ -203,7 +203,7 @@ const LandingPage = () => {
           </button>
 
           <div
-            className="w-full rounded-[20px] bg-white border border-gray-200 flex items-center justify-center"
+            className="w-full rounded-[20px] bg-[#F5F5F7] flex items-center justify-center"
             style={{ aspectRatio: "4 / 3" }}
           >
             <span className="font-body text-[11px] text-gray-400">
@@ -214,82 +214,56 @@ const LandingPage = () => {
 
 
         {/* ——— HOW IT WORKS ——— */}
-        <section className="px-5 pt-2 pb-10 bg-[#F5F5F7]">
-          <div className="px-1">
-            <p className="font-body text-[10px] uppercase tracking-widest text-gray-500 text-center mb-3">
-              How it works
+        <section className="px-6 pt-12 pb-12 bg-[#F5F5F7]">
+          <p className="font-body text-[10px] uppercase tracking-widest text-gray-500 text-center mb-3">
+            How it works
+          </p>
+          <h2 className="font-body font-semibold text-[24px] text-gray-900 text-center mb-2 leading-tight">
+            Breathe. Recover. Perform.
+          </h2>
+          <p className="font-body text-[13px] text-gray-600 text-center mb-10">
+            Three steps to peak performance throughout your day.
+          </p>
+
+          {/* Step 1 */}
+          <div className="mb-10">
+            <p className="font-body text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">
+              Step 1
             </p>
-            <h2 className="font-body font-semibold text-[22px] text-gray-900 text-center mb-2 leading-tight">
-              Breathe. Recover. Perform.
-            </h2>
-            <p className="font-body text-[12px] text-gray-600 text-center mb-6">
-              Three steps to peak performance throughout your day.
+            <p className="font-body font-semibold text-[16px] text-gray-900 mb-2">
+              Reads your calendar
             </p>
+            <p className="font-body text-[13px] text-gray-600 leading-relaxed">
+              Connects to your Google Calendar. Sniffs out the events that matter,
+              so āera knows when you'll need a quick reset.
+            </p>
+          </div>
 
-            {/* Step 1 */}
-            <div className="bg-white rounded-[20px] border border-gray-200 p-4 mb-3">
-              <p className="font-body text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">
-                Step 1
-              </p>
-              <p className="font-body font-semibold text-[14px] text-gray-900 mb-2">
-                Reads your calendar
-              </p>
-              <p className="font-body text-[12px] text-gray-600 leading-relaxed mb-3">
-                Connects to your Google Calendar. Sniffs out the events that matter,
-                so āera knows when you'll need a quick reset.
-              </p>
-              <div
-                className="w-full rounded-[14px] bg-[#F5F5F7] flex items-center justify-center"
-                style={{ aspectRatio: "16 / 9" }}
-              >
-                <span className="font-body text-[10px] text-gray-400">
-                  Calendar visual goes here
-                </span>
-              </div>
-            </div>
+          {/* Step 2 */}
+          <div className="mb-10">
+            <p className="font-body text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">
+              Step 2
+            </p>
+            <p className="font-body font-semibold text-[16px] text-gray-900 mb-2">
+              Matches events to breathwork
+            </p>
+            <p className="font-body text-[13px] text-gray-600 leading-relaxed">
+              Each meeting type maps to one of four protocols: Focus, Calm, Energy, or Recover.
+            </p>
+          </div>
 
-            {/* Step 2 */}
-            <div className="bg-white rounded-[20px] border border-gray-200 p-4 mb-3">
-              <p className="font-body text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">
-                Step 2
-              </p>
-              <p className="font-body font-semibold text-[14px] text-gray-900 mb-2">
-                Matches events to breathwork
-              </p>
-              <p className="font-body text-[12px] text-gray-600 leading-relaxed mb-3">
-                Each meeting type maps to one of four protocols: Focus, Calm, Energy, or Recover.
-              </p>
-              <div
-                className="w-full rounded-[14px] bg-[#F5F5F7] flex items-center justify-center"
-                style={{ aspectRatio: "16 / 9" }}
-              >
-                <span className="font-body text-[10px] text-gray-400">
-                  Protocol visual goes here
-                </span>
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div className="bg-white rounded-[20px] border border-gray-200 p-4">
-              <p className="font-body text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">
-                Step 3
-              </p>
-              <p className="font-body font-semibold text-[14px] text-gray-900 mb-2">
-                Pops up at the right moment
-              </p>
-              <p className="font-body text-[12px] text-gray-600 leading-relaxed mb-3">
-                A few minutes before your meeting, āera triggers a breathing session — right
-                in your browser. No app to open. Just breathe.
-              </p>
-              <div
-                className="w-full rounded-[14px] bg-[#F5F5F7] flex items-center justify-center"
-                style={{ aspectRatio: "16 / 9" }}
-              >
-                <span className="font-body text-[10px] text-gray-400">
-                  Trigger visual goes here
-                </span>
-              </div>
-            </div>
+          {/* Step 3 */}
+          <div>
+            <p className="font-body text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">
+              Step 3
+            </p>
+            <p className="font-body font-semibold text-[16px] text-gray-900 mb-2">
+              Pops up at the right moment
+            </p>
+            <p className="font-body text-[13px] text-gray-600 leading-relaxed">
+              A few minutes before your meeting, āera triggers a breathing session — right
+              in your browser. No app to open. Just breathe.
+            </p>
           </div>
         </section>
 
