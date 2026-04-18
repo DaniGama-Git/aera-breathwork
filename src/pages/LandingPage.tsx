@@ -217,8 +217,8 @@ const LandingPage = () => {
         </section>
 
         {/* ——— HOW IT WORKS ——— */}
-        <section className="px-5 pb-10 bg-white">
-          <div className="bg-[#F5F5F7] rounded-[40px] p-6">
+        <section className="px-5 pt-2 pb-10 bg-[#F5F5F7]">
+          <div className="px-1">
             <p className="font-body text-[10px] uppercase tracking-widest text-gray-500 text-center mb-3">
               How it works
             </p>
