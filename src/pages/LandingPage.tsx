@@ -140,6 +140,42 @@ const LandingPage = () => {
           />
         </section>
 
+        {/* ——— THE APP — DEEP DIVE ——— */}
+        <section className="px-6 pt-12 pb-12 bg-white">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="block w-10 h-[2px] bg-gray-900" />
+            <span className="block w-10 h-[2px] bg-gray-300" />
+          </div>
+
+          <h2 className="font-body font-semibold text-[26px] text-gray-900 mb-1">
+            The App
+          </h2>
+          <p className="font-body font-semibold text-[13px] text-gray-700 mb-3">
+            Breathe wherever you are.
+          </p>
+
+          <p className="font-body text-[13px] text-gray-600 leading-relaxed mb-6">
+            Your full session library. Includes longer on-demand sessions across all four
+            categories. Built for the space between meetings and on-the-go.
+          </p>
+
+          <button
+            onClick={() => navigate("/auth")}
+            className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition mb-6"
+          >
+            Open App →
+          </button>
+
+          <div
+            className="w-full rounded-[20px] bg-[#F5F5F7] flex items-center justify-center"
+            style={{ aspectRatio: "4 / 3" }}
+          >
+            <span className="font-body text-[11px] text-gray-400">
+              Phone mockups go here
+            </span>
+          </div>
+        </section>
+
         {/* ——— HOW IT WORKS ——— */}
         <section className="px-5 pb-10 bg-white">
           <div className="bg-[#F5F5F7] rounded-[40px] p-6">
