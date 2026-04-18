@@ -4,6 +4,7 @@
  */
 
 import { useNavigate } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
 import aeraLogo from "@/assets/aera-logo.svg";
 import heroDunes from "@/assets/landing-hero-dunes.png";
 
@@ -38,6 +39,12 @@ const LandingPage = () => {
             >
               Breathe
             </button>
+
+            <ChevronDown
+              className="mt-4 text-white/70 animate-bounce"
+              size={22}
+              strokeWidth={1.5}
+            />
           </div>
         </section>
 
