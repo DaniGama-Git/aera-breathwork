@@ -4,6 +4,7 @@
  */
 
 import { useNavigate } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
 import aeraLogo from "@/assets/aera-logo.svg";
 import heroDunes from "@/assets/landing-hero-dunes.png";
 
