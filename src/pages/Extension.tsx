@@ -149,23 +149,24 @@ const Extension = () => {
 
           {/* Trigger keywords */}
           {keywords.length > 0 && (
-            <div className="rounded-[20px] bg-white border border-gray-200 p-4 mb-5">
+            <div className="rounded-[20px] p-4 mb-5" style={{ background: "#E5E5E5" }}>
               <div className="flex items-center justify-between mb-2">
-                <p className="font-body text-[10px] text-gray-500 tracking-widest uppercase">
+                <p className="font-body text-[10px] tracking-widest uppercase" style={{ color: "#1D1D1F" }}>
                   Your trigger words
                 </p>
                 <button
                   onClick={handleCopyKeywords}
-                  className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 transition font-body text-[11px]"
+                  className="flex items-center gap-1.5 hover:opacity-70 transition font-body text-[11px]"
+                  style={{ color: "#1D1D1F" }}
                 >
                   {copied ? <Check size={12} /> : <Copy size={12} />}
                   {copied ? "Copied" : "Copy"}
                 </button>
               </div>
-              <p className="text-gray-900 font-body font-semibold text-[14px] uppercase mb-2">
+              <p className="font-body font-semibold text-[14px] uppercase mb-2" style={{ color: "#1D1D1F" }}>
                 {keywords.join(", ")}
               </p>
-              <p className="text-gray-500 font-body text-[11px] leading-relaxed">
+              <p className="font-body text-[11px] leading-relaxed" style={{ color: "#1D1D1F" }}>
                 Paste these into the extension after connecting your calendar.
               </p>
             </div>
