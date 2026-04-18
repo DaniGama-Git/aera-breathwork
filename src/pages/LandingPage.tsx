@@ -41,67 +41,65 @@ const LandingPage = () => {
           </div>
         </section>
 
-        {/* ——— THE APP + THE MOMENT (combined card) ——— */}
-        <section className="px-5 pt-10 pb-6 bg-white">
-          <div className="bg-[#F5F5F7] rounded-[40px] p-6">
-            {/* The App */}
-            <h2 className="font-body font-semibold text-[24px] text-gray-900 mb-1">
-              The App
-            </h2>
-            <p className="font-body text-[13px] text-gray-600 mb-5">
-              Breathe wherever you are.
-            </p>
+        {/* ——— THE APP + THE MOMENT (shared grey background) ——— */}
+        <section className="px-5 pt-10 pb-10 bg-[#F5F5F7]">
+          {/* The App */}
+          <h2 className="font-body font-semibold text-[24px] text-gray-900 mb-1">
+            The App
+          </h2>
+          <p className="font-body text-[13px] text-gray-600 mb-5">
+            Breathe wherever you are.
+          </p>
 
-            <div
-              className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
-              style={{ aspectRatio: "4 / 3" }}
-            >
-              <span className="font-body text-[11px] text-gray-400">
-                App mockup goes here
-              </span>
-            </div>
-
-            <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-5">
-              Your full session library. Includes longer on-demand sessions across all four
-              categories. Built for the space between meetings and on-the-go.
-            </p>
-
-            <button
-              onClick={() => navigate("/auth")}
-              className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition mb-10"
-            >
-              Open App
-            </button>
-
-            {/* The Moment */}
-            <h2 className="font-body font-semibold text-[24px] text-gray-900 mb-1">
-              The Moment
-            </h2>
-            <p className="font-body text-[13px] text-gray-600 mb-5">
-              Breathe in the moments that matter most.
-            </p>
-
-            <div
-              className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
-              style={{ aspectRatio: "4 / 3" }}
-            >
-              <span className="font-body text-[11px] text-gray-400">
-                Extension mockup goes here
-              </span>
-            </div>
-
-            <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-5">
-              Reads your calendar. Pulls the right āera session. Pops up before your pitch,
-              your board meeting, or your creative block. You just breathe.
-            </p>
-
-            <button
-              onClick={() => navigate("/onboarding?flow=chrome")}
-              className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition"
-            >
-              Add to Chrome
-            </button>
+          <div
+            className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
+            style={{ aspectRatio: "4 / 3" }}
+          >
+            <span className="font-body text-[11px] text-gray-400">
+              App mockup goes here
+            </span>
           </div>
+
+          <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-5">
+            Your full session library. Includes longer on-demand sessions across all four
+            categories. Built for the space between meetings and on-the-go.
+          </p>
+
+          <button
+            onClick={() => navigate("/auth")}
+            className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition mb-10"
+          >
+            Open App
+          </button>
+
+          {/* The Moment */}
+          <h2 className="font-body font-semibold text-[24px] text-gray-900 mb-1">
+            The Moment
+          </h2>
+          <p className="font-body text-[13px] text-gray-600 mb-5">
+            Breathe in the moments that matter most.
+          </p>
+
+          <div
+            className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
+            style={{ aspectRatio: "4 / 3" }}
+          >
+            <span className="font-body text-[11px] text-gray-400">
+              Extension mockup goes here
+            </span>
+          </div>
+
+          <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-5">
+            Reads your calendar. Pulls the right āera session. Pops up before your pitch,
+            your board meeting, or your creative block. You just breathe.
+          </p>
+
+          <button
+            onClick={() => navigate("/onboarding?flow=chrome")}
+            className="px-6 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] hover:bg-black transition"
+          >
+            Add to Chrome
+          </button>
         </section>
 
         {/* ——— HOW IT WORKS ——— */}
