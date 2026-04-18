@@ -119,7 +119,7 @@ const Extension = () => {
         >
           Breathe. Recover. Perform.
           <br />
-          <span style={{ color: "#6A6A6B" }}>In under 5 minutes.</span>
+          <span style={{ color: "#1D1D1F" }}>In under 5 minutes.</span>
         </p>
       </header>
 
