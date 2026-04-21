@@ -276,9 +276,7 @@ const Extension = () => {
                 <div className="px-5 pb-5 space-y-6">
                   {INSTALL_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
-                      <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{step.title}</p>
-                      {step.substeps && (
-                        <ol className="list-decimal pl-5 space-y-1">
+                      <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{renderStepTitle(step.title)}</p>
                           {step.substeps.map((s, j) => (
                             <li key={j} className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{s}</li>
                           ))}
