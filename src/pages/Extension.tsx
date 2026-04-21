@@ -177,7 +177,7 @@ const Extension = () => {
             </div>
           )}
 
-          <header className="px-5 pt-6 pb-4 flex items-center justify-between border-b border-gray-100">
+          <header className="px-5 pt-6 pb-4 flex items-center justify-between bg-[#F5F5F7] border-b border-gray-100">
             <img src={areaLogo} alt="Aera" className="h-5 brightness-0" />
             <p
               className="font-body text-right"
@@ -348,7 +348,7 @@ const Extension = () => {
             )}
           </main>
 
-          <footer className="px-5 py-5 border-t border-gray-100 text-center">
+          <footer className="px-5 py-5 bg-[#F5F5F7] border-t border-gray-100 text-center">
             <p className="font-body text-[11px] text-gray-500">
               © 2026 āera. All rights reserved.
             </p>
@@ -559,7 +559,7 @@ const Extension = () => {
         </div>
       </main>
 
-      <footer className="px-10 py-5 border-t border-gray-100 text-center">
+      <footer className="px-10 py-5 bg-[#F5F5F7] border-t border-gray-100 text-center">
         <p className="font-body text-[12px] text-gray-500">
           © 2026 āera. All rights reserved.
         </p>
