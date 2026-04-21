@@ -244,6 +244,13 @@ const Extension = () => {
                   {INSTALL_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
                       <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{step.title}</p>
+                      {step.substeps && (
+                        <ol className="list-decimal pl-5 space-y-1">
+                          {step.substeps.map((s, j) => (
+                            <li key={j} className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{s}</li>
+                          ))}
+                        </ol>
+                      )}
                       {step.image ? (
                         <img
                           src={step.image}
@@ -459,6 +466,13 @@ const Extension = () => {
                 {INSTALL_GUIDE.map((step, i) => (
                   <div key={i} className="space-y-3">
                     <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
+                    {step.substeps && (
+                      <ol className="list-decimal pl-5 space-y-1">
+                        {step.substeps.map((s, j) => (
+                          <li key={j} className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{s}</li>
+                        ))}
+                      </ol>
+                    )}
                     {step.image ? (
                       <img
                         src={step.image}
