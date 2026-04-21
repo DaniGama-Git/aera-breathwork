@@ -204,7 +204,7 @@ const Extension = () => {
                 Breathwork prompts before your key meetings.
               </p>
 
-              <div className="w-full rounded-[20px] overflow-hidden bg-white border border-gray-200 mb-5">
+              <div className="w-full mb-5">
                 <img
                   src={mockupExtension}
                   alt="Aera extension preview"
