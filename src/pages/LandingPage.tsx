@@ -153,8 +153,8 @@ const LandingPage = () => {
               </div>
             </div>
 
-            <div className="flex justify-center mt-12">
-              <ChevronDown className="text-gray-400" size={24} strokeWidth={1.5} />
+            <div className="flex justify-center mt-8">
+              <ChevronDown className="text-gray-900" size={24} strokeWidth={1.5} />
             </div>
           </div>
         </section>
@@ -231,9 +231,9 @@ const LandingPage = () => {
                 />
               </div>
             </div>
-          </div>
-          <div className="flex justify-center mt-12">
-            <ChevronDown className="text-gray-400" size={24} strokeWidth={1.5} />
+            <div className="flex justify-center mt-10">
+              <ChevronDown className="text-gray-900" size={24} strokeWidth={1.5} />
+            </div>
           </div>
         </section>
         <section className="bg-white pb-12 md:pb-20">
