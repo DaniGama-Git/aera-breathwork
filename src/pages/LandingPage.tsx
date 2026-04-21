@@ -231,7 +231,7 @@ const LandingPage = () => {
                 />
               </div>
             </div>
-            <div className="flex justify-center mt-10">
+            <div className="rounded-[28px] bg-[#F5F5F7] flex justify-center py-6 mt-6">
               <ChevronDown className="text-gray-900" size={24} strokeWidth={1.5} />
             </div>
           </div>
