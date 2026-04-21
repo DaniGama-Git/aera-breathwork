@@ -327,12 +327,6 @@ const Extension = () => {
                       )}
                     </div>
                   ))}
-                  <button
-                    onClick={() => navigate("/calendar-setup")}
-                    className="font-body text-[13px] text-gray-900 underline underline-offset-4"
-                  >
-                    Open full calendar setup →
-                  </button>
                 </div>
               )}
             </div>
@@ -543,12 +537,6 @@ const Extension = () => {
                     </div>
                   ))}
                 </div>
-                <button
-                  onClick={() => navigate("/calendar-setup")}
-                  className="font-body text-[14px] text-gray-900 underline underline-offset-4"
-                >
-                  Open full calendar setup →
-                </button>
               </div>
             )}
           </div>
