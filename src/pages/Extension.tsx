@@ -280,7 +280,7 @@ const Extension = () => {
                       {step.substeps && (
                         <ol className="list-decimal pl-5 space-y-1">
                           {step.substeps.map((s, j) => (
-                            <li key={j} className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{s}</li>
+                            <li key={j} className="font-body text-[13px] text-gray-900 leading-snug">{s}</li>
                           ))}
                         </ol>
                       )}
@@ -494,7 +494,7 @@ const Extension = () => {
                     {step.substeps && (
                       <ol className="list-decimal pl-5 space-y-1">
                         {step.substeps.map((s, j) => (
-                          <li key={j} className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{s}</li>
+                          <li key={j} className="font-body text-[14px] text-gray-900 leading-snug">{s}</li>
                         ))}
                       </ol>
                     )}
