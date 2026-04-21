@@ -220,7 +220,7 @@ const Onboarding = () => {
           </main>
 
           {/* Bottom action bar */}
-          <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-5 py-4 flex items-center justify-between">
+          <div className="absolute bottom-0 left-0 right-0 bg-[#F5F5F7] border-t border-gray-100 px-5 py-4 flex items-center justify-between">
             {currentIndex > 0 ? (
               <button
                 onClick={goBack}
@@ -320,7 +320,7 @@ const Onboarding = () => {
       </main>
 
       {/* Bottom action bar — full width */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-10 py-5 flex items-center justify-between">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#F5F5F7] border-t border-gray-100 px-10 py-5 flex items-center justify-between">
         {currentIndex > 0 ? (
           <button
             onClick={goBack}
