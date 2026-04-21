@@ -1,51 +1,60 @@
 
 
-## Landing Page — Desktop Overhaul
+## Onboarding & Extension — Desktop Layout (Mobile Preserved)
 
-Implementing the full desktop redesign of `src/pages/LandingPage.tsx` per the Figma. Hero stays as-is (already responsive). Everything below becomes a desktop layout, max-width **1280px**, centered, generous padding. Mobile stacks gracefully.
+Add a desktop layout for `/onboarding` and `/extension` while keeping the existing mobile design exactly as-is at small viewports.
 
-### Sections (top → bottom)
+### Approach: viewport-based switching
 
-**1. The App + The Moment (combined row)** — light grey `#F5F5F7` background
-- Two columns side-by-side on desktop (`md:grid-cols-2`), stacked on mobile.
-- Each column: centered title (32–40px), subtitle, mockup image, description (~340px max), CTA button(s).
-- Left: title "The App" + `mockup-app-screens.svg` + "Open App →" CTA → `/auth`.
-- Right: title "The Moment" + `mockup-extension-breathe.svg` + "Add to Chrome — It's free" + "▶ Watch Demo" CTAs, plus the trust strip ("No credit card · Works with Google & Outlook · 2 min setup").
-- Centered chevron at the bottom.
+Use `useIsMobile()` (existing hook) inside each page to render either the current mobile layout or a new desktop layout. This keeps mobile pixel-perfect and avoids retrofitting `md:` classes everywhere.
 
-**2. The App — deep dive** — light grey card with rounded corners, contained inside max-w-1280px with horizontal margin
-- Two-column grid: left = text block (small two-bar tab indicator, "The App" title, subtitle, body, "Open App →" CTA), right = `mockup-app-screens.svg` enlarged.
+```tsx
+const isMobile = useIsMobile(); // breakpoint 768px
+return isMobile ? <MobileLayout /> : <DesktopLayout />;
+```
 
-**3. The Moment — deep dive** — same card pattern as above
-- Left text (tab indicator reversed, "The Moment", subtitle, body, "Add to Chrome →" CTA), right = `mockup-extension-breathe.svg`.
+### 1. Routing — `src/App.tsx`
+- `/onboarding` and `/extension`: remove `MobileFrame` wrapper so desktop can use full viewport width. Mobile layout inside the page will still render in a centered 430px container manually so it looks identical to today.
+- All other routes keep `MobileFrame`.
 
-**4. How it works — Breathe. Recover. Perform.** — light grey card
-- Header centered: "HOW IT WORKS" eyebrow, big title "Breathe. Recover. Perform.", subtitle "Three simple steps to peak performance every single day."
-- 3 steps in a 2-col layout, alternating text/image:
-  - **Step 1** — text left ("Reads your calendar"), illustration right (calendar mockup with "āera syncing" pill — placeholder for now until provided).
-  - **Step 2** — illustration left (`Frame_38058.png` "Focus breath ready" card), text right ("Matches events to breathwork").
-  - **Step 3** — text left ("Pops up at the right moment"), illustration right (`Frame_38064.png` "Reset complete" card — will swap once the transparent version arrives).
-- Footer line: "No setup. No friction. Just better performance, one breath at a time."
+### 2. `src/pages/Onboarding.tsx`
 
-**5. Footer** — white, centered "© 2026 āera. All rights reserved."
+**Mobile (<768px)**: render the **exact current JSX** unchanged, wrapped in a `max-w-[430px] mx-auto` container to mimic `MobileFrame`.
 
-### Asset handling
-- Copy `Frame_38058.png` → `src/assets/howitworks-step2-focus-ready.png`.
-- Copy `Frame_38064.png` → `src/assets/howitworks-step3-reset-complete.png` (placeholder; will replace when transparent version provided).
-- Step 1 calendar mockup: build inline with HTML/CSS (browser-chrome card with three event rows + side "āera syncing" pill) since no asset was supplied yet — easy to swap later.
-- Reuse existing `mockup-app-screens.svg` and `mockup-extension-breathe.svg` for App/Moment sections.
+**Desktop (≥768px)** — new layout per Figma:
+- Full-width header strip `bg-[#F5F5F7] px-10 py-6`: logo left (h-6, black), tagline right (`Breathe. Recover. Perform. / In under 5 minutes.`, semibold black both lines).
+- Body: white, `max-w-[1280px] mx-auto px-10 flex-1`.
+- Large grey card `bg-[#F5F5F7] rounded-[40px] p-16 mt-20`:
+  - Top row: question (semibold ~22px) left, `Step X/Y · Skip` right (small grey).
+  - Hint paragraph below question.
+  - Step content: `MultiSelectStep` / `KeywordStep` rendered larger (parent gives more width; pills naturally expand).
+- Bottom action bar pinned: full-width `border-t px-10 py-5 flex justify-between`. Left = outlined `Back` pill (only after step 1). Right = black `Continue →` pill.
 
-### Technical
-- Single file edit: `src/pages/LandingPage.tsx`. Hero unchanged.
-- Wrapper: `max-w-[1280px] mx-auto px-6 md:px-10`.
-- Cards: `rounded-[28px] bg-[#F5F5F7] p-8 md:p-16`.
-- Section vertical rhythm: `py-12 md:py-20`, gaps inside cards `gap-10 md:gap-16`.
-- Typography per existing brand: Neue Haas Grotesk (already global), titles `font-semibold`, body `text-gray-600/700`, eyebrow `uppercase tracking-widest text-[10px]`.
-- Responsive: mobile = single column stack with smaller type (24–28px titles), desktop = grid layouts at `md:` breakpoint.
-- All CTAs preserve existing routes (`/auth`, `/onboarding?flow=chrome`, `/wave`).
+Logic, state, save flow, step order — unchanged.
+
+### 3. `src/pages/Extension.tsx`
+
+**Mobile (<768px)**: render existing JSX unchanged inside `max-w-[430px] mx-auto`.
+
+**Desktop (≥768px)** — new layout per `Manual_Add_extension.png`:
+- Same header strip as onboarding.
+- `max-w-[1280px] mx-auto px-10 py-10 space-y-6`.
+- Hero card `bg-[#F5F5F7] rounded-[40px] p-16` with `grid md:grid-cols-2 gap-12 items-center`:
+  - **Left**: pill badge (`Performance Breathwork · Built for work`), title `Chrome Extension` (~52px bold), subtitle, "Trigger words" subcard (`bg-[#E5E5E5] rounded-[20px] p-6`) with label + copy button + uppercase keywords + helper line, full-width black `Download Extension` pill (with download icon), helper text below.
+  - **Right**: existing `mockup-extension-breathe.svg` (or current mockup) `w-full max-h-[420px] object-contain`, plus numbered 1–3 install steps below (14px).
+- Two existing accordions (`How to install (Manually)`, `Calendar Settings`) kept, full-width within container, padding `px-8 py-5`, font 15px.
+- Footer strip: `© 2026 āera. All rights reserved.` 12px grey, centered, border-top.
+
+All download/keyword/copy logic and navigation unchanged.
+
+### 4. Out of scope
+- No copy or option changes.
+- No data, auth, or save logic changes.
+- Mobile layouts untouched.
 - No new dependencies.
 
-### Out of scope for this turn
-- Final Step 3 illustration (waiting on transparent version — will swap the asset filename only).
-- Step 1 illustration if a final SVG is provided later (will swap the inline mockup for the asset).
+### Technical notes
+- `useIsMobile` already exists at `src/hooks/use-mobile.tsx` (768px breakpoint).
+- Tailwind only; no `md:` rewrites — desktop is its own JSX tree, mobile is the current JSX tree.
+- `MultiSelectStep` and `KeywordStep` need no API changes; the desktop card's larger width naturally expands them.
 
