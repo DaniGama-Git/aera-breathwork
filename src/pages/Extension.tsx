@@ -227,7 +227,8 @@ const Extension = () => {
                 onClick={() => toggleSection("install")}
                 className="w-full flex items-center justify-between px-5 py-4 text-left"
               >
-                <span className="font-body font-semibold text-[18px] text-gray-900">  
+                <span className="font-body font-semibold text-[18px] text-gray-900">
+                  How to install extension (Manually)
                 </span>
                 <ChevronDown
                   size={18}
