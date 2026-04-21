@@ -252,46 +252,13 @@ const LandingPage = () => {
                     knows when you'll need a quick reset.
                   </p>
                 </div>
-                {/* Inline calendar mockup */}
                 <div className="flex items-center justify-center">
-                  <div className="relative w-full max-w-[420px]">
-                    <div className="rounded-2xl bg-white shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] overflow-hidden border border-gray-100">
-                      {/* browser chrome */}
-                      <div className="flex items-center gap-1.5 px-4 py-3 border-b border-gray-100">
-                        <span className="block w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
-                        <span className="block w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
-                        <span className="block w-2.5 h-2.5 rounded-full bg-[#28C840]" />
-                        <span className="ml-3 font-body text-[10px] text-gray-400">
-                          calendar.google.com
-                        </span>
-                      </div>
-                      {/* events */}
-                      <div className="p-4 space-y-2">
-                        {[
-                          { t: "9:00", l: "Board meeting", c: "bg-[#E8F0FE] text-[#1A73E8]" },
-                          { t: "11:30", l: "Pitch prep", c: "bg-[#FCE8E6] text-[#C5221F]" },
-                          { t: "14:00", l: "Deep work", c: "bg-[#E6F4EA] text-[#137333]" },
-                        ].map((e) => (
-                          <div
-                            key={e.l}
-                            className={`flex items-center gap-3 rounded-md px-3 py-2 ${e.c}`}
-                          >
-                            <span className="font-body text-[11px] font-semibold w-10">{e.t}</span>
-                            <span className="font-body text-[12px]">{e.l}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    {/* syncing pill */}
-                    <div className="absolute -right-2 -bottom-3 md:-right-4 md:-bottom-4 bg-white rounded-full shadow-md px-3 py-1.5 flex items-center gap-2 border border-gray-100">
-                      <span className="block w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                      <span className="font-body text-[10px] md:text-[11px] text-gray-700">
-                        āera syncing
-                      </span>
-                    </div>
-                  </div>
+                  <img
+                    src={step1Img}
+                    alt="āera syncing with your calendar"
+                    className="max-h-[280px] md:max-h-[340px] w-auto object-contain"
+                  />
                 </div>
-              </div>
 
               {/* Step 2 — image left, text right */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center mb-16 md:mb-24">
