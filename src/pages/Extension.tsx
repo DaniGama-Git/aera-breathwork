@@ -52,9 +52,41 @@ const Extension = () => {
   const isChromeFlow = searchParams.get("flow") === "chrome" || sessionStorage.getItem("aera_flow") === "chrome";
   const [keywords, setKeywords] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
+  const [chromeUrlCopied, setChromeUrlCopied] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [openSection, setOpenSection] = useState<"install" | "calendar" | null>(null);
+
+  const handleCopyChromeUrl = async () => {
+    try {
+      await navigator.clipboard.writeText("chrome://extensions");
+      setChromeUrlCopied(true);
+      setTimeout(() => setChromeUrlCopied(false), 1500);
+    } catch {}
+  };
+
+  const renderStepTitle = (title: string) => {
+    const target = "chrome://extensions";
+    if (!title.includes(target)) return title;
+    const [before, after] = title.split(target);
+    return (
+      <>
+        {before}
+        <button
+          type="button"
+          onClick={handleCopyChromeUrl}
+          className="underline underline-offset-2 decoration-gray-400 hover:decoration-gray-900 transition-colors"
+          title="Chrome blocks direct links to chrome:// URLs. Click to copy."
+        >
+          {target}
+        </button>
+        {chromeUrlCopied && (
+          <span className="ml-1.5 text-[11px] font-normal text-gray-500">Copied!</span>
+        )}
+        {after}
+      </>
+    );
+  };
 
   useEffect(() => {
     const pendingData = sessionStorage.getItem("aera_onboarding_data");
