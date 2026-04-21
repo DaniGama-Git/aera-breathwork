@@ -24,16 +24,20 @@ const INSTALL_STEPS = [
   "Open the extension & connect your calendar",
 ];
 
-const INSTALL_GUIDE: { title: string; image: string | null }[] = [
+const INSTALL_GUIDE: { title: string; substeps?: string[]; image: string | null }[] = [
   { title: "Navigate to: chrome://extensions", image: installNavigate },
   { title: "Developer Mode: Toggle On", image: installDevMode },
-  { title: "Load Unpacked: Unzip & select the extension folder", image: installLoadUnpacked },
+  {
+    title: "Load Unpacked:",
+    substeps: ["Unzip the chrome extension file", "Load unpacked"],
+    image: installLoadUnpacked,
+  },
   { title: "Added to extensions:", image: installAdded },
   { title: "Access āera via extensions:", image: installAccess },
   { title: "āera extension settings panel:", image: installSettingsPanel },
 ];
 
-const CALENDAR_GUIDE: { title: string; image: string | null }[] = [
+const CALENDAR_GUIDE: { title: string; substeps?: string[]; image: string | null }[] = [
   { title: "Step 1: Open Calendar Settings", image: calendarSettingsImg },
   { title: "Step 2: Make calendar available to public", image: calendarAccessPermissions },
   { title: "Step 3: Copy the public iCal link", image: calendarIcalUrl },
@@ -240,6 +244,13 @@ const Extension = () => {
                   {INSTALL_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
                       <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{step.title}</p>
+                      {step.substeps && (
+                        <ol className="list-decimal pl-5 space-y-1">
+                          {step.substeps.map((s, j) => (
+                            <li key={j} className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{s}</li>
+                          ))}
+                        </ol>
+                      )}
                       {step.image ? (
                         <img
                           src={step.image}
@@ -455,6 +466,13 @@ const Extension = () => {
                 {INSTALL_GUIDE.map((step, i) => (
                   <div key={i} className="space-y-3">
                     <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
+                    {step.substeps && (
+                      <ol className="list-decimal pl-5 space-y-1">
+                        {step.substeps.map((s, j) => (
+                          <li key={j} className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{s}</li>
+                        ))}
+                      </ol>
+                    )}
                     {step.image ? (
                       <img
                         src={step.image}
