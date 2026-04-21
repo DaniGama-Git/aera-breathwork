@@ -23,60 +23,20 @@ const INSTALL_STEPS = [
   "Open the extension & connect your calendar",
 ];
 
-const INSTALL_GUIDE: { title: string; desc: string; image: string | null }[] = [
-  {
-    title: "Navigate to chrome://extensions",
-    desc: "Open a new tab and paste chrome://extensions into the address bar.",
-    image: installNavigate,
-  },
-  {
-    title: "Enable Developer mode",
-    desc: "Toggle Developer mode in the top-right corner of the extensions page.",
-    image: installDevMode,
-  },
-  {
-    title: "Click Load unpacked",
-    desc: "Select the unzipped āera extension folder you just downloaded.",
-    image: installLoadUnpacked,
-  },
-  {
-    title: "Extension added",
-    desc: "āera now appears in your installed extensions list.",
-    image: installAdded,
-  },
-  {
-    title: "Access āera from your toolbar",
-    desc: "Pin āera to your Chrome toolbar for quick access.",
-    image: installAccess,
-  },
-  {
-    title: "Open the settings panel",
-    desc: "Click the āera icon to open the extension settings panel.",
-    image: installSettingsPanel,
-  },
+const INSTALL_GUIDE: { title: string; image: string | null }[] = [
+  { title: "Navigate to: chrome://extensions", image: installNavigate },
+  { title: "Developer Mode: Toggle On", image: installDevMode },
+  { title: "Load Unpacked: Unzip & select the extension folder", image: installLoadUnpacked },
+  { title: "Extension added to Chrome", image: installAdded },
+  { title: "Access āera from your toolbar", image: installAccess },
+  { title: "Open the āera settings panel", image: installSettingsPanel },
 ];
 
-const CALENDAR_GUIDE: { title: string; desc: string; image: string | null }[] = [
-  {
-    title: "Open Google Calendar settings",
-    desc: "Go to calendar.google.com and open Settings from the gear icon.",
-    image: null,
-  },
-  {
-    title: "Select your calendar",
-    desc: "Under \"Settings for my calendars\", choose the calendar you want to connect.",
-    image: null,
-  },
-  {
-    title: "Copy the secret iCal address",
-    desc: "Scroll to \"Integrate calendar\" and copy the Secret address in iCal format.",
-    image: calendarIcalUrl,
-  },
-  {
-    title: "Paste into āera settings",
-    desc: "Open the āera extension settings and paste your iCal URL into the calendar field.",
-    image: calendarSettingsImg,
-  },
+const CALENDAR_GUIDE: { title: string; image: string | null }[] = [
+  { title: "Open Google Calendar settings", image: null },
+  { title: "Select your calendar", image: null },
+  { title: "Copy the secret iCal address", image: calendarIcalUrl },
+  { title: "Paste into āera settings", image: calendarSettingsImg },
 ];
 
 const Extension = () => {
@@ -278,19 +238,13 @@ const Extension = () => {
               {openSection === "install" && (
                 <div className="px-5 pb-5 space-y-6">
                   {INSTALL_GUIDE.map((step, i) => (
-                    <div key={i} className="space-y-2">
-                      <div className="flex gap-3">
-                        <span className="font-body font-semibold text-[13px] text-gray-900 shrink-0">{i + 1}.</span>
-                        <div className="flex-1">
-                          <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{step.title}</p>
-                          <p className="font-body text-[12px] text-gray-600 leading-relaxed mt-1">{step.desc}</p>
-                        </div>
-                      </div>
+                    <div key={i} className="space-y-3">
+                      <p className="font-body font-semibold text-[15px] text-gray-900 leading-snug">{step.title}</p>
                       {step.image ? (
                         <img
                           src={step.image}
                           alt={step.title}
-                          className="w-full rounded-[12px] border border-gray-200 bg-white"
+                          className="w-full rounded-[12px]"
                         />
                       ) : (
                         <div className="w-full aspect-[16/10] rounded-[12px] border border-dashed border-gray-300 bg-white flex items-center justify-center">
@@ -322,19 +276,13 @@ const Extension = () => {
                     Connect your Google Calendar so āera can detect your key meetings and trigger sessions automatically.
                   </p>
                   {CALENDAR_GUIDE.map((step, i) => (
-                    <div key={i} className="space-y-2">
-                      <div className="flex gap-3">
-                        <span className="font-body font-semibold text-[13px] text-gray-900 shrink-0">{i + 1}.</span>
-                        <div className="flex-1">
-                          <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{step.title}</p>
-                          <p className="font-body text-[12px] text-gray-600 leading-relaxed mt-1">{step.desc}</p>
-                        </div>
-                      </div>
+                    <div key={i} className="space-y-3">
+                      <p className="font-body font-semibold text-[15px] text-gray-900 leading-snug">{step.title}</p>
                       {step.image ? (
                         <img
                           src={step.image}
                           alt={step.title}
-                          className="w-full rounded-[12px] border border-gray-200 bg-white"
+                          className="w-full rounded-[12px]"
                         />
                       ) : (
                         <div className="w-full aspect-[16/10] rounded-[12px] border border-dashed border-gray-300 bg-white flex items-center justify-center">
@@ -503,21 +451,15 @@ const Extension = () => {
               />
             </button>
             {openSection === "install" && (
-              <div className="px-8 pb-8 grid grid-cols-2 gap-x-10 gap-y-8">
+              <div className="px-8 pb-8 space-y-8">
                 {INSTALL_GUIDE.map((step, i) => (
                   <div key={i} className="space-y-3">
-                    <div className="flex gap-3">
-                      <span className="font-body font-semibold text-[14px] text-gray-900 shrink-0">{i + 1}.</span>
-                      <div className="flex-1">
-                        <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
-                        <p className="font-body text-[13px] text-gray-600 leading-relaxed mt-1">{step.desc}</p>
-                      </div>
-                    </div>
+                    <p className="font-body font-semibold text-[16px] text-gray-900 leading-snug">{step.title}</p>
                     {step.image ? (
                       <img
                         src={step.image}
                         alt={step.title}
-                        className="w-full rounded-[14px] border border-gray-200 bg-white"
+                        className="w-full rounded-[14px]"
                       />
                     ) : (
                       <div className="w-full aspect-[16/10] rounded-[14px] border border-dashed border-gray-300 bg-white flex items-center justify-center">
@@ -548,21 +490,15 @@ const Extension = () => {
                 <p className="font-body text-[14px] text-gray-700 leading-relaxed">
                   Connect your Google Calendar so āera can detect your key meetings and trigger sessions automatically.
                 </p>
-                <div className="grid grid-cols-2 gap-x-10 gap-y-8">
+                <div className="space-y-8">
                   {CALENDAR_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
-                      <div className="flex gap-3">
-                        <span className="font-body font-semibold text-[14px] text-gray-900 shrink-0">{i + 1}.</span>
-                        <div className="flex-1">
-                          <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
-                          <p className="font-body text-[13px] text-gray-600 leading-relaxed mt-1">{step.desc}</p>
-                        </div>
-                      </div>
+                      <p className="font-body font-semibold text-[16px] text-gray-900 leading-snug">{step.title}</p>
                       {step.image ? (
                         <img
                           src={step.image}
                           alt={step.title}
-                          className="w-full rounded-[14px] border border-gray-200 bg-white"
+                          className="w-full rounded-[14px]"
                         />
                       ) : (
                         <div className="w-full aspect-[16/10] rounded-[14px] border border-dashed border-gray-300 bg-white flex items-center justify-center">
