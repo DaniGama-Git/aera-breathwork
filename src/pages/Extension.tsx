@@ -490,7 +490,7 @@ const Extension = () => {
               <div className="px-8 pb-8 space-y-8">
                 {INSTALL_GUIDE.map((step, i) => (
                   <div key={i} className="space-y-3">
-                    <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
+                    <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{renderStepTitle(step.title)}</p>
                     {step.substeps && (
                       <ol className="list-decimal pl-5 space-y-1">
                         {step.substeps.map((s, j) => (
@@ -532,7 +532,7 @@ const Extension = () => {
                 <div className="space-y-8">
                   {CALENDAR_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
-                      <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
+                      <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{renderStepTitle(step.title)}</p>
                       {step.image && (
                         <img
                           src={step.image}
