@@ -451,21 +451,15 @@ const Extension = () => {
               />
             </button>
             {openSection === "install" && (
-              <div className="px-8 pb-8 grid grid-cols-2 gap-x-10 gap-y-8">
+              <div className="px-8 pb-8 space-y-8">
                 {INSTALL_GUIDE.map((step, i) => (
                   <div key={i} className="space-y-3">
-                    <div className="flex gap-3">
-                      <span className="font-body font-semibold text-[14px] text-gray-900 shrink-0">{i + 1}.</span>
-                      <div className="flex-1">
-                        <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
-                        <p className="font-body text-[13px] text-gray-600 leading-relaxed mt-1">{step.desc}</p>
-                      </div>
-                    </div>
+                    <p className="font-body font-semibold text-[16px] text-gray-900 leading-snug">{step.title}</p>
                     {step.image ? (
                       <img
                         src={step.image}
                         alt={step.title}
-                        className="w-full rounded-[14px] border border-gray-200 bg-white"
+                        className="w-full rounded-[14px]"
                       />
                     ) : (
                       <div className="w-full aspect-[16/10] rounded-[14px] border border-dashed border-gray-300 bg-white flex items-center justify-center">
@@ -496,21 +490,15 @@ const Extension = () => {
                 <p className="font-body text-[14px] text-gray-700 leading-relaxed">
                   Connect your Google Calendar so āera can detect your key meetings and trigger sessions automatically.
                 </p>
-                <div className="grid grid-cols-2 gap-x-10 gap-y-8">
+                <div className="space-y-8">
                   {CALENDAR_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
-                      <div className="flex gap-3">
-                        <span className="font-body font-semibold text-[14px] text-gray-900 shrink-0">{i + 1}.</span>
-                        <div className="flex-1">
-                          <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
-                          <p className="font-body text-[13px] text-gray-600 leading-relaxed mt-1">{step.desc}</p>
-                        </div>
-                      </div>
+                      <p className="font-body font-semibold text-[16px] text-gray-900 leading-snug">{step.title}</p>
                       {step.image ? (
                         <img
                           src={step.image}
                           alt={step.title}
-                          className="w-full rounded-[14px] border border-gray-200 bg-white"
+                          className="w-full rounded-[14px]"
                         />
                       ) : (
                         <div className="w-full aspect-[16/10] rounded-[14px] border border-dashed border-gray-300 bg-white flex items-center justify-center">
