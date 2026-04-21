@@ -466,16 +466,12 @@ const Extension = () => {
                         ))}
                       </ol>
                     )}
-                    {step.image ? (
+                    {step.image && (
                       <img
                         src={step.image}
                         alt={step.title}
                         className="w-full rounded-[14px]"
                       />
-                    ) : (
-                      <div className="w-full aspect-[16/10] rounded-[14px] border border-dashed border-gray-300 bg-white flex items-center justify-center">
-                        <span className="font-body text-[12px] text-gray-400">Image coming soon</span>
-                      </div>
                     )}
                   </div>
                 ))}
@@ -505,16 +501,12 @@ const Extension = () => {
                   {CALENDAR_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
                       <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
-                      {step.image ? (
+                      {step.image && (
                         <img
                           src={step.image}
                           alt={step.title}
                           className="w-full rounded-[14px]"
                         />
-                      ) : (
-                        <div className="w-full aspect-[16/10] rounded-[14px] border border-dashed border-gray-300 bg-white flex items-center justify-center">
-                          <span className="font-body text-[12px] text-gray-400">Image coming soon</span>
-                        </div>
                       )}
                     </div>
                   ))}
