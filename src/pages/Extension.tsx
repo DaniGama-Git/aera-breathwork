@@ -14,6 +14,7 @@ import installLoadUnpacked from "@/assets/install-3-load-unpacked.png";
 import installAdded from "@/assets/install-4-added-to-ext.png";
 import installAccess from "@/assets/install-5-access-aera.png";
 import installSettingsPanel from "@/assets/install-6-settings-panel.png";
+import calendarAccessPermissions from "@/assets/calendar-2-access-permissions.png";
 import calendarIcalUrl from "@/assets/calendar-3-ical-url.png";
 import calendarSettingsImg from "@/assets/calendar-4-settings.png";
 
@@ -33,9 +34,9 @@ const INSTALL_GUIDE: { title: string; image: string | null }[] = [
 ];
 
 const CALENDAR_GUIDE: { title: string; image: string | null }[] = [
-  { title: "Calendar Settings:", image: calendarSettingsImg },
-  { title: "Link Your Calendar — Step 1 & 2: Navigate to calendar & make it public", image: null },
-  { title: "Step 3: Navigate to public iCal link", image: calendarIcalUrl },
+  { title: "Step 1: Open Calendar Settings", image: calendarSettingsImg },
+  { title: "Step 2: Make calendar available to public", image: calendarAccessPermissions },
+  { title: "Step 3: Copy the public iCal link", image: calendarIcalUrl },
   { title: "Step 4: Add to āera settings panel & save", image: null },
 ];
 
