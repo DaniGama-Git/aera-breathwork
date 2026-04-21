@@ -8,8 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import aeraLogo from "@/assets/aera-logo.svg";
 import heroDunes from "@/assets/landing-hero-dunes.png";
-import mockupApp from "@/assets/mockup-app-screens.svg";
+import mockupApp from "@/assets/landing-app-mockup.png";
 import mockupExtension from "@/assets/mockup-extension-breathe.svg";
+import step1Img from "@/assets/howitworks-step1-calendar.png";
 import step2Img from "@/assets/howitworks-step2-focus-ready.png";
 import step3Img from "@/assets/howitworks-step3-reset-complete.png";
 
