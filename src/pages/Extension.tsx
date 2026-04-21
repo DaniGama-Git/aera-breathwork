@@ -37,7 +37,6 @@ const CALENDAR_GUIDE: { title: string; image: string | null }[] = [
   { title: "Step 1: Open Calendar Settings", image: calendarSettingsImg },
   { title: "Step 2: Make calendar available to public", image: calendarAccessPermissions },
   { title: "Step 3: Copy the public iCal link", image: calendarIcalUrl },
-  { title: "Step 4: Add to āera settings panel & save", image: null },
 ];
 
 const Extension = () => {
