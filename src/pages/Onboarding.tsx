@@ -149,15 +149,15 @@ const Onboarding = () => {
       <div className="w-full min-h-screen bg-white flex justify-center">
         <div className="relative w-full max-w-[430px] min-h-screen flex flex-col bg-white">
           {/* Header */}
-          <header className="px-5 pt-6 pb-4 flex items-center justify-between border-b border-gray-100">
+          <header className="bg-[#F5F5F7] px-5 pt-6 pb-4 flex items-center justify-between">
             <img src={areaLogo} alt="Aera" className="h-5 brightness-0" />
             <p
               className="font-body text-right"
-              style={{ fontWeight: 600, fontSize: "18px", lineHeight: "24px", color: "#1D1D1F" }}
+              style={{ fontWeight: 600, fontSize: "16px", lineHeight: "22px", color: "#1D1D1F" }}
             >
               Breathe. Recover. Perform.
               <br />
-              <span style={{ color: "#6A6A6B" }}>In under 5 minutes.</span>
+              <span style={{ color: "#1D1D1F" }}>In under 5 minutes.</span>
             </p>
           </header>
 
