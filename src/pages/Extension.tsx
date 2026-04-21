@@ -27,16 +27,16 @@ const INSTALL_GUIDE: { title: string; image: string | null }[] = [
   { title: "Navigate to: chrome://extensions", image: installNavigate },
   { title: "Developer Mode: Toggle On", image: installDevMode },
   { title: "Load Unpacked: Unzip & select the extension folder", image: installLoadUnpacked },
-  { title: "Extension added to Chrome", image: installAdded },
-  { title: "Access āera from your toolbar", image: installAccess },
-  { title: "Open the āera settings panel", image: installSettingsPanel },
+  { title: "Added to extensions:", image: installAdded },
+  { title: "Access āera via extensions:", image: installAccess },
+  { title: "āera extension settings panel:", image: installSettingsPanel },
 ];
 
 const CALENDAR_GUIDE: { title: string; image: string | null }[] = [
-  { title: "Open Google Calendar settings", image: null },
-  { title: "Select your calendar", image: null },
-  { title: "Copy the secret iCal address", image: calendarIcalUrl },
-  { title: "Paste into āera settings", image: calendarSettingsImg },
+  { title: "Calendar Settings:", image: calendarSettingsImg },
+  { title: "Link Your Calendar — Step 1 & 2: Navigate to calendar & make it public", image: null },
+  { title: "Step 3: Navigate to public iCal link", image: calendarIcalUrl },
+  { title: "Step 4: Add to āera settings panel & save", image: null },
 ];
 
 const Extension = () => {
@@ -227,7 +227,7 @@ const Extension = () => {
                 onClick={() => toggleSection("install")}
                 className="w-full flex items-center justify-between px-5 py-4 text-left"
               >
-                <span className="font-body font-semibold text-[14px] text-gray-900">
+                <span className="font-body font-semibold text-[18px] text-gray-900">
                   How to install extension (Manually)
                 </span>
                 <ChevronDown
@@ -239,7 +239,7 @@ const Extension = () => {
                 <div className="px-5 pb-5 space-y-6">
                   {INSTALL_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
-                      <p className="font-body font-semibold text-[15px] text-gray-900 leading-snug">{step.title}</p>
+                      <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{step.title}</p>
                       {step.image ? (
                         <img
                           src={step.image}
@@ -262,7 +262,7 @@ const Extension = () => {
                 onClick={() => toggleSection("calendar")}
                 className="w-full flex items-center justify-between px-5 py-4 text-left"
               >
-                <span className="font-body font-semibold text-[14px] text-gray-900">
+                <span className="font-body font-semibold text-[18px] text-gray-900">
                   Calendar Settings
                 </span>
                 <ChevronDown
@@ -277,7 +277,7 @@ const Extension = () => {
                   </p>
                   {CALENDAR_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
-                      <p className="font-body font-semibold text-[15px] text-gray-900 leading-snug">{step.title}</p>
+                      <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{step.title}</p>
                       {step.image ? (
                         <img
                           src={step.image}
@@ -442,7 +442,7 @@ const Extension = () => {
               onClick={() => toggleSection("install")}
               className="w-full flex items-center justify-between px-8 py-5 text-left"
             >
-              <span className="font-body font-semibold text-[15px] text-gray-900">
+              <span className="font-body font-semibold text-[20px] text-gray-900">
                 How to install extension (Manually)
               </span>
               <ChevronDown
@@ -454,7 +454,7 @@ const Extension = () => {
               <div className="px-8 pb-8 space-y-8">
                 {INSTALL_GUIDE.map((step, i) => (
                   <div key={i} className="space-y-3">
-                    <p className="font-body font-semibold text-[16px] text-gray-900 leading-snug">{step.title}</p>
+                    <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
                     {step.image ? (
                       <img
                         src={step.image}
@@ -477,7 +477,7 @@ const Extension = () => {
               onClick={() => toggleSection("calendar")}
               className="w-full flex items-center justify-between px-8 py-5 text-left"
             >
-              <span className="font-body font-semibold text-[15px] text-gray-900">
+              <span className="font-body font-semibold text-[20px] text-gray-900">
                 Calendar Settings
               </span>
               <ChevronDown
@@ -493,7 +493,7 @@ const Extension = () => {
                 <div className="space-y-8">
                   {CALENDAR_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
-                      <p className="font-body font-semibold text-[16px] text-gray-900 leading-snug">{step.title}</p>
+                      <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
                       {step.image ? (
                         <img
                           src={step.image}
