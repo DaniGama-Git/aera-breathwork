@@ -27,16 +27,16 @@ const INSTALL_GUIDE: { title: string; image: string | null }[] = [
   { title: "Navigate to: chrome://extensions", image: installNavigate },
   { title: "Developer Mode: Toggle On", image: installDevMode },
   { title: "Load Unpacked: Unzip & select the extension folder", image: installLoadUnpacked },
-  { title: "Extension added to Chrome", image: installAdded },
-  { title: "Access āera from your toolbar", image: installAccess },
-  { title: "Open the āera settings panel", image: installSettingsPanel },
+  { title: "Added to extensions:", image: installAdded },
+  { title: "Access āera via extensions:", image: installAccess },
+  { title: "āera extension settings panel:", image: installSettingsPanel },
 ];
 
 const CALENDAR_GUIDE: { title: string; image: string | null }[] = [
-  { title: "Open Google Calendar settings", image: null },
-  { title: "Select your calendar", image: null },
-  { title: "Copy the secret iCal address", image: calendarIcalUrl },
-  { title: "Paste into āera settings", image: calendarSettingsImg },
+  { title: "Calendar Settings:", image: calendarSettingsImg },
+  { title: "Link Your Calendar — Step 1 & 2: Navigate to calendar & make it public", image: null },
+  { title: "Step 3: Navigate to public iCal link", image: calendarIcalUrl },
+  { title: "Step 4: Add to āera settings panel & save", image: null },
 ];
 
 const Extension = () => {
