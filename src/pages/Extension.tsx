@@ -24,16 +24,20 @@ const INSTALL_STEPS = [
   "Open the extension & connect your calendar",
 ];
 
-const INSTALL_GUIDE: { title: string; image: string | null }[] = [
+const INSTALL_GUIDE: { title: string; substeps?: string[]; image: string | null }[] = [
   { title: "Navigate to: chrome://extensions", image: installNavigate },
   { title: "Developer Mode: Toggle On", image: installDevMode },
-  { title: "Load Unpacked: Unzip & select the extension folder", image: installLoadUnpacked },
+  {
+    title: "Load Unpacked:",
+    substeps: ["Unzip the chrome extension file", "Load unpacked"],
+    image: installLoadUnpacked,
+  },
   { title: "Added to extensions:", image: installAdded },
   { title: "Access āera via extensions:", image: installAccess },
   { title: "āera extension settings panel:", image: installSettingsPanel },
 ];
 
-const CALENDAR_GUIDE: { title: string; image: string | null }[] = [
+const CALENDAR_GUIDE: { title: string; substeps?: string[]; image: string | null }[] = [
   { title: "Step 1: Open Calendar Settings", image: calendarSettingsImg },
   { title: "Step 2: Make calendar available to public", image: calendarAccessPermissions },
   { title: "Step 3: Copy the public iCal link", image: calendarIcalUrl },
