@@ -77,7 +77,7 @@ const LandingPage = () => {
       </section>
 
       {/* ——— BODY (white background, centered, max 1280px) ——— */}
-      <div className="w-full bg-white">
+      <div id="body-start" className="w-full bg-white">
         {/* ——— 1. THE APP + THE MOMENT (combined row) ——— */}
         <section className="bg-[#F5F5F7]">
           <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-16 md:py-24">
