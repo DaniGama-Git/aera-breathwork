@@ -12,50 +12,55 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full min-h-screen flex justify-center bg-black">
-      <div className="w-full max-w-[430px] bg-white flex flex-col">
-        {/* ——— HERO ——— */}
-        <section className="relative">
-          {/* Hero with desert dunes background */}
-          <div
-            className="relative w-full flex flex-col items-center justify-center text-white bg-cover bg-center bg-black"
-            style={{ aspectRatio: "9 / 14", backgroundImage: `url(${heroDunes})`, marginBottom: "-1px" }}
+    <div className="w-full min-h-screen flex flex-col bg-black">
+      {/* ——— HERO (responsive: full-viewport on desktop, taller framing on mobile) ——— */}
+      <section className="relative w-full">
+        <div
+          className="relative w-full flex flex-col items-center justify-center text-white bg-cover bg-center bg-black aspect-[9/14] md:aspect-auto md:h-screen"
+          style={{ backgroundImage: `url(${heroDunes})`, marginBottom: "-1px" }}
+        >
+          {/* 30% black overlay for text legibility */}
+          <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+
+          <img
+            src={aeraLogo}
+            alt="āera"
+            className="relative w-[88px] md:w-[120px] mb-6 md:mb-7"
+          />
+
+          <p
+            className="relative font-body text-[10px] md:text-[12px] uppercase tracking-[0.18em] text-center leading-[1.7] px-6"
+            style={{ color: "#ECE9E4" }}
           >
-            {/* 30% black overlay for text legibility */}
-            <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+            Every athlete has a recovery coach.
+            <br />
+            High performers don't.
+          </p>
+          <p
+            className="relative font-body text-[11px] md:text-[13px] uppercase tracking-[0.18em] mt-3"
+            style={{ color: "#FFFFFF", fontWeight: 700 }}
+          >
+            Until now.
+          </p>
 
-            <img src={aeraLogo} alt="āera" className="relative w-[88px] mb-6" />
+          <button
+            onClick={() => navigate("/auth")}
+            className="relative mt-7 md:mt-8 px-8 md:px-10 py-3 md:py-3.5 rounded-full bg-white text-[#1a1a1a] font-body text-[13px] md:text-[14px] hover:opacity-90 transition"
+          >
+            Breath
+          </button>
 
-            <p
-              className="relative font-body text-[10px] uppercase tracking-[0.18em] text-center leading-[1.7] px-6"
-              style={{ color: "#ECE9E4" }}
-            >
-              Every athlete has a recovery coach.
-              <br />
-              High performers don't.
-            </p>
-            <p
-              className="relative font-body text-[11px] uppercase tracking-[0.18em] mt-3"
-              style={{ color: "#FFFFFF", fontWeight: 700 }}
-            >
-              Until now.
-            </p>
+          <ChevronDown
+            className="relative mt-4 text-white/70 animate-bounce"
+            size={22}
+            strokeWidth={1.5}
+          />
+        </div>
+      </section>
 
-            <button
-              onClick={() => navigate("/auth")}
-              className="relative mt-7 px-8 py-3 rounded-full bg-white text-[#1a1a1a] font-body text-[13px] hover:opacity-90 transition"
-            >
-              Breathe
-            </button>
-
-            <ChevronDown
-              className="relative mt-4 text-white/70 animate-bounce"
-              size={22}
-              strokeWidth={1.5}
-            />
-          </div>
-        </section>
-
+      {/* ——— Remaining sections stay in mobile frame for now ——— */}
+      <div className="w-full flex justify-center bg-black">
+        <div className="w-full max-w-[430px] bg-white flex flex-col">
         {/* ——— THE APP + THE MOMENT (shared grey background, centered) ——— */}
         <section className="px-5 pt-10 pb-12 bg-[#F5F5F7] flex flex-col items-center text-center">
           {/* The App */}
