@@ -532,7 +532,7 @@ const Extension = () => {
                 <div className="space-y-8">
                   {CALENDAR_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
-                      <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{renderStepTitle(step.title)}</p>
+<p className="font-body text-[14px] text-gray-900 leading-snug">{renderStepTitle(step.title)}</p>
                       {step.image && (
                         <img
                           src={step.image}
