@@ -200,39 +200,41 @@ const LandingPage = () => {
         {/* ——— 3. THE MOMENT — DEEP DIVE ——— */}
         <section className="bg-white pb-12 md:pb-20">
           <div className="max-w-[1280px] mx-auto px-6 md:px-10">
-            <div className="rounded-[28px] bg-[#F5F5F7] p-8 md:p-16 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-              <div className="md:order-2">
-                <div className="flex items-center gap-2 mb-5">
-                  <span className="block w-10 h-[2px] bg-gray-300" />
-                  <span className="block w-10 h-[2px] bg-gray-900" />
+            <div className="rounded-[28px] bg-[#F5F5F7] p-8 md:p-16">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+                <div className="md:order-2">
+                  <div className="flex items-center gap-2 mb-5">
+                    <span className="block w-10 h-[2px] bg-gray-300" />
+                    <span className="block w-10 h-[2px] bg-gray-900" />
+                  </div>
+                  <h2 className="font-body font-semibold text-[32px] md:text-[44px] text-gray-900 mb-2 leading-tight">
+                    The Moment
+                  </h2>
+                  <p className="font-body font-semibold text-[14px] md:text-[16px] text-gray-700 mb-4">
+                    Breathe in the moments that matter most.
+                  </p>
+                  <p className="font-body text-[14px] md:text-[15px] text-gray-600 leading-relaxed mb-8 max-w-[440px]">
+                    Reads your calendar. Pulls the right āera session. Pops up before your pitch,
+                    your board meeting, or your creative block. You just breathe.
+                  </p>
+                  <button
+                    onClick={() => navigate("/onboarding?flow=chrome")}
+                    className="px-7 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] md:text-[14px] hover:bg-black transition"
+                  >
+                    Add to Chrome →
+                  </button>
                 </div>
-                <h2 className="font-body font-semibold text-[32px] md:text-[44px] text-gray-900 mb-2 leading-tight">
-                  The Moment
-                </h2>
-                <p className="font-body font-semibold text-[14px] md:text-[16px] text-gray-700 mb-4">
-                  Breathe in the moments that matter most.
-                </p>
-                <p className="font-body text-[14px] md:text-[15px] text-gray-600 leading-relaxed mb-8 max-w-[440px]">
-                  Reads your calendar. Pulls the right āera session. Pops up before your pitch,
-                  your board meeting, or your creative block. You just breathe.
-                </p>
-                <button
-                  onClick={() => navigate("/onboarding?flow=chrome")}
-                  className="px-7 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[13px] md:text-[14px] hover:bg-black transition"
-                >
-                  Add to Chrome →
-                </button>
+                <div className="flex items-center justify-center md:order-1">
+                  <img
+                    src={mockupExtension}
+                    alt="āera Chrome extension"
+                    className="max-h-[420px] md:max-h-[520px] w-auto object-contain"
+                  />
+                </div>
               </div>
-              <div className="flex items-center justify-center md:order-1">
-                <img
-                  src={mockupExtension}
-                  alt="āera Chrome extension"
-                  className="max-h-[420px] md:max-h-[520px] w-auto object-contain"
-                />
+              <div className="flex justify-center mt-10 md:mt-12">
+                <ChevronDown className="text-gray-900" size={24} strokeWidth={1.5} />
               </div>
-            </div>
-            <div className="flex justify-center mt-10">
-              <ChevronDown className="text-gray-900" size={24} strokeWidth={1.5} />
             </div>
           </div>
         </section>
