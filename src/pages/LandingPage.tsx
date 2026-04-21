@@ -13,6 +13,10 @@ import mockupExtension from "@/assets/landing-moment-mockup.png";
 import step1Img from "@/assets/howitworks-step1-calendar.svg";
 import step2Img from "@/assets/howitworks-step2-focus-ready.svg";
 import step3Img from "@/assets/howitworks-step3-reset-complete.svg";
+import chromeLogo from "@/assets/chrome-logo.svg";
+import iconNoCard from "@/assets/icon-no-card.svg";
+import iconMail from "@/assets/icon-mail.svg";
+import iconSetup from "@/assets/icon-setup.svg";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -81,7 +85,7 @@ const LandingPage = () => {
                   <img
                     src={mockupApp}
                     alt="āera app screens"
-                    className="max-h-[320px] md:max-h-[420px] w-auto object-contain"
+                    className="max-h-[260px] md:max-h-[340px] w-auto object-contain"
                   />
                 </div>
                 <p className="font-body text-[13px] md:text-[15px] text-gray-700 leading-relaxed mb-6 max-w-[360px]">
@@ -115,12 +119,14 @@ const LandingPage = () => {
                   āera reads your calendar and delivers a targeted breathwork session before every
                   high-stakes moment — automatically.
                 </p>
-                <div className="flex items-center gap-3 mb-4 flex-wrap justify-center">
+                <div className="flex items-center gap-3 mb-5 flex-wrap justify-center">
                   <button
                     onClick={() => navigate("/onboarding?flow=chrome")}
-                    className="px-5 py-3 rounded-full bg-[#1a1a1a] text-white font-body text-[12px] md:text-[13px] hover:bg-black transition flex items-center gap-2"
+                    className="pl-1.5 pr-5 py-1.5 rounded-full bg-[#1a1a1a] text-white font-body text-[12px] md:text-[13px] hover:bg-black transition flex items-center gap-2"
                   >
-                    <span className="inline-block w-4 h-4 rounded-full bg-white" />
+                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-white">
+                      <img src={chromeLogo} alt="" className="w-4 h-4" />
+                    </span>
                     Add to Chrome — It's free
                   </button>
                   <button
@@ -130,13 +136,20 @@ const LandingPage = () => {
                     ▶ Watch Demo
                   </button>
                 </div>
-                <p className="font-body text-[10px] md:text-[11px] text-gray-500 flex items-center gap-2 flex-wrap justify-center">
-                  <span>⊘ No credit card</span>
-                  <span className="text-gray-300">·</span>
-                  <span>◷ Works with Google & Outlook</span>
-                  <span className="text-gray-300">·</span>
-                  <span>◷ 2 min setup</span>
-                </p>
+                <div className="font-body text-[11px] md:text-[12px] text-[#6A6A6B] flex items-center gap-4 flex-wrap justify-center">
+                  <span className="flex items-center gap-1.5">
+                    <img src={iconNoCard} alt="" className="w-4 h-4" />
+                    No credit card
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <img src={iconMail} alt="" className="w-[18px] h-[18px]" />
+                    Works with Google &amp; Outlook
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <img src={iconSetup} alt="" className="w-4 h-4" />
+                    2 min setup
+                  </span>
+                </div>
               </div>
             </div>
 
