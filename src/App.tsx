@@ -113,7 +113,7 @@ const App = () => (
           <Route path="/wave" element={<WavePreview />} />
           <Route path="/home" element={<MobileFrame><HomeScreen /></MobileFrame>} />
           <Route path="/auth" element={<MobileFrame><AuthRoute><Auth /></AuthRoute></MobileFrame>} />
-          <Route path="/onboarding" element={<MobileFrame><Onboarding /></MobileFrame>} />
+          <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/menu" element={<MobileFrame><ProtectedRoute><BreathworkMenu /></ProtectedRoute></MobileFrame>} />
           <Route path="/session/:category/:slug" element={<MobileFrame><ProtectedRoute><DynamicSession /></ProtectedRoute></MobileFrame>} />
           {/* Legacy redirects */}
