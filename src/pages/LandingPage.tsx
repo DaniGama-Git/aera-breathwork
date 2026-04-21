@@ -53,22 +53,31 @@ const LandingPage = () => {
           </p>
 
           <button
-            onClick={() => navigate("/auth")}
+            onClick={() => {
+              const next = document.getElementById("body-start");
+              next?.scrollIntoView({ behavior: "smooth" });
+            }}
             className="relative mt-7 md:mt-8 px-8 md:px-10 py-3 md:py-3.5 rounded-full bg-white text-[#1a1a1a] font-body text-[13px] md:text-[14px] hover:opacity-90 transition"
           >
             Breathe
           </button>
 
-          <ChevronDown
-            className="relative mt-4 text-white/70 animate-bounce"
-            size={22}
-            strokeWidth={1.5}
-          />
+          <button
+            type="button"
+            aria-label="Scroll to next section"
+            onClick={() => {
+              const next = document.getElementById("body-start");
+              next?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="relative mt-4 text-white/70 animate-bounce hover:text-white transition"
+          >
+            <ChevronDown size={22} strokeWidth={1.5} />
+          </button>
         </div>
       </section>
 
       {/* ——— BODY (white background, centered, max 1280px) ——— */}
-      <div className="w-full bg-white">
+      <div id="body-start" className="w-full bg-white">
         {/* ——— 1. THE APP + THE MOMENT (combined row) ——— */}
         <section className="bg-[#F5F5F7]">
           <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-16 md:py-24">
