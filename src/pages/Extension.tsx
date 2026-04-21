@@ -276,11 +276,27 @@ const Extension = () => {
                 />
               </button>
               {openSection === "install" && (
-                <div className="px-5 pb-5 space-y-2">
-                  {INSTALL_STEPS.map((step, i) => (
-                    <div key={i} className="flex gap-3">
-                      <span className="font-body text-[13px] text-gray-400 shrink-0">{i + 1}.</span>
-                      <p className="font-body text-[13px] text-gray-700 leading-relaxed">{step}</p>
+                <div className="px-5 pb-5 space-y-6">
+                  {INSTALL_GUIDE.map((step, i) => (
+                    <div key={i} className="space-y-2">
+                      <div className="flex gap-3">
+                        <span className="font-body font-semibold text-[13px] text-gray-900 shrink-0">{i + 1}.</span>
+                        <div className="flex-1">
+                          <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{step.title}</p>
+                          <p className="font-body text-[12px] text-gray-600 leading-relaxed mt-1">{step.desc}</p>
+                        </div>
+                      </div>
+                      {step.image ? (
+                        <img
+                          src={step.image}
+                          alt={step.title}
+                          className="w-full rounded-[12px] border border-gray-200 bg-white"
+                        />
+                      ) : (
+                        <div className="w-full aspect-[16/10] rounded-[12px] border border-dashed border-gray-300 bg-white flex items-center justify-center">
+                          <span className="font-body text-[11px] text-gray-400">Image coming soon</span>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -301,15 +317,37 @@ const Extension = () => {
                 />
               </button>
               {openSection === "calendar" && (
-                <div className="px-5 pb-5">
-                  <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-3">
+                <div className="px-5 pb-5 space-y-6">
+                  <p className="font-body text-[13px] text-gray-700 leading-relaxed">
                     Connect your Google Calendar so āera can detect your key meetings and trigger sessions automatically.
                   </p>
+                  {CALENDAR_GUIDE.map((step, i) => (
+                    <div key={i} className="space-y-2">
+                      <div className="flex gap-3">
+                        <span className="font-body font-semibold text-[13px] text-gray-900 shrink-0">{i + 1}.</span>
+                        <div className="flex-1">
+                          <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{step.title}</p>
+                          <p className="font-body text-[12px] text-gray-600 leading-relaxed mt-1">{step.desc}</p>
+                        </div>
+                      </div>
+                      {step.image ? (
+                        <img
+                          src={step.image}
+                          alt={step.title}
+                          className="w-full rounded-[12px] border border-gray-200 bg-white"
+                        />
+                      ) : (
+                        <div className="w-full aspect-[16/10] rounded-[12px] border border-dashed border-gray-300 bg-white flex items-center justify-center">
+                          <span className="font-body text-[11px] text-gray-400">Image coming soon</span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
                   <button
                     onClick={() => navigate("/calendar-setup")}
                     className="font-body text-[13px] text-gray-900 underline underline-offset-4"
                   >
-                    Open calendar setup →
+                    Open full calendar setup →
                   </button>
                 </div>
               )}
