@@ -280,7 +280,7 @@ const Extension = () => {
                       {step.substeps && (
                         <ol className="list-decimal pl-5 space-y-1">
                           {step.substeps.map((s, j) => (
-                            <li key={j} className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{s}</li>
+                            <li key={j} className="font-body text-[13px] text-gray-900 leading-snug">{s}</li>
                           ))}
                         </ol>
                       )}
@@ -327,12 +327,6 @@ const Extension = () => {
                       )}
                     </div>
                   ))}
-                  <button
-                    onClick={() => navigate("/calendar-setup")}
-                    className="font-body text-[13px] text-gray-900 underline underline-offset-4"
-                  >
-                    Open full calendar setup →
-                  </button>
                 </div>
               )}
             </div>
@@ -494,7 +488,7 @@ const Extension = () => {
                     {step.substeps && (
                       <ol className="list-decimal pl-5 space-y-1">
                         {step.substeps.map((s, j) => (
-                          <li key={j} className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{s}</li>
+                          <li key={j} className="font-body text-[14px] text-gray-900 leading-snug">{s}</li>
                         ))}
                       </ol>
                     )}
@@ -543,12 +537,6 @@ const Extension = () => {
                     </div>
                   ))}
                 </div>
-                <button
-                  onClick={() => navigate("/calendar-setup")}
-                  className="font-body text-[14px] text-gray-900 underline underline-offset-4"
-                >
-                  Open full calendar setup →
-                </button>
               </div>
             )}
           </div>
