@@ -278,6 +278,7 @@ const LandingPage = () => {
             © 2026 āera. All rights reserved.
           </p>
         </footer>
+        </div>
       </div>
     </div>
   );
