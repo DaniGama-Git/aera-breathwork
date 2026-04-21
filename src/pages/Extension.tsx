@@ -37,11 +37,11 @@ const INSTALL_GUIDE: { title: string; substeps?: string[]; image: string | null 
   { title: "āera extension settings panel:", image: installSettingsPanel },
 ];
 
-const CALENDAR_GUIDE: { title: string; substeps?: string[]; image: string | null }[] = [
+const CALENDAR_GUIDE: { title: string; substeps?: string[]; image: string | null; logoPanel?: boolean }[] = [
   { title: "Step 1: Open Calendar Settings", image: calendarSettingsImg },
   { title: "Step 2: Make calendar available to public", image: calendarAccessPermissions },
   { title: "Step 3: Copy the public iCal link", image: calendarIcalUrl },
-  { title: "Step 4: Add to āera settings panel & save", image: null },
+  { title: "Step 4: Add to āera settings panel & save", image: null, logoPanel: true },
 ];
 
 const Extension = () => {
@@ -293,6 +293,11 @@ const Extension = () => {
                           className="w-full rounded-[12px]"
                         />
                       )}
+                      {step.logoPanel && (
+                        <div className="w-full aspect-[16/10] rounded-[12px] bg-[#f7f6f4] flex items-center justify-center">
+                          <img src={areaLogo} alt="āera" className="h-8 w-auto" />
+                        </div>
+                      )}
                     </div>
                   ))}
                   <button
@@ -507,6 +512,11 @@ const Extension = () => {
                           alt={step.title}
                           className="w-full rounded-[14px]"
                         />
+                      )}
+                      {step.logoPanel && (
+                        <div className="w-full aspect-[16/10] rounded-[14px] bg-[#f7f6f4] flex items-center justify-center">
+                          <img src={areaLogo} alt="āera" className="h-10 w-auto" />
+                        </div>
                       )}
                     </div>
                   ))}
