@@ -204,13 +204,12 @@ const Extension = () => {
                 Breathwork prompts before your key meetings.
               </p>
 
-              <div
-                className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
-                style={{ aspectRatio: "16 / 10" }}
-              >
-                <span className="font-body text-[11px] text-gray-400">
-                  Mockup image goes here
-                </span>
+              <div className="w-full rounded-[20px] overflow-hidden bg-white border border-gray-200 mb-5">
+                <img
+                  src={mockupExtension}
+                  alt="Aera extension preview"
+                  className="w-full h-auto object-contain"
+                />
               </div>
 
               {keywords.length > 0 && (
