@@ -113,7 +113,7 @@ const App = () => (
           <Route path="/wave" element={<WavePreview />} />
           <Route path="/home" element={<MobileFrame><HomeScreen /></MobileFrame>} />
           <Route path="/auth" element={<MobileFrame><AuthRoute><Auth /></AuthRoute></MobileFrame>} />
-          <Route path="/onboarding" element={<MobileFrame><Onboarding /></MobileFrame>} />
+          <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/menu" element={<MobileFrame><ProtectedRoute><BreathworkMenu /></ProtectedRoute></MobileFrame>} />
           <Route path="/session/:category/:slug" element={<MobileFrame><ProtectedRoute><DynamicSession /></ProtectedRoute></MobileFrame>} />
           {/* Legacy redirects */}
@@ -124,7 +124,7 @@ const App = () => (
           <Route path="/hrv" element={<MobileFrame><ProtectedRoute><HrvDemo /></ProtectedRoute></MobileFrame>} />
           <Route path="/category/:slug" element={<MobileFrame><ProtectedRoute><CategoryLibrary /></ProtectedRoute></MobileFrame>} />
           <Route path="/search" element={<MobileFrame><ProtectedRoute><SearchScreen /></ProtectedRoute></MobileFrame>} />
-          <Route path="/extension" element={<MobileFrame><Extension /></MobileFrame>} />
+          <Route path="/extension" element={<Extension />} />
           <Route path="/calendar-setup" element={<MobileFrame><CalendarSetup /></MobileFrame>} />
           <Route path="*" element={<MobileFrame><NotFound /></MobileFrame>} />
         </Routes>

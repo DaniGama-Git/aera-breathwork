@@ -6,6 +6,8 @@ import areaLogo from "@/assets/aera-logo.svg";
 import BreatheDots from "@/components/BreatheDots";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useIsMobile } from "@/hooks/use-mobile";
+import mockupExtension from "@/assets/mockup-extension-breathe.svg";
 
 const INSTALL_STEPS = [
   "Download & unzip the extension",
@@ -17,6 +19,7 @@ const Extension = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   const isChromeFlow = searchParams.get("flow") === "chrome" || sessionStorage.getItem("aera_flow") === "chrome";
   const [keywords, setKeywords] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
@@ -102,6 +105,181 @@ const Extension = () => {
     setOpenSection(openSection === section ? null : section);
   };
 
+  // ========== MOBILE LAYOUT (unchanged) ==========
+  if (isMobile) {
+    return (
+      <div className="w-full min-h-screen bg-white flex justify-center">
+        <div className="relative w-full max-w-[430px] min-h-screen flex flex-col bg-white">
+          {downloading && (
+            <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm">
+              <BreatheDots className="w-14 h-14" />
+            </div>
+          )}
+
+          <header className="px-5 pt-6 pb-4 flex items-center justify-between border-b border-gray-100">
+            <img src={areaLogo} alt="Aera" className="h-5 brightness-0" />
+            <p
+              className="font-body text-right"
+              style={{ fontWeight: 600, fontSize: "13px", lineHeight: "18px", color: "#1D1D1F" }}
+            >
+              Breathe. Recover. Perform.
+              <br />
+              <span style={{ color: "#1D1D1F" }}>In under 5 minutes.</span>
+            </p>
+          </header>
+
+          <main className="flex-1 px-5 pt-6 pb-10 space-y-4">
+            <div className="bg-[#F5F5F7] rounded-[40px] p-6">
+              <div className="inline-flex px-4 py-1.5 rounded-full border border-[#1a1a1a] bg-transparent mb-5">
+                <span className="font-body text-[11px] text-gray-900">
+                  Performance Breathwork · Built for work
+                </span>
+              </div>
+
+              <h1 className="text-gray-900 font-body font-semibold text-[26px] leading-tight mb-2">
+                Chrome Extension
+              </h1>
+              <p className="font-body text-[13px] mb-5" style={{ color: "#6A6A6B" }}>
+                Breathwork prompts before your key meetings.
+              </p>
+
+              <div
+                className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
+                style={{ aspectRatio: "16 / 10" }}
+              >
+                <span className="font-body text-[11px] text-gray-400">
+                  Mockup image goes here
+                </span>
+              </div>
+
+              {keywords.length > 0 && (
+                <div className="rounded-[20px] p-4 mb-5" style={{ background: "#E5E5E5" }}>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-body text-[10px] tracking-widest uppercase" style={{ color: "#1D1D1F" }}>
+                      Your trigger words
+                    </p>
+                    <button
+                      onClick={handleCopyKeywords}
+                      className="flex items-center gap-1.5 hover:opacity-70 transition font-body text-[11px]"
+                      style={{ color: "#1D1D1F" }}
+                    >
+                      {copied ? <Check size={12} /> : <Copy size={12} />}
+                      {copied ? "Copied" : "Copy"}
+                    </button>
+                  </div>
+                  <p className="font-body font-semibold text-[14px] uppercase mb-2" style={{ color: "#1D1D1F" }}>
+                    {keywords.join(", ")}
+                  </p>
+                  <p className="font-body text-[11px] leading-relaxed" style={{ color: "#1D1D1F" }}>
+                    Paste these into the extension after connecting your calendar.
+                  </p>
+                </div>
+              )}
+
+              <button
+                onClick={handleDownload}
+                disabled={downloading}
+                className="w-full py-4 rounded-[80px] flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
+                style={{
+                  background: "#1D1D1F",
+                  color: "#FFFFFF",
+                  fontFamily: "inherit",
+                  fontWeight: 500,
+                  fontSize: "15px",
+                  lineHeight: "100%",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                <Download size={18} strokeWidth={2} />
+                Download Extension
+              </button>
+              <p className="text-center text-[11px] text-gray-500 mt-3 font-body">
+                Works in Chrome, Edge, Brave, and Arc
+              </p>
+            </div>
+
+            <div className="bg-[#F5F5F7] rounded-[20px] overflow-hidden">
+              <button
+                onClick={() => toggleSection("install")}
+                className="w-full flex items-center justify-between px-5 py-4 text-left"
+              >
+                <span className="font-body font-semibold text-[14px] text-gray-900">
+                  How to install extension (Manually)
+                </span>
+                <ChevronDown
+                  size={18}
+                  className={`text-gray-700 transition-transform ${openSection === "install" ? "rotate-180" : ""}`}
+                />
+              </button>
+              {openSection === "install" && (
+                <div className="px-5 pb-5 space-y-2">
+                  {INSTALL_STEPS.map((step, i) => (
+                    <div key={i} className="flex gap-3">
+                      <span className="font-body text-[13px] text-gray-400 shrink-0">{i + 1}.</span>
+                      <p className="font-body text-[13px] text-gray-700 leading-relaxed">{step}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="bg-[#F5F5F7] rounded-[20px] overflow-hidden">
+              <button
+                onClick={() => toggleSection("calendar")}
+                className="w-full flex items-center justify-between px-5 py-4 text-left"
+              >
+                <span className="font-body font-semibold text-[14px] text-gray-900">
+                  Calendar Settings
+                </span>
+                <ChevronDown
+                  size={18}
+                  className={`text-gray-700 transition-transform ${openSection === "calendar" ? "rotate-180" : ""}`}
+                />
+              </button>
+              {openSection === "calendar" && (
+                <div className="px-5 pb-5">
+                  <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-3">
+                    Connect your Google Calendar so āera can detect your key meetings and trigger sessions automatically.
+                  </p>
+                  <button
+                    onClick={() => navigate("/calendar-setup")}
+                    className="font-body text-[13px] text-gray-900 underline underline-offset-4"
+                  >
+                    Open calendar setup →
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {isChromeFlow && !user && downloaded && (
+              <button
+                onClick={() => navigate("/auth?flow=chrome")}
+                className="w-full py-4 rounded-[80px] flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98]"
+                style={{
+                  background: "#1D1D1F",
+                  color: "#FFFFFF",
+                  fontWeight: 500,
+                  fontSize: "17px",
+                  lineHeight: "100%",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                Create your account →
+              </button>
+            )}
+          </main>
+
+          <footer className="px-5 py-5 border-t border-gray-100 text-center">
+            <p className="font-body text-[11px] text-gray-500">
+              © 2026 āera. All rights reserved.
+            </p>
+          </footer>
+        </div>
+      </div>
+    );
+  }
+
+  // ========== DESKTOP LAYOUT ==========
   return (
     <div className="relative w-full min-h-screen flex flex-col bg-white">
       {downloading && (
@@ -110,12 +288,12 @@ const Extension = () => {
         </div>
       )}
 
-      {/* Header — matches onboarding */}
-      <header className="px-5 pt-6 pb-4 flex items-center justify-between border-b border-gray-100">
-        <img src={areaLogo} alt="Aera" className="h-5 brightness-0" />
+      {/* Full-width header */}
+      <header className="bg-[#F5F5F7] px-10 py-6 flex items-center justify-between">
+        <img src={areaLogo} alt="Aera" className="h-6 brightness-0" />
         <p
           className="font-body text-right"
-          style={{ fontWeight: 600, fontSize: "13px", lineHeight: "18px", color: "#1D1D1F" }}
+          style={{ fontWeight: 600, fontSize: "16px", lineHeight: "22px", color: "#1D1D1F" }}
         >
           Breathe. Recover. Perform.
           <br />
@@ -123,162 +301,166 @@ const Extension = () => {
         </p>
       </header>
 
-      {/* Main content */}
-      <main className="flex-1 px-5 pt-6 pb-10 space-y-4">
-        {/* Hero card */}
-        <div className="bg-[#F5F5F7] rounded-[40px] p-6">
-          <div className="inline-flex px-4 py-1.5 rounded-full border border-[#1a1a1a] bg-transparent mb-5">
-            <span className="font-body text-[11px] text-gray-900">
-              Performance Breathwork · Built for work
-            </span>
+      <main className="flex-1 w-full">
+        <div className="max-w-[1280px] mx-auto px-10 py-10 space-y-6">
+          {/* Hero card */}
+          <div className="bg-[#F5F5F7] rounded-[40px] p-16">
+            <div className="grid grid-cols-2 gap-12 items-center">
+              {/* Left column */}
+              <div>
+                <div className="inline-flex px-4 py-1.5 rounded-full border border-[#1a1a1a] bg-transparent mb-6">
+                  <span className="font-body text-[12px] text-gray-900">
+                    Performance Breathwork · Built for work
+                  </span>
+                </div>
+
+                <h1 className="text-gray-900 font-body font-semibold text-[52px] leading-[1.05] mb-4">
+                  Chrome Extension
+                </h1>
+                <p className="font-body text-[16px] mb-8" style={{ color: "#6A6A6B" }}>
+                  Breathwork prompts before your key meetings.
+                </p>
+
+                {keywords.length > 0 && (
+                  <div className="rounded-[20px] p-6 mb-6" style={{ background: "#E5E5E5" }}>
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="font-body text-[11px] tracking-widest uppercase" style={{ color: "#1D1D1F" }}>
+                        Your trigger words
+                      </p>
+                      <button
+                        onClick={handleCopyKeywords}
+                        className="flex items-center gap-1.5 hover:opacity-70 transition font-body text-[12px]"
+                        style={{ color: "#1D1D1F" }}
+                      >
+                        {copied ? <Check size={14} /> : <Copy size={14} />}
+                        {copied ? "Copied" : "Copy"}
+                      </button>
+                    </div>
+                    <p className="font-body font-semibold text-[16px] uppercase mb-2" style={{ color: "#1D1D1F" }}>
+                      {keywords.join(", ")}
+                    </p>
+                    <p className="font-body text-[12px] leading-relaxed" style={{ color: "#1D1D1F" }}>
+                      Paste these into the extension after connecting your calendar.
+                    </p>
+                  </div>
+                )}
+
+                <button
+                  onClick={handleDownload}
+                  disabled={downloading}
+                  className="w-full py-4 rounded-[80px] flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
+                  style={{
+                    background: "#1D1D1F",
+                    color: "#FFFFFF",
+                    fontFamily: "inherit",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    lineHeight: "100%",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  <Download size={18} strokeWidth={2} />
+                  Download Extension
+                </button>
+                <p className="text-center text-[11px] text-gray-500 mt-3 font-body">
+                  Works in Chrome, Edge, Brave, and Arc
+                </p>
+              </div>
+
+              {/* Right column */}
+              <div>
+                <img
+                  src={mockupExtension}
+                  alt="Aera extension preview"
+                  className="w-full max-h-[420px] object-contain"
+                />
+                <div className="mt-8 space-y-3">
+                  {INSTALL_STEPS.map((step, i) => (
+                    <div key={i} className="flex gap-3">
+                      <span className="font-body text-[14px] text-gray-400 shrink-0">{i + 1}.</span>
+                      <p className="font-body text-[14px] text-gray-700 leading-relaxed">{step}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
-          <h1 className="text-gray-900 font-body font-semibold text-[26px] leading-tight mb-2">
-            Chrome Extension
-          </h1>
-          <p className="font-body text-[13px] mb-5" style={{ color: "#6A6A6B" }}>
-            Breathwork prompts before your key meetings.
-          </p>
-
-          {/* Reserved space for product mockup image (desktop + phone) — pass image later */}
-          <div
-            className="w-full rounded-[20px] bg-white border border-gray-200 mb-5 flex items-center justify-center"
-            style={{ aspectRatio: "16 / 10" }}
-          >
-            <span className="font-body text-[11px] text-gray-400">
-              Mockup image goes here
-            </span>
+          {/* Accordions */}
+          <div className="bg-[#F5F5F7] rounded-[20px] overflow-hidden">
+            <button
+              onClick={() => toggleSection("install")}
+              className="w-full flex items-center justify-between px-8 py-5 text-left"
+            >
+              <span className="font-body font-semibold text-[15px] text-gray-900">
+                How to install extension (Manually)
+              </span>
+              <ChevronDown
+                size={20}
+                className={`text-gray-700 transition-transform ${openSection === "install" ? "rotate-180" : ""}`}
+              />
+            </button>
+            {openSection === "install" && (
+              <div className="px-8 pb-6 space-y-2">
+                {INSTALL_STEPS.map((step, i) => (
+                  <div key={i} className="flex gap-3">
+                    <span className="font-body text-[14px] text-gray-400 shrink-0">{i + 1}.</span>
+                    <p className="font-body text-[14px] text-gray-700 leading-relaxed">{step}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Trigger keywords */}
-          {keywords.length > 0 && (
-            <div className="rounded-[20px] p-4 mb-5" style={{ background: "#E5E5E5" }}>
-              <div className="flex items-center justify-between mb-2">
-                <p className="font-body text-[10px] tracking-widest uppercase" style={{ color: "#1D1D1F" }}>
-                  Your trigger words
+          <div className="bg-[#F5F5F7] rounded-[20px] overflow-hidden">
+            <button
+              onClick={() => toggleSection("calendar")}
+              className="w-full flex items-center justify-between px-8 py-5 text-left"
+            >
+              <span className="font-body font-semibold text-[15px] text-gray-900">
+                Calendar Settings
+              </span>
+              <ChevronDown
+                size={20}
+                className={`text-gray-700 transition-transform ${openSection === "calendar" ? "rotate-180" : ""}`}
+              />
+            </button>
+            {openSection === "calendar" && (
+              <div className="px-8 pb-6">
+                <p className="font-body text-[14px] text-gray-700 leading-relaxed mb-3">
+                  Connect your Google Calendar so āera can detect your key meetings and trigger sessions automatically.
                 </p>
                 <button
-                  onClick={handleCopyKeywords}
-                  className="flex items-center gap-1.5 hover:opacity-70 transition font-body text-[11px]"
-                  style={{ color: "#1D1D1F" }}
+                  onClick={() => navigate("/calendar-setup")}
+                  className="font-body text-[14px] text-gray-900 underline underline-offset-4"
                 >
-                  {copied ? <Check size={12} /> : <Copy size={12} />}
-                  {copied ? "Copied" : "Copy"}
+                  Open calendar setup →
                 </button>
               </div>
-              <p className="font-body font-semibold text-[14px] uppercase mb-2" style={{ color: "#1D1D1F" }}>
-                {keywords.join(", ")}
-              </p>
-              <p className="font-body text-[11px] leading-relaxed" style={{ color: "#1D1D1F" }}>
-                Paste these into the extension after connecting your calendar.
-              </p>
-            </div>
-          )}
+            )}
+          </div>
 
-          {/* Download CTA */}
-          <button
-            onClick={handleDownload}
-            disabled={downloading}
-            className="w-full py-4 rounded-[80px] flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
-            style={{
-              background: "#1D1D1F",
-              color: "#FFFFFF",
-              fontFamily: "inherit",
-              fontWeight: 500,
-              fontSize: "15px",
-              lineHeight: "100%",
-              letterSpacing: "0.02em",
-            }}
-          >
-            <Download size={18} strokeWidth={2} />
-            Download Extension
-          </button>
-          <p className="text-center text-[11px] text-gray-500 mt-3 font-body">
-            Works in Chrome, Edge, Brave, and Arc
-          </p>
-        </div>
-
-        {/* Accordion: Install instructions */}
-        <div className="bg-[#F5F5F7] rounded-[20px] overflow-hidden">
-          <button
-            onClick={() => toggleSection("install")}
-            className="w-full flex items-center justify-between px-5 py-4 text-left"
-          >
-            <span className="font-body font-semibold text-[14px] text-gray-900">
-              How to install extension (Manually)
-            </span>
-            <ChevronDown
-              size={18}
-              className={`text-gray-700 transition-transform ${openSection === "install" ? "rotate-180" : ""}`}
-            />
-          </button>
-          {openSection === "install" && (
-            <div className="px-5 pb-5 space-y-2">
-              {INSTALL_STEPS.map((step, i) => (
-                <div key={i} className="flex gap-3">
-                  <span className="font-body text-[13px] text-gray-400 shrink-0">
-                    {i + 1}.
-                  </span>
-                  <p className="font-body text-[13px] text-gray-700 leading-relaxed">
-                    {step}
-                  </p>
-                </div>
-              ))}
-            </div>
+          {isChromeFlow && !user && downloaded && (
+            <button
+              onClick={() => navigate("/auth?flow=chrome")}
+              className="w-full py-4 rounded-[80px] flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98]"
+              style={{
+                background: "#1D1D1F",
+                color: "#FFFFFF",
+                fontWeight: 500,
+                fontSize: "17px",
+                lineHeight: "100%",
+                letterSpacing: "0.02em",
+              }}
+            >
+              Create your account →
+            </button>
           )}
         </div>
-
-        {/* Accordion: Calendar Settings */}
-        <div className="bg-[#F5F5F7] rounded-[20px] overflow-hidden">
-          <button
-            onClick={() => toggleSection("calendar")}
-            className="w-full flex items-center justify-between px-5 py-4 text-left"
-          >
-            <span className="font-body font-semibold text-[14px] text-gray-900">
-              Calendar Settings
-            </span>
-            <ChevronDown
-              size={18}
-              className={`text-gray-700 transition-transform ${openSection === "calendar" ? "rotate-180" : ""}`}
-            />
-          </button>
-          {openSection === "calendar" && (
-            <div className="px-5 pb-5">
-              <p className="font-body text-[13px] text-gray-700 leading-relaxed mb-3">
-                Connect your Google Calendar so āera can detect your key meetings and trigger sessions automatically.
-              </p>
-              <button
-                onClick={() => navigate("/calendar-setup")}
-                className="font-body text-[13px] text-gray-900 underline underline-offset-4"
-              >
-                Open calendar setup →
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Chrome flow: create account CTA */}
-        {isChromeFlow && !user && downloaded && (
-          <button
-            onClick={() => navigate("/auth?flow=chrome")}
-            className="w-full py-4 rounded-[80px] flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98]"
-            style={{
-              background: "#1D1D1F",
-              color: "#FFFFFF",
-              fontWeight: 500,
-              fontSize: "17px",
-              lineHeight: "100%",
-              letterSpacing: "0.02em",
-            }}
-          >
-            Create your account →
-          </button>
-        )}
       </main>
 
-      {/* Footer */}
-      <footer className="px-5 py-5 border-t border-gray-100 text-center">
-        <p className="font-body text-[11px] text-gray-500">
+      <footer className="px-10 py-5 border-t border-gray-100 text-center">
+        <p className="font-body text-[12px] text-gray-500">
           © 2026 āera. All rights reserved.
         </p>
       </footer>
