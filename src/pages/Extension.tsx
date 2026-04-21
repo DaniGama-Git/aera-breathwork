@@ -23,60 +23,20 @@ const INSTALL_STEPS = [
   "Open the extension & connect your calendar",
 ];
 
-const INSTALL_GUIDE: { title: string; desc: string; image: string | null }[] = [
-  {
-    title: "Navigate to chrome://extensions",
-    desc: "Open a new tab and paste chrome://extensions into the address bar.",
-    image: installNavigate,
-  },
-  {
-    title: "Enable Developer mode",
-    desc: "Toggle Developer mode in the top-right corner of the extensions page.",
-    image: installDevMode,
-  },
-  {
-    title: "Click Load unpacked",
-    desc: "Select the unzipped āera extension folder you just downloaded.",
-    image: installLoadUnpacked,
-  },
-  {
-    title: "Extension added",
-    desc: "āera now appears in your installed extensions list.",
-    image: installAdded,
-  },
-  {
-    title: "Access āera from your toolbar",
-    desc: "Pin āera to your Chrome toolbar for quick access.",
-    image: installAccess,
-  },
-  {
-    title: "Open the settings panel",
-    desc: "Click the āera icon to open the extension settings panel.",
-    image: installSettingsPanel,
-  },
+const INSTALL_GUIDE: { title: string; image: string | null }[] = [
+  { title: "Navigate to: chrome://extensions", image: installNavigate },
+  { title: "Developer Mode: Toggle On", image: installDevMode },
+  { title: "Load Unpacked: Unzip & select the extension folder", image: installLoadUnpacked },
+  { title: "Extension added to Chrome", image: installAdded },
+  { title: "Access āera from your toolbar", image: installAccess },
+  { title: "Open the āera settings panel", image: installSettingsPanel },
 ];
 
-const CALENDAR_GUIDE: { title: string; desc: string; image: string | null }[] = [
-  {
-    title: "Open Google Calendar settings",
-    desc: "Go to calendar.google.com and open Settings from the gear icon.",
-    image: null,
-  },
-  {
-    title: "Select your calendar",
-    desc: "Under \"Settings for my calendars\", choose the calendar you want to connect.",
-    image: null,
-  },
-  {
-    title: "Copy the secret iCal address",
-    desc: "Scroll to \"Integrate calendar\" and copy the Secret address in iCal format.",
-    image: calendarIcalUrl,
-  },
-  {
-    title: "Paste into āera settings",
-    desc: "Open the āera extension settings and paste your iCal URL into the calendar field.",
-    image: calendarSettingsImg,
-  },
+const CALENDAR_GUIDE: { title: string; image: string | null }[] = [
+  { title: "Open Google Calendar settings", image: null },
+  { title: "Select your calendar", image: null },
+  { title: "Copy the secret iCal address", image: calendarIcalUrl },
+  { title: "Paste into āera settings", image: calendarSettingsImg },
 ];
 
 const Extension = () => {
