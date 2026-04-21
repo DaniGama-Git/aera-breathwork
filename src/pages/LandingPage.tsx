@@ -232,9 +232,10 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
+          <div className="flex justify-center mt-12">
+            <ChevronDown className="text-gray-400" size={24} strokeWidth={1.5} />
+          </div>
         </section>
-
-        {/* ——— 4. HOW IT WORKS ——— */}
         <section className="bg-white pb-12 md:pb-20">
           <div className="max-w-[1280px] mx-auto px-6 md:px-10">
             <div className="rounded-[28px] bg-[#F5F5F7] p-8 md:p-16">
