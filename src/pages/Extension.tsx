@@ -227,8 +227,7 @@ const Extension = () => {
                 onClick={() => toggleSection("install")}
                 className="w-full flex items-center justify-between px-5 py-4 text-left"
               >
-                <span className="font-body font-semibold text-[14px] text-gray-900">
-                  How to install extension (Manually)
+                <span className="font-body font-semibold text-[18px] text-gray-900">  
                 </span>
                 <ChevronDown
                   size={18}
@@ -239,7 +238,7 @@ const Extension = () => {
                 <div className="px-5 pb-5 space-y-6">
                   {INSTALL_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
-                      <p className="font-body font-semibold text-[15px] text-gray-900 leading-snug">{step.title}</p>
+                      <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{step.title}</p>
                       {step.image ? (
                         <img
                           src={step.image}
@@ -262,7 +261,7 @@ const Extension = () => {
                 onClick={() => toggleSection("calendar")}
                 className="w-full flex items-center justify-between px-5 py-4 text-left"
               >
-                <span className="font-body font-semibold text-[14px] text-gray-900">
+                <span className="font-body font-semibold text-[18px] text-gray-900">
                   Calendar Settings
                 </span>
                 <ChevronDown
@@ -277,7 +276,7 @@ const Extension = () => {
                   </p>
                   {CALENDAR_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
-                      <p className="font-body font-semibold text-[15px] text-gray-900 leading-snug">{step.title}</p>
+                      <p className="font-body font-semibold text-[13px] text-gray-900 leading-snug">{step.title}</p>
                       {step.image ? (
                         <img
                           src={step.image}
@@ -442,7 +441,7 @@ const Extension = () => {
               onClick={() => toggleSection("install")}
               className="w-full flex items-center justify-between px-8 py-5 text-left"
             >
-              <span className="font-body font-semibold text-[15px] text-gray-900">
+              <span className="font-body font-semibold text-[20px] text-gray-900">
                 How to install extension (Manually)
               </span>
               <ChevronDown
@@ -454,7 +453,7 @@ const Extension = () => {
               <div className="px-8 pb-8 space-y-8">
                 {INSTALL_GUIDE.map((step, i) => (
                   <div key={i} className="space-y-3">
-                    <p className="font-body font-semibold text-[16px] text-gray-900 leading-snug">{step.title}</p>
+                    <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
                     {step.image ? (
                       <img
                         src={step.image}
@@ -477,7 +476,7 @@ const Extension = () => {
               onClick={() => toggleSection("calendar")}
               className="w-full flex items-center justify-between px-8 py-5 text-left"
             >
-              <span className="font-body font-semibold text-[15px] text-gray-900">
+              <span className="font-body font-semibold text-[20px] text-gray-900">
                 Calendar Settings
               </span>
               <ChevronDown
@@ -493,7 +492,7 @@ const Extension = () => {
                 <div className="space-y-8">
                   {CALENDAR_GUIDE.map((step, i) => (
                     <div key={i} className="space-y-3">
-                      <p className="font-body font-semibold text-[16px] text-gray-900 leading-snug">{step.title}</p>
+                      <p className="font-body font-semibold text-[14px] text-gray-900 leading-snug">{step.title}</p>
                       {step.image ? (
                         <img
                           src={step.image}
