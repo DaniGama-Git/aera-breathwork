@@ -7,7 +7,7 @@ import BreatheDots from "@/components/BreatheDots";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsMobile } from "@/hooks/use-mobile";
-import mockupExtension from "@/assets/mockup-extension-breathe.svg";
+import mockupExtension from "@/assets/landing-moment-mockup.png";
 
 const INSTALL_STEPS = [
   "Download & unzip the extension",
