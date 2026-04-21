@@ -259,6 +259,7 @@ const LandingPage = () => {
                     className="max-h-[280px] md:max-h-[340px] w-auto object-contain"
                   />
                 </div>
+              </div>
 
               {/* Step 2 — image left, text right */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center mb-16 md:mb-24">
