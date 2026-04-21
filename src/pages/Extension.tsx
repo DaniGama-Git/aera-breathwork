@@ -293,6 +293,11 @@ const Extension = () => {
                           className="w-full rounded-[12px]"
                         />
                       )}
+                      {step.logoPanel && (
+                        <div className="w-full aspect-[16/10] rounded-[12px] bg-[#f7f6f4] flex items-center justify-center">
+                          <img src={areaLogo} alt="āera" className="h-8 w-auto" />
+                        </div>
+                      )}
                     </div>
                   ))}
                   <button
@@ -507,6 +512,11 @@ const Extension = () => {
                           alt={step.title}
                           className="w-full rounded-[14px]"
                         />
+                      )}
+                      {step.logoPanel && (
+                        <div className="w-full aspect-[16/10] rounded-[14px] bg-[#f7f6f4] flex items-center justify-center">
+                          <img src={areaLogo} alt="āera" className="h-10 w-auto" />
+                        </div>
                       )}
                     </div>
                   ))}
