@@ -341,7 +341,7 @@ const LandingPage = () => {
         </section>
 
         {/* ——— FOOTER ——— */}
-        <footer className="px-5 py-8 border-t border-gray-100 bg-white text-center">
+        <footer className="px-5 py-8 border-t border-gray-100 bg-[#F5F5F7] text-center">
           <p className="font-body text-[11px] md:text-[12px] text-gray-500">
             © 2026 āera. All rights reserved.
           </p>
